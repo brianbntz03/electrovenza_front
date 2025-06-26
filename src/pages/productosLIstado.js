@@ -8,6 +8,7 @@ const Productos = () => {
             <h3 className="card-title">Productos</h3>
             <div className="card-tools">
               <a class="btn btn-sm btn-info float-right" href='/crearPrducto'> Crear Productos</a>
+              <a class="btn btn-success float-right" > Crear Excel </a>
               <a href="#" className="btn btn-tool btn-sm">
                 <i className="fas fa-download" />
               </a>
