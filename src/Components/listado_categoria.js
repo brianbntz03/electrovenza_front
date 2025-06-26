@@ -8,6 +8,7 @@ export function ListadoCategoria() {
     const [loading, setLoading] = useState(true);
 
     const handleEliminar = async (id) => {
+        
     try {
         
          await fetch(`http://localhost:3001/categoria/${id}`, {

@@ -9,6 +9,7 @@ import CreacionCategorias from "../pages/creacionCategorias";
 import Articulos from "../pages/Articulos";
 import Presupuestossss from "../Presupuestos/presupuestossss";
 import Ventas from "../pages/Ventas";
+import Dashboard from "../pages/Dashboard";
 import { CrearPrducto } from "./CrearProducto";
 
 export default function Content(){
@@ -18,8 +19,9 @@ export default function Content(){
             <div className="content-header">
               <div className="container-fluid">
                 <div className="row mb-2">
-                  <div className="col-sm-6">
-                    <h1 className="m-0">Tienda</h1>
+                  <div className="col-sm-12">
+                    <h1 className="m-0">ElectroVenza</h1>
+                    
                   </div>
                   
                   {/* /.col */}
@@ -34,8 +36,8 @@ export default function Content(){
                 <div className="container-fluid">
                   <div className="row">
                     <div className="col-lg-12">
-                      
                         <Routes>
+                          <Route path="/index" Component={Dashboard} ></Route>
                           <Route path="/categoriasListado" Component={Categorias} ></Route>
                           <Route path="/productosListado" Component={Productos} ></Route>
                           <Route path="/crear" Component={CrearPresupuesto}></Route>  

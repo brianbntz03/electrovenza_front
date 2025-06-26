@@ -14,7 +14,7 @@ export default function Aside() {
           className="brand-image img-circle elevation-3"
           style={{ opacity: ".8" }}
         />
-        <span className="brand-text font-weight-light">Tienda</span>
+        <span className="brand-text font-weight-light">EletroVenza</span>
       </NavLink >
       {/* Sidebar */}
       <div className="sidebar">
@@ -29,6 +29,15 @@ export default function Aside() {
           >
             {/* Add icons to the links using the .nav-icon class
          with font-awesome or any other icon font library */}
+            <li className="nav-item">
+              <NavLink to="/index" className="nav-link">
+                <i className="nav-icon far fa-image" />
+                <p>
+                    Inicio
+                  <i className="fas fa-angle-left right"/>
+                </p>
+              </NavLink>
+            </li>
             <li className="nav-item">
               <NavLink to="/categoriasListado" className="nav-link">
                 <i className="nav-icon far fa-image" />
