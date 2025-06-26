@@ -7,7 +7,8 @@ const Categorias = () => {
           <div className="card-header border-0">
             <h3 className="card-title">Categorias</h3>
             <div className="card-tools">
-              <a class="btn btn-sm btn-info float-right" href='/crearcategorias' > Crear Categoria</a>
+              <a class="btn btn-sm btn-info float-right" href='/crearcategorias' > Crear Categorias</a>
+              <a class="btn btn-success float-right"> Crear Excel </a>
               <a href="#" className="btn btn-tool btn-sm">
                 <i className="fas fa-download" />
               </a>
