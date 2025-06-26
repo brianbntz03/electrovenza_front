@@ -25,7 +25,7 @@ export const CrearCategorias = () => {
       draggable: true,
       timer: 1000,
     }).then(() => {
-      window.location.href = "/categorias";
+      window.location.href = "/categoriasListado";
     });
   };
 

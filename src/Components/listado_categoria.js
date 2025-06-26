@@ -85,6 +85,7 @@ export function ListadoCategoria() {
              <div className="card-body table-responsive p-0"> 
                  <table className="table table-striped table-valign-middle table-bordered">
                      <tr>
+                         <th> id </th>
                          <th> nombre </th>
                          <th> descripcion </th>
                          <th> activo </th>
@@ -92,6 +93,7 @@ export function ListadoCategoria() {
                      </tr>
                      {categorias.map((categoria) => (
                          <tr key={categoria.id}>
+                             <td> {categoria.id } </td>   
                              <td> {categoria.nombre} </td>
                              <td> {categoria.descripcion} </td>
                              <td> {categoria.activo} </td>

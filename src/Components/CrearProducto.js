@@ -5,6 +5,9 @@ import Swal from "sweetalert2";
 export const CrearPrducto = () => {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
+  const [precio, setPrecio] = useState("");
+  const [idCategoria, setIdCategoria] = useState("");
+
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [button, setButton] = useState(false);
@@ -20,13 +23,13 @@ export const CrearPrducto = () => {
 
   const MostrarAlerta = () => {
     Swal.fire({
-      title: "Creación de Categoría",
-      text: "la categoria fue creada",
+      title: "Creación de Producto",
+      text: "El producto fue creado",
       icon: "success",
       draggable: true,
       timer: 1000,
     }).then(() => {
-      window.location.href = "/categorias";
+      window.location.href = "/productosListado";
     });
   };
 
@@ -36,13 +39,13 @@ export const CrearPrducto = () => {
 
     try {
       // Corregido el endpoint - asegúrate de que esta URL sea correcta para tu API
-      const response = await fetch("http://localhost:3001/categoria", {
+      const response = await fetch("http://localhost:3001/articulos", {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ nombre, descripcion }),
+        body: JSON.stringify({ nombre, descripcion, precio, idCategoria }),
       });
 
       if (!response.ok) {
@@ -50,7 +53,7 @@ export const CrearPrducto = () => {
       }
 
       const data = await response.json();
-      console.log("Categoría creada:", data);
+      console.log("Producto creado:", data);
       MostrarAlerta();
       setButton(true);
       setLoading(false);
@@ -121,10 +124,10 @@ export const CrearPrducto = () => {
               </label>
               <input
                class="form-control"  
-                value={descripcion}
-                onChange={(e) => setDescripcion(e.target.value)}
+                value={precio}
+                onChange={(e) => setPrecio(e.target.value)}
                 type="text"
-                name="descripcion"
+                name="precio"
                 required
               />
             </div>
@@ -134,10 +137,10 @@ export const CrearPrducto = () => {
               </label>
               <input
                class="form-control"  
-                value={descripcion}
-                onChange={(e) => setDescripcion(e.target.value)}
+                value={idCategoria}
+                onChange={(e) => setIdCategoria(e.target.value)}
                 type="text"
-                name="descripcion"
+                name="idCategoria"
                 required
               />
             </div>
