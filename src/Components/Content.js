@@ -9,6 +9,7 @@ import CreacionCategorias from "../pages/creacionCategorias";
 import Articulos from "../pages/Articulos";
 import Presupuestossss from "../Presupuestos/presupuestossss";
 import Ventas from "../pages/Ventas";
+import { CrearPrducto } from "./CrearProducto";
 
 export default function Content(){
     return(
@@ -44,6 +45,7 @@ export default function Content(){
                           <Route path="/articulos" Component={Articulos}></Route>
                           <Route path="/buscar-articulos-presupuesto" Component={Presupuestossss}></Route>
                           <Route path="/ventas" Component={Ventas}></Route>
+                          <Route path="/crearPrducto" Component={CrearPrducto}></Route>
                         </Routes>
                     </div>
                   </div>

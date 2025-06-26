@@ -7,6 +7,7 @@ const Productos = () => {
           <div className="card-header border-0">
             <h3 className="card-title">Productos</h3>
             <div className="card-tools">
+              <a class="btn btn-sm btn-info float-right" href='/crearPrducto'> Crear Productos</a>
               <a href="#" className="btn btn-tool btn-sm">
                 <i className="fas fa-download" />
               </a>

@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-export const CrearCategorias = () => {
+export const CrearPrducto = () => {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [error, setError] = useState(null);
@@ -84,7 +85,7 @@ export const CrearCategorias = () => {
     <>
       <div class="card card-primary">
         <div class="card-header">
-          <h3 class="card-title">Crear categoria</h3>
+          <h3 class="card-title">Crear Productos</h3>
         </div>
         <form onSubmit={handleSubmit} style={{ marginBottom: "100px" }}>
           <div class="card-body">
@@ -103,7 +104,33 @@ export const CrearCategorias = () => {
             </div>
             <div class="form-group">
               <label for="exampleInputDescription">
-              Descripcion :
+              descripcion
+              </label>
+              <input
+               class="form-control"  
+                value={descripcion}
+                onChange={(e) => setDescripcion(e.target.value)}
+                type="text"
+                name="descripcion"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="exampleInputDescription">
+              precio
+              </label>
+              <input
+               class="form-control"  
+                value={descripcion}
+                onChange={(e) => setDescripcion(e.target.value)}
+                type="text"
+                name="descripcion"
+                required
+              />
+            </div>
+             <div class="form-group">
+              <label for="exampleInputDescription">
+              categoria
               </label>
               <input
                class="form-control"  
