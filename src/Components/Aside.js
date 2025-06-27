@@ -7,7 +7,7 @@ export default function Aside() {
       <NavLink to="" activeClassName=""></NavLink>
     <aside className="main-sidebar sidebar-dark-primary elevation-4">
       {/* Brand Logo */}
-      <NavLink to="index3.html" className="brand-link">
+      <NavLink to="index" className="brand-link">
       <img
           src="dist/img/AdminLTELogo.png"
           alt="AdminLTE Logo"
@@ -31,7 +31,7 @@ export default function Aside() {
          with font-awesome or any other icon font library */}
             <li className="nav-item">
               <NavLink to="/index" className="nav-link">
-                <i className="nav-icon far fa-image" />
+                <i className="nav-icon fas fa-tachometer-alt" />
                 <p>
                     Inicio
                   <i className="fas fa-angle-left right"/>
@@ -40,27 +40,59 @@ export default function Aside() {
             </li>
             <li className="nav-item">
               <NavLink to="/categoriasListado" className="nav-link">
-                <i className="nav-icon far fa-image" />
+                <i className="nav-icon fas fa-table" />
                 <p>
                     Categorias
                   <i className="fas fa-angle-left right"/>
                 </p>
               </NavLink>
             </li>
+            
             <li className="nav-item">
               <NavLink to="/productosListado" className="nav-link">
-                <i className="nav-icon far fa-image" />
+                <i className="nav-icon fas fa-barcode" />
                 <p>
                     Productos
                   <i className="fas fa-angle-left right"/>
                 </p>
               </NavLink>
             </li>
+
             <li className="nav-item">
               <NavLink to="/buscar-articulos-presupuesto" className="nav-link">
-                <i className="nav-icon far fa-image" />
+                <i className="nav-icon fas fa-dollar-sign" />
                 <p>
-                    Presupuesto & Venta
+                    Presupuestar - Vender
+                  <i className="fas fa-angle-left right"/>
+                </p>
+              </NavLink>
+            </li>
+
+            <li className="nav-item">
+              <NavLink to="/vendedores" className="nav-link">
+                <i className="nav-icon fas fa-handshake" />
+                <p>
+                    Vendedores
+                  <i className="fas fa-angle-left right"/>
+                </p>
+              </NavLink>
+            </li>
+
+            <li className="nav-item">
+              <NavLink to="/clientes" className="nav-link">
+                <i className="nav-icon fas fa-user" />
+                <p>
+                    Clientes
+                  <i className="fas fa-angle-left right"/>
+                </p>
+              </NavLink>
+            </li>
+
+            <li className="nav-item">
+              <NavLink to="/proveedores" className="nav-link">
+                <i className="nav-icon fas fa-truck" />
+                <p>
+                    Proveedores
                   <i className="fas fa-angle-left right"/>
                 </p>
               </NavLink>
@@ -68,7 +100,7 @@ export default function Aside() {
             
             <li className="nav-item">
               <NavLink to="/ventas" className="nav-link">
-                <i className="nav-icon far fa-image" />
+                <i className="nav-icon fas fa-file-invoice-dollar" />
                 <p>
                     Listado ventas
                   <i className="fas fa-angle-left right"/>
