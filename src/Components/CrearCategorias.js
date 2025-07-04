@@ -114,6 +114,8 @@ export const CrearCategorias = () => {
                 required
               />
             </div>
+           
+
             <div class="card-footer">
             <button
               type="submit"
@@ -122,7 +124,7 @@ export const CrearCategorias = () => {
             >
               {loading ? "Creando..." : "Crear categoría"}
             </button>  
-            </div>        
+            </div>      
           </div>
         </form>
       </div>

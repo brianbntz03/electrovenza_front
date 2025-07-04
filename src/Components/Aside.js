@@ -3,119 +3,189 @@ import { NavLink } from "react-router-dom";
 
 export default function Aside() {
   return (
-    <div> 
+    <div>
       <NavLink to="" activeClassName=""></NavLink>
-    <aside className="main-sidebar sidebar-dark-primary elevation-4">
-      {/* Brand Logo */}
-      <NavLink to="index" className="brand-link">
-      <img
-          src="dist/img/AdminLTELogo.png"
-          alt="AdminLTE Logo"
-          className="brand-image img-circle elevation-3"
-          style={{ opacity: ".8" }}
-        />
-        <span className="brand-text font-weight-light">EletroVenza</span>
-      </NavLink >
-      {/* Sidebar */}
-      <div className="sidebar">
-
-        {/* Sidebar Menu */}
-        <nav className="mt-2">
-          <ul
-            className="nav nav-pills nav-sidebar flex-column"
-            data-widget="treeview"
-            role="menu"
-            data-accordion="false"
-          >
-            {/* Add icons to the links using the .nav-icon class
+      <aside className="main-sidebar sidebar-dark-primary elevation-4">
+        {/* Brand Logo */}
+        <NavLink to="index" className="brand-link">
+          <img
+            src="dist/img/AdminLTELogo.png"
+            alt="AdminLTE Logo"
+            className="brand-image img-circle elevation-3"
+            style={{ opacity: ".8" }}
+          />
+          <span className="brand-text font-weight-light">EletroVenza</span>
+        </NavLink>
+        {/* Sidebar */}
+        <div className="sidebar">
+          {/* Sidebar Menu */}
+          <nav className="mt-2">
+            <ul
+              className="nav nav-pills nav-sidebar flex-column"
+              data-widget="treeview"
+              role="menu"
+              data-accordion="false"
+            >
+              {/* Add icons to the links using the .nav-icon class
          with font-awesome or any other icon font library */}
-            <li className="nav-item">
-              <NavLink to="/index" className="nav-link">
-                <i className="nav-icon fas fa-tachometer-alt" />
-                <p>
+              <li className="nav-item">
+                <NavLink to="/index" className="nav-link">
+                  <i className="nav-icon fas fa-tachometer-alt" />
+                  <p>
                     Inicio
-                  <i className="fas fa-angle-left right"/>
-                </p>
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/categoriasListado" className="nav-link">
-                <i className="nav-icon fas fa-table" />
-                <p>
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to="/categoriasListado" className="nav-link">
+                  <i className="nav-icon fas fa-table" />
+                  <p>
                     Categorias
-                  <i className="fas fa-angle-left right"/>
-                </p>
-              </NavLink>
-            </li>
-            
-            <li className="nav-item">
-              <NavLink to="/productosListado" className="nav-link">
-                <i className="nav-icon fas fa-barcode" />
-                <p>
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
+
+              <li className="nav-item">
+                <NavLink to="/productosListado" className="nav-link">
+                  <i className="nav-icon fas fa-barcode" />
+                  <p>
                     Productos
-                  <i className="fas fa-angle-left right"/>
-                </p>
-              </NavLink>
-            </li>
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
 
-            <li className="nav-item">
-              <NavLink to="/buscar-articulos-presupuesto" className="nav-link">
-                <i className="nav-icon fas fa-dollar-sign" />
-                <p>
+              <li className="nav-item">
+                <NavLink
+                  to="/buscar-articulos-presupuesto"
+                  className="nav-link"
+                >
+                  <i className="nav-icon fas fa-dollar-sign" />
+                  <p>
                     Presupuestar - Vender
-                  <i className="fas fa-angle-left right"/>
-                </p>
-              </NavLink>
-            </li>
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
 
-            <li className="nav-item">
-              <NavLink to="/vendedores" className="nav-link">
-                <i className="nav-icon fas fa-handshake" />
-                <p>
+              <li className="nav-item">
+                <NavLink to="/vendedores" className="nav-link">
+                  <i className="nav-icon fas fa-handshake" />
+                  <p>
                     Vendedores
-                  <i className="fas fa-angle-left right"/>
-                </p>
-              </NavLink>
-            </li>
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
 
-            <li className="nav-item">
-              <NavLink to="/clientes" className="nav-link">
-                <i className="nav-icon fas fa-user" />
-                <p>
+              <li className="nav-item">
+                <NavLink to="/clientes" className="nav-link">
+                  <i className="nav-icon fas fa-user" />
+                  <p>
                     Clientes
-                  <i className="fas fa-angle-left right"/>
-                </p>
-              </NavLink>
-            </li>
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
 
-            <li className="nav-item">
-              <NavLink to="/proveedores" className="nav-link">
-                <i className="nav-icon fas fa-truck" />
-                <p>
+              <li className="nav-item">
+                <NavLink to="/proveedores" className="nav-link">
+                  <i className="nav-icon fas fa-truck" />
+                  <p>
                     Proveedores
-                  <i className="fas fa-angle-left right"/>
-                </p>
-              </NavLink>
-            </li>
-            
-            <li className="nav-item">
-              <NavLink to="/ventas" className="nav-link">
-                <i className="nav-icon fas fa-file-invoice-dollar" />
-                <p>
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
+
+              <li className="nav-item">
+                <NavLink to="/ventas" className="nav-link">
+                  <i className="nav-icon fas fa-file-invoice-dollar" />
+                  <p>
                     Listado ventas
-                  <i className="fas fa-angle-left right"/>
-                </p>
-              </NavLink>
-            </li>
-            
-          </ul>
-        </nav>
-        {/* /.sidebar-menu */}
-      </div>
-      {/* /.sidebar */}
-    </aside>
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
+
+              <li className="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-copy"></i>
+                  <p>
+                    Ventas
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Top Navigation</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      href=""
+                      class="nav-link"
+                    >
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Top Navigation + Sidebar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Boxed</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Fixed Sidebar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      href=""
+                      class="nav-link"
+                    >
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>
+                        Fixed Sidebar <small>+ Custom Area</small>
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Fixed Navbar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Fixed Footer</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      href=""
+                      class="nav-link"
+                    >
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Collapsed Sidebar</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+          {/* /.sidebar-menu */}
+        </div>
+        {/* /.sidebar */}
+      </aside>
     </div>
-
-
   );
 }

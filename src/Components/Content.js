@@ -11,6 +11,9 @@ import Presupuestossss from "../Presupuestos/presupuestossss";
 import Ventas from "../pages/Ventas";
 import Dashboard from "../pages/Dashboard";
 import { CrearPrducto } from "./CrearProducto";
+import vendedores from "../pages/vendedores";
+import Clientes from "../pages/Clientes";
+import Proveedores from "../pages/Proveedores";
 
 export default function Content(){
     return(
@@ -48,6 +51,9 @@ export default function Content(){
                           <Route path="/buscar-articulos-presupuesto" Component={Presupuestossss}></Route>
                           <Route path="/ventas" Component={Ventas}></Route>
                           <Route path="/crearPrducto" Component={CrearPrducto}></Route>
+                          <Route path="/vendedores" Component={vendedores}></Route>
+                          <Route path="/clientes" Component={Clientes}></Route>
+                          <Route path="/proveedores" Component={Proveedores}></Route>
                         </Routes>
                     </div>
                   </div>

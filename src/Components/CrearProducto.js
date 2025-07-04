@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
@@ -7,7 +6,7 @@ export const CrearPrducto = () => {
   const [descripcion, setDescripcion] = useState("");
   const [precio, setPrecio] = useState("");
   const [idCategoria, setIdCategoria] = useState("");
-
+  const [categorias, setCategorias] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [button, setButton] = useState(false);
@@ -32,6 +31,21 @@ export const CrearPrducto = () => {
       window.location.href = "/productosListado";
     });
   };
+
+  useEffect(() => {
+    const obtenerCategorias = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/categorias");
+        const data = await response.json();
+        setCategorias(data.categorias);
+      } catch (error) {
+        console.error("Error al cargar categorías:", error);
+        setError("No se pudieron cargar las categorías.");
+      }
+    };
+
+    obtenerCategorias();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -93,24 +107,20 @@ export const CrearPrducto = () => {
         <form onSubmit={handleSubmit} style={{ marginBottom: "100px" }}>
           <div class="card-body">
             <div className="form-group">
-              <label for="exampleInputName">
-                Nombre :
-                </label>
-                <input 
-                  class="form-control"
-                  value={nombre}
-                  onChange={(e) => setNombre(e.target.value)}
-                  type="text"
-                  name="nombre"
-                  required
-                />
+              <label for="exampleInputName">Nombre :</label>
+              <input
+                class="form-control"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                type="text"
+                name="nombre"
+                required
+              />
             </div>
             <div class="form-group">
-              <label for="exampleInputDescription">
-              descripcion
-              </label>
+              <label for="exampleInputDescription">descripcion</label>
               <input
-               class="form-control"  
+                class="form-control"
                 value={descripcion}
                 onChange={(e) => setDescripcion(e.target.value)}
                 type="text"
@@ -119,11 +129,9 @@ export const CrearPrducto = () => {
               />
             </div>
             <div class="form-group">
-              <label for="exampleInputDescription">
-              precio
-              </label>
+              <label for="exampleInputDescription">precio</label>
               <input
-               class="form-control"  
+                class="form-control"
                 value={precio}
                 onChange={(e) => setPrecio(e.target.value)}
                 type="text"
@@ -131,28 +139,30 @@ export const CrearPrducto = () => {
                 required
               />
             </div>
-             <div class="form-group">
-              <label for="exampleInputDescription">
-              categoria
-              </label>
-              <input
-               class="form-control"  
+            <div class="form-group">
+              <label for="exampleInputDescription">categoria</label>
+              <select
+                type="text"
+                class="form-control"
                 value={idCategoria}
                 onChange={(e) => setIdCategoria(e.target.value)}
-                type="text"
                 name="idCategoria"
                 required
-              />
+              >
+                <option value=""> selecciona una categoria </option>
+                {Array.isArray(categorias) &&
+                  categorias.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.nombre}
+                    </option>
+                  ))}
+              </select>
             </div>
             <div class="card-footer">
-            <button
-              type="submit"
-              class="btn btn-primary"
-              disabled={loading}
-            >
-              {loading ? "Creando..." : "Crear categoría"}
-            </button>  
-            </div>        
+              <button type="submit" class="btn btn-primary" disabled={loading}>
+                {loading ? "Creando..." : "Crear categoría"}
+              </button>
+            </div>
           </div>
         </form>
       </div>
