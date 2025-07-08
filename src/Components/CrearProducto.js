@@ -35,9 +35,9 @@ export const CrearPrducto = () => {
   useEffect(() => {
     const obtenerCategorias = async () => {
       try {
-        const response = await fetch("http://localhost:3001/categorias");
+        const response = await fetch("http://localhost:3001/categoria");
         const data = await response.json();
-        setCategorias(data.categorias);
+        setCategorias(data);
       } catch (error) {
         console.error("Error al cargar categorías:", error);
         setError("No se pudieron cargar las categorías.");

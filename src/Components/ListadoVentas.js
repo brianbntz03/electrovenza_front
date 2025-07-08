@@ -5,33 +5,63 @@ export function ListadoVentas() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchVentas = async () => {
-    try {
-      const response = await fetch("http://localhost:3001/ventas", {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
+ const fetchVentas = async () => {
+       try {
+                 const response = await fetch('http://localhost:3001/ventas', {
+                     method: 'GET',
+                     headers: {
+                         'Accept': 'application/json',
+                         'Content-Type': 'application/json'
+                     },
+                 });
+ 
+                 if (!response.ok) {
+                     throw new Error(`HTTP error! status: ${response.status}`);
+                 }
+ 
+                 const data = await response.json();
+                 setVentas(data);
+                 setLoading(false);
+             } catch (error) {
+                 console.error("Error detallado:", error);
+                 setError(`No se pudo conectar con el servidor. Verifica que el servidor esté corriendo en el puerto 3001: ${error.message}`);
+                 setLoading(false);
+             }
+         }
+     useEffect(() => {   
+         fetchVentas();
+     }
+     , []);
+     // Función para reintentar la conexión
+     const handleRetry = () => {
+         setLoading(true);
+         setError(null);
+         fetchVentas();
+     }
+     if (loading) {
+         return (
+             <div className="loading-container">
+                 <p>Cargando Ventas...</p>
+             </div>
+         );
+     }
+     if (error) {
+         return (
+             <div className="error-container">
+                 <h3>Error de conexión</h3>
+                 <p>{error}</p>
+                 <button onClick={handleRetry} className="retry-button">Reintentar</button>
+             </div>
+         );
+     }
+   if (!ventas || ventas.length === 0) {
+         return (
+             <div className="error-container">
+               No hay Ventas registradas
+              </div>
+          );
+     }
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setVentas(data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error detallado:", error);
-      setError(`No se pudo conectar con el servidor: ${error.message}`);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchVentas();
-  }, []);
 
   return (
     <div class="card-body">

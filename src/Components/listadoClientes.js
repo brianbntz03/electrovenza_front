@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 
 export function ListadoClientes() {
 
@@ -6,70 +6,92 @@ export function ListadoClientes() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  
-  const listadoclient = async (e) => {
-    try {
-      const datosclientes = {
-          clientes: datos.map((dat) =>({
-            id: dat.id,
-            nombre: dat.nombre,
-            dni: dat.dni,
-            direccion_local: dat.direccion_local,
-            direccion_casa: dat.direccion_casa,
-            telefono1: dat.telefono1,
-            telefono2: dat.telefono2,
-            vendedor_id: dat.vendedor_id
-          }))
-      }
+  const fetchClientes = async () => {
+      try {
+                const response = await fetch('http://localhost:3001/cliente', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                });
 
-      const response = await fetch("http://localhost:3001/cliente", {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setClientes(data);
-      setLoading(false);
-    } catch (error) {
-      setError(error);
-      setLoading(false);
+                const data = await response.json();
+                setClientes(data);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error detallado:", error);
+                setError(`No se pudo conectar con el servidor. Verifica que el servidor esté corriendo en el puerto 3001: ${error.message}`);
+                setLoading(false);
+            }
+        }
+    useEffect(() => {   
+        fetchClientes();
     }
-  };
-
+    , []);
+    // Función para reintentar la conexión
+    const handleRetry = () => {
+        setLoading(true);
+        setError(null);
+        fetchClientes();
+    }
+    if (loading) {
+        return (
+            <div className="loading-container">
+                <p>Cargando Clientes...</p>
+            </div>
+        );
+    }
+    if (error) {
+        return (
+            <div className="error-container">
+                <h3>Error de conexión</h3>
+                <p>{error}</p>
+                <button onClick={handleRetry} className="retry-button">Reintentar</button>
+            </div>
+        );
+    }
+  if (!clientes || clientes.length === 0) {
+        return (
+            <div className="error-container">
+                No hay clientes registrados
+            </div>
+        );
+    }   
 
   return (
-    <div class="card-body">
-      <p>listado Clientes</p> 
-    <table className="table table-striped table-valign-middle table-bordered">
-      <thead>
-        <tr>
-            <th>vendedor</th>
+    <div className="card-body">
+      <p>Listado de Clientes</p> 
+      <table className="table table-striped table-valign-middle table-bordered">
+        <thead>
+          <tr>
+            <th>Vendedor ID</th>
             <th>Nombre</th>
-            <th>dni</th>
-            <th>Direccion del local</th>
-            <th>Direccion de casa</th>
-            <th>Telefono 1</th>
-            <th>Telefono 2</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-      </tbody>
-    </table>
+            <th>DNI</th>
+            <th>Dirección del Local</th>
+            <th>Dirección de Casa</th>
+            <th>Teléfono 1</th>
+            <th>Teléfono 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          {clientes.map((cliente, index) => (
+            <tr key={index}>
+              <td>{cliente.vendedor_id}</td>
+              <td>{cliente.nombre}</td>
+              <td>{cliente.dni}</td>
+              <td>{cliente.direccion_local}</td>
+              <td>{cliente.direccion_casa}</td>
+              <td>{cliente.telefono1}</td>
+              <td>{cliente.telefono2}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
-    )
+  );
 }

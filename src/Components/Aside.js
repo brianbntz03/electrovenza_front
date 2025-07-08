@@ -122,14 +122,11 @@ export default function Aside() {
                   <li class="nav-item">
                     <a href="" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Top Navigation</p>
+                      <p>Cuotas por Dias</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a
-                      href=""
-                      class="nav-link"
-                    >
+                    <a href="" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Top Navigation + Sidebar</p>
                     </a>
@@ -147,10 +144,7 @@ export default function Aside() {
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a
-                      href=""
-                      class="nav-link"
-                    >
+                    <a href="" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>
                         Fixed Sidebar <small>+ Custom Area</small>
@@ -161,21 +155,6 @@ export default function Aside() {
                     <a href="" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Fixed Navbar</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Fixed Footer</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a
-                      href=""
-                      class="nav-link"
-                    >
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Collapsed Sidebar</p>
                     </a>
                   </li>
                 </ul>
