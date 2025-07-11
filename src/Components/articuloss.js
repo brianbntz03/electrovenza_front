@@ -1,4 +1,4 @@
-import React from "react";
+import { apiRest } from "../service/apiRest";
 import { useState, useEffect } from "react";
 
 export const Articuloss = () => {
@@ -9,7 +9,7 @@ export const Articuloss = () => {
 
     const fetchArticulos = async () => {
         try {
-            const response = await fetch("http://localhost:3001/articulos" );
+            const response = await fetch(`${apiRest}/articulos` );
             if (!response.ok) {
                 throw new Error(`Error en la solicitud: ${response.status}`);
             }

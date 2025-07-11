@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { apiRest } from "../service/apiRest";
+
 export const ArticuloPresupuesto = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [mensajeVenta, setMensajeVenta] = useState("");
@@ -28,7 +30,8 @@ export const ArticuloPresupuesto = () => {
         total: calcularTotal(),
       };
 
-      const response = await fetch("http://localhost:3001/ventas", {
+      // eslint-disable-next-line no-undef
+      const response = await fetch(`${apiRest}/ventas`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -119,7 +122,7 @@ export const ArticuloPresupuesto = () => {
   const handleSearch = async (busqueda) => {
     setAccionActual("buscar");
     try {
-      const response = await fetch("http://localhost:3001/articulos/find", {
+      const response = await fetch(`${apiRest}/articulos/find`, {
         method: "POST",
         headers: {
           Accept: "application/json",

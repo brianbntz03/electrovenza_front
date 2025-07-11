@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { apiRest } from "../service/apiRest";
 
 export function ListadoVentas() {
   const [ventas, setVentas] = useState([]);
@@ -7,7 +8,7 @@ export function ListadoVentas() {
 
  const fetchVentas = async () => {
        try {
-                 const response = await fetch('http://localhost:3001/ventas', {
+                 const response = await fetch(`${apiRest}/ventas`, {
                      method: 'GET',
                      headers: {
                          'Accept': 'application/json',

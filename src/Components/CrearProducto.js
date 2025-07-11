@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { apiRest } from "../service/apiRest";
 
 export const CrearPrducto = () => {
   const [nombre, setNombre] = useState("");
@@ -35,7 +36,7 @@ export const CrearPrducto = () => {
   useEffect(() => {
     const obtenerCategorias = async () => {
       try {
-        const response = await fetch("http://localhost:3001/categoria");
+        const response = await fetch(`${apiRest}/categoria`);
         const data = await response.json();
         setCategorias(data);
       } catch (error) {
@@ -53,7 +54,7 @@ export const CrearPrducto = () => {
 
     try {
       // Corregido el endpoint - asegúrate de que esta URL sea correcta para tu API
-      const response = await fetch("http://localhost:3001/articulos", {
+      const response = await fetch(`${apiRest}/articulos`, {
         method: "POST",
         headers: {
           Accept: "application/json",

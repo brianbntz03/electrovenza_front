@@ -1,6 +1,5 @@
-import React from 'react';
 import { useEffect, useState } from 'react';
-//import '../Components/categorias.css';
+import { apiRest } from '../service/apiRest';
 
 export function ListadoProducto() {
     const [productos, setProductos] = useState([]);
@@ -10,7 +9,7 @@ export function ListadoProducto() {
     const handleEliminar = async (id) => {
     try {
         
-         await fetch(`http://localhost:3001/articulos/${id}`, {
+         await fetch(`${apiRest}/articulos/${id}`, {
              method: 'DELETE',
          });
          console.log(`Producto con id ${id} eliminado. `);
@@ -27,7 +26,7 @@ export function ListadoProducto() {
 
     const fetchProductos = async () => {
         try {
-            const response = await fetch('http://localhost:3001/articulos', {
+            const response = await fetch(`${apiRest}/articulos`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',

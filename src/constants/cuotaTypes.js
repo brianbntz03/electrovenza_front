@@ -1,0 +1,11 @@
+export const CUOTA_TYPES = {
+  DIARIA: 1,
+  SEMANAL: 2,
+  MENSUAL: 3,
+};
+
+export const CUOTA_TYPE_NAMES = {
+  [CUOTA_TYPES.DIARIA]: 'DIARIA',
+  [CUOTA_TYPES.SEMANAL]: 'SEMANAL',
+  [CUOTA_TYPES.MENSUAL]: 'MENSUAL',
+};

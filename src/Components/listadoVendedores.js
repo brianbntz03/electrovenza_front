@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { apiRest } from '../service/apiRest';
 
 export function ListadoVendedores() {
 
@@ -8,7 +9,7 @@ export function ListadoVendedores() {
 
   const fetchVendedores = async () => {
     try {
-      const response = await fetch('http://localhost:3001/vendedor');
+      const response = await fetch(`${apiRest}/vendedor`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

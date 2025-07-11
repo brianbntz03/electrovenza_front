@@ -1,1 +1,1 @@
-export const apiRest = "http://localhost:3001/categoria";
+export const apiRest = process.env.REACT_APP_API_URL;

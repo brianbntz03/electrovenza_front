@@ -159,6 +159,25 @@ export default function Aside() {
                   </li>
                 </ul>
               </li>
+              <li className="nav-header">CONFIGURACION</li>
+              <li className="nav-item">
+                <NavLink to="/cuotasListado" className="nav-link">
+                  <i className="nav-icon fas fa-table" />
+                  <p>
+                    Cuotas
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to="/margenPrecioListado" className="nav-link">
+                  <i className="nav-icon fas fa-table" />
+                  <p>
+                    Margen Precio
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
             </ul>
           </nav>
           {/* /.sidebar-menu */}

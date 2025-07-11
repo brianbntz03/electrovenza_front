@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { apiRest } from '../service/apiRest'
 
 export default function ButtonSearch() {
   const [search, setSearch] = useState('')
@@ -10,7 +11,7 @@ export default function ButtonSearch() {
   const handleSearch = async () => {
     setLoading(true)
     try {
-      const response = await fetch('http://localhost:3001/articulos/find')
+      const response = await fetch(`${apiRest}/articulos/find`)
       if (!response.ok) {
         throw new Error(`Error en la solicitud: ${response.status}`)
       }
