@@ -1,7 +1,7 @@
 import { ListadoCategoria } from "../Components/listado_categoria"
 
 const Categorias = () => {
-  let categorias =  ListadoCategoria();
+  let categoriasListado =  ListadoCategoria();
   return (
         <div className="card">
           <div className="card-header border-0">
@@ -13,7 +13,7 @@ const Categorias = () => {
             </div>
           </div>
           <div className="card-body table-responsive p-0">
-            {categorias}
+            {categoriasListado}
           </div>
         </div>
     )

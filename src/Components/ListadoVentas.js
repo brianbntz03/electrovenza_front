@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { apiRest } from "../service/apiRest";
 
-export function ListadoVentas() {
+export function ComponentListadoVentas() {
   const [ventas, setVentas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
  const fetchVentas = async () => {
        try {
-                 const response = await fetch(`${apiRest}/ventas`, {
+                 const response = await fetch(`${apiRest}/ventas/last-ten`, {
                      method: 'GET',
                      headers: {
                          'Accept': 'application/json',
@@ -72,17 +72,19 @@ export function ListadoVentas() {
         <table className="table table-striped table-valign-middle table-bordered">
           <thead>
             <tr>
-              <th>n°cuota</th>
-              <th>clientes</th>
-              <th>vendedor</th>
+              <th>Articulo</th>
+              <th>Total</th>
+              <th>Clientes</th>
+              <th>Vendedor</th>
             </tr>
           </thead>
           <tbody>
             {ventas.map((venta) => (
               <tr key={venta.id}>
-                <td>{venta.nro_cuotas_id}</td>
-                <td>{venta.cliente_id}</td>
-                <td>{venta.vendedor_id}</td>
+                <td>{venta.articulo.nombre}</td>
+                <td>{venta.precio}</td>
+                <td>{venta.cliente.nombre}</td>
+                <td>{venta.vendedor.nombre}</td>
               </tr>
             ))}
           </tbody>

@@ -70,25 +70,25 @@ export function ListadoClientes() {
       <table className="table table-striped table-valign-middle table-bordered">
         <thead>
           <tr>
-            <th>Vendedor ID</th>
             <th>Nombre</th>
             <th>DNI</th>
             <th>Dirección del Local</th>
             <th>Dirección de Casa</th>
             <th>Teléfono 1</th>
             <th>Teléfono 2</th>
+            <th>Vendedor</th>
           </tr>
         </thead>
         <tbody>
           {clientes.map((cliente, index) => (
             <tr key={index}>
-              <td>{cliente.vendedor_id}</td>
               <td>{cliente.nombre}</td>
               <td>{cliente.dni}</td>
               <td>{cliente.direccion_local}</td>
               <td>{cliente.direccion_casa}</td>
               <td>{cliente.telefono1}</td>
               <td>{cliente.telefono2}</td>
+              <td>{cliente.vendedor.nombre}</td>
             </tr>
           ))}
         </tbody>

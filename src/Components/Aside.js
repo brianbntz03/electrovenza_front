@@ -64,7 +64,7 @@ export default function Aside() {
                 >
                   <i className="nav-icon fas fa-dollar-sign" />
                   <p>
-                    Presupuestar - Vender
+                    Vender
                     <i className="fas fa-angle-left right" />
                   </p>
                 </NavLink>
@@ -99,12 +99,12 @@ export default function Aside() {
                   </p>
                 </NavLink>
               </li>
-
+              <li className="nav-header">REPORTES</li>  
               <li className="nav-item">
-                <NavLink to="/ventas" className="nav-link">
+                <NavLink to="/ventas-listado" className="nav-link">
                   <i className="nav-icon fas fa-file-invoice-dollar" />
                   <p>
-                    Listado ventas
+                    Ventas
                     <i className="fas fa-angle-left right" />
                   </p>
                 </NavLink>
@@ -114,7 +114,7 @@ export default function Aside() {
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-copy"></i>
                   <p>
-                    Ventas
+                    Miscelanea
                     <i class="fas fa-angle-left right"></i>
                   </p>
                 </a>

@@ -1,8 +1,8 @@
 import React from "react";
-import { ListadoVentas } from "../Components/ListadoVentas";
+import { ComponentListadoVentas } from "../Components/ListadoVentas";
 
-const Ventas = () => {
-  let listado_ventas = ListadoVentas();
+const PageListadoVentas = () => {
+  let listado_ventas = ComponentListadoVentas();
   return (
     <div className="card">
       <div className="card-header border-0">
@@ -21,4 +21,4 @@ const Ventas = () => {
   );
 };
 
-export default Ventas;
+export default PageListadoVentas;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Categorias from "../pages/categoriasListado";
 import Productos from "../pages/productosLIstado";
 import CrearPresupuesto from "../Presupuestos/CrearPresupuesto";
@@ -8,8 +8,8 @@ import ListaPresupuesto from "../Presupuestos/ListaPresupuesto";
 import CreacionCategorias from "../pages/creacionCategorias";
 import Articulos from "../pages/Articulos";
 import Presupuestossss from "../Presupuestos/presupuestossss";
-import Ventas from "../pages/Ventas";
-import Dashboard from "../pages/Dashboard";
+import PageListadoVentas from "../pages/PageListadoVentas";
+import Dashboard from "../pages/Index";
 import { CrearPrducto } from "./CrearProducto";
 import vendedores from "../pages/vendedores";
 import Clientes from "../pages/Clientes";
@@ -41,6 +41,8 @@ export default function Content(){
                   <div className="row">
                     <div className="col-lg-12">
                         <Routes>
+                           {/* Redirección automática de "/" a "/index" */}
+                          <Route path="/" element={<Navigate to="/index" replace />} />
                           <Route path="/index" Component={Dashboard} ></Route>
                           <Route path="/categoriasListado" Component={Categorias} ></Route>
                           <Route path="/productosListado" Component={Productos} ></Route>
@@ -50,7 +52,7 @@ export default function Content(){
                           <Route path="/crearcategorias" Component={CreacionCategorias}></Route>
                           <Route path="/articulos" Component={Articulos}></Route>
                           <Route path="/buscar-articulos-presupuesto" Component={Presupuestossss}></Route>
-                          <Route path="/ventas" Component={Ventas}></Route>
+                          <Route path="/ventas-listado" Component={PageListadoVentas}></Route>
                           <Route path="/crearPrducto" Component={CrearPrducto}></Route>
                           <Route path="/vendedores" Component={vendedores}></Route>
                           <Route path="/clientes" Component={Clientes}></Route>
