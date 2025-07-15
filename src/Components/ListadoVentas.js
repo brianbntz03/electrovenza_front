@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { apiRest } from "../service/apiRest";
+import { convertIsoToDMY } from "../miscellaneus/aux";
 
 export function ComponentListadoVentas() {
   const [ventas, setVentas] = useState([]);
@@ -72,6 +73,7 @@ export function ComponentListadoVentas() {
         <table className="table table-striped table-valign-middle table-bordered">
           <thead>
             <tr>
+              <th>Fecha</th>
               <th>Articulo</th>
               <th>Total</th>
               <th>Clientes</th>
@@ -81,6 +83,7 @@ export function ComponentListadoVentas() {
           <tbody>
             {ventas.map((venta) => (
               <tr key={venta.id}>
+                <td>{convertIsoToDMY(venta.fecha)}</td>
                 <td>{venta.articulo.nombre}</td>
                 <td>{venta.precio}</td>
                 <td>{venta.cliente.nombre}</td>
