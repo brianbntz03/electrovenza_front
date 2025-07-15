@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from "react";
-
 import { apiRest } from "../service/apiRest";
 
 export const ArticuloPresupuesto = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [mensajeVenta, setMensajeVenta] = useState("");
-  const [articulo, setArticulo] = useState([]);
   const [accionActual, setAccionActual] = useState(null);
   const [articulosFiltrados, setArticulosFiltrados] = useState([]);
+  const [vendedoresFiltrados, setVendedoresFiltrados] = useState([]);
+  const [clientesFiltrados, setClientesFiltrados] = useState([]);
+  const [cuotasFiltrados, setCuotasFiltrados] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    cargarVendedores();
+    cargarClientes();
+    cargarCuotas();
+  }, []);
   const [presupuesto, setPresupuesto] = useState(() => {
     const stored = localStorage.getItem("presupuesto");
-    //return stored ? JSON.parse(stored) : [];
     return [];
   });
 
@@ -30,7 +36,6 @@ export const ArticuloPresupuesto = () => {
         total: calcularTotal(),
       };
 
-      // eslint-disable-next-line no-undef
       const response = await fetch(`${apiRest}/ventas`, {
         method: "POST",
         headers: {
@@ -45,7 +50,7 @@ export const ArticuloPresupuesto = () => {
 
       const resultado = await response.text();
       setMensajeVenta(resultado);
-      setModalVisible(true); // 👉 Mostrar modal personalizado
+      setModalVisible(true);
       console.log("Respuesta del servidor:", resultado);
     } catch (error) {
       console.error("Error al registrar la venta:", error);
@@ -90,7 +95,7 @@ export const ArticuloPresupuesto = () => {
     setError(null);
   };
 
-  function FormSearch() {
+  function FormArticulos() {
     const [busqueda, setBusqueda] = useState("");
     return (
       <div>
@@ -119,6 +124,74 @@ export const ArticuloPresupuesto = () => {
     );
   }
 
+  function FormVendedor() {
+    const [idVendedor, setIdVendedor] = useState("");
+
+    return (
+      <div style={{ marginBottom: "10px" }}>
+        <label style={{ marginRight: "5px" }}>Buscar Vendedor:</label>
+        <select
+          className="form-control"
+          value={idVendedor}
+          onChange={(e) => setIdVendedor(e.target.value)}
+          style={{ width: "300px", display: "inline-block" }}
+        >
+          <option value="">-- Seleccionar Vendedor --</option>
+          {vendedoresFiltrados.map((vendedor) => (
+            <option key={vendedor.id} value={vendedor.id}>
+              {vendedor.nombre}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  }
+
+  function FormCliente() {
+    const [cliente, setCliente] = useState("");
+
+    return (
+      <div style={{ marginBottom: "10px" }}>
+        <label style={{ marginRight: "5px" }}>Buscar Cliente:</label>
+        <select
+          className="form-control"
+          value={cliente}
+          onChange={(e) => setCliente(e.target.value)}
+          style={{ width: "300px", display: "inline-block" }}
+        >
+          <option value="">-- Seleccionar Cliente --</option> 
+          {clientesFiltrados.map((cliente) => (
+            <option key={cliente.id} value={cliente.id}>
+              {cliente.nombre}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  }
+
+  function FormNumeroCuotas() {
+    const [cuotas, setCuotas] = useState("");
+
+    return (
+      <div style={{ marginBottom: "10px" }}>
+        <label style={{ marginRight: "5px" }}>N° de cuotas</label>
+        <select
+          className="form-control"
+          value={cuotas}
+          onChange={(e) => setCuotas(e.target.value)}
+          style={{ width: "300px", display: "inline-block" }}
+        >
+          <option value="">-- Seleccionar numero de cuotas --</option>
+          {cuotasFiltrados.map((cuota) => (
+            <option key={cuota.id} value={cuota.id}>
+              {cuota.descripcion}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  }
   const handleSearch = async (busqueda) => {
     setAccionActual("buscar");
     try {
@@ -145,10 +218,46 @@ export const ArticuloPresupuesto = () => {
     }
   };
 
+  const cargarVendedores = async () => {
+    try {
+      const response = await fetch(`${apiRest}/vendedor`);
+      if (response.ok) {
+        const data = await response.json();
+        setVendedoresFiltrados(data);
+      }
+    } catch (error) {
+      console.error("Error cargando vendedores:", error);
+    }
+  };
+
+  const cargarClientes = async () => {
+    try {
+      const response = await fetch(`${apiRest}/cliente`);
+      if (response.ok) {
+        const data = await response.json();
+        setClientesFiltrados(data);
+      }
+    } catch (error) {
+      console.error("Error cargando clientes:", error);
+    }
+  };
+
+  const cargarCuotas = async () => {
+    try {
+      const response = await fetch(`${apiRest}/settings/cuotas`);
+      if (response.ok) {
+        const data = await response.json();
+        setCuotasFiltrados(data);
+      }
+    } catch (error) {
+      console.error("Error cargando cuotas:", error);
+    }
+  };
+
   if (loading)
     return (
       <div>
-        <FormSearch />
+        <FormArticulos />
         <p>Cargando artículos...</p>
       </div>
     );
@@ -165,7 +274,7 @@ export const ArticuloPresupuesto = () => {
 
   return (
     <div>
-      <FormSearch />
+      <FormArticulos />
       <h3>Lista de artículos</h3>
       <table className="table table-striped table-valign-middle table-bordered">
         <thead>
@@ -197,6 +306,10 @@ export const ArticuloPresupuesto = () => {
           ))}
         </tbody>
       </table>
+
+      <FormVendedor />
+      <FormCliente />
+      <FormNumeroCuotas />
 
       <h3>Presupuesto</h3>
       {presupuesto.length === 0 ? (
@@ -273,7 +386,7 @@ export const ArticuloPresupuesto = () => {
                 <td colSpan="7" style={{ textAlign: "right" }}>
                   <button
                     type="button"
-                    class="btn btn-primary"
+                    className="btn btn-primary"
                     data-toggle="modal"
                     data-target="#exampleModal"
                     onClick={() => registrarVenta()}
@@ -283,22 +396,22 @@ export const ArticuloPresupuesto = () => {
 
                   {modalVisible && (
                     <div
-                      class="modal fade"
+                      className="modal fade"
                       id="exampleModal"
-                      tabindex="-1"
+                      tabIndex="-1"
                       role="dialog"
                       aria-labelledby="exampleModalLabel"
                       aria-hidden="true"
                     >
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">
+                      <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                          <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">
                               resultado de la venta
                             </h5>
                             <button
                               type="button"
-                              class="close"
+                              className="close"
                               data-dismiss="modal"
                               aria-label="Close"
                               onClick={() => setModalVisible(false)}
@@ -306,11 +419,11 @@ export const ArticuloPresupuesto = () => {
                               <span aria-hidden="true">&times;</span>
                             </button>
                           </div>
-                          <div class="modal-body">{mensajeVenta}</div>
-                          <div class="modal-footer">
+                          <div className="modal-body">{mensajeVenta}</div>
+                          <div className="modal-footer">
                             <button
                               type="button"
-                              class="btn btn-secondary"
+                              className="btn btn-secondary"
                               data-dismiss="modal"
                               onClick={() => setModalVisible(false)}
                             >
