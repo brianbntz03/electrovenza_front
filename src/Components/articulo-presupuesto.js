@@ -11,6 +11,10 @@ export const ArticuloPresupuesto = () => {
   const [cuotasFiltrados, setCuotasFiltrados] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [idCliente, setIdCliente] = useState("");
+  const [idVendedor, setIdVendedor] = useState("");
+  const [idCuota, setIdCuota] = useState("");
+
 
   useEffect(() => {
     cargarVendedores();
@@ -26,14 +30,13 @@ export const ArticuloPresupuesto = () => {
     setAccionActual("registrar Ventas");
     try {
       const ventaData = {
+        nro_cuotas_id: idCuota,
+        cliente_id: idCliente,
+        vendedor_id: idVendedor,
         articulos: presupuesto.map((item) => ({
           id: item.id,
           cantidad: item.cantidad,
-          precio: item.precio,
-          descripcion: item.descripcion,
-          categoria: item.categoria?.nombre,
         })),
-        total: calcularTotal(),
       };
 
       const response = await fetch(`${apiRest}/ventas`, {
@@ -125,7 +128,6 @@ export const ArticuloPresupuesto = () => {
   }
 
   function FormVendedor() {
-    const [idVendedor, setIdVendedor] = useState("");
 
     return (
       <div style={{ marginBottom: "10px" }}>
@@ -133,6 +135,7 @@ export const ArticuloPresupuesto = () => {
         <select
           className="form-control"
           value={idVendedor}
+          name="idVendedor"
           onChange={(e) => setIdVendedor(e.target.value)}
           style={{ width: "300px", display: "inline-block" }}
         >
@@ -148,15 +151,15 @@ export const ArticuloPresupuesto = () => {
   }
 
   function FormCliente() {
-    const [cliente, setCliente] = useState("");
 
     return (
       <div style={{ marginBottom: "10px" }}>
         <label style={{ marginRight: "5px" }}>Buscar Cliente:</label>
         <select
           className="form-control"
-          value={cliente}
-          onChange={(e) => setCliente(e.target.value)}
+          value={idCliente}
+          name="idCliente"
+          onChange={(e) => setIdCliente(e.target.value)}
           style={{ width: "300px", display: "inline-block" }}
         >
           <option value="">-- Seleccionar Cliente --</option> 
@@ -171,15 +174,15 @@ export const ArticuloPresupuesto = () => {
   }
 
   function FormNumeroCuotas() {
-    const [cuotas, setCuotas] = useState("");
 
     return (
       <div style={{ marginBottom: "10px" }}>
         <label style={{ marginRight: "5px" }}>N° de cuotas</label>
         <select
           className="form-control"
-          value={cuotas}
-          onChange={(e) => setCuotas(e.target.value)}
+          value={idCuota}
+          name="idCuota"
+          onChange={(e) => setIdCuota(e.target.value)}
           style={{ width: "300px", display: "inline-block" }}
         >
           <option value="">-- Seleccionar numero de cuotas --</option>
@@ -396,41 +399,36 @@ export const ArticuloPresupuesto = () => {
 
                   {modalVisible && (
                     <div
-                      className="modal fade"
-                      id="exampleModal"
-                      tabIndex="-1"
-                      role="dialog"
-                      aria-labelledby="exampleModalLabel"
-                      aria-hidden="true"
+                      style={{
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        backgroundColor: "rgba(0,0,0,0.5)",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        zIndex: 1000
+                      }}
                     >
-                      <div className="modal-dialog" role="document">
-                        <div className="modal-content">
-                          <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">
-                              resultado de la venta
-                            </h5>
-                            <button
-                              type="button"
-                              className="close"
-                              data-dismiss="modal"
-                              aria-label="Close"
-                              onClick={() => setModalVisible(false)}
-                            >
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div className="modal-body">{mensajeVenta}</div>
-                          <div className="modal-footer">
-                            <button
-                              type="button"
-                              className="btn btn-secondary"
-                              data-dismiss="modal"
-                              onClick={() => setModalVisible(false)}
-                            >
-                              Close
-                            </button>
-                          </div>
-                        </div>
+                      <div
+                        style={{
+                          backgroundColor: "white",
+                          padding: "20px",
+                          borderRadius: "5px",
+                          maxWidth: "500px",
+                          width: "90%"
+                        }}
+                      >
+                        <h5>Resultado de la venta</h5>
+                        <p>Se registró la venta: {mensajeVenta}</p>
+                        <button
+                          className="btn btn-secondary"
+                          onClick={() => setModalVisible(false)}
+                        >
+                          Cerrar
+                        </button>
                       </div>
                     </div>
                   )}
