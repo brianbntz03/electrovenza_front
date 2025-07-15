@@ -15,6 +15,7 @@ import vendedores from "../pages/vendedores";
 import Clientes from "../pages/Clientes";
 import Proveedores from "../pages/Proveedores";
 import PageListadoCuotas from "../pages/cuotasListado";
+import PageCuotasPorCobrar from "../pages/PageCuotasPorCobrar";
 
 export default function Content(){
     return(
@@ -58,6 +59,9 @@ export default function Content(){
                           <Route path="/clientes" Component={Clientes}></Route>
                           <Route path="/proveedores" Component={Proveedores}></Route>
                           <Route path="/cuotasListado" Component={PageListadoCuotas} ></Route>
+                          {/* Vendedores */}
+                          <Route path="/cuotas-por-cobrar" Component={PageCuotasPorCobrar} ></Route>
+
                         </Routes>
                     </div>
                   </div>

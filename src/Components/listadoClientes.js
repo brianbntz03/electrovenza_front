@@ -22,6 +22,7 @@ export function ListadoClientes() {
                 }
 
                 const data = await response.json();
+                console.log(data);
                 setClientes(data);
                 setLoading(false);
             } catch (error) {
