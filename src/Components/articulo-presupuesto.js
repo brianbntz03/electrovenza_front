@@ -1,5 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../service/apiRest";
+
+
 
 export const ArticuloPresupuesto = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -61,6 +64,7 @@ export const ArticuloPresupuesto = () => {
       setModalVisible(true);
     }
   };
+
 
   const agregarAlPresupuesto = (nuevoArticulo) => {
     setAccionActual("agregar");
@@ -425,7 +429,7 @@ export const ArticuloPresupuesto = () => {
                         <p>Se registró la venta: {mensajeVenta}</p>
                         <button
                           className="btn btn-secondary"
-                          onClick={() => setModalVisible(false)}
+                          onClick={() => setModalVisible(false) }
                         >
                           Cerrar
                         </button>

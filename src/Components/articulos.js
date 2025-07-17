@@ -1,7 +1,7 @@
 import { apiRest } from "../service/apiRest";
 import { useState, useEffect } from "react";
 
-export const Articuloss = () => {
+export const Articulos = () => {
 
     const [articulos, setArticulos] = useState();
     const [error, setError] = useState(null);

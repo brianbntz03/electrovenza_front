@@ -1,9 +1,9 @@
 import React from "react"
-import { Articuloss } from "../Components/articuloss"
+import { Articulos } from "../Components/articulos"
 
 
-const Articulos = () => {
-  let articulos = Articuloss();
+const PageArticulos = () => {
+  let articulos = Articulos();
     return (
         <div className="card">
         <div className="card-header border-0">
@@ -26,4 +26,4 @@ const Articulos = () => {
 }
 
 
-export default Articulos
+export default PageArticulos

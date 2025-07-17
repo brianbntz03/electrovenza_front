@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { apiRest } from '../service/apiRest';
+import CuotaVencida from './CuotaVencida';
 
 export function CuotasVencidas() {
 
   const [cuotas, setCuotas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [contador, setContador] = useState(0)
+
+  const incrementarContador = () => {
+    setContador(contador+1);
+  }
 
   const fetchCuotas = async () => {
       try {
@@ -33,7 +39,7 @@ export function CuotasVencidas() {
     useEffect(() => {   
         fetchCuotas();
     }
-    , []);
+    , [contador]);
     // Función para reintentar la conexión
     const handleRetry = () => {
         setLoading(true);
@@ -80,22 +86,7 @@ export function CuotasVencidas() {
                 <div class="row">
                   
                   {ListadoDeCuotas.map(cuota => (
-                    <div class="col-md-3 col-sm-6 col-12">
-                        <div className='info-box bg-warning'>
-                            <span class="info-box-icon"><i class="far fa-calendar-alt"></i></span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">{cuota.fecha}</span>
-                                <span class="progress-description">{cuota.articulo}</span>
-                                <span class="info-box-number">${cuota.valor}</span>
-                                <span class="progress-description">{cuota.vendedor}</span>
-                                <a href="javascript:void(0)" className="btn btn-sm btn-primary">Pagar</a>
-                            </div>
-
-                            
-                        </div>
-                    </div>
-                    
+                    <CuotaVencida id={cuota.id} fecha={cuota.fecha} articulo={cuota.articulo} valor={cuota.valor} vendedor={cuota.vendedor} incrementarContador={incrementarContador} />
                     ))}
                 </div>
 
