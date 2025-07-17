@@ -10,12 +10,15 @@ import Articulos from "../pages/Articulos";
 import Presupuestossss from "../Presupuestos/presupuestossss";
 import PageListadoVentas from "../pages/PageListadoVentas";
 import Dashboard from "../pages/Index";
-import { CrearPrducto } from "./CrearProducto";
+import { CrearPrducto } from "./Crear/CrearProducto";
 import vendedores from "../pages/vendedores";
 import Clientes from "../pages/Clientes";
 import Proveedores from "../pages/Proveedores";
 import PageListadoCuotas from "../pages/cuotasListado";
 import PageCuotasPorCobrar from "../pages/PageCuotasPorCobrar";
+import { CrearVendedor } from "./Crear/CrearVendedor";
+import { CrearCliente } from "./Crear/CrearClientes";
+
 
 export default function Content(){
     return(
@@ -59,6 +62,8 @@ export default function Content(){
                           <Route path="/clientes" Component={Clientes}></Route>
                           <Route path="/proveedores" Component={Proveedores}></Route>
                           <Route path="/cuotasListado" Component={PageListadoCuotas} ></Route>
+                          <Route path="/crearvendedores" Component={CrearVendedor}></Route>
+                          <Route path="/crearcliente" Component={CrearCliente}></Route>
                           {/* Vendedores */}
                           <Route path="/cuotas-por-cobrar" Component={PageCuotasPorCobrar} ></Route>
 

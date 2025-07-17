@@ -33,13 +33,17 @@ export const ArticuloPresupuesto = () => {
     setAccionActual("registrar Ventas");
     try {
       const ventaData = {
-        nro_cuotas_id: idCuota,
-        cliente_id: idCliente,
-        vendedor_id: idVendedor,
+        nro_cuotas_id: parseInt(idCuota) || 1,
+        cliente_id: parseInt(idCliente) || 1,
+        vendedor_id: parseInt(idVendedor) || 1,
         articulos: presupuesto.map((item) => ({
           id: item.id,
           cantidad: item.cantidad,
+          precio: item.precio,
+          descripcion: item.descripcion,
+          categoria: item.categoria?.nombre,
         })),
+        total: calcularTotal(),
       };
 
       const response = await fetch(`${apiRest}/ventas`, {
@@ -131,8 +135,7 @@ export const ArticuloPresupuesto = () => {
     );
   }
 
-  function FormVendedor() {
-
+  const FormVendedor = () => {
     return (
       <div style={{ marginBottom: "10px" }}>
         <label style={{ marginRight: "5px" }}>Buscar Vendedor:</label>
@@ -152,10 +155,9 @@ export const ArticuloPresupuesto = () => {
         </select>
       </div>
     );
-  }
+  };
 
-  function FormCliente() {
-
+  const FormCliente = () => {
     return (
       <div style={{ marginBottom: "10px" }}>
         <label style={{ marginRight: "5px" }}>Buscar Cliente:</label>
@@ -175,10 +177,9 @@ export const ArticuloPresupuesto = () => {
         </select>
       </div>
     );
-  }
+  };
 
-  function FormNumeroCuotas() {
-
+  const FormNumeroCuotas = () => {
     return (
       <div style={{ marginBottom: "10px" }}>
         <label style={{ marginRight: "5px" }}>N° de cuotas</label>
@@ -198,7 +199,7 @@ export const ArticuloPresupuesto = () => {
         </select>
       </div>
     );
-  }
+  };
   const handleSearch = async (busqueda) => {
     setAccionActual("buscar");
     try {
@@ -228,8 +229,10 @@ export const ArticuloPresupuesto = () => {
   const cargarVendedores = async () => {
     try {
       const response = await fetch(`${apiRest}/vendedor`);
+      console.log('Response vendedores:', response.status);
       if (response.ok) {
         const data = await response.json();
+        console.log('Datos vendedores:', data);
         setVendedoresFiltrados(data);
       }
     } catch (error) {

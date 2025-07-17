@@ -1,5 +1,5 @@
 import React from 'react' ;
-import {CrearCategorias} from '../Components/CrearCategorias' ;
+import {CrearCategorias} from '../Components/Crear/CrearCategorias' ;
 
 const CreacionCategorias = () => {
     let crear_Categorias = CrearCategorias() ;

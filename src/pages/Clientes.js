@@ -11,6 +11,10 @@ const Clientes = () => {
             {" "}
             Excel <i className="fas fa-download" />{" "}
           </a>
+           <a class="btn btn-sm btn-info float-right" href="/crearcliente">
+            {" "}
+            Crear Cliente
+          </a>
         </div>
       </div>
       <div className="card-body table-responsive p-0">

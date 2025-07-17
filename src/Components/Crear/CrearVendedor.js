@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { apiRest } from "../service/apiRest";
+import { apiRest } from "../../service/apiRest";
 
-export const CrearCategorias = () => {
+
+export const CrearVendedor = () => {
   const [nombre, setNombre] = useState("");
-  const [descripcion, setDescripcion] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [button, setButton] = useState(false);
+  const [direccion, setDireccion] = useState("");
+  const [telefono, setTelefono] = useState("");
 
   const handleRetry = () => {
     setLoading(false);
@@ -20,13 +22,13 @@ export const CrearCategorias = () => {
 
   const MostrarAlerta = () => {
     Swal.fire({
-      title: "Creación de Categoría",
-      text: "la categoria fue creada",
+      title: "Creación de Vendedor",
+      text: "el vendedor fue creada",
       icon: "success",
       draggable: true,
       timer: 1000,
     }).then(() => {
-      window.location.href = "/categoriasListado";
+      window.location.href = "/vendedores";
     });
   };
 
@@ -36,13 +38,13 @@ export const CrearCategorias = () => {
 
     try {
       // Corregido el endpoint - asegúrate de que esta URL sea correcta para tu API
-      const response = await fetch(`${apiRest}/categoria`, {
+      const response = await fetch(`${apiRest}/vendedor`, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ nombre, descripcion }),
+        body: JSON.stringify({ nombre, direccion, telefono }),
       });
 
       if (!response.ok) {
@@ -85,7 +87,7 @@ export const CrearCategorias = () => {
     <>
       <div class="card card-primary">
         <div class="card-header">
-          <h3 class="card-title">Crear categoria</h3>
+          <h3 class="card-title">Crear Vendedor</h3>
         </div>
         <form onSubmit={handleSubmit} style={{ marginBottom: "100px" }}>
           <div class="card-body">
@@ -104,18 +106,30 @@ export const CrearCategorias = () => {
             </div>
             <div class="form-group">
               <label for="exampleInputDescription">
-              Descripcion :
+              Direccion :
               </label>
               <input
                class="form-control"  
-                value={descripcion}
-                onChange={(e) => setDescripcion(e.target.value)}
+                value={direccion}
+                onChange={(e) => setDireccion(e.target.value)}
                 type="text"
-                name="descripcion"
+                name="direccion"
                 required
               />
             </div>
-           
+           <div class="form-group">
+              <label for="exampleInputDescription">
+              Telefono :
+              </label>
+              <input
+               class="form-control"  
+                value={telefono}
+                onChange={(e) => setTelefono(e.target.value)}
+                type="text"
+                name="telefono"
+                required
+              />
+            </div>
 
             <div class="card-footer">
             <button
@@ -123,7 +137,7 @@ export const CrearCategorias = () => {
               class="btn btn-primary"
               disabled={loading}
             >
-              {loading ? "Creando..." : "Crear categoría"}
+              {loading ? "Creando..." : "Crear Vendedor"}
             </button>  
             </div>      
           </div>
