@@ -1,4 +1,4 @@
-import { ListadoClientes } from "../Components/listadoClientes";
+import { ListadoClientes } from "../Components/tablasListado/listadoClientes";
 
 const Clientes = () => {
   let listadoclientes = ListadoClientes();
@@ -10,6 +10,10 @@ const Clientes = () => {
           <a class="btn btn-sm btn-success float-right">
             {" "}
             Excel <i className="fas fa-download" />{" "}
+          </a>
+           <a class="btn btn-sm btn-info float-right" href="/crearcliente">
+            {" "}
+            Crear Cliente
           </a>
         </div>
       </div>

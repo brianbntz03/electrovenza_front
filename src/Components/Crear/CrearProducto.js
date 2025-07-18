@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { apiRest } from "../service/apiRest";
+import { apiRest } from "../../service/apiRest";
 
 export const CrearPrducto = () => {
   const [nombre, setNombre] = useState("");

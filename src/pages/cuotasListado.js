@@ -1,4 +1,4 @@
-import { ListadoSettingCuotas } from "../Components/listadoSettingCuotas";
+import { ListadoSettingCuotas } from "../Components/tablasListado/listadoSettingCuotas";
 
 const PageListadoCuotas = () => {
   let settingCuotas =  ListadoSettingCuotas();

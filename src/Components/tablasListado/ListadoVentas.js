@@ -3,6 +3,7 @@ import { apiRest } from "../service/apiRest";
 import { convertIsoToDMY } from "../miscellaneus/aux";
 import { BotonImprimirCuotas } from "./tiny/BotonImprimirCuotas"
 
+
 export function ComponentListadoVentas() {
   const [ventas, setVentas] = useState([]);
   const [loading, setLoading] = useState(true);

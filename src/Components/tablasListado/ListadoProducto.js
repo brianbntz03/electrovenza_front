@@ -1,34 +1,32 @@
-import React from 'react';
 import { useEffect, useState } from 'react';
-import '../Components/categorias.css';
-import { apiRest } from '../service/apiRest';
+import { apiRest } from '../../service/apiRest';
 
-export function ListadoCategoria() {
-    const [categorias, setCategorias] = useState([]);
+export function ListadoProducto() {
+    const [productos, setProductos] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
     const handleEliminar = async (id) => {
-        
     try {
         
-         await fetch(`${apiRest}/categoria/${id}`, {
+         await fetch(`${apiRest}/articulos/${id}`, {
              method: 'DELETE',
          });
+         console.log(`Producto con id ${id} eliminado. `);
 
         // Elimina del estado
-        const nuevasCategorias = categorias.filter(producto => producto.id !== id);
-        setCategorias(nuevasCategorias);
+        const nuevosProductos = productos.filter(producto => producto.id !== id);
+        setProductos(nuevosProductos);
     } catch (error) {
-        console.error("Error al eliminar la categoria:", error);
+        console.error("Error al eliminar el producto:", error);
     }
 };
 
 
 
-    const fetchCategorias = async () => {
+    const fetchProductos = async () => {
         try {
-            const response = await fetch(`${apiRest}/categoria`, {
+            const response = await fetch(`${apiRest}/articulos`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -41,7 +39,8 @@ export function ListadoCategoria() {
             }
 
             const data = await response.json();
-            setCategorias(data);
+            console.log(data)
+            setProductos(data);
             setLoading(false);
         } catch (error) {
             console.error("Error detallado:", error);
@@ -50,19 +49,19 @@ export function ListadoCategoria() {
         }
     }
     useEffect(() => {
-        fetchCategorias();
+        fetchProductos();
     }
     , []);
     // Función para reintentar la conexión
     const handleRetry = () => {
         setLoading(true);
         setError(null);
-        fetchCategorias();
+        fetchProductos();
     }
     if (loading) {
         return (
             <div className="loading-container">
-                <p>Cargando categorias...</p>
+                <p>Cargando productos...</p>
             </div>
         );
     }
@@ -75,33 +74,32 @@ export function ListadoCategoria() {
             </div>
         );
     }
-  if (!categorias || categorias.length === 0) {
+  if (!productos || productos.length === 0) {
         return (
             <div className="error-container">
-                <h3>No hay categorias disponibles</h3>
+                <h3>No hay productos disponibles</h3>
             </div>
         );
     }   
      return (
          <div className="card">   
+             
              <div className="card-body table-responsive p-0"> 
                  <table className="table table-striped table-valign-middle table-bordered">
                      <tr>
-                         <th> id </th>
                          <th> nombre </th>
-                         <th> descripcion </th>
-                         <th> activo </th>
+                         <th> categoria </th>
+                         <th> precio </th>
                          <th> </th>
                      </tr>
-                     {categorias.map((categoria) => (
-                         <tr key={categoria.id}>
-                             <td> {categoria.id } </td>   
-                             <td> {categoria.nombre} </td>
-                             <td> {categoria.descripcion} </td>
-                             <td> {categoria.activo} </td>
+                     {productos.map((producto) => (
+                         <tr key={producto.id}>
+                             <td> {producto.nombre} </td>
+                             <td> {producto.categoria.nombre} </td>
+                             <td> {producto.precio} </td>
                              <td> 
                                  <button className="link-button" onClick={() => console.log('Editar clicked')}>editar</button> 
-                                 <button className="link-button" onClick={() => handleEliminar(categoria.id)}>eliminar</button>
+                                 <button className="link-button" onClick={() => handleEliminar(producto.id)}>eliminar</button>
                              </td>
                          </tr>
                      ))}

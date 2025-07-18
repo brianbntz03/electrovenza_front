@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { CUOTA_TYPE_NAMES } from '../constants/cuotaTypes';
-import { apiRest } from '../service/apiRest';
+import { CUOTA_TYPE_NAMES } from '../../constants/cuotaTypes';
+import { apiRest } from '../../service/apiRest';
 
 
 export function ListadoSettingCuotas() {
