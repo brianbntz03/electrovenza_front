@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { apiRest } from "../service/apiRest";
-import { convertIsoToDMY } from "../miscellaneus/aux";
-import { BotonImprimirCuotas } from "./tiny/BotonImprimirCuotas"
+import { apiRest } from "../../service/apiRest";
+import { convertIsoToDMY } from "../../miscellaneus/aux";
+import { BotonImprimirCuotas } from "../tiny/BotonImprimirCuotas"
 
 
 export function ComponentListadoVentas() {
