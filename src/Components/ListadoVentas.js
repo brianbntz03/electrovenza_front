@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { apiRest } from "../service/apiRest";
 import { convertIsoToDMY } from "../miscellaneus/aux";
+import { BotonImprimirCuotas } from "./tiny/BotonImprimirCuotas"
 
 export function ComponentListadoVentas() {
   const [ventas, setVentas] = useState([]);
@@ -78,6 +79,7 @@ export function ComponentListadoVentas() {
               <th>Total</th>
               <th>Clientes</th>
               <th>Vendedor</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -88,6 +90,7 @@ export function ComponentListadoVentas() {
                 <td>{venta.precio}</td>
                 <td>{venta.cliente.nombre}</td>
                 <td>{venta.vendedor.nombre}</td>
+                <td><BotonImprimirCuotas id={venta.id} /></td>
               </tr>
             ))}
           </tbody>

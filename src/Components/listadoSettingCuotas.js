@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import '../Components/categorias.css';
 import { CUOTA_TYPE_NAMES } from '../constants/cuotaTypes';
 import { apiRest } from '../service/apiRest';
 

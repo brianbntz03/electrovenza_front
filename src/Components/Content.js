@@ -16,6 +16,7 @@ import Clientes from "../pages/Clientes";
 import Proveedores from "../pages/Proveedores";
 import PageListadoCuotas from "../pages/cuotasListado";
 import PageCuotasPorCobrar from "../pages/PageCuotasPorCobrar";
+import PrintCuotas from "../pages/print/PageCuotasImprimir";
 
 export default function Content(){
     return(
@@ -54,6 +55,7 @@ export default function Content(){
                           <Route path="/articulos" Component={Articulos}></Route>
                           <Route path="/buscar-articulos-presupuesto" Component={Presupuestossss}></Route>
                           <Route path="/ventas-listado" Component={PageListadoVentas}></Route>
+                          <Route path="/print/cuotas/:id" element={<PrintCuotas />} />
                           <Route path="/crearPrducto" Component={CrearPrducto}></Route>
                           <Route path="/vendedores" Component={vendedores}></Route>
                           <Route path="/clientes" Component={Clientes}></Route>
