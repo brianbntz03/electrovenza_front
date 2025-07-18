@@ -1,4 +1,4 @@
-import { ListadoProducto } from "../Components/ListadoProducto";
+import { ListadoProducto } from "../Components/tablasListado/ListadoProducto";
 
 const Productos = () => {
   const producto = ListadoProducto();

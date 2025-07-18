@@ -1,4 +1,4 @@
-import { ListadoVendedores } from "../Components/listadoVendedores";
+import { ListadoVendedores } from "../Components/tablasListado/listadoVendedores";
 
 const vendedores = () => {
   let Listado_Vendedores = ListadoVendedores();

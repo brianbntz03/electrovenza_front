@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentListadoVentas } from "../Components/ListadoVentas";
+import { ComponentListadoVentas } from "../Components/tablasListado/ListadoVentas";
 
 const PageListadoVentas = () => {
   let listado_ventas = ComponentListadoVentas();

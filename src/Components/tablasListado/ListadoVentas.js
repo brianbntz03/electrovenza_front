@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { apiRest } from "../service/apiRest";
-import { convertIsoToDMY } from "../miscellaneus/aux";
+import { apiRest } from "../../service/apiRest";
+import { convertIsoToDMY } from "../../miscellaneus/aux";
 
 export function ComponentListadoVentas() {
   const [ventas, setVentas] = useState([]);

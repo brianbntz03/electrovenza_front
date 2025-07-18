@@ -1,4 +1,4 @@
-import { ListadoCategoria } from "../Components/listado_categoria"
+import { ListadoCategoria } from "../Components/tablasListado/listado_categoria"
 
 const Categorias = () => {
   let categoriasListado =  ListadoCategoria();

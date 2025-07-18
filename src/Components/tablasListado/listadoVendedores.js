@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { apiRest } from '../service/apiRest';
+import { apiRest } from '../../service/apiRest';
 
 export function ListadoVendedores() {
 

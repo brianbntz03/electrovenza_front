@@ -1,7 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import '../Components/categorias.css';
-import { apiRest } from '../service/apiRest';
+import { apiRest } from '../../service/apiRest';
 
 export function ListadoCategoria() {
     const [categorias, setCategorias] = useState([]);
