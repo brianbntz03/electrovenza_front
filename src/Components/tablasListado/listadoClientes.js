@@ -7,6 +7,22 @@ export function ListadoClientes() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+   const handleEliminar = async (id) => {
+    try {
+        
+         await fetch(`${apiRest}/cliente/${id}`, {
+             method: 'DELETE',
+         });
+         console.log(`Producto con id ${id} eliminado. `);
+
+        // Elimina del estado
+        const nuevosClientes = clientes.filter(cliente => cliente.id !== id);
+        setClientes(nuevosClientes);
+    } catch (error) {
+        console.error("Error al eliminar el producto:", error);
+    }
+};
+
   const fetchClientes = async () => {
       try {
                 const response = await fetch(`${apiRest}/cliente`, {
@@ -78,6 +94,7 @@ export function ListadoClientes() {
             <th>Teléfono 1</th>
             <th>Teléfono 2</th>
             <th>Vendedor</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -90,6 +107,10 @@ export function ListadoClientes() {
               <td>{cliente.telefono1}</td>
               <td>{cliente.telefono2}</td>
               <td>{cliente.vendedor.nombre}</td>
+              <td>
+                <button className="link-button" onClick={() => console.log('Editar clicked')}>editar</button>
+                <button className="link-button" onClick={() => handleEliminar(cliente.id)}>eliminar</button>
+              </td>
             </tr>
           ))}
         </tbody>
