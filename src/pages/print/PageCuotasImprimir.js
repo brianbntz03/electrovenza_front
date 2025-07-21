@@ -6,11 +6,11 @@ import './cuotas_imprimir.css';
 
 
 export default function PrintCuotas() {
-  const { id } = useParams();
+  const { venta_id } = useParams();
   const [cuotas, setCuotas] = useState([]);
 
   const fetchCuotas = async () =>{
-    const response = await fetch(`${apiRest}/ventas/cuotas/${id}`, {
+    const response = await fetch(`${apiRest}/ventas/cuotas/${venta_id}`, {
       method: 'GET',
       headers: {
           'Accept': 'application/json',
@@ -29,17 +29,17 @@ export default function PrintCuotas() {
   return (
     <div className="print-container">
     <h1>Electronvenza</h1>
-    <h2>Te: 11.6398.5857</h2>
-    <h2>@electrovenza</h2>
-    
+    <h2>Te: 11.6398.5857 - @electrovenza</h2>
+    <p>Cliente: </p>
+    <p>Articulo: </p>
     <div className="row">
       {cuotas.map((cuota) => (
         <div className="col-md-3">
-          <p><strong>Cuota id #{cuota.id}</strong></p>
-          <p>Fecha: {convertIsoToDMY(cuota.fecha)}</p>
-          <p>Estado: {cuota.estado}</p>
-          <p>monto: .............</p>
-          <p>firma: .............</p>
+          <p>
+            ({cuota.numero.toString().padStart(2, '0')}) 
+            {convertIsoToDMY(cuota.fecha)} &nbsp;
+            ...............................
+          </p>
         </div>
       ))}
     </div>

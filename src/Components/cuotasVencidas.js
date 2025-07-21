@@ -76,8 +76,8 @@ export function CuotasVencidas() {
             <div className='card card-widget'>
                 <div className='card-header'>
                 <div className="user-block">
-                  <img className="img-circle" src="../dist/img/user1-128x128.jpg" alt="User Image" />
-                  <span className="username"><a href="#">Cliente: {cliente}</a></span>
+                  <img className="img-circle" src="../dist/img/user1-128x128.jpg" alt="face"/>
+                  <span className="username">Cliente: {cliente}</span>
 
                 </div>
                 </div>
@@ -86,7 +86,7 @@ export function CuotasVencidas() {
                 <div class="row">
                   
                   {ListadoDeCuotas.map(cuota => (
-                    <CuotaVencida id={cuota.id} fecha={cuota.fecha} articulo={cuota.articulo} valor={cuota.valor} vendedor={cuota.vendedor} incrementarContador={incrementarContador} />
+                    <CuotaVencida id={cuota.id} fecha={cuota.fecha} articulo={cuota.articulo} valor={cuota.valor} montoCobrado={cuota.monto_cobrado} vendedor={cuota.vendedor} incrementarContador={incrementarContador} />
                     ))}
                 </div>
 

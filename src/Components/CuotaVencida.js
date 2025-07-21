@@ -38,7 +38,7 @@ export default function CuotaVencida(cuota){
             <div class="info-box-content">
                 <span class="info-box-text">{cuota.fecha} ({cuota.id})</span>
                 <span class="progress-description">{cuota.articulo}</span>
-                <span class="info-box-number">${cuota.valor}</span>
+                <span class="info-box-number">${cuota.montoCobrado} de {cuota.valor}</span>
                 <span class="progress-description">{cuota.vendedor}</span>
                 <div className='row'>
                     <div className='col-6'>
