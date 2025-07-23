@@ -1,8 +1,6 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../service/apiRest";
-
-
 
 export const ArticuloPresupuesto = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -16,13 +14,13 @@ export const ArticuloPresupuesto = () => {
   const [loading, setLoading] = useState(false);
   const [idCliente, setIdCliente] = useState("");
   const [idVendedor, setIdVendedor] = useState("");
-  const [idCuota, setIdCuota] = useState("");
-
+  const [idinteres, setIdInteres] = useState("");
 
   useEffect(() => {
     cargarVendedores();
     cargarClientes();
     cargarCuotas();
+    handleSearch(""); // Cargar todos los artículos al iniciar
   }, []);
   const [presupuesto, setPresupuesto] = useState(() => {
     const stored = localStorage.getItem("presupuesto");
@@ -33,7 +31,7 @@ export const ArticuloPresupuesto = () => {
     setAccionActual("registrar Ventas");
     try {
       const ventaData = {
-        nro_cuotas_id: parseInt(idCuota) || 1,
+        nro_cuotas_id: parseInt(idinteres) || 1,
         cliente_id: parseInt(idCliente) || 1,
         vendedor_id: parseInt(idVendedor) || 1,
         articulos: presupuesto.map((item) => ({
@@ -69,7 +67,6 @@ export const ArticuloPresupuesto = () => {
     }
   };
 
-
   const agregarAlPresupuesto = (nuevoArticulo) => {
     setAccionActual("agregar");
     const yaAgregado = presupuesto.find((item) => item.id === nuevoArticulo.id);
@@ -97,8 +94,28 @@ export const ArticuloPresupuesto = () => {
 
   const calcularTotal = () => {
     return presupuesto
-      .reduce((acc, item) => acc + item.precio * item.cantidad, 0)
+      .reduce((acc, item) => acc + parseFloat(item.precio) * item.cantidad, 0)
       .toFixed(2);
+  };
+
+  const calcularTotalConInteres = () => {
+    if (!idinteres) return calcularTotal();
+    const subtotal = presupuesto
+      .reduce((acc, item) => acc + calcularPrecioConInteres(parseFloat(item.precio) * item.cantidad, idinteres), 0);
+    
+    // Ajustar el total para que el valor por cuota sea múltiplo de 100
+    const numeroCuotas = cuotasFiltrados.find(c => c.id == idinteres)?.numero || 1;
+    const valorPorCuotaRedondeado = Math.floor((subtotal / numeroCuotas) / 100) * 100;
+    const totalAjustado = valorPorCuotaRedondeado * numeroCuotas;
+    
+    return totalAjustado.toFixed(2);
+  };
+
+  const calcularPrecioConInteres = (precio, idCuotaSeleccionada) => {
+    const cuotaSeleccionada = cuotasFiltrados.find(c => c.id == idCuotaSeleccionada);
+    if (!cuotaSeleccionada) return precio;
+    const interes = cuotaSeleccionada.interes / 100;
+    return precio * (1 + interes);
   };
 
   const handleRetry = () => {
@@ -168,7 +185,7 @@ export const ArticuloPresupuesto = () => {
           onChange={(e) => setIdCliente(e.target.value)}
           style={{ width: "300px", display: "inline-block" }}
         >
-          <option value="">-- Seleccionar Cliente --</option> 
+          <option value="">-- Seleccionar Cliente --</option>
           {clientesFiltrados.map((cliente) => (
             <option key={cliente.id} value={cliente.id}>
               {cliente.nombre}
@@ -185,37 +202,69 @@ export const ArticuloPresupuesto = () => {
         <label style={{ marginRight: "5px" }}>N° de cuotas</label>
         <select
           className="form-control"
-          value={idCuota}
-          name="idCuota"
-          onChange={(e) => setIdCuota(e.target.value)}
+          value={idinteres}
+          name="idinteres"
+          onChange={(e) => setIdInteres(e.target.value)}
           style={{ width: "300px", display: "inline-block" }}
         >
           <option value="">-- Seleccionar numero de cuotas --</option>
-          {cuotasFiltrados.map((cuota) => (
-            <option key={cuota.id} value={cuota.id}>
-              {cuota.descripcion}
+          {cuotasFiltrados.map((interes) => (
+            <option key={interes.id} value={interes.id}>
+              {interes.descripcion} ({interes.interes} %)
             </option>
           ))}
         </select>
       </div>
     );
   };
+
   const handleSearch = async (busqueda) => {
     setAccionActual("buscar");
     try {
-      const response = await fetch(`${apiRest}/articulos/find`, {
-        method: "POST",
+      // Usar el endpoint directo para obtener todos los artículos o filtrar por búsqueda
+      const url = busqueda ? `${apiRest}/articulos/find` : `${apiRest}/articulos`;
+      const method = busqueda ? "POST" : "GET";
+      const options = {
+        method: method,
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ patron: busqueda }),
-      });
+        }
+      };
+      
+      if (busqueda) {
+        options.body = JSON.stringify({ patron: busqueda });
+      }
+      
+      const response = await fetch(url, options);
 
       if (!response.ok)
         throw new Error(`Error en la solicitud: ${response.status}`);
       const data = await response.json();
-      setArticulosFiltrados(data);
+      console.log("Datos de artículos:", data);
+      console.log("Estructura del primer artículo:", data[0]);
+      
+      // Asegurarse de que cada artículo tenga una categoría válida
+      const articulosConCategoria = data.map((articulo) => {
+        // Verificar la estructura exacta de la categoría
+        console.log(`Artículo ${articulo.id} - Categoría:`, articulo.categoria);
+        
+        if (!articulo.categoria) {
+          return { ...articulo, categoria: { nombre: "Sin categoría" } };
+        } else if (typeof articulo.categoria === "string") {
+          return { ...articulo, categoria: { nombre: articulo.categoria } };
+        } else if (articulo.categoria && articulo.categoria.descripcion) {
+          return { ...articulo, categoria: { nombre: articulo.categoria.descripcion } };
+        } else if (articulo.categoria && articulo.categoria.nombre) {
+          return articulo;
+        } else if (articulo.categoria && articulo.categoria.id) {
+          // Si solo tiene ID pero no nombre, intentar usar el ID como nombre
+          return { ...articulo, categoria: { ...articulo.categoria, nombre: `Categoría ${articulo.categoria.id}` } };
+        }
+        return articulo;
+      });
+      
+      setArticulosFiltrados(articulosConCategoria);
       setLoading(false);
     } catch (error) {
       console.error("Error detallado:", error);
@@ -229,10 +278,10 @@ export const ArticuloPresupuesto = () => {
   const cargarVendedores = async () => {
     try {
       const response = await fetch(`${apiRest}/vendedor`);
-      console.log('Response vendedores:', response.status);
+      console.log("Response vendedores:", response.status);
       if (response.ok) {
         const data = await response.json();
-        console.log('Datos vendedores:', data);
+        console.log("Datos vendedores:", data);
         setVendedoresFiltrados(data);
       }
     } catch (error) {
@@ -290,7 +339,7 @@ export const ArticuloPresupuesto = () => {
         <thead>
           <tr>
             <th>Código</th>
-            <th>Descripción</th>
+            <th>Nombre</th>
             <th>Categoría</th>
             <th>Precio</th>
             <th></th>
@@ -300,8 +349,8 @@ export const ArticuloPresupuesto = () => {
           {articulosFiltrados.map((articulo) => (
             <tr key={articulo.id}>
               <td>{articulo.id}</td>
-              <td>{articulo.descripcion}</td>
-              <td>{articulo.categoria?.nombre}</td>
+              <td>{articulo.nombre}</td>
+              <td>{articulo.categoria?.nombre?.trim() || "Sin categoría"}</td>
               <td>{articulo.precio ? `$${articulo.precio}` : "No definido"}</td>
               <td>
                 <button
@@ -368,9 +417,7 @@ export const ArticuloPresupuesto = () => {
                     />
                   </td>
                   <td>
-                    {typeof item.precio === "number"
-                      ? `$${(item.precio * item.cantidad).toFixed(2)}`
-                      : "Precio inválido"}
+                    {`$${(parseFloat(item.precio) * item.cantidad).toFixed(2)}`}
                   </td>
                   <td>
                     <button
@@ -386,12 +433,25 @@ export const ArticuloPresupuesto = () => {
             <tfoot>
               <tr>
                 <td colSpan="5" style={{ textAlign: "right" }}>
+                  <strong>Interés:</strong>
+                </td>
+                <td colSpan="2">
+                  <strong>
+                    {idinteres ? 
+                      `${cuotasFiltrados.find(c => c.id == idinteres)?.interes || 0}% (${cuotasFiltrados.find(c => c.id == idinteres)?.numero || 0} cuotas)` : 
+                      "No seleccionado"}
+                  </strong>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="5" style={{ textAlign: "right" }}>
                   <strong>Total:</strong>
                 </td>
                 <td colSpan="2">
-                  <strong>${calcularTotal()}</strong>
+                  <strong>${idinteres ? calcularTotalConInteres() : calcularTotal()}</strong>
                 </td>
               </tr>
+
               <tr>
                 <td colSpan="7" style={{ textAlign: "right" }}>
                   <button
@@ -416,7 +476,7 @@ export const ArticuloPresupuesto = () => {
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        zIndex: 1000
+                        zIndex: 1000,
                       }}
                     >
                       <div
@@ -425,14 +485,14 @@ export const ArticuloPresupuesto = () => {
                           padding: "20px",
                           borderRadius: "5px",
                           maxWidth: "500px",
-                          width: "90%"
+                          width: "90%",
                         }}
                       >
                         <h5>Resultado de la venta</h5>
                         <p>Se registró la venta: {mensajeVenta}</p>
                         <button
                           className="btn btn-secondary"
-                          onClick={() => setModalVisible(false) }
+                          onClick={() => setModalVisible(false)}
                         >
                           Cerrar
                         </button>
@@ -443,6 +503,32 @@ export const ArticuloPresupuesto = () => {
               </tr>
             </tfoot>
           </table>
+
+          {idinteres && (
+            <>
+              <h4 style={{ marginTop: "20px" }}>Detalle de financiación</h4>
+              <table className="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Cuotas</th>
+                    <th>Interés</th>
+                    <th>Subtotal</th>
+                    <th>Total con interés</th>
+                    <th>Valor por cuota</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{cuotasFiltrados.find(c => c.id == idinteres)?.numero || 1}</td>
+                    <td>{cuotasFiltrados.find(c => c.id == idinteres)?.interes || 0}%</td>
+                    <td>${calcularTotal()}</td>
+                    <td>${calcularTotalConInteres()}</td>
+                    <td>${Math.floor((parseFloat(calcularTotalConInteres()) / (cuotasFiltrados.find(c => c.id == idinteres)?.numero || 1)))}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </>
+          )}
         </>
       )}
     </div>

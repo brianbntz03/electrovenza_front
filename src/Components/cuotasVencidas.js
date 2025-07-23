@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { apiRest } from '../service/apiRest';
+
 import CuotaVencida from './CuotaVencida';
+import { apiRest } from '../service/apiRest';
 
 export function CuotasVencidas() {
 
