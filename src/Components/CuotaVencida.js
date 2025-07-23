@@ -82,6 +82,9 @@ export default function CuotaVencida(cuota) {
           </div>
         </div>
       </div>
+      </div>
+      </div>
+      </div>
     </>
   );
 }
