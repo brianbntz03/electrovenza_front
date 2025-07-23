@@ -57,6 +57,88 @@ export default function CuotaVencida(cuota) {
   };
 
   return (
+    <>
+      <div className="col-md-3 col-sm-6 col-12">
+        <div className="info-box bg-warning">
+          <span className="info-box-icon"><i className="far fa-calendar-alt"></i></span>
+          <div className="info-box-content">
+            <span className="info-box-text">{cuota.fecha} ({cuota.id})</span>
+            <span className="progress-description">{cuota.articulo}</span>
+            <span className="info-box-number">${cuota.valor}</span>
+            <span className="progress-description">{cuota.vendedor}</span>
+            <div className="row">
+              <div className="col-6">
+                <button
+                  type="button"
+                  className="btn btn-warning btn-sm"
+                  data-toggle="modal"
+                  data-target={`#modal-warning-${cuota.id}`}
+                >
+                  pago parcial
+                </button>
+              </div>
+              <div className="col-6">
+                <button
+                  onClick={registrarPago}
+                  className="btn btn-sm btn-primary"
+                >
+                  Pagar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Modal pago parcial */}
+      <div
+        className="modal fade"
+        id={`modal-warning-${cuota.id}`}
+        tabIndex="-1"
+        role="dialog"
+        aria-labelledby={`modalLabel-${cuota.id}`}
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-md" role="document">
+          <div className="modal-content bg-warning">
+            <div className="modal-header">
+              <h5 className="modal-title" id={`modalLabel-${cuota.id}`}>Registrar Pago parcial</h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+                id={`cerrar-modal-${cuota.id}`}
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <label>Monto a pagar:</label>
+              <input
+                type="number"
+                className="form-control"
+                value={montoParcial}
+                onChange={(e) => setMontoParcial(e.target.value)}
+                placeholder="Ej: 1200"
+              />
+            </div>
+            <div className="modal-footer justify-content-between">
+              <button
+                type="button"
+                className="btn btn-default"
+                data-dismiss="modal"
+                id={`cerrar-modal-${cuota.id}`}
+              >
+                Cerrar
+              </button>
+              <button
+                type="button"
+                className="btn btn-outline-dark"
+                onClick={registrarPagoParcial}
+              >
+                registrar
+              </button>
     <div class="col-md-3 col-sm-6 col-12">
         <div className='info-box bg-warning'>
             <span class="info-box-icon"><i class="far fa-calendar-alt"></i></span>
