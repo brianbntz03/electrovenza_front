@@ -1,49 +1,51 @@
-import { useState } from 'react'
-import { apiRest } from '../service/apiRest'
+import { useState } from "react";
+import { apiRest } from "../service/apiRest";
 
 export default function ButtonSearch() {
-  const [search, setSearch] = useState('')
-  const [error, setError] = useState(null)
-  const [data, setData] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [busqueda, setBusqueda] = useState("")
+  const [search, setSearch] = useState("");
+  const [error, setError] = useState(null);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [busqueda, setBusqueda] = useState("");
 
   const handleSearch = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const response = await fetch(`${apiRest}/articulos/find`)
+      const response = await fetch(`${apiRest}/articulos/find`);
       if (!response.ok) {
-        throw new Error(`Error en la solicitud: ${response.status}`)
+        throw new Error(`Error en la solicitud: ${response.status}`);
       }
-      const data = await response.json()
-      setData(data)
+      const data = await response.json();
+      setData(data);
     } catch (error) {
-      console.error("Error detallado:", error)
-      setError(`No se pudo conectar con el servidor. Verifica que el servidor esté corriendo en el puerto 3001: ${error.message}`)
+      console.error("Error detallado:", error);
+      setError(
+        `No se pudo conectar con el servidor. Verifica que el servidor esté corriendo en el puerto 3001: ${error.message}`
+      );
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleRetry = () => {
-    setError(null)
-    handleSearch()
-  }
+    setError(null);
+    handleSearch();
+  };
 
   const handleSearchChange = (e) => {
-    setBusqueda(e.target.value)
-  }
+    setBusqueda(e.target.value);
+  };
 
   const handleSearchClick = () => {
-    handleSearch(busqueda)
-  }
+    handleSearch(busqueda);
+  };
 
   if (loading) {
     return (
       <div className="loading-container">
         <p>Cargando artículos...</p>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -53,7 +55,7 @@ export default function ButtonSearch() {
         <p>{error}</p>
         <button onClick={handleRetry}>Reintentar</button>
       </div>
-    )
+    );
   }
   if (data) {
     return (
@@ -61,7 +63,7 @@ export default function ButtonSearch() {
         <h3>Datos obtenidos:</h3>
         <pre>{JSON.stringify(data, null, 2)}</pre>
       </div>
-    )
+    );
   }
   if (busqueda) {
     return (
@@ -69,11 +71,8 @@ export default function ButtonSearch() {
         <input type="text" value={busqueda} onChange={handleSearchChange} />
         <button onClick={handleSearchClick}>Buscar</button>
       </div>
-    )
+    );
   }
-  
 
-  return (
-    <button onClick={handleSearch}>buscar</button>
-  )
+  return <button onClick={handleSearch}>buscar</button>;
 }

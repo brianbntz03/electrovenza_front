@@ -100,19 +100,30 @@ export const ArticuloPresupuesto = () => {
 
   const calcularTotalConInteres = () => {
     if (!idinteres) return calcularTotal();
-    const subtotal = presupuesto
-      .reduce((acc, item) => acc + calcularPrecioConInteres(parseFloat(item.precio) * item.cantidad, idinteres), 0);
-    
+    const subtotal = presupuesto.reduce(
+      (acc, item) =>
+        acc +
+        calcularPrecioConInteres(
+          parseFloat(item.precio) * item.cantidad,
+          idinteres
+        ),
+      0
+    );
+
     // Ajustar el total para que el valor por cuota sea múltiplo de 100
-    const numeroCuotas = cuotasFiltrados.find(c => c.id == idinteres)?.numero || 1;
-    const valorPorCuotaRedondeado = Math.floor((subtotal / numeroCuotas) / 100) * 100;
-    const totalAjustado = valorPorCuotaRedondeado * numeroCuotas;
-    
+    const numeroCuotas =
+      cuotasFiltrados.find((c) => c.id == idinteres)?.numero || 1;
+    const valorPorCuotaRedondeado =
+      Math.ceil(subtotal / idinteres / 100) * 100;
+    const totalAjustado = valorPorCuotaRedondeado * idinteres;
+
     return totalAjustado.toFixed(2);
   };
 
   const calcularPrecioConInteres = (precio, idCuotaSeleccionada) => {
-    const cuotaSeleccionada = cuotasFiltrados.find(c => c.id == idCuotaSeleccionada);
+    const cuotaSeleccionada = cuotasFiltrados.find(
+      (c) => c.id == idCuotaSeleccionada
+    );
     if (!cuotaSeleccionada) return precio;
     const interes = cuotaSeleccionada.interes / 100;
     return precio * (1 + interes);
@@ -222,20 +233,22 @@ export const ArticuloPresupuesto = () => {
     setAccionActual("buscar");
     try {
       // Usar el endpoint directo para obtener todos los artículos o filtrar por búsqueda
-      const url = busqueda ? `${apiRest}/articulos/find` : `${apiRest}/articulos`;
+      const url = busqueda
+        ? `${apiRest}/articulos/find`
+        : `${apiRest}/articulos`;
       const method = busqueda ? "POST" : "GET";
       const options = {
         method: method,
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-        }
+        },
       };
-      
+
       if (busqueda) {
         options.body = JSON.stringify({ patron: busqueda });
       }
-      
+
       const response = await fetch(url, options);
 
       if (!response.ok)
@@ -243,27 +256,36 @@ export const ArticuloPresupuesto = () => {
       const data = await response.json();
       console.log("Datos de artículos:", data);
       console.log("Estructura del primer artículo:", data[0]);
-      
+
       // Asegurarse de que cada artículo tenga una categoría válida
       const articulosConCategoria = data.map((articulo) => {
         // Verificar la estructura exacta de la categoría
         console.log(`Artículo ${articulo.id} - Categoría:`, articulo.categoria);
-        
+
         if (!articulo.categoria) {
           return { ...articulo, categoria: { nombre: "Sin categoría" } };
         } else if (typeof articulo.categoria === "string") {
           return { ...articulo, categoria: { nombre: articulo.categoria } };
         } else if (articulo.categoria && articulo.categoria.descripcion) {
-          return { ...articulo, categoria: { nombre: articulo.categoria.descripcion } };
+          return {
+            ...articulo,
+            categoria: { nombre: articulo.categoria.descripcion },
+          };
         } else if (articulo.categoria && articulo.categoria.nombre) {
           return articulo;
         } else if (articulo.categoria && articulo.categoria.id) {
           // Si solo tiene ID pero no nombre, intentar usar el ID como nombre
-          return { ...articulo, categoria: { ...articulo.categoria, nombre: `Categoría ${articulo.categoria.id}` } };
+          return {
+            ...articulo,
+            categoria: {
+              ...articulo.categoria,
+              nombre: `Categoría ${articulo.categoria.id}`,
+            },
+          };
         }
         return articulo;
       });
-      
+
       setArticulosFiltrados(articulosConCategoria);
       setLoading(false);
     } catch (error) {
@@ -437,9 +459,15 @@ export const ArticuloPresupuesto = () => {
                 </td>
                 <td colSpan="2">
                   <strong>
-                    {idinteres ? 
-                      `${cuotasFiltrados.find(c => c.id == idinteres)?.interes || 0}% (${cuotasFiltrados.find(c => c.id == idinteres)?.numero || 0} cuotas)` : 
-                      "No seleccionado"}
+                    {idinteres
+                      ? `${
+                          cuotasFiltrados.find((c) => c.id == idinteres)
+                            ?.interes || 0
+                        }% (${
+                          cuotasFiltrados.find((c) => c.id == idinteres)
+                            ?.numero || 0
+                        } cuotas)`
+                      : "No seleccionado"}
                   </strong>
                 </td>
               </tr>
@@ -448,7 +476,9 @@ export const ArticuloPresupuesto = () => {
                   <strong>Total:</strong>
                 </td>
                 <td colSpan="2">
-                  <strong>${idinteres ? calcularTotalConInteres() : calcularTotal()}</strong>
+                  <strong>
+                    ${idinteres ? calcularTotalConInteres() : calcularTotal()}
+                  </strong>
                 </td>
               </tr>
 
@@ -510,6 +540,7 @@ export const ArticuloPresupuesto = () => {
               <table className="table table-bordered">
                 <thead>
                   <tr>
+                    <th>Producto</th>
                     <th>Cuotas</th>
                     <th>Interés</th>
                     <th>Subtotal</th>
@@ -518,12 +549,31 @@ export const ArticuloPresupuesto = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>{cuotasFiltrados.find(c => c.id == idinteres)?.numero || 1}</td>
-                    <td>{cuotasFiltrados.find(c => c.id == idinteres)?.interes || 0}%</td>
+                  {presupuesto.map((item) => {
+                    const subtotal = parseFloat(item.precio) * item.cantidad;
+                    const numeroCuotas = cuotasFiltrados.find(c => c.id == idinteres)?.numero || 1;
+                    const interes = cuotasFiltrados.find(c => c.id == idinteres).interes || 0;
+                    const conInteres = calcularPrecioConInteres(subtotal, idinteres);
+                    const valorPorCuota = Math.ceil(conInteres / numeroCuotas / 100) * 100;
+                    
+                    return (
+                      <tr key={`financiacion-${item.id}`}>
+                        <td>{item.nombre || item.descripcion}</td>
+                        <td>{numeroCuotas}</td>
+                        <td>{interes}%</td>
+                        <td>${subtotal.toFixed(2)}</td>
+                        <td>${conInteres.toFixed(2)}</td>
+                        <td>${valorPorCuota}</td>
+                      </tr>
+                    );
+                  })}
+                  <tr style={{ backgroundColor: "#f8f9fa", fontWeight: "bold" }}>
+                    <td>TOTAL</td>
+                    <td>{cuotasFiltrados.find((c) => c.id == idinteres)?.numero || 1}</td>
+                    <td>{cuotasFiltrados.find((c) => c.id == idinteres)?.interes || 0}%</td>
                     <td>${calcularTotal()}</td>
                     <td>${calcularTotalConInteres()}</td>
-                    <td>${Math.floor((parseFloat(calcularTotalConInteres()) / (cuotasFiltrados.find(c => c.id == idinteres)?.numero || 1)))}</td>
+                    <td>${Math.ceil(parseFloat(calcularTotalConInteres()) / (cuotasFiltrados.find((c) => c.id == idinteres)?.numero || 1) / 100) * 100}</td>
                   </tr>
                 </tbody>
               </table>
