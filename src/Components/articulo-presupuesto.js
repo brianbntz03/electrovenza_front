@@ -11,7 +11,8 @@ export const ArticuloPresupuesto = () => {
   const [clientesFiltrados, setClientesFiltrados] = useState([]);
   const [cuotasFiltrados, setCuotasFiltrados] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [articulosLoading, setArticulosLoading] = useState(false);
+  const [searchPerformed, setSearchPerformed] = useState(false);
   const [idCliente, setIdCliente] = useState("");
   const [idVendedor, setIdVendedor] = useState("");
   const [idinteres, setIdInteres] = useState("");
@@ -20,7 +21,7 @@ export const ArticuloPresupuesto = () => {
     cargarVendedores();
     cargarClientes();
     cargarCuotas();
-    handleSearch(""); // Cargar todos los artículos al iniciar
+    // La búsqueda de artículos ahora es iniciada por el usuario
   }, []);
   const [presupuesto, setPresupuesto] = useState(() => {
     const stored = localStorage.getItem("presupuesto");
@@ -130,7 +131,6 @@ export const ArticuloPresupuesto = () => {
   };
 
   const handleRetry = () => {
-    setLoading(true);
     setError(null);
   };
 
@@ -231,6 +231,8 @@ export const ArticuloPresupuesto = () => {
 
   const handleSearch = async (busqueda) => {
     setAccionActual("buscar");
+    setSearchPerformed(true);
+    setArticulosLoading(true);
     try {
       // Usar el endpoint directo para obtener todos los artículos o filtrar por búsqueda
       const url = busqueda
@@ -287,13 +289,13 @@ export const ArticuloPresupuesto = () => {
       });
 
       setArticulosFiltrados(articulosConCategoria);
-      setLoading(false);
     } catch (error) {
       console.error("Error detallado:", error);
       setError(
         `No se pudo conectar con el servidor. Verifica que esté corriendo en el puerto 3001: ${error.message}`
       );
-      setLoading(false);
+    } finally {
+      setArticulosLoading(false);
     }
   };
 
@@ -335,14 +337,6 @@ export const ArticuloPresupuesto = () => {
     }
   };
 
-  if (loading)
-    return (
-      <div>
-        <FormArticulos />
-        <p>Cargando artículos...</p>
-      </div>
-    );
-
   if (error) {
     return (
       <div>
@@ -356,38 +350,58 @@ export const ArticuloPresupuesto = () => {
   return (
     <div>
       <FormArticulos />
-      <h3>Lista de artículos</h3>
-      <table className="table table-striped table-valign-middle table-bordered">
-        <thead>
-          <tr>
-            <th>Código</th>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>Precio</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {articulosFiltrados.map((articulo) => (
-            <tr key={articulo.id}>
-              <td>{articulo.id}</td>
-              <td>{articulo.nombre}</td>
-              <td>{articulo.categoria?.nombre?.trim() || "Sin categoría"}</td>
-              <td>{articulo.precio ? `$${articulo.precio}` : "No definido"}</td>
-              <td>
-                <button
-                  className="btn btn-success"
-                  onClick={() => agregarAlPresupuesto(articulo)}
-                  disabled={presupuesto.some((item) => item.id === articulo.id)}
-                >
-                  +
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
 
+      {searchPerformed && (
+        <>
+          <h3>Lista de artículos</h3>
+          {articulosLoading ? (
+            <div className="text-center p-4">
+              <p>Buscando artículos...</p>
+            </div>
+          ) : articulosFiltrados.length > 0 ? (
+            <table className="table table-striped table-valign-middle table-bordered">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Nombre</th>
+                  <th>Categoría</th>
+                  <th>Precio</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {articulosFiltrados.map((articulo) => (
+                  <tr key={articulo.id}>
+                    <td>{articulo.id}</td>
+                    <td>{articulo.nombre}</td>
+                    <td>
+                      {articulo.categoria?.nombre?.trim() || "Sin categoría"}
+                    </td>
+                    <td>
+                      {articulo.precio ? `$${articulo.precio}` : "No definido"}
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-success"
+                        onClick={() => agregarAlPresupuesto(articulo)}
+                        disabled={presupuesto.some(
+                          (item) => item.id === articulo.id
+                        )}
+                      >
+                        +
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>No se encontraron artículos.</p>
+          )}
+        </>
+      )}
+
+      <h3>Presupuesto</h3>
       <FormVendedor />
       <FormCliente />
       <FormNumeroCuotas />
