@@ -568,9 +568,7 @@ export const ArticuloPresupuesto = () => {
                     );
                   })}
                   <tr style={{ backgroundColor: "#f8f9fa", fontWeight: "bold" }}>
-                    <td>TOTAL</td>
-                    <td>{cuotasFiltrados.find((c) => c.id == idinteres)?.numero || 1}</td>
-                    <td>{cuotasFiltrados.find((c) => c.id == idinteres)?.interes || 0}%</td>
+                    <td td colSpan="3" style={{ textAlign: "center" }}>TOTAL</td>
                     <td>${calcularTotal()}</td>
                     <td>${calcularTotalConInteres()}</td>
                     <td>${Math.ceil(parseFloat(calcularTotalConInteres()) / (cuotasFiltrados.find((c) => c.id == idinteres)?.numero || 1) / 100) * 100}</td>

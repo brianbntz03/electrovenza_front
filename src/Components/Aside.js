@@ -188,6 +188,16 @@ export default function Aside() {
                   </p>
                 </NavLink>
               </li>
+              <li className="nav-header">CUENTA CORRIENTE</li>
+              <li className="nav-item">
+                <NavLink to="/registrar-movimento" className="nav-link">
+                  <i className="nav-icon fas fa-table" />
+                  <p>
+                    Registro de movimiento
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
             </ul>
           </nav>
           {/* /.sidebar-menu */}
