@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import CuotaVencida from "./CuotaVencida";
 import { apiRest } from "../service/apiRest";
 
@@ -38,15 +37,23 @@ export function CuotasVencidas() {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     fetchCuotas();
   }, [contador]);
-  // Función para reintentar la conexión
+
   const handleRetry = () => {
     setLoading(true);
     setError(null);
     fetchCuotas();
   };
+
+  const handleBorrarCuota = (cliente, idCuota) => {
+    const nuevaLista = { ...cuotas };
+    nuevaLista[cliente] = nuevaLista[cliente].filter((cuota) => cuota.id !== idCuota);
+    setCuotas(nuevaLista);
+  };
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -54,6 +61,7 @@ export function CuotasVencidas() {
       </div>
     );
   }
+
   if (error) {
     return (
       <div className="error-container">
@@ -65,68 +73,45 @@ export function CuotasVencidas() {
       </div>
     );
   }
-  if (!cuotas || cuotas.length === 0) {
+
+  if (!cuotas || Object.keys(cuotas).length === 0) {
     return <div className="error-container">No hay clientes registrados</div>;
   }
 
   return (
     <div className="card-body">
-<<<<<<< HEAD
-          { Object.entries(cuotas).map(([cliente, ListadoDeCuotas]) => (
-            <div className='card card-widget'>
-                <div className='card-header'>
-                <div className="user-block">
-                  <img className="img-circle" src="../dist/img/user1-128x128.jpg" alt="face"/>
-                  <span className="username">Cliente: {cliente}</span>
-
-                </div>
-                </div>
-                
-              <div class="card-footer p-0">
-                <div class="row">
-                  
-                  {ListadoDeCuotas.map(cuota => (
-                    <CuotaVencida id={cuota.id} fecha={cuota.fecha} articulo={cuota.articulo} valor={cuota.valor} montoCobrado={cuota.monto_cobrado} vendedor={cuota.vendedor} incrementarContador={incrementarContador} />
-                    ))}
-                </div>
-
-              </div>
-            <hr/>
-            
-            <hr/>
-=======
       {Object.entries(cuotas).map(([cliente, ListadoDeCuotas]) => (
-        <div className="card card-widget">
+        <div key={cliente} className="card card-widget">
           <div className="card-header">
             <div className="user-block">
-              <img
-                className="img-circle"
-                src="../dist/img/user1-128x128.jpg"
-                alt="User Image"
-              />
-              <span className="username">
-                <a href="#">Cliente: {cliente}</a>
-              </span>
->>>>>>> 4268d8d80169897af63471b5f98148a515a03aa4
+              <img className="img-circle" src="../dist/img/user1-128x128.jpg" alt="face" />
+              <span className="username">Cliente: {cliente}</span>
             </div>
           </div>
 
-          <div class="card-footer p-0">
-            <div class="row">
+          <div className="card-footer p-0">
+            <div className="row">
               {ListadoDeCuotas.map((cuota) => (
-                <CuotaVencida
-                  id={cuota.id}
-                  fecha={cuota.fecha}
-                  articulo={cuota.articulo}
-                  valor={cuota.valor}
-                  vendedor={cuota.vendedor}
-                  incrementarContador={incrementarContador}
-                />
+                <div key={cuota.id} className="col-md-4">
+                  <CuotaVencida
+                    id={cuota.id}
+                    fecha={cuota.fecha}
+                    articulo={cuota.articulo}
+                    valor={cuota.valor}
+                    montoCobrado={cuota.monto_cobrado}
+                    vendedor={cuota.vendedor}
+                    incrementarContador={incrementarContador}
+                  />
+                  <button
+                    className="btn btn-danger btn-sm mt-2"
+                    onClick={() => handleBorrarCuota(cliente, cuota.id)}
+                  >
+                    🗑 Borrar
+                  </button>
+                </div>
               ))}
             </div>
           </div>
-          <hr />
-
           <hr />
         </div>
       ))}
