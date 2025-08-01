@@ -37,6 +37,37 @@ export default function Aside() {
                   </p>
                 </NavLink>
               </li>
+
+              <li className="nav-header">VISTA VENDEDOR</li>
+              <li className="nav-item">
+                <NavLink to="/buscar-articulos-presupuesto" className="nav-link" >
+                  <i className="nav-icon fas fa-dollar-sign" />
+                  <p>Vender
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to="/cuotas-por-cobrar" className="nav-link">
+                  <i className="nav-icon fas fa-file-invoice-dollar" />
+                  <p>
+                    Cuotas por cobrar
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to="/ventas-listado" className="nav-link">
+                  <i className="nav-icon fas fa-file-invoice-dollar" />
+                  <p>
+                    Ventas
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
+
+
+              <li className="nav-header">VISTA ADMINISTRADOR</li>
               <li className="nav-item">
                 <NavLink to="/categoriasListado" className="nav-link">
                   <i className="nav-icon fas fa-table" />
@@ -57,18 +88,7 @@ export default function Aside() {
                 </NavLink>
               </li>
 
-              <li className="nav-item">
-                <NavLink
-                  to="/buscar-articulos-presupuesto"
-                  className="nav-link"
-                >
-                  <i className="nav-icon fas fa-dollar-sign" />
-                  <p>
-                    Vender
-                    <i className="fas fa-angle-left right" />
-                  </p>
-                </NavLink>
-              </li>
+              
 
               <li className="nav-item">
                 <NavLink to="/vendedores" className="nav-link">
@@ -99,27 +119,11 @@ export default function Aside() {
                   </p>
                 </NavLink>
               </li>
-              <li className="nav-header">VISTA VENDEDOR</li>
-              <li className="nav-item">
-                <NavLink to="/cuotas-por-cobrar" className="nav-link">
-                  <i className="nav-icon fas fa-file-invoice-dollar" />
-                  <p>
-                    Cuotas por cobrar
-                    <i className="fas fa-angle-left right" />
-                  </p>
-                </NavLink>
-              </li>
-              <li className="nav-header">REPORTES</li>
-              <li className="nav-item">
-                <NavLink to="/ventas-listado" className="nav-link">
-                  <i className="nav-icon fas fa-file-invoice-dollar" />
-                  <p>
-                    Ventas
-                    <i className="fas fa-angle-left right" />
-                  </p>
-                </NavLink>
-              </li>
+              
+              
 
+
+              <li className="nav-header">REPORTES</li>
               <li className="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-copy"></i>
