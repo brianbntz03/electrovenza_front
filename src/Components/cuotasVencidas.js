@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import CuotaVencida from "./CuotaVencida";
 import { apiRest } from "../service/apiRest";
 
@@ -38,15 +37,23 @@ export function CuotasVencidas() {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     fetchCuotas();
   }, [contador]);
-  // Función para reintentar la conexión
+
   const handleRetry = () => {
     setLoading(true);
     setError(null);
     fetchCuotas();
   };
+
+  const handleBorrarCuota = (cliente, idCuota) => {
+    const nuevaLista = { ...cuotas };
+    nuevaLista[cliente] = nuevaLista[cliente].filter((cuota) => cuota.id !== idCuota);
+    setCuotas(nuevaLista);
+  };
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -54,6 +61,7 @@ export function CuotasVencidas() {
       </div>
     );
   }
+
   if (error) {
     return (
       <div className="error-container">
@@ -65,7 +73,8 @@ export function CuotasVencidas() {
       </div>
     );
   }
-  if (!cuotas || cuotas.length === 0) {
+
+  if (!cuotas || Object.keys(cuotas).length === 0) {
     return <div className="error-container">No hay clientes registrados</div>;
   }
 

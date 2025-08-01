@@ -19,6 +19,8 @@ import PageCuotasPorCobrar from "../pages/PageCuotasPorCobrar";
 import PrintCuotas from "../pages/print/PageCuotasImprimir";
 import { CrearVendedor } from "./Crear/CrearVendedor";
 import { CrearCliente } from "./Crear/CrearClientes";
+import RegistroMovimientoCuenta from "../pages/RegistroMovimientoCuenta";
+
 
 export default function Content() {
   return (
@@ -88,6 +90,9 @@ export default function Content() {
                   path="/cuotas-por-cobrar"
                   Component={PageCuotasPorCobrar}
                 ></Route>
+                <Route
+                path="/registrar-movimento" Component={RegistroMovimientoCuenta}>
+                </Route>
               </Routes>
             </div>
           </div>
