@@ -69,7 +69,7 @@ export default function Content() {
                   path="/ventas-listado"
                   Component={PageListadoVentas}
                 ></Route>
-                <Route path="/print/cuotas/:id" element={<PrintCuotas />} />
+                <Route path="/print/cuotas/:venta_id" element={<PrintCuotas />} />
                 <Route path="/crearPrducto" Component={CrearPrducto}></Route>
                 <Route path="/vendedores" Component={vendedores}></Route>
                 <Route path="/clientes" Component={Clientes}></Route>

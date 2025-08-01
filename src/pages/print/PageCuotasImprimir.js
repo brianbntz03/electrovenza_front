@@ -49,7 +49,7 @@ export default function PrintCuotas() {
   return (
     <div>
       <div className="print-container">
-      <h1>Electronvenza</h1>
+      <h1>Electrovenza</h1>
       <h2>Te: 11.6398.5857 - Instagram/Facebook: @electrovenza</h2>
       <p>Articulo: {articulo}</p>
       <p>Cliente: {cliente}</p>

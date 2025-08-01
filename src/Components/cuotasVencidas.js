@@ -71,64 +71,40 @@ export function CuotasVencidas() {
 
   return (
     <div className="card-body">
-<<<<<<< HEAD
           { Object.entries(cuotas).map(([cliente, ListadoDeCuotas]) => (
+            <>
             <div className='card card-widget'>
-                <div className='card-header'>
+              <div className='card-header'>
                 <div className="user-block">
-                  <img className="img-circle" src="../dist/img/user1-128x128.jpg" alt="face"/>
+                  <img className="img-circle" src="../dist/img/user1-128x128.jpg" alt="face" />
                   <span className="username">Cliente: {cliente}</span>
+                </div>
+              </div>
 
-                </div>
-                </div>
-                
               <div class="card-footer p-0">
                 <div class="row">
-                  
                   {ListadoDeCuotas.map(cuota => (
                     <CuotaVencida id={cuota.id} fecha={cuota.fecha} articulo={cuota.articulo} valor={cuota.valor} montoCobrado={cuota.monto_cobrado} vendedor={cuota.vendedor} incrementarContador={incrementarContador} />
-                    ))}
+                  ))}
                 </div>
-
               </div>
-            <hr/>
-            
-            <hr/>
-=======
-      {Object.entries(cuotas).map(([cliente, ListadoDeCuotas]) => (
-        <div className="card card-widget">
-          <div className="card-header">
-            <div className="user-block">
-              <img
-                className="img-circle"
-                src="../dist/img/user1-128x128.jpg"
-                alt="User Image"
-              />
-              <span className="username">
-                <a href="#">Cliente: {cliente}</a>
-              </span>
->>>>>>> 4268d8d80169897af63471b5f98148a515a03aa4
-            </div>
-          </div>
 
-          <div class="card-footer p-0">
-            <div class="row">
-              {ListadoDeCuotas.map((cuota) => (
-                <CuotaVencida
-                  id={cuota.id}
-                  fecha={cuota.fecha}
-                  articulo={cuota.articulo}
-                  valor={cuota.valor}
-                  vendedor={cuota.vendedor}
-                  incrementarContador={incrementarContador}
-                />
-              ))}
-            </div>
-          </div>
-          <hr />
-
-          <hr />
-        </div>
+              <hr />
+              <hr />
+            </div><div class="card-footer p-0">
+                <div class="row">
+                  {ListadoDeCuotas.map((cuota) => (
+                    <CuotaVencida
+                      id={cuota.id}
+                      fecha={cuota.fecha}
+                      articulo={cuota.articulo}
+                      valor={cuota.valor}
+                      vendedor={cuota.vendedor}
+                      incrementarContador={incrementarContador} />
+                  ))}
+                </div>
+              </div><hr /><hr />
+              </>
       ))}
     </div>
   );
