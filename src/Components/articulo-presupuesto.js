@@ -21,7 +21,6 @@ export const ArticuloPresupuesto = () => {
     cargarVendedores();
     cargarClientes();
     cargarCuotas();
-    // La búsqueda de artículos ahora es iniciada por el usuario
   }, []);
   const [presupuesto, setPresupuesto] = useState(() => {
     const stored = localStorage.getItem("presupuesto");
@@ -100,8 +99,11 @@ export const ArticuloPresupuesto = () => {
   };
 
   const calcularTotalConInteres = () => {
-    if (!idinteres) return calcularTotal();
-    const subtotal = presupuesto.reduce(
+    if (!idinteres) {
+      return calcularTotal();
+    }
+
+    const total = presupuesto.reduce(
       (acc, item) =>
         acc +
         calcularPrecioConInteres(
@@ -111,23 +113,16 @@ export const ArticuloPresupuesto = () => {
       0
     );
 
-    // Ajustar el total para que el valor por cuota sea múltiplo de 100
-    const numeroCuotas =
-      cuotasFiltrados.find((c) => c.id == idinteres)?.numero || 1;
-    const valorPorCuotaRedondeado =
-      Math.ceil(subtotal / idinteres / 100) * 100;
-    const totalAjustado = valorPorCuotaRedondeado * idinteres;
-
-    return totalAjustado.toFixed(2);
+    return total.toFixed(2);
   };
 
   const calcularPrecioConInteres = (precio, idCuotaSeleccionada) => {
     const cuotaSeleccionada = cuotasFiltrados.find(
-      (c) => c.id == idCuotaSeleccionada
+      (c) => c.id == idCuotaSeleccionada 
     );
     if (!cuotaSeleccionada) return precio;
     const interes = cuotaSeleccionada.interes / 100;
-    return precio * (1 + interes);
+    return precio * (1 + interes); 
   };
 
   const handleRetry = () => {
@@ -234,7 +229,6 @@ export const ArticuloPresupuesto = () => {
     setSearchPerformed(true);
     setArticulosLoading(true);
     try {
-      // Usar el endpoint directo para obtener todos los artículos o filtrar por búsqueda
       const url = busqueda
         ? `${apiRest}/articulos/find`
         : `${apiRest}/articulos`;
@@ -259,9 +253,8 @@ export const ArticuloPresupuesto = () => {
       console.log("Datos de artículos:", data);
       console.log("Estructura del primer artículo:", data[0]);
 
-      // Asegurarse de que cada artículo tenga una categoría válida
+      
       const articulosConCategoria = data.map((articulo) => {
-        // Verificar la estructura exacta de la categoría
         console.log(`Artículo ${articulo.id} - Categoría:`, articulo.categoria);
 
         if (!articulo.categoria) {
@@ -276,7 +269,6 @@ export const ArticuloPresupuesto = () => {
         } else if (articulo.categoria && articulo.categoria.nombre) {
           return articulo;
         } else if (articulo.categoria && articulo.categoria.id) {
-          // Si solo tiene ID pero no nombre, intentar usar el ID como nombre
           return {
             ...articulo,
             categoria: {
@@ -565,11 +557,18 @@ export const ArticuloPresupuesto = () => {
                 <tbody>
                   {presupuesto.map((item) => {
                     const subtotal = parseFloat(item.precio) * item.cantidad;
-                    const numeroCuotas = cuotasFiltrados.find(c => c.id == idinteres)?.numero || 1;
-                    const interes = cuotasFiltrados.find(c => c.id == idinteres).interes || 0;
-                    const conInteres = calcularPrecioConInteres(subtotal, idinteres);
+                    const numeroCuotas =
+                      cuotasFiltrados.find((c) => c.id == idinteres)?.numero ||
+                      1;
+                    const interes =
+                      cuotasFiltrados.find((c) => c.id == idinteres).interes ||
+                      0;
+                    const conInteres = calcularPrecioConInteres(
+                      subtotal,
+                      idinteres
+                    );
                     const valorPorCuota = Math.ceil(conInteres / numeroCuotas / 100) * 100;
-                    
+
                     return (
                       <tr key={`financiacion-${item.id}`}>
                         <td>{item.nombre || item.descripcion}</td>
@@ -581,11 +580,28 @@ export const ArticuloPresupuesto = () => {
                       </tr>
                     );
                   })}
-                  <tr style={{ backgroundColor: "#f8f9fa", fontWeight: "bold" }}>
-                    <td td colSpan="3" style={{ textAlign: "center" }}>TOTAL</td>
+                  <tr
+                    style={{ backgroundColor: "#f8f9fa", fontWeight: "bold" }}
+                  >
+                    <td td colSpan="3" style={{ textAlign: "center" }}>
+                      TOTAL
+                    </td>
                     <td>${calcularTotal()}</td>
                     <td>${calcularTotalConInteres()}</td>
-                    <td>${Math.ceil(parseFloat(calcularTotalConInteres()) / (cuotasFiltrados.find((c) => c.id == idinteres)?.numero || 1) / 100) * 100}</td>
+                    <td>
+                      $
+                      {(() => {
+                        const totalConInteresPresupuesto = parseFloat(calcularTotalConInteres());
+                        const numeroCuotasSeleccionadas =
+                          cuotasFiltrados.find((c) => c.id == idinteres)?.numero || 0;
+
+                        if (numeroCuotasSeleccionadas > 0) {
+                          return Math.ceil(totalConInteresPresupuesto / numeroCuotasSeleccionadas / 100) * 100;
+                        } else {
+                          return 0; 
+                        }
+                      })()}
+                    </td>
                   </tr>
                 </tbody>
               </table>

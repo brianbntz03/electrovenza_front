@@ -126,7 +126,7 @@ export function RegistrarMovimieto() {
   <div className="card-body">
   <div className="row">
     <div className="col-md-4">
-        Vendedor :
+      <label> Vendedor : </label>
     </div>
           <div className="col-md-8"> 
             <select
@@ -148,7 +148,7 @@ export function RegistrarMovimieto() {
 
   <div className="row">
           <div className="col-md-4">
-            Tipo de Movimiento :
+          <label> Tipo de Movimiento : </label>
           </div>
           <div className="col-md-8">
             <select
@@ -170,7 +170,7 @@ export function RegistrarMovimieto() {
 
     <div className="row">
       <div className="col-md-4">
-            Monto : 
+      <label>  Monto : </label>
       </div >
       <div className="col-md-8">
             <input
