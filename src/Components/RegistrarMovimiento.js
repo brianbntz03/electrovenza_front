@@ -63,14 +63,14 @@ export function RegistrarMovimieto() {
     }
 
     try {
-      const response = await fetch(`${apiRest}/movimientos`, { // Asumo que este es el endpoint para crear movimientos
+      const response = await fetch(`${apiRest}/cuenta-corriente-movimiento`, { // Asumo que este es el endpoint para crear movimientos
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          vendedor_id: parseInt(vendedorId),
-          tipo_movimiento_id: parseInt(tipoMovimientoId),
+          vendedorId: parseInt(vendedorId),
+          tipoMovimientoId: parseInt(tipoMovimientoId),
           monto: parseFloat(monto),
         }),
       });

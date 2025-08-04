@@ -61,6 +61,7 @@ export function ListadoVendedores() {
             <th>Nombre</th>
             <th>Telefono</th>
             <th>Direccion</th>
+            <th>Saldo CC</th>
             <th></th>
           </tr>
         </thead>
@@ -70,6 +71,7 @@ export function ListadoVendedores() {
               <td>{vendedor.nombre}</td>
               <td>{vendedor.telefono}</td>
               <td>{vendedor.direccion}</td>
+              <td>{vendedor.cuentaCorriente.saldo}</td>
               <td>
                 <button
                   className="link-button"

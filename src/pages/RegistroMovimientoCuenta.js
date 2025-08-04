@@ -5,7 +5,7 @@ const RegistroMovimientoCuenta = () => {
   return (
     <div className="card">
       <div class="card-header">
-        <h3 className="card-title">Proveedores</h3>
+        <h3 className="card-title">Cuenta Corriente - Registro de movimiento</h3>
         <div className="card-tools">
           <a class="btn btn-sm btn-success float-right">
             {" "}
