@@ -7,7 +7,7 @@ import HistorialPresupuesto from "../Presupuestos/HistorialPresupuesto";
 import ListaPresupuesto from "../Presupuestos/ListaPresupuesto";
 import CreacionCategorias from "../pages/creacionCategorias";
 import Articulos from "../pages/Articulos";
-import Presupuestossss from "../Presupuestos/presupuestossss";
+import PagePresupuestar from "../Presupuestos/presupuestossss";
 import PageListadoVentas from "../pages/PageListadoVentas";
 import Dashboard from "../pages/Index";
 import { CrearPrducto } from "./Crear/CrearProducto";
@@ -65,7 +65,7 @@ export default function Content() {
                 <Route path="/articulos" Component={Articulos}></Route>
                 <Route
                   path="/buscar-articulos-presupuesto"
-                  Component={Presupuestossss}
+                  Component={PagePresupuestar}
                 ></Route>
                 <Route
                   path="/ventas-listado"

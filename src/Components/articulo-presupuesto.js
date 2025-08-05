@@ -122,7 +122,10 @@ export const ArticuloPresupuesto = () => {
     );
     if (!cuotaSeleccionada) return precio;
     const interes = cuotaSeleccionada.interes / 100;
-    return precio * (1 + interes); 
+    const precionConInteres = precio * (1 + interes); 
+    const total = Math.ceil(precionConInteres / cuotaSeleccionada.numero / 100 ) * cuotaSeleccionada.numero * 100
+    return total;
+
   };
 
   const handleRetry = () => {

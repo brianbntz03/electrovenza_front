@@ -2,7 +2,7 @@ import React from 'react'
 import { ArticuloPresupuesto } from '../Components/articulo-presupuesto';
 
 
-const Presupuestossss = () => {
+const PagePresupuestar = () => {
     let articulos = ArticuloPresupuesto();
     return (
         <>
@@ -26,4 +26,4 @@ const Presupuestossss = () => {
     )
 }
 
-export default Presupuestossss;
+export default PagePresupuestar;
