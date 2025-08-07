@@ -75,7 +75,7 @@ export function CuotasVencidas() {
   }
 
   if (!cuotas || Object.keys(cuotas).length === 0) {
-    return <div className="error-container">No hay clientes registrados</div>;
+    return <div className="error-container">No hay cuotas pendientes</div>;
   }
 
   return (

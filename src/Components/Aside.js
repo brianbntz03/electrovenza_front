@@ -192,7 +192,7 @@ export default function Aside() {
                 <NavLink to="/cuotasListado" className="nav-link">
                   <i className="nav-icon fas fa-table" />
                   <p>
-                    Cuotas
+                    Cuotas Electro
                     <i className="fas fa-angle-left right" />
                   </p>
                 </NavLink>

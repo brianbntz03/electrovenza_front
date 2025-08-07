@@ -608,6 +608,18 @@ export const ArticuloPresupuesto = () => {
                   </tr>
                 </tbody>
               </table>
+              <div style={{ textAlign: "right" }} >
+                  <button
+                  type="button"
+                  className="btn btn-primary"
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                  onClick={() => registrarVenta()}
+                  >
+                  Registrar Venta
+                  </button>
+              </div>
+              
             </>
           )}
         </>
