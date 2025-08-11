@@ -52,7 +52,13 @@ export const CrearVendedor = () => {
       }
 
       const data = await response.json();
-      console.log("Categoría creada:", data);
+
+      const storedVendedores = localStorage.getItem('vendedores');
+      const vendedores = storedVendedores ? JSON.parse(storedVendedores) : [];
+      const updatedVendedores = [...vendedores, data];
+      localStorage.setItem('vendedores', JSON.stringify(updatedVendedores));
+
+      console.log("Vendedor creado:", data);
       MostrarAlerta();
       setButton(true);
       setLoading(false);

@@ -7,24 +7,24 @@ export function ListadoVendedores() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCliente, setSelectedVendedores] = useState(null);
+  const [selectedVendedor, setSelectedVendedor] = useState(null);
 
-  const handleOpenModal = (vendedores) => {
-    setSelectedVendedores(vendedores);
+  const handleOpenModal = (vendedor) => {
+    setSelectedVendedor(vendedor);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setSelectedVendedores(null);
+    setSelectedVendedor(null);
     setIsModalOpen(false);
   };
 
   const handleVendedorActualizado = (vendedorActualizado) => {
-    setVendedores((prevVendedores) =>
-      prevVendedores.map((v) =>
-        v.id === vendedorActualizado.id ? { ...v, ...vendedorActualizado } : v
-      )
+    const nuevosVendedores = vendedores.map((v) =>
+      v.id === vendedorActualizado.id ? { ...v, ...vendedorActualizado } : v
     );
+    setVendedores(nuevosVendedores);
+    localStorage.setItem("vendedores", JSON.stringify(nuevosVendedores));
   };
 
   const handleEliminar = async (id) => {
@@ -34,11 +34,11 @@ export function ListadoVendedores() {
       });
       console.log(`Vendedor con ${id} eliminado.`);
 
-      // Elimina del estado
       const nuevosVendedores = vendedores.filter(
         (vendedor) => vendedor.id !== id
       );
       setVendedores(nuevosVendedores);
+      localStorage.setItem("vendedores", JSON.stringify(nuevosVendedores));
     } catch (error) {
       console.error("Error al eliminar el producto:", error);
     }
@@ -53,24 +53,51 @@ export function ListadoVendedores() {
       const data = await response.json();
       console.log("Vendedores desde la API:", data);
       setVendedores(data);
+      localStorage.setItem("vendedores", JSON.stringify(data));
     } catch (error) {
       setError(error);
     } finally {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    fetchVendedores();
-  }, []);
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  if (!vendedores || vendedores.length === 0)
-    return <div>No hay vendedores registrados</div>;
 
-  console.log("Vendedores:", vendedores);
-  console.log("Vendedores:", vendedores[0].nombre);
-  console.log("Vendedores:", vendedores[0].telefono);
-  console.log("Vendedores:", vendedores[0].direccion);
+  useEffect(() => {
+    const storedVendedores = localStorage.getItem("vendedores");
+    if (storedVendedores) {
+      setVendedores(JSON.parse(storedVendedores));
+      setLoading(false);
+    } else {
+      fetchVendedores();
+    }
+  }, []);
+
+  const handleRetry = () => {
+    setLoading(true);
+    setError(null);
+    fetchVendedores();
+  };
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <p>Cargando Vendedores...</p>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="error-container">
+        <h3>Error de conexión</h3>
+        <p>{error}</p>
+        <button onClick={handleRetry} className="retry-button">
+          Reintentar
+        </button>
+      </div>
+    );
+  }
+  if (!vendedores || vendedores.length === 0) {
+    return <div className="error-container">No hay vendedores registrados</div>;
+  }
 
   return (
     <div class="card-body">
@@ -120,7 +147,7 @@ export function ListadoVendedores() {
       </table>
       {isModalOpen && (
         <EditarVendedorModal
-          vendedor={selectedCliente}
+          vendedor={selectedVendedor}
           onClose={handleCloseModal}
           onVendedoresActualizado={handleVendedorActualizado}
         />

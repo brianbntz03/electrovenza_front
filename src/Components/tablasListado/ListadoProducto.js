@@ -34,11 +34,9 @@ export function ListadoProducto() {
       });
       console.log(`Producto con id ${id} eliminado. `);
 
-      // Elimina del estado
-      const nuevosProductos = productos.filter(
-        (producto) => producto.id !== id
-      );
+      const nuevosProductos = productos.filter((producto) => producto.id !== id);
       setProductos(nuevosProductos);
+      localStorage.setItem('productos', JSON.stringify(nuevosProductos));
     } catch (error) {
       console.error("Error al eliminar el producto:", error);
     }
@@ -71,9 +69,15 @@ export function ListadoProducto() {
     }
   };
   useEffect(() => {
-    fetchProductos();
+    const storedProductos = localStorage.getItem('productos');
+    if (storedProductos) {
+      setProductos(JSON.parse(storedProductos));
+      setLoading(false);
+    } else {
+      fetchProductos();
+    }
   }, []);
-  // Función para reintentar la conexión
+
   const handleRetry = () => {
     setLoading(true);
     setError(null);
@@ -121,13 +125,11 @@ export function ListadoProducto() {
               <td> {producto.precio} </td>
               <td>
                 <button
-                  className="link-button"
                   onClick={() => handleOpenModal(producto)}
                 >
                   Editar
                 </button>
                 <button
-                  className="link-button"
                   onClick={() => handleEliminar(producto.id)}
                 >
                   Eliminar

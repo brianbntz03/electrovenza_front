@@ -86,6 +86,12 @@ export const CrearCliente = () => {
       }
 
       const data = await response.json();
+      
+      const storedClientes = localStorage.getItem('clientes');
+      const clientes = storedClientes ? JSON.parse(storedClientes) : [];
+      const updatedClientes = [...clientes, data];
+      localStorage.setItem('clientes', JSON.stringify(updatedClientes));
+
       console.log("Cliente creado:", data);
       MostrarAlerta();
       setButton(true);
