@@ -93,26 +93,14 @@ export function CuotasVencidas() {
               <div class="card-footer p-0">
                 <div class="row">
                   {ListadoDeCuotas.map(cuota => (
-                    <CuotaVencida id={cuota.id} fecha={cuota.fecha} articulo={cuota.articulo} valor={cuota.valor} montoCobrado={cuota.monto_cobrado} vendedor={cuota.vendedor} incrementarContador={incrementarContador} />
+                    <CuotaVencida id={cuota.id} fecha={cuota.fecha} articulo={cuota.articulo} valor={cuota.valor} montoCobrado={cuota.monto_cobrado} vendedor={cuota.vendedor} estado={cuota.estado} incrementarContador={incrementarContador} />
                   ))}
                 </div>
               </div>
 
               <hr />
-              <hr />
-            </div><div class="card-footer p-0">
-                <div class="row">
-                  {ListadoDeCuotas.map((cuota) => (
-                    <CuotaVencida
-                      id={cuota.id}
-                      fecha={cuota.fecha}
-                      articulo={cuota.articulo}
-                      valor={cuota.valor}
-                      vendedor={cuota.vendedor}
-                      incrementarContador={incrementarContador} />
-                  ))}
-                </div>
-              </div><hr /><hr />
+            </div>
+            
               </>
       ))}
     </div>

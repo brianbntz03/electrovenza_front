@@ -135,42 +135,54 @@ export const ArticuloPresupuesto = () => {
   function FormArticulos() {
     const [busqueda, setBusqueda] = useState("");
     return (
-      <div>
-        <form
+      <form
           onSubmit={(e) => {
             e.preventDefault();
             handleSearch(busqueda);
           }}
           style={{
-            display: "flex",
-            alignItems: "center",
             marginBottom: "10px",
           }}
         >
-          <label style={{ marginRight: "5px" }}>Buscar artículo</label>
-          <input
-            type="text"
-            value={busqueda}
-            onChange={(e) => setBusqueda(e.target.value)}
-          />
-          <button type="submit" className="btn btn-sm btn-info float-right">
-            Buscar
-          </button>
-        </form>
+      <div className="row">
+        
+          <div className="col-md-2">
+            <label style={{ marginRight: "5px" }}>Buscar artículo</label>
+          </div>
+          <div className="col-md-3 input-group">
+            <input
+              type="text"
+              value={busqueda}
+              onChange={(e) => setBusqueda(e.target.value)}
+              className="form-control" 
+            /> 
+            <span className="input-group-append">
+              <button type="submit" className="btn btn-sm btn-info">
+                Buscar
+              </button>
+            </span>
+            
+          </div>
+          
+
+        
       </div>
+      </form>
     );
   }
 
   const FormVendedor = () => {
     return (
-      <div style={{ marginBottom: "10px" }}>
-        <label style={{ marginRight: "5px" }}>Buscar Vendedor:</label>
-        <select
+      <div className="row">
+        <div className="col-md-2">
+          <label style={{ marginRight: "5px" }}>Buscar Vendedor:</label>
+        </div>
+        <div className="col-md-3 input-group">
+          <select
           className="form-control"
           value={idVendedor}
           name="idVendedor"
           onChange={(e) => setIdVendedor(e.target.value)}
-          style={{ width: "300px", display: "inline-block" }}
         >
           <option value="">-- Seleccionar Vendedor --</option>
           {vendedoresFiltrados.map((vendedor) => (
@@ -179,42 +191,49 @@ export const ArticuloPresupuesto = () => {
             </option>
           ))}
         </select>
+        </div>
       </div>
+      
     );
   };
 
   const FormCliente = () => {
     return (
-      <div style={{ marginBottom: "10px" }}>
-        <label style={{ marginRight: "5px" }}>Buscar Cliente:</label>
-        <select
-          className="form-control"
-          value={idCliente}
-          name="idCliente"
-          onChange={(e) => setIdCliente(e.target.value)}
-          style={{ width: "300px", display: "inline-block" }}
-        >
-          <option value="">-- Seleccionar Cliente --</option>
-          {clientesFiltrados.map((cliente) => (
-            <option key={cliente.id} value={cliente.id}>
-              {cliente.nombre}
-            </option>
-          ))}
-        </select>
+      <div className="row">
+        <div className="col-md-2">
+          <label style={{ marginRight: "5px" }}>Buscar Cliente:</label>
+        </div>
+        <div className="col-md-3 input-group">
+          <select
+            className="form-control"
+            value={idCliente}
+            name="idCliente"
+            onChange={(e) => setIdCliente(e.target.value)}
+          >
+            <option value="">-- Seleccionar Cliente --</option>
+            {clientesFiltrados.map((cliente) => (
+              <option key={cliente.id} value={cliente.id}>
+                {cliente.nombre}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     );
   };
 
   const FormNumeroCuotas = () => {
     return (
-      <div style={{ marginBottom: "10px" }}>
-        <label style={{ marginRight: "5px" }}>N° de cuotas</label>
-        <select
+      <div className="row">
+        <div className="col-md-2">
+          <label style={{ marginRight: "5px" }}>N° de cuotas</label>
+        </div>
+        <div className="col-md-3">
+          <select
           className="form-control"
           value={idinteres}
           name="idinteres"
           onChange={(e) => setIdInteres(e.target.value)}
-          style={{ width: "300px", display: "inline-block" }}
         >
           <option value="">-- Seleccionar numero de cuotas --</option>
           {cuotasFiltrados.map((interes) => (
@@ -223,6 +242,7 @@ export const ArticuloPresupuesto = () => {
             </option>
           ))}
         </select>
+        </div>
       </div>
     );
   };
@@ -343,7 +363,11 @@ export const ArticuloPresupuesto = () => {
   }
 
   return (
-    <div>
+    <div className="container-fluid">
+      <FormVendedor />
+      <FormCliente />
+      <FormNumeroCuotas />
+
       <FormArticulos />
 
       {searchPerformed && (
@@ -396,10 +420,7 @@ export const ArticuloPresupuesto = () => {
         </>
       )}
 
-      <h3>Presupuesto</h3>
-      <FormVendedor />
-      <FormCliente />
-      <FormNumeroCuotas />
+      
 
       <h3>Presupuesto</h3>
       {presupuesto.length === 0 ? (

@@ -12,14 +12,14 @@ export default function CuotaVencida(cuota) {
 
     try {
       const response = await fetch(
-        `${apiRest}/cuota_venta/parcial/${cuota.id}`,
+        `${apiRest}/cuota_venta/monto-cobrado/${cuota.id}`,
         {
           method: "PATCH",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ monto: montoParcial }),
+          body: JSON.stringify({ monto_cobrado: montoParcial }),
         }
       );
 
@@ -65,7 +65,7 @@ export default function CuotaVencida(cuota) {
   return (
     <>
       <div className="col-md-3 col-sm-6 col-12">
-        <div className="info-box bg-warning">
+        <div className={cuota.estado===1 ? 'info-box bg-warning' : 'info-box bg-gradient-info'}>
           <span className="info-box-icon">
             <i className="far fa-calendar-alt"></i>
           </span>
@@ -74,17 +74,18 @@ export default function CuotaVencida(cuota) {
               {cuota.fecha} ({cuota.id})
             </span>
             <span className="progress-description">{cuota.articulo}</span>
-            <span className="info-box-number">${cuota.valor}</span>
+            <span className="info-box-number">valor: ${cuota.valor}</span>
+            <span className="info-box-number">Pendiente: ${cuota.valor-cuota.montoCobrado}</span>
             <span className="progress-description">{cuota.vendedor}</span>
             <div className="row">
               <div className="col-6">
                 <button
                   type="button"
-                  className="btn btn-warning btn-sm"
+                  className="btn btn-success btn-sm"
                   data-toggle="modal"
                   data-target={`#modal-warning-${cuota.id}`}
                 >
-                  pago parcial
+                  Pago parcial
                 </button>
               </div>
               <div className="col-6">
@@ -132,7 +133,7 @@ export default function CuotaVencida(cuota) {
                 className="form-control"
                 value={montoParcial}
                 onChange={(e) => setMontoParcial(e.target.value)}
-                placeholder="Ej: 1200"
+                placeholder={`Ej: ${cuota.valor-cuota.montoCobrado}`}
               />
             </div>
             <div className="modal-footer justify-content-between">
@@ -151,39 +152,7 @@ export default function CuotaVencida(cuota) {
               >
                 registrar
               </button>
-              <div class="col-md-3 col-sm-6 col-12">
-                <div className="info-box bg-warning">
-                  <span class="info-box-icon">
-                    <i class="far fa-calendar-alt"></i>
-                  </span>
-
-                  <div class="info-box-content">
-                    <span class="info-box-text">
-                      {cuota.fecha} ({cuota.id})
-                    </span>
-                    <span class="progress-description">{cuota.articulo}</span>
-                    <span class="info-box-number">
-                      ${cuota.montoCobrado} de {cuota.valor}
-                    </span>
-                    <span class="progress-description">{cuota.vendedor}</span>
-                    <div className="row">
-                      <div className="col-6">
-                        <button className="btn btn-sm btn-success">
-                          Pago parcial
-                        </button>
-                      </div>
-                      <div className="col-6">
-                        <button
-                          onClick={registrarPago}
-                          className="btn btn-sm btn-primary"
-                        >
-                          Pagar
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              
             </div>
           </div>
         </div>
