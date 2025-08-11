@@ -1,89 +1,116 @@
-import React, { useState, useEffect } from 'react';
-import { apiRest } from '../../service/apiRest';
+import React, { useState, useEffect } from "react";
+import { apiRest } from "../../service/apiRest";
+import { EditarClienteModal } from "../modals/EditarClienteModal";
 
 export function ListadoClientes() {
-
   const [clientes, setClientes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCliente, setSelectedCliente] = useState(null);
 
-   const handleEliminar = async (id) => {
+  const handleOpenModal = (cliente) => {
+    setSelectedCliente(cliente);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedCliente(null);
+    setIsModalOpen(false);
+  };
+
+  const handleClienteActualizado = (clienteActualizado) => {
+    const nuevosClientes = clientes.map((c) =>
+      c.id === clienteActualizado.id ? { ...c, ...clienteActualizado } : c
+    );
+    setClientes(nuevosClientes);
+    localStorage.setItem('clientes', JSON.stringify(nuevosClientes));
+  };
+
+  const handleEliminar = async (id) => {
     try {
-        
-         await fetch(`${apiRest}/cliente/${id}`, {
-             method: 'DELETE',
-         });
-         console.log(`Producto con id ${id} eliminado. `);
+      await fetch(`${apiRest}/cliente/${id}`, {
+        method: "DELETE",
+      });
+      console.log(`Producto con id ${id} eliminado. `);
 
-        // Elimina del estado
-        const nuevosClientes = clientes.filter(cliente => cliente.id !== id);
-        setClientes(nuevosClientes);
+      const nuevosClientes = clientes.filter((cliente) => cliente.id !== id);
+      setClientes(nuevosClientes);
+      localStorage.setItem('clientes', JSON.stringify(nuevosClientes));
     } catch (error) {
-        console.error("Error al eliminar el producto:", error);
+      console.error("Error al eliminar el producto:", error);
     }
-};
+  };
 
   const fetchClientes = async () => {
-      try {
-                const response = await fetch(`${apiRest}/cliente`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                });
+    try {
+      const response = await fetch(`${apiRest}/cliente`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-                const data = await response.json();
-                console.log(data);
-                setClientes(data);
-                setLoading(false);
-            } catch (error) {
-                console.error("Error detallado:", error);
-                setError(`No se pudo conectar con el servidor. Verifica que el servidor esté corriendo en el puerto 3001: ${error.message}`);
-                setLoading(false);
-            }
-        }
-    useEffect(() => {   
-        fetchClientes();
+      const data = await response.json();
+      console.log(data);
+      setClientes(data);
+      localStorage.setItem('clientes', JSON.stringify(data));
+      setLoading(false);
+    } catch (error) {
+      console.error("Error detallado:", error);
+      setError(
+        `No se pudo conectar con el servidor. Verifica que el servidor esté corriendo en el puerto 3001: ${error.message}`
+      );
+      setLoading(false);
     }
-    , []);
-    // Función para reintentar la conexión
-    const handleRetry = () => {
-        setLoading(true);
-        setError(null);
-        fetchClientes();
+  };
+
+  useEffect(() => {
+    const storedClientes = localStorage.getItem('clientes');
+    if (storedClientes) {
+      setClientes(JSON.parse(storedClientes));
+      setLoading(false);
+    } else {
+      fetchClientes();
     }
-    if (loading) {
-        return (
-            <div className="loading-container">
-                <p>Cargando Clientes...</p>
-            </div>
-        );
-    }
-    if (error) {
-        return (
-            <div className="error-container">
-                <h3>Error de conexión</h3>
-                <p>{error}</p>
-                <button onClick={handleRetry} className="retry-button">Reintentar</button>
-            </div>
-        );
-    }
+  }, []);
+
+  const handleRetry = () => {
+    setLoading(true);
+    setError(null);
+    fetchClientes();
+  };
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <p>Cargando Clientes...</p>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="error-container">
+        <h3>Error de conexión</h3>
+        <p>{error}</p>
+        <button onClick={handleRetry} className="retry-button">
+          Reintentar
+        </button>
+      </div>
+    );
+  }
   if (!clientes || clientes.length === 0) {
-        return (
-            <div className="error-container">
-                No hay clientes registrados
-            </div>
-        );
-    }   
+    return <div className="error-container">No hay clientes registrados</div>;
+  }
 
   return (
     <div className="card-body">
-      <p>Listado de Clientes</p> 
+      <p>Listado de Clientes</p>
       <table className="table table-striped table-valign-middle table-bordered">
         <thead>
           <tr>
@@ -98,23 +125,36 @@ export function ListadoClientes() {
           </tr>
         </thead>
         <tbody>
-          {clientes.map((cliente, index) => (
-            <tr key={index}>
-              <td>{cliente.nombre}</td>
-              <td>{cliente.dni}</td>
-              <td>{cliente.direccion_local}</td>
-              <td>{cliente.direccion_casa}</td>
-              <td>{cliente.telefono1}</td>
-              <td>{cliente.telefono2}</td>
-              <td>{cliente.vendedor.nombre}</td>
-              <td>
-                <button className="link-button" onClick={() => console.log('Editar clicked')}>editar</button>
-                <button className="link-button" onClick={() => handleEliminar(cliente.id)}>eliminar</button>
-              </td>
-            </tr>
-          ))}
+          {clientes
+            .filter((c) => c && c.nombre)
+            .map((cliente) => (
+              <tr key={cliente.id}>
+                <td>{cliente.nombre}</td>
+                <td>{cliente.dni}</td>
+                <td>{cliente.direccion_local}</td>
+                <td>{cliente.direccion_casa}</td>
+                <td>{cliente.telefono1}</td>
+                <td>{cliente.telefono2}</td>
+                <td>{cliente.vendedor?.nombre || "Sin vendedor"}</td>
+                <td>
+                  <button onClick={() => handleOpenModal(cliente)}>
+                    editar
+                  </button>
+                  <button onClick={() => handleEliminar(cliente.id)}>
+                    eliminar
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
+      {isModalOpen && (
+        <EditarClienteModal
+          cliente={selectedCliente}
+          onClose={handleCloseModal}
+          onClienteActualizado={handleClienteActualizado}
+        />
+      )}
     </div>
   );
 }

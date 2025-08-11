@@ -161,7 +161,7 @@ export const CrearPrducto = () => {
             </div>
             <div class="card-footer">
               <button type="submit" class="btn btn-primary" disabled={loading}>
-                {loading ? "Creando..." : "Crear categoría"}
+                {loading ? "Creando..." : "Editar Vendedor"}
               </button>
             </div>
           </div>

@@ -1,110 +1,149 @@
-import { useEffect, useState } from 'react';
-import { apiRest } from '../../service/apiRest';
+import { useEffect, useState } from "react";
+import { apiRest } from "../../service/apiRest";
+import { EditaProductoModal } from "../modals/EditarProductoMoral";
 
 export function ListadoProducto() {
-    const [productos, setProductos] = useState([]);
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const [productos, setProductos] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProducto, setSelectedProducto] = useState(null);
 
-    const handleEliminar = async (id) => {
+  const handleOpenModal = (producto) => {
+    setSelectedProducto(producto);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedProducto(null);
+    setIsModalOpen(false);
+  };
+
+  const handleProductosActualizado = (productoActualizado) => {
+    setProductos((prevProductos) =>
+      prevProductos.map((p) =>
+        p.id === productoActualizado.id ? { ...p, ...productoActualizado } : p
+      )
+    );
+  };
+
+  const handleEliminar = async (id) => {
     try {
-        
-         await fetch(`${apiRest}/articulos/${id}`, {
-             method: 'DELETE',
-         });
-         console.log(`Producto con id ${id} eliminado. `);
+      await fetch(`${apiRest}/articulos/${id}`, {
+        method: "DELETE",
+      });
+      console.log(`Producto con id ${id} eliminado. `);
 
-        // Elimina del estado
-        const nuevosProductos = productos.filter(producto => producto.id !== id);
-        setProductos(nuevosProductos);
+      // Elimina del estado
+      const nuevosProductos = productos.filter(
+        (producto) => producto.id !== id
+      );
+      setProductos(nuevosProductos);
     } catch (error) {
-        console.error("Error al eliminar el producto:", error);
+      console.error("Error al eliminar el producto:", error);
     }
-};
+  };
 
+  const fetchProductos = async () => {
+    try {
+      const response = await fetch(`${apiRest}/articulos`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-    const fetchProductos = async () => {
-        try {
-            const response = await fetch(`${apiRest}/articulos`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log(data)
-            setProductos(data);
-            setLoading(false);
-        } catch (error) {
-            console.error("Error detallado:", error);
-            setError(`No se pudo conectar con el servidor. Verifica que el servidor esté corriendo en el puerto 3001: ${error.message}`);
-            setLoading(false);
-        }
+      const data = await response.json();
+      console.log(data);
+      setProductos(data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error detallado:", error);
+      setError(
+        `No se pudo conectar con el servidor. Verifica que el servidor esté corriendo en el puerto 3001: ${error.message}`
+      );
+      setLoading(false);
     }
-    useEffect(() => {
-        fetchProductos();
-    }
-    , []);
-    // Función para reintentar la conexión
-    const handleRetry = () => {
-        setLoading(true);
-        setError(null);
-        fetchProductos();
-    }
-    if (loading) {
-        return (
-            <div className="loading-container">
-                <p>Cargando productos...</p>
-            </div>
-        );
-    }
-    if (error) {
-        return (
-            <div className="error-container">
-                <h3>Error de conexión</h3>
-                <p>{error}</p>
-                <button onClick={handleRetry} className="retry-button">Reintentar</button>
-            </div>
-        );
-    }
+  };
+  useEffect(() => {
+    fetchProductos();
+  }, []);
+  // Función para reintentar la conexión
+  const handleRetry = () => {
+    setLoading(true);
+    setError(null);
+    fetchProductos();
+  };
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <p>Cargando productos...</p>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="error-container">
+        <h3>Error de conexión</h3>
+        <p>{error}</p>
+        <button onClick={handleRetry} className="retry-button">
+          Reintentar
+        </button>
+      </div>
+    );
+  }
   if (!productos || productos.length === 0) {
-        return (
-            <div className="error-container">
-                <h3>No hay productos disponibles</h3>
-            </div>
-        );
-    }   
-     return (
-         <div className="card">   
-             
-             <div className="card-body table-responsive p-0"> 
-                 <table className="table table-striped table-valign-middle table-bordered">
-                     <tr>
-                         <th> nombre </th>
-                         <th> categoria </th>
-                         <th> precio </th>
-                         <th> </th>
-                     </tr>
-                     {productos.map((producto) => (
-                         <tr key={producto.id}>
-                             <td> {producto.nombre} </td>
-                             <td> {producto.categoria.nombre} </td>
-                             <td> {producto.precio} </td>
-                             <td> 
-                                 <button className="link-button" onClick={() => console.log('Editar clicked')}>editar</button> 
-                                 <button className="link-button" onClick={() => handleEliminar(producto.id)}>eliminar</button>
-                             </td>
-                         </tr>
-                     ))}
-                 </table>
-             </div>
-         </div>
-     )
+    return (
+      <div className="error-container">
+        <h3>No hay productos disponibles</h3>
+      </div>
+    );
+  }
+  return (
+    <div className="card">
+      <div className="card-body table-responsive p-0">
+        <table className="table table-striped table-valign-middle table-bordered">
+          <tr>
+            <th> nombre </th>
+            <th> categoria </th>
+            <th> precio </th>
+            <th> </th>
+          </tr>
+          {productos.map((producto) => (
+            <tr key={producto.id}>
+              <td> {producto.nombre} </td>
+              <td> {producto.categoria?.nombre || "Sin categoría"} </td>
+              <td> {producto.precio} </td>
+              <td>
+                <button
+                  className="link-button"
+                  onClick={() => handleOpenModal(producto)}
+                >
+                  Editar
+                </button>
+                <button
+                  className="link-button"
+                  onClick={() => handleEliminar(producto.id)}
+                >
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          ))}
+        </table>
+        {isModalOpen && (
+          <EditaProductoModal
+            producto={selectedProducto}
+            onClose={handleCloseModal}
+            onProductosActualizado={handleProductosActualizado}
+          />
+        )}
+      </div>
+    </div>
+  );
 }

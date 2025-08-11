@@ -10,13 +10,10 @@ export function ListadoCategoria() {
     const handleEliminar = async (id) => {
         
     try {
-        
-         await fetch(`${apiRest}/categoria/${id}`, {
+        await fetch(`${apiRest}/categoria/${id}`, {
              method: 'DELETE',
          });
-
-        // Elimina del estado
-        const nuevasCategorias = categorias.filter(producto => producto.id !== id);
+        const nuevasCategorias = categorias.filter(categoria => categoria.id !== id);
         setCategorias(nuevasCategorias);
     } catch (error) {
         console.error("Error al eliminar la categoria:", error);

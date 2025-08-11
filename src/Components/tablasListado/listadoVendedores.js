@@ -1,17 +1,38 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { apiRest } from "../../service/apiRest";
+import { EditarVendedorModal } from "../modals/EditarVendedorModal";
 
 export function ListadoVendedores() {
   const [vendedores, setVendedores] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCliente, setSelectedVendedores] = useState(null);
+
+  const handleOpenModal = (vendedores) => {
+    setSelectedVendedores(vendedores);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedVendedores(null);
+    setIsModalOpen(false);
+  };
+
+  const handleVendedorActualizado = (vendedorActualizado) => {
+    setVendedores((prevVendedores) =>
+      prevVendedores.map((v) =>
+        v.id === vendedorActualizado.id ? { ...v, ...vendedorActualizado } : v
+      )
+    );
+  };
 
   const handleEliminar = async (id) => {
     try {
       await fetch(`${apiRest}/vendedor/${id}`, {
         method: "DELETE",
       });
-      console.log(`Vendedor con id ${id} eliminado. `);
+      console.log(`Vendedor con ${id} eliminado.`);
 
       // Elimina del estado
       const nuevosVendedores = vendedores.filter(
@@ -71,11 +92,11 @@ export function ListadoVendedores() {
               <td>{vendedor.nombre}</td>
               <td>{vendedor.telefono}</td>
               <td>{vendedor.direccion}</td>
-              <td>{vendedor.cuentaCorriente.saldo}</td>
+              <td>{vendedor.cuentaCorriente?.saldo ?? 0}</td>
               <td>
                 <button
                   className="link-button"
-                  onClick={() => console.log("editar clicked")}
+                  onClick={() => handleOpenModal(vendedor)}
                 >
                   Editar
                 </button>
@@ -97,6 +118,13 @@ export function ListadoVendedores() {
           </tr>
         </tbody>
       </table>
+      {isModalOpen && (
+        <EditarVendedorModal
+          vendedor={selectedCliente}
+          onClose={handleCloseModal}
+          onVendedoresActualizado={handleVendedorActualizado}
+        />
+      )}
     </div>
   );
 }
