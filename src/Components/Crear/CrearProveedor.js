@@ -3,18 +3,16 @@ import Swal from "sweetalert2";
 import { apiRest } from "../../service/apiRest";
 
 
-export const CrearVendedor = () => {
+export const CrearProveedor = () => {
   const [nombre, setNombre] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [button, setButton] = useState(false);
   const [direccion, setDireccion] = useState("");
   const [telefono, setTelefono] = useState("");
 
   const handleRetry = () => {
     setLoading(false);
     setError(null);
-    setButton(false);
   };
   useEffect(() => {
     //MostrarAlerta();
@@ -22,13 +20,13 @@ export const CrearVendedor = () => {
 
   const MostrarAlerta = () => {
     Swal.fire({
-      title: "Creación de Vendedor",
-      text: "el vendedor fue creada",
+      title: "Crear Proveedor",
+      text: "el proveedor fue creado correctamente",
       icon: "success",
       draggable: true,
       timer: 1000,
     }).then(() => {
-      window.location.href = "/vendedores";
+      window.location.href = "/proveedores";
     });
   };
 
@@ -38,7 +36,7 @@ export const CrearVendedor = () => {
 
     try {
       // Corregido el endpoint - asegúrate de que esta URL sea correcta para tu API
-      const response = await fetch(`${apiRest}/vendedor`, {
+      const response = await fetch(`${apiRest}/proveedor`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -53,14 +51,13 @@ export const CrearVendedor = () => {
 
       const data = await response.json();
 
-      const storedVendedores = localStorage.getItem('vendedores');
-      const vendedores = storedVendedores ? JSON.parse(storedVendedores) : [];
-      const updatedVendedores = [...vendedores, data];
-      localStorage.setItem('vendedores', JSON.stringify(updatedVendedores));
+      const storedProveedores = localStorage.getItem('proveedores');
+      const proveedores = storedProveedores ? JSON.parse(storedProveedores) : [];
+      const updatedProveedores = [...proveedores, data];
+      localStorage.setItem('proveedores', JSON.stringify(updatedProveedores));
 
-      console.log("Vendedor creado:", data);
+      console.log("Proveedor creado:", data);
       MostrarAlerta();
-      setButton(true);
       setLoading(false);
     } catch (error) {
       console.error("Error detallado:", error);
@@ -73,7 +70,7 @@ export const CrearVendedor = () => {
   if (loading) {
     return (
       <div className="loading-container">
-        <p>Cargando vendedores...</p>
+        <p>Cargando proveedores...</p>
       </div>
     );
   }
@@ -143,7 +140,7 @@ export const CrearVendedor = () => {
               class="btn btn-primary"
               disabled={loading}
             >
-              {loading ? "Creando..." : "Crear Vendedor"}
+              {loading ? "Creando..." : "Crear Proveedor"}
             </button>  
             </div>      
           </div>

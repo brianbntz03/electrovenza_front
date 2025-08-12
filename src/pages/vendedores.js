@@ -13,7 +13,7 @@ const vendedores = () => {
           </a>
           <a class="btn btn-sm btn-info float-right" href="/crearvendedores">
             {" "}
-            Crear Vendedores
+            Crear Vendedor
           </a>
         </div>
       </div>

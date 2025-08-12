@@ -20,6 +20,7 @@ import PrintCuotas from "../pages/print/PageCuotasImprimir";
 import { CrearVendedor } from "./Crear/CrearVendedor";
 import { CrearCliente } from "./Crear/CrearClientes";
 import RegistroMovimientoCuenta from "../pages/RegistroMovimientoCuenta";
+import { CrearProveedor } from "./Crear/CrearProveedor";
 
 
 export default function Content() {
@@ -74,22 +75,14 @@ export default function Content() {
                 <Route path="/print/cuotas/:venta_id" element={<PrintCuotas />} />
                 <Route path="/crearPrducto" Component={CrearPrducto}></Route>
                 <Route path="/vendedores" Component={vendedores}></Route>
+                <Route path="/crearvendedores" Component={CrearVendedor}></Route>
                 <Route path="/clientes" Component={Clientes}></Route>
                 <Route path="/proveedores" Component={Proveedores}></Route>
-                <Route
-                  path="/cuotasListado"
-                  Component={PageListadoCuotas}
-                ></Route>
-                <Route
-                  path="/crearvendedores"
-                  Component={CrearVendedor}
-                ></Route>
+                <Route path="/crearproveedor" Component={CrearProveedor}></Route>
+                <Route path="/cuotasListado" Component={PageListadoCuotas}></Route>
                 <Route path="/crearcliente" Component={CrearCliente}></Route>
                 {/* Vendedores */}
-                <Route
-                  path="/cuotas-por-cobrar"
-                  Component={PageCuotasPorCobrar}
-                ></Route>
+                <Route path="/cuotas-por-cobrar" Component={PageCuotasPorCobrar} ></Route>
                 <Route
                 path="/registrar-movimento" Component={RegistroMovimientoCuenta}>
                 </Route>
