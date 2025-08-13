@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Categorias from "../pages/categoriasListado";
-import Productos from "../pages/productosLIstado";
+import PageProductosListado from "../pages/productosLIstado";
 import CrearPresupuesto from "../Presupuestos/CrearPresupuesto";
 import HistorialPresupuesto from "../Presupuestos/HistorialPresupuesto";
 import ListaPresupuesto from "../Presupuestos/ListaPresupuesto";
@@ -14,7 +14,8 @@ import { CrearPrducto } from "./Crear/CrearProducto";
 import vendedores from "../pages/vendedores";
 import Clientes from "../pages/Clientes";
 import Proveedores from "../pages/Proveedores";
-import PageListadoCuotas from "../pages/cuotasListado";
+import PageListadoSettingCuotasElectro from "../pages/SettingCuotasElectroListado";
+import PageSettingCuotasCreditoListado from "../pages/SettingCuotasCreditoListado";
 import PageCuotasPorCobrar from "../pages/PageCuotasPorCobrar";
 import PrintCuotas from "../pages/print/PageCuotasImprimir";
 import { CrearVendedor } from "./Crear/CrearVendedor";
@@ -52,7 +53,7 @@ export default function Content() {
                 <Route path="/" element={<Navigate to="/index" replace />} />
                 <Route path="/index" Component={Dashboard}></Route>
                 <Route path="/categoriasListado" Component={Categorias}></Route>
-                <Route path="/productosListado" Component={Productos}></Route>
+                <Route path="/productosListado" Component={PageProductosListado}></Route>
                 <Route path="/crear" Component={CrearPresupuesto}></Route>
                 <Route
                   path="/historial"
@@ -79,7 +80,8 @@ export default function Content() {
                 <Route path="/clientes" Component={Clientes}></Route>
                 <Route path="/proveedores" Component={Proveedores}></Route>
                 <Route path="/crearproveedor" Component={CrearProveedor}></Route>
-                <Route path="/cuotasListado" Component={PageListadoCuotas}></Route>
+                <Route path="/settingCuotasElectoListado" Component={PageListadoSettingCuotasElectro}></Route>
+                <Route path="/SettingCuotasCreditoListado" Component={PageSettingCuotasCreditoListado}></Route>
                 <Route path="/crearcliente" Component={CrearCliente}></Route>
                 {/* Vendedores */}
                 <Route path="/cuotas-por-cobrar" Component={PageCuotasPorCobrar} ></Route>

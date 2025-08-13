@@ -189,10 +189,17 @@ export default function Aside() {
               </li>
               <li className="nav-header">CONFIGURACION</li>
               <li className="nav-item">
-                <NavLink to="/cuotasListado" className="nav-link">
+                <NavLink to="/settingCuotasElectoListado" className="nav-link">
                   <i className="nav-icon fas fa-table" />
                   <p>
                     Cuotas Electro
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+                <NavLink to="/SettingCuotasCreditoListado" className="nav-link">
+                  <i className="nav-icon fas fa-table" />
+                  <p>
+                    Cuotas Credito
                     <i className="fas fa-angle-left right" />
                   </p>
                 </NavLink>

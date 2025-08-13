@@ -1,6 +1,6 @@
 import { ListadoProducto } from "../Components/tablasListado/ListadoProducto";
 
-const Productos = () => {
+const PageProductosListado = () => {
   const producto = ListadoProducto();
   return (
     <div className="card">
@@ -23,4 +23,4 @@ const Productos = () => {
   );
 };
 
-export default Productos;
+export default PageProductosListado;

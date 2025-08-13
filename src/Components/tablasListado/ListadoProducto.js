@@ -116,6 +116,7 @@ export function ListadoProducto() {
             <th> nombre </th>
             <th> categoria </th>
             <th> precio </th>
+            <th> stock </th>
             <th> </th>
           </tr>
           {productos.map((producto) => (
@@ -123,6 +124,7 @@ export function ListadoProducto() {
               <td> {producto.nombre} </td>
               <td> {producto.categoria?.nombre || "Sin categoría"} </td>
               <td> {producto.precio} </td>
+              <td> {producto.stock} </td>
               <td>
                 <button
                   onClick={() => handleOpenModal(producto)}

@@ -1,11 +1,11 @@
 import { ListadoSettingCuotas } from "../Components/tablasListado/listadoSettingCuotas";
 
-const PageListadoCuotas = () => {
+const PageListadoSettingCuotasElectro = () => {
   let settingCuotas =  ListadoSettingCuotas();
   return (
         <div className="card">
           <div className="card-header border-0">
-            <h3 className="card-title">Categorias</h3>
+            <h3 className="card-title">Configuración de Cuotas e Interes para Electro</h3>
             <div className="card-tools">
               <a class="btn btn-sm btn-info float-right" href='/crearcategorias' > Crear Cuota</a>
               <a class="btn btn-sm btn-success float-right" >  Excel <i className="fas fa-download" /> </a>
@@ -19,4 +19,4 @@ const PageListadoCuotas = () => {
     )
 }
 
-export default PageListadoCuotas;
+export default PageListadoSettingCuotasElectro;
