@@ -1,12 +1,34 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { apiRest } from "../../service/apiRest";
+import { EditarCategoriaModal } from "../modals/EditarCategoriaModal";
 
 export function ListadoCategoria() {
   const [categorias, setCategorias] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectCategoria, setSelectCategoria] = useState(null);
 
+  const handleOpenModal = (categoria) => {
+    setSelectCategoria(categoria);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectCategoria(null);
+    setIsModalOpen(false);
+  }
+
+  const handleCategoriaActualizado = (categoriaActualizada) => {
+    const nuevasCategorias = categorias.map((categoria) =>
+      categoria.id === categoriaActualizada.id ? categoriaActualizada : categoria
+    ); 
+    setCategorias(nuevasCategorias);
+    localStorage.setItem('categorias', JSON.stringify(nuevasCategorias));
+  }
+ 
+   
   const handleEliminar = async (id) => {
     try {
       await fetch(`${apiRest}/categoria/${id}`, {
@@ -101,7 +123,7 @@ export function ListadoCategoria() {
               <td>
                 <button
                   className="link-button"
-                  onClick={() => console.log("Editar clicked")}
+                  onClick={() => handleOpenModal(categoria)}
                 >
                   editar
                 </button>
@@ -115,6 +137,13 @@ export function ListadoCategoria() {
             </tr>
           ))}
         </table>
+        {isModalOpen && (
+          <EditarCategoriaModal
+            categoria={selectCategoria}
+            onClose={handleCloseModal}
+            onCategoriaActualizada={handleCategoriaActualizado}
+          />
+        )}
       </div>
     </div>
   );
