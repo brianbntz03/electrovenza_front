@@ -61,7 +61,11 @@ export default function PrintCuotas() {
             <p>
               ({cuota.numero.toString().padStart(2, '0')}) 
               {convertIsoToDMY(cuota.fecha)} &nbsp;
-              ...............................
+              {
+                cuota.monto_cobrado>0 ? (
+                  cuota.monto_cobrado.toString().padStart(8, ' ') 
+                ) : ('. '.repeat(14)) }
+              
             </p>
           </div>
         ))}
