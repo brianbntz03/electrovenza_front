@@ -6,6 +6,7 @@
   .print-container,
   .print-container * {
     visibility: visible;
+    
   }
 
   .print-container {
@@ -24,6 +25,11 @@
     flex-wrap: wrap;
     margin-right: -7.5px;
     margin-left: -7.5px;
+  }
+
+  .cuotas{
+    background-image: url("../../../public/img/logo_para_marca_de_agua.png");
+    background-repeat: repeat;
   }
 
   .col-md-3{

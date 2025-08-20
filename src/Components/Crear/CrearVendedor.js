@@ -10,6 +10,9 @@ export const CrearVendedor = () => {
   const [button, setButton] = useState(false);
   const [direccion, setDireccion] = useState("");
   const [telefono, setTelefono] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleRetry = () => {
     setLoading(false);
@@ -44,7 +47,7 @@ export const CrearVendedor = () => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ nombre, direccion, telefono }),
+        body: JSON.stringify({ nombre, direccion, telefono, username, password, email }),
       });
 
       if (!response.ok) {
@@ -133,6 +136,48 @@ export const CrearVendedor = () => {
                 onChange={(e) => setTelefono(e.target.value)}
                 type="text"
                 name="telefono"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputDescription">
+              Email :
+              </label>
+              <input
+               class="form-control"  
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                name="email"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputDescription">
+              Nombre de usuario :
+              </label>
+              <input
+               class="form-control"  
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                type="text"
+                name="username"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputDescription">
+              Contraseña :
+              </label>
+              <input
+               class="form-control"  
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                name="password"
                 required
               />
             </div>

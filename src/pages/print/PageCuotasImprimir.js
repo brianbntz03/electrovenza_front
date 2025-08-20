@@ -55,7 +55,7 @@ export default function PrintCuotas() {
       <p>Cliente: {cliente}</p>
       <p>Vendedor: {vendedor}</p>
 
-      <div className="row">
+      <div className="row cuotas">
         {cuotas.map((cuota) => (
           <div className="col-md-3">
             <p>

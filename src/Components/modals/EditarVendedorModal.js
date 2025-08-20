@@ -6,6 +6,9 @@ export function EditarVendedorModal({ vendedor, onClose, onVendedoresActualizado
     nombre: "",
     telefono: "",
     direccion: "",
+    email: "",
+    username: "",
+    password: "",
   });
   const [error, setError] = useState(null);
 
@@ -15,6 +18,9 @@ export function EditarVendedorModal({ vendedor, onClose, onVendedoresActualizado
         nombre: vendedor.nombre || "",
         telefono: vendedor.telefono || "",
         direccion: vendedor.direccion || "",
+        email: vendedor.user.email || "",
+        username: vendedor.user.username || "",
+        password: "",
       });
     }
   }, [vendedor]);
@@ -112,12 +118,42 @@ export function EditarVendedorModal({ vendedor, onClose, onVendedoresActualizado
                 />
               </div>
               <div className="form-group">
+                <label>Email</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="form-group">
                 <label>Dirección </label>
                 <input
                   type="text"
                   className="form-control"
                   name="direccion"
                   value={formData.direccion}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Nombre de usuario</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Contraseña</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  name="password"
+                  value={formData.password}
                   onChange={handleChange}
                 />
               </div>
