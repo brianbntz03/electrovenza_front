@@ -5,7 +5,6 @@ import { apiRest } from "../../service/apiRest";
 export const CrearCliente = () => {
   const [nombre, setNombre] = useState("");
   const [dni, setDni] = useState("");
-  const [precio, setPrecio] = useState("");
   const [direccionlocal, setDireccionlocal] = useState("");
   const [direccioncasa, setDireccioncasa] = useState("");
   const [telefono1, setTelefono1] = useState("");
@@ -60,6 +59,7 @@ export const CrearCliente = () => {
     setLoading(true);
 
     try {
+
       const response = await fetch(`${apiRest}/cliente`, {
         method: "POST",
         headers: {
@@ -68,15 +68,12 @@ export const CrearCliente = () => {
         },
         body: JSON.stringify({
           nombre,
-          dni,
-          precio,
+          'dni': Number(dni),
           direccion_local: direccionlocal,
           direccion_casa: direccioncasa,
-          telefono1,
-          telefono2,
-          vendedor: {
-            nombre: getNombreVendedorById(vendedorSeleccionado),
-          },
+          'telefono1': Number(telefono1),
+          'telefono2': Number(telefono2),
+          vendedor_id: Number(vendedorSeleccionado),
         }),
       });
 
