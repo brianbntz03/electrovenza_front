@@ -187,32 +187,44 @@ export default function Aside() {
                   </li>
                 </ul>
               </li>
-              <li className="nav-header">CONFIGURACION</li>
+
+
+
+              <li className="nav-header">CONF</li>
               <li className="nav-item">
-                <NavLink to="/settingCuotasElectoListado" className="nav-link">
-                  <i className="nav-icon fas fa-table" />
-                  <p>
-                    Cuotas Electro
-                    <i className="fas fa-angle-left right" />
-                  </p>
-                </NavLink>
-                <NavLink to="/SettingCuotasCreditoListado" className="nav-link">
-                  <i className="nav-icon fas fa-table" />
-                  <p>
-                    Cuotas Credito
-                    <i className="fas fa-angle-left right" />
-                  </p>
-                </NavLink>
+                <a href="#" class="nav-link">
+                  CONFIGURACION
+                  <i class="fas fa-angle-left right"></i>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li className="nav-item">
+                    <NavLink to="/settingCuotasElectoListado" className="nav-link">
+                      <i className="nav-icon fas fa-table" />
+                      <p>
+                        Cuotas Electro
+                        <i className="fas fa-angle-left right" />
+                      </p>
+                    </NavLink>
+                    <NavLink to="/SettingCuotasCreditoListado" className="nav-link">
+                      <i className="nav-icon fas fa-table" />
+                      <p>
+                        Cuotas Credito
+                        <i className="fas fa-angle-left right" />
+                      </p>
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink to="/margenPrecioListado" className="nav-link">
+                      <i className="nav-icon fas fa-table" />
+                      <p>
+                        Margen Precio
+                        <i className="fas fa-angle-left right" />
+                      </p>
+                    </NavLink>
+                  </li>
+                </ul>
               </li>
-              <li className="nav-item">
-                <NavLink to="/margenPrecioListado" className="nav-link">
-                  <i className="nav-icon fas fa-table" />
-                  <p>
-                    Margen Precio
-                    <i className="fas fa-angle-left right" />
-                  </p>
-                </NavLink>
-              </li>
+              
               
               
 
