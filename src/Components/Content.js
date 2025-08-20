@@ -22,6 +22,7 @@ import { CrearVendedor } from "./Crear/CrearVendedor";
 import { CrearCliente } from "./Crear/CrearClientes";
 import RegistroMovimientoCuenta from "../pages/RegistroMovimientoCuenta";
 import { CrearProveedor } from "./Crear/CrearProveedor";
+import PageOtorgarCredito from "../pages/PageOtorgarCredito";
 
 
 export default function Content() {
@@ -88,6 +89,7 @@ export default function Content() {
                 <Route
                 path="/registrar-movimento" Component={RegistroMovimientoCuenta}>
                 </Route>
+                <Route path="/otorgarcredito" Component={PageOtorgarCredito}></Route>
               </Routes>
             </div>
           </div>
