@@ -79,9 +79,6 @@ export default function Aside() {
 
 
               <li className="nav-header">VISTA ADMINISTRADOR</li>
-
-              
-
               <li className="nav-item">
                 <NavLink to="/categoriasListado" className="nav-link">
                   <i className="nav-icon fas fa-table" />
@@ -212,9 +209,9 @@ export default function Aside() {
                     <i className="fas fa-angle-left right" />
                   </p>
                 </NavLink>
-              </li>
+              </li>   
 
-              <li className="nav-item">
+             <li className="nav-item">
                 <NavLink to="/otorgarcredito" className="nav-link">
                   <i className="nav-icon fas fa-table" />
                   <p>
@@ -222,9 +219,7 @@ export default function Aside() {
                     <i className="fas fa-angle-left right" />
                   </p>
                 </NavLink>
-              </li>
-              
-              
+              </li>      
 
             </ul>
           </nav>

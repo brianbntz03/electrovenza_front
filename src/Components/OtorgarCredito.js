@@ -25,12 +25,12 @@ const FormMontoaOtorgar = ({ monto, setMonto }) => (
   <div className="form-group">
     <label htmlFor="monto">Monto a Otorgar</label>
     <input
-      type="number"
-      className="form-control"
       id="monto"
-      placeholder="Ingrese el monto"
+      type="text"
+      className="form-control"
       value={monto}
       onChange={(e) => setMonto(e.target.value)}
+      placeholder="Ingrese el monto"
     />
   </div>
 );
