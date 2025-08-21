@@ -9,7 +9,7 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
     direccion_casa: "",
     telefono1: "",
     telefono2: "",
-    vendedor_id: "",
+    vendedor_id: 0,
   });
   const [vendedores, setVendedores] = useState([]);
   const [error, setError] = useState(null);
@@ -18,12 +18,12 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
     if (cliente) {
       setFormData({
         nombre: cliente.nombre || "",
-        dni: cliente.dni || "",
+        dni: Number(cliente.dni) || 0,
         direccion_local: cliente.direccion_local || "",
         direccion_casa: cliente.direccion_casa || "",
-        telefono1: cliente.telefono1 || "",
-        telefono2: cliente.telefono2 || "",
-        vendedor_id: cliente.vendedor ? String(cliente.vendedor.id) : "",
+        telefono1: Number(cliente.telefono1) || 0,
+        telefono2: Number(cliente.telefono2) || 0,
+        vendedor_id: cliente.vendedor ? Number(cliente.vendedor.id) : 0,
       });
     }
   }, [cliente]);
@@ -33,7 +33,7 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
       try {
         const response = await fetch(`${apiRest}/vendedor`);
         if (!response.ok) {
-          throw new Error("No se pudo obtener la lista de vendedores");
+          throw new Error("No se pudo actualizar los datos del cliente");
         }
         const data = await response.json();
         setVendedores(data);
@@ -52,6 +52,14 @@ const handleChange = (e) => {
     [name]: value,
   }));
 };
+
+const handleChangeNumber = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: Number(value),
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,7 +80,7 @@ const handleChange = (e) => {
 
       const clienteActualizado = await response.json();
       const vendedorSeleccionado = vendedores.find(
-        (vendedor) => String(vendedor.id) === formData.vendedor_id
+        (vendedor) => Number(vendedor.id) === formData.vendedor_id
       );
       const clienteConVendedorCompleto = {
         ...clienteActualizado,
@@ -183,8 +191,8 @@ const handleChange = (e) => {
                 <select
                   className="form-control"
                   name="vendedor_id"
-                  value={String(formData.vendedor_id)}
-                  onChange={handleChange}
+                  value={Number(formData.vendedor_id)}
+                  onChange={handleChangeNumber}
                 >
                   <option value="">Seleccione un vendedor</option>
                   {vendedores.map((vendedor) => (
