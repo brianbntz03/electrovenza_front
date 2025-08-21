@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { apiRest } from "../../service/apiRest";
 import { EditarCategoriaModal } from "../modals/EditarCategoriaModal";
+import { apiRest } from "../../service/apiRest";
 
 export function ListadoCategoria() {
   const [categorias, setCategorias] = useState([]);

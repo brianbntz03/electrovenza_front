@@ -20,11 +20,13 @@ export function ListadoProducto() {
   };
 
   const handleProductosActualizado = (productoActualizado) => {
-    setProductos((prevProductos) =>
-      prevProductos.map((p) =>
+    setProductos((prevProductos) => {
+      const nuevosProductos = prevProductos.map((p) =>
         p.id === productoActualizado.id ? { ...p, ...productoActualizado } : p
-      )
-    );
+      );
+      localStorage.setItem('productos', JSON.stringify(nuevosProductos));
+      return nuevosProductos;
+    });
   };
 
   const handleEliminar = async (id) => {
