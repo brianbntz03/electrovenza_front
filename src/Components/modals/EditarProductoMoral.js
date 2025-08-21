@@ -15,8 +15,8 @@ export function EditaProductoModal({ producto, onClose, onProductosActualizado }
     if (producto) {
       setFormData({
         nombre: producto.nombre || "",
-        telefono: producto.telefono || "",
-        precio: producto.precio || "",
+        telefono: producto.telefono || 0,
+        precio: producto.precio || 0,
         idCategoria: producto.categoria ? String(producto.categoria.id) : "", // Changed from categoria_id
       });
     }
@@ -43,6 +43,14 @@ export function EditaProductoModal({ producto, onClose, onProductosActualizado }
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
+    }));
+  };
+
+  const handleChangeNumber = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: Number(value),
     }));
   };
 
@@ -143,7 +151,7 @@ export function EditaProductoModal({ producto, onClose, onProductosActualizado }
                   className="form-control"
                   name="precio"
                   value={formData.precio}
-                  onChange={handleChange}
+                  onChange={handleChangeNumber}
                 />
               </div>
               <div className="modal-footer">
