@@ -122,7 +122,7 @@ export function RegistrarMovimieto() {
 
   // 3. Muestra el formulario cuando todo está listo
   return (
-      <form onSubmit={handleSubmit}>
+  <form onSubmit={handleSubmit}>
   <div className="card-body">
   <div className="row">
     <div className="col-md-4">

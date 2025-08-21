@@ -48,6 +48,15 @@ export default function Aside() {
                 </NavLink>
               </li>
               <li className="nav-item">
+                <NavLink to="/otorgarcredito" className="nav-link">
+                  <i className="nav-icon fas fa-table" />
+                  <p>
+                    Otorgar Credito
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
+              <li className="nav-item">
                 <NavLink to="/cuotas-por-cobrar" className="nav-link">
                   <i className="nav-icon fas fa-file-invoice-dollar" />
                   <p>
@@ -168,6 +177,8 @@ export default function Aside() {
                   </li>
                 </ul>
               </li>
+              
+
               
               
               
