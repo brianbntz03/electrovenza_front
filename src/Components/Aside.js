@@ -88,9 +88,6 @@ export default function Aside() {
 
 
               <li className="nav-header">VISTA ADMINISTRADOR</li>
-
-              
-
               <li className="nav-item">
                 <NavLink to="/categoriasListado" className="nav-link">
                   <i className="nav-icon fas fa-table" />
@@ -178,10 +175,42 @@ export default function Aside() {
                 </ul>
               </li>
               
+              <li className="nav-header">CONFIGURACION</li>
+              <li className="nav-item">
+                <NavLink to="/settingCuotasElectoListado" className="nav-link">
+                  <i className="nav-icon fas fa-table" />
+                  <p>
+                    Cuotas Electro
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+                <NavLink to="/SettingCuotasCreditoListado" className="nav-link">
+                  <i className="nav-icon fas fa-table" />
+                  <p>
+                    Cuotas Credito
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to="/margenPrecioListado" className="nav-link">
+                  <i className="nav-icon fas fa-table" />
+                  <p>
+                    Margen Precio
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>   
 
-              
-              
-              
+             <li className="nav-item">
+                <NavLink to="/otorgarcredito" className="nav-link">
+                  <i className="nav-icon fas fa-table" />
+                  <p>
+                    Otorgar Credito
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>      
 
             </ul>
           </nav>

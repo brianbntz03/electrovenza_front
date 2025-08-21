@@ -25,12 +25,12 @@ const FormMontoaOtorgar = ({ monto, setMonto }) => (
   <div className="form-group">
     <label htmlFor="monto">Monto a Otorgar</label>
     <input
-      type="number"
-      className="form-control"
       id="monto"
-      placeholder="Ingrese el monto"
+      type="text"
+      className="form-control"
       value={monto}
       onChange={(e) => setMonto(e.target.value)}
+      placeholder="Ingrese el monto"
     />
   </div>
 );
@@ -130,15 +130,17 @@ const OtorgarCredito = () => {
       if (cuotaSeleccionada) {
         const cuotas = cuotaSeleccionada.numero;
         const interesDecimal = cuotaSeleccionada.interes ;
+        const totalSinRedondear = monto * (1 + interesDecimal / 100 ) ;
+        const cuotaSinRedondear = totalSinRedondear / cuotas;
 
-        // New calculation for totalPagar: (monto / interesDecimal), then rounded up to nearest hundred
-        const calculatedTotal = monto / interesDecimal;
-        const totalPagar = Math.ceil(calculatedTotal / 100) * 100;
+        const valorCuota = Math.ceil(cuotaSinRedondear / 100 ) * 100 ;
+        const totalPagar = valorCuota * cuotas;
 
         setDetallesFinanciacion({
           cuotas,
           interes: `${cuotaSeleccionada.interes}%`,
-          totalPagar: totalPagar.toFixed(2),
+          valorCuota: valorCuota,
+          totalPagar: totalPagar,
         });
       }
     } else {
@@ -179,7 +181,7 @@ const OtorgarCredito = () => {
               <tr>
                 <td>{detallesFinanciacion.cuotas}</td>
                 <td>{detallesFinanciacion.interes}</td>
-                <td>${monto}</td>
+                <td>${detallesFinanciacion.valorCuota}</td>
                 <td>${detallesFinanciacion.totalPagar}</td>
               </tr>
             </tbody>
