@@ -42,7 +42,7 @@ export const CrearCategorias = () => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ nombre, descripcion }),
+        body: JSON.stringify({ nombre, descripcion, activo: true }),
       });
 
       if (!response.ok) {

@@ -4,9 +4,12 @@ import { apiRest } from "../../service/apiRest";
 export function EditaProductoModal({ producto, onClose, onProductosActualizado }) {
   const [formData, setFormData] = useState({
     nombre: "",
-    telefono: "",
-    precio: "",
-    idCategoria: "", // Changed from categoria_id
+    descripcion: "",
+    precio: 0,
+    precio_mayorista: 0,
+    stock: 0,
+    idCategoria: "",
+    activo: true,
   });
   const [error, setError] = useState(null);
   const [categorias, setCategorias] = useState([]);
@@ -15,9 +18,11 @@ export function EditaProductoModal({ producto, onClose, onProductosActualizado }
     if (producto) {
       setFormData({
         nombre: producto.nombre || "",
-        telefono: producto.telefono || 0,
-        precio: producto.precio || 0,
-        idCategoria: producto.categoria ? String(producto.categoria.id) : "", // Changed from categoria_id
+        descripcion: producto.descripcion || "",
+        precio: Number(producto.precio) || 0,
+        precio_mayorista: Number(producto.precio_mayorista) || 0,
+        stock: Number(producto.stock) || 0,
+        idCategoria: producto.categoria ? Number(producto.categoria.id) : 0,
       });
     }
   }, [producto]);
@@ -30,19 +35,21 @@ export function EditaProductoModal({ producto, onClose, onProductosActualizado }
           throw new Error("No se pudo obtener la lista de categorias");
         }
         const data = await response.json();
-        setCategorias(data);
+        // Show active categories AND the product's current category, even if inactive
+        const filteredData = data.filter(cat => cat.activo || (producto && producto.categoria && cat.id === producto.categoria.id));
+        setCategorias(filteredData);
       } catch (error) {
         setError(error.message);
       }
     };
     fetchCategorias();
-  }, []);
+  }, [producto]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: name === "idCategoria" ? Number(value) : value,
     }));
   };
 
@@ -58,6 +65,7 @@ export function EditaProductoModal({ producto, onClose, onProductosActualizado }
     e.preventDefault();
     try {
       console.log("Enviando datos para actualizar producto:", formData);
+
       const response = await fetch(`${apiRest}/articulos/${producto.id}`, {
         method: "PATCH",
         headers: {
@@ -73,7 +81,7 @@ export function EditaProductoModal({ producto, onClose, onProductosActualizado }
 
       const productoActualizado = await response.json();
       const categoriaSeleccionada = categorias.find(
-        (cat) => String(cat.id) === formData.idCategoria
+        (cat) => cat.id === formData.idCategoria
       );
       const productoConCategoriaCompleta = {
         ...productoActualizado,
@@ -88,34 +96,19 @@ export function EditaProductoModal({ producto, onClose, onProductosActualizado }
     }
   };
 
-  if (!producto) {
-    return null;
-  }
+  if (!producto) return null;
 
   return (
-    <div
-      className="modal fade show"
-      style={{ display: "block" }}
-      tabIndex="-1"
-      role="dialog"
-    >
+    <div className="modal fade show" style={{ display: "block" }} tabIndex="-1" role="dialog">
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Editar Producto</h5>
-            <button
-              type="button"
-              className="close"
-              onClick={onClose}
-              aria-label="Close"
-            >
+            <button type="button" className="close" onClick={onClose} aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div
-            className="modal-body"
-            style={{ maxHeight: "60vh", overflowY: "auto" }}
-          >
+          <div className="modal-body" style={{ maxHeight: "60vh", overflowY: "auto" }}>
             {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={handleSubmit}>
               <div className="form-group">
@@ -129,37 +122,63 @@ export function EditaProductoModal({ producto, onClose, onProductosActualizado }
                 />
               </div>
               <div className="form-group">
-                <label>Categoria</label>
+                <label>Descripción</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="descripcion"
+                  value={formData.descripcion}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Categoría</label>
                 <select
                   className="form-control"
                   name="idCategoria"
                   value={formData.idCategoria}
-                  onChange={handleChange}
+                  onChange={handleChangeNumber}
                 >
-                  <option value="">Seleccione una Categoria</option>
-                  {categorias && categorias.map((categoria) => (
-                    <option key={categoria.id} value={String(categoria.id)}>
+                  <option value={0}>Seleccione una Categoria</option>
+                  {categorias.map((categoria) => (
+                    <option key={categoria.id} value={categoria.id}>
                       {categoria.nombre}
                     </option>
                   ))}
                 </select>
               </div>
               <div className="form-group">
-                <label>precio</label>
+                <label>Precio minorista</label>
                 <input
-                  type="text"
+                  type="number"
                   className="form-control"
                   name="precio"
                   value={formData.precio}
                   onChange={handleChangeNumber}
                 />
               </div>
+              <div className="form-group">
+                <label>Precio mayorista</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="precio_mayorista"
+                  value={formData.precio_mayorista}
+                  onChange={handleChangeNumber}
+                />
+              </div>
+              <div className="form-group">
+                <label>Stock</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="stock"
+                  value={formData.stock}
+                  onChange={handleChangeNumber}
+                />
+              </div>
               <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={onClose}
-                >
+                <button type="button" className="btn btn-secondary" onClick={onClose}>
                   Cancelar
                 </button>
                 <button type="submit" className="btn btn-primary">
