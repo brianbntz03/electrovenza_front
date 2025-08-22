@@ -59,7 +59,6 @@ export const ArticuloPresupuesto = () => {
       const resultado = await response.text();
       setMensajeVenta(resultado);
       setModalVisible(true);
-      console.log("Respuesta del servidor:", resultado);
     } catch (error) {
       console.error("Error al registrar la venta:", error);
       setMensajeVenta(`Error al registrar: ${error.message}`);
@@ -95,7 +94,6 @@ export const ArticuloPresupuesto = () => {
   const calcularTotal = () => {
     return presupuesto
       .reduce((acc, item) => acc + parseFloat(item.precio) * item.cantidad, 0)
-      .toFixed(2);
   };
 
   const calcularTotalConInteres = () => {
@@ -113,8 +111,19 @@ export const ArticuloPresupuesto = () => {
       0
     );
 
-    return total.toFixed(2);
+    return total;
   };
+
+  const sumarCuotas = () => {
+    const totalConInteres = calcularTotalConInteres();
+    const cuotaSeleccionada = cuotasFiltrados.find(
+      (c) => c.id == idinteres
+    );
+
+    const total = totalConInteres / cuotaSeleccionada.numero
+    
+    return total;
+  }
 
   const calcularPrecioConInteres = (precio, idCuotaSeleccionada) => {
     const cuotaSeleccionada = cuotasFiltrados.find(
@@ -273,12 +282,11 @@ export const ArticuloPresupuesto = () => {
       if (!response.ok)
         throw new Error(`Error en la solicitud: ${response.status}`);
       const data = await response.json();
-      console.log("Datos de artículos:", data);
-      console.log("Estructura del primer artículo:", data[0]);
+      
 
       
       const articulosConCategoria = data.map((articulo) => {
-        console.log(`Artículo ${articulo.id} - Categoría:`, articulo.categoria);
+      
 
         if (!articulo.categoria) {
           return { ...articulo, categoria: { nombre: "Sin categoría" } };
@@ -317,10 +325,8 @@ export const ArticuloPresupuesto = () => {
   const cargarVendedores = async () => {
     try {
       const response = await fetch(`${apiRest}/vendedor`);
-      console.log("Response vendedores:", response.status);
       if (response.ok) {
         const data = await response.json();
-        console.log("Datos vendedores:", data);
         setVendedoresFiltrados(data);
       }
     } catch (error) {
@@ -382,7 +388,7 @@ export const ArticuloPresupuesto = () => {
               <thead>
                 <tr>
                   <th>Código</th>
-                  <th>Nombre</th>
+                  <th>Articulo</th>
                   <th>Categoría</th>
                   <th>Precio</th>
                   <th></th>
@@ -397,7 +403,7 @@ export const ArticuloPresupuesto = () => {
                       {articulo.categoria?.nombre?.trim() || "Sin categoría"}
                     </td>
                     <td>
-                      {articulo.precio ? `$${articulo.precio}` : "No definido"}
+                      {articulo.precio.toLocaleString()}
                     </td>
                     <td>
                       <button
@@ -431,7 +437,7 @@ export const ArticuloPresupuesto = () => {
             <thead>
               <tr>
                 <th>Código</th>
-                <th>Descripción</th>
+                <th>Articulo</th>
                 <th>Categoría</th>
                 <th>Precio</th>
                 <th>Cantidad</th>
@@ -443,7 +449,7 @@ export const ArticuloPresupuesto = () => {
               {presupuesto.map((item) => (
                 <tr key={item.id}>
                   <td>{item.id}</td>
-                  <td>{item.descripcion}</td>
+                  <td>{item.nombre || item.descripcion}</td>
                   <td>{item.categoria?.nombre}</td>
                   <td>${item.precio}</td>
                   <td>
@@ -507,7 +513,7 @@ export const ArticuloPresupuesto = () => {
                 </td>
                 <td colSpan="2">
                   <strong>
-                    ${idinteres ? calcularTotalConInteres() : calcularTotal()}
+                    ${idinteres ? calcularTotalConInteres().toLocaleString() : calcularTotal().toLocaleString()}
                   </strong>
                 </td>
               </tr>
@@ -571,11 +577,12 @@ export const ArticuloPresupuesto = () => {
                 <thead>
                   <tr>
                     <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Contado</th>
                     <th>Cuotas</th>
-                    <th>Interés</th>
-                    <th>Subtotal</th>
-                    <th>Total con interés</th>
                     <th>Valor por cuota</th>
+                    <th>Total con interés</th>
+                    
                   </tr>
                 </thead>
                 <tbody>
@@ -596,36 +603,28 @@ export const ArticuloPresupuesto = () => {
                     return (
                       <tr key={`financiacion-${item.id}`}>
                         <td>{item.nombre || item.descripcion}</td>
+                        <td>{item.cantidad}</td>
+                        <td>${subtotal.toLocaleString()}</td>
                         <td>{numeroCuotas}</td>
-                        <td>{interes}%</td>
-                        <td>${subtotal.toFixed(2)}</td>
-                        <td>${conInteres.toFixed(2)}</td>
-                        <td>${valorPorCuota}</td>
+                        <td>${valorPorCuota.toLocaleString()}</td>
+                        <td>${conInteres.toLocaleString()}</td>
+                        
                       </tr>
                     );
                   })}
                   <tr
                     style={{ backgroundColor: "#f8f9fa", fontWeight: "bold" }}
                   >
-                    <td td colSpan="3" style={{ textAlign: "center" }}>
+                    <td td colSpan="2" style={{ textAlign: "center" }}>
                       TOTAL
                     </td>
-                    <td>${calcularTotal()}</td>
-                    <td>${calcularTotalConInteres()}</td>
+                    <td>${calcularTotal().toLocaleString()}</td>
+                    
+                    <td>No aplica</td>
                     <td>
-                      $
-                      {(() => {
-                        const totalConInteresPresupuesto = parseFloat(calcularTotalConInteres());
-                        const numeroCuotasSeleccionadas =
-                          cuotasFiltrados.find((c) => c.id == idinteres)?.numero || 0;
-
-                        if (numeroCuotasSeleccionadas > 0) {
-                          return Math.ceil(totalConInteresPresupuesto / numeroCuotasSeleccionadas / 100) * 100;
-                        } else {
-                          return 0; 
-                        }
-                      })()}
+                      {sumarCuotas().toLocaleString()}
                     </td>
+                    <td>${calcularTotalConInteres().toLocaleString()}</td>
                   </tr>
                 </tbody>
               </table>

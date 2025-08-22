@@ -113,8 +113,9 @@ export function ListadoSettingBandaPrecios() {
                          <th> id </th>
                          <th> Banda Superior </th>
                          <th> Descripcion </th>
-                         <th> Porcentaje Minorista </th>
-                         <th> Porcentaje Mayorista </th>
+                         <th> % Minorista </th>
+                         <th> % Mayorista </th>
+                         <th> % Comision Vendedeor </th>
                          <th> </th>
                      </tr>
                      {settingBandas.map((settingCuota) => (
@@ -124,6 +125,7 @@ export function ListadoSettingBandaPrecios() {
                         <td> {settingCuota.descripcion} </td>
                         <td> {settingCuota.porcentaje_minorista} </td>
                         <td> {settingCuota.porcentaje_mayorista} </td>
+                        <td> {settingCuota.porcentaje_comision_vendedor} </td>
                         <td> 
                             <button
                             className="link-button"

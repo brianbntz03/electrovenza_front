@@ -8,9 +8,9 @@ export function EditarBandaPreciosModal({
 }) {
   const [formData, setFormData] = useState({
     descripcion: "",
-    banda_superior: "",
-    porcentaje_minorista: "",
-    porcentaje_mayorista: "",
+    banda_superior: 0,
+    porcentaje_minorista: 0,
+    porcentaje_mayorista: 0,
   });
   const [error, setError] = useState(null);
 
@@ -21,6 +21,7 @@ export function EditarBandaPreciosModal({
         banda_superior: Number(banda.banda_superior) || 0,
         porcentaje_minorista: Number(banda.porcentaje_minorista) || 0,
         porcentaje_mayorista: Number(banda.porcentaje_mayorista) || 0,
+        porcentaje_comision_vendedor: Number(banda.porcentaje_comision_vendedor) || 0,
       });
     }
   }, [banda]);
@@ -141,6 +142,17 @@ export function EditarBandaPreciosModal({
                   className="form-control"
                   name="porcentaje_mayorista"
                   value={formData.porcentaje_mayorista}
+                  onChange={handleChangeNumber}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Porcentaje Comision Vendedor</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="porcentaje_comision_vendedor"
+                  value={formData.porcentaje_comision_vendedor}
                   onChange={handleChangeNumber}
                 />
               </div>
