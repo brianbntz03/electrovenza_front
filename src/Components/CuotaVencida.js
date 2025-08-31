@@ -19,7 +19,7 @@ export default function CuotaVencida(cuota) {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ monto_cobrado: montoParcial }),
+          body: JSON.stringify({ monto_cobrado: Number(montoParcial) }),
         }
       );
 

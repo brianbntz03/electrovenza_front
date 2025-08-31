@@ -3,15 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "cors": "^2.8.5",
     "cra-template": "1.2.0",
     "devtools": "^7.16.3",
-    "express": "^5.1.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.0.2",
     "react-scripts": "5.0.1",
-    "server": "^0.0.3",
     "sweetalert2": "^11.6.13",
     "web-vitals": "^4.2.4"
   },

@@ -30,10 +30,10 @@ export function Listadoproveedores() {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      console.log("Proveedores desde la API:", data);
       setProveedores(data);
       localStorage.setItem("proveedores", JSON.stringify(data));
     } catch (error) {
+      console.error("Error fetching proveedores:", error);
       setError(error);
     } finally {
       setLoading(false);
@@ -84,6 +84,7 @@ export function Listadoproveedores() {
       <table className="table table-striped table-valign-middle table-bordered">
         <thead>
           <tr>
+            <th>#</th>
             <th>Nombre</th>
             <th>Dirección</th>
             <th>Telefono</th>
@@ -93,6 +94,7 @@ export function Listadoproveedores() {
         <tbody>
           {proveedores.map((proveedor, index) => (
             <tr key={index}>
+              <td>{proveedor.id}</td>
               <td>{proveedor.nombre}</td>
               <td>{proveedor.direccion}</td>
               <td>{proveedor.telefono}</td>

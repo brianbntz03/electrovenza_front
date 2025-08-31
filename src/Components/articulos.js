@@ -59,7 +59,7 @@ export const Articulos = () => {
 
   return (
     <div>
-      <p>articulos de Ferreteria</p>
+      <p>Listado de Articulos</p>
       <table className="table table-striped table-valign-middle table-bordered">
         <thead>
           <tr>

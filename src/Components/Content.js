@@ -11,7 +11,7 @@ import PagePresupuestar from "../Presupuestos/presupuestossss";
 import PageListadoVentas from "../pages/PageListadoVentas";
 import Dashboard from "../pages/Index";
 import { CrearPrducto } from "./Crear/CrearProducto";
-import vendedores from "../pages/vendedores";
+import ListadoVendedores from "../pages/PageListadoVendedores";
 import Clientes from "../pages/Clientes";
 import Proveedores from "../pages/Proveedores";
 import PageListadoSettingCuotasElectro from "../pages/SettingCuotasElectroListado";
@@ -24,6 +24,7 @@ import { CrearCliente } from "./Crear/CrearClientes";
 import RegistroMovimientoCuenta from "../pages/RegistroMovimientoCuenta";
 import { CrearProveedor } from "./Crear/CrearProveedor";
 import PageOtorgarCredito from "../pages/PageOtorgarCredito";
+import PageComisionesPorVentaPendientes from "../pages/PageComisionesPorVentaPendientes";
 
 
 export default function Content() {
@@ -67,27 +68,29 @@ export default function Content() {
                   Component={CreacionCategorias}
                 ></Route>
                 <Route path="/articulos" Component={Articulos}></Route>
-                <Route
-                  path="/buscar-articulos-presupuesto"
-                  Component={PagePresupuestar}
-                ></Route>
-                <Route
-                  path="/ventas-listado"
-                  Component={PageListadoVentas}
-                ></Route>
+                
+                
+                {/* Relacionados con vendedor: venta electro */}
+                <Route path="/buscar-articulos-presupuesto" Component={PagePresupuestar}></Route>
+                <Route path="/cuotas-por-cobrar" Component={PageCuotasPorCobrar} ></Route>
+                <Route path="/ventas-listado" Component={PageListadoVentas}></Route>
+                <Route path="/ventas-comisiones-pendientes" element={<PageComisionesPorVentaPendientes />} />
                 <Route path="/print/cuotas/:venta_id" element={<PrintCuotas />} />
+                {/* Relacionados con vendedor: creditos */}
+                
                 <Route path="/crearPrducto" Component={CrearPrducto}></Route>
-                <Route path="/vendedores" Component={vendedores}></Route>
+                <Route path="/vendedores" Component={ListadoVendedores}></Route>
                 <Route path="/crearvendedores" Component={CrearVendedor}></Route>
                 <Route path="/clientes" Component={Clientes}></Route>
                 <Route path="/proveedores" Component={Proveedores}></Route>
                 <Route path="/crearproveedor" Component={CrearProveedor}></Route>
+                
                 <Route path="/settingCuotasElectoListado" Component={PageListadoSettingCuotasElectro}></Route>
                 <Route path="/SettingCuotasCreditoListado" Component={PageSettingCuotasCreditoListado}></Route>
                 <Route path="/SettingBandasPreciosListado" Component={PageSettingBandasPreciosListado}></Route>
                 <Route path="/crearcliente" Component={CrearCliente}></Route>
                 {/* Vendedores */}
-                <Route path="/cuotas-por-cobrar" Component={PageCuotasPorCobrar} ></Route>
+                
                 <Route
                 path="/registrar-movimento" Component={RegistroMovimientoCuenta}>
                 </Route>

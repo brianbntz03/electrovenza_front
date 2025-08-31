@@ -75,6 +75,7 @@ export function ComponentListadoVentas() {
         <table className="table table-striped table-valign-middle table-bordered">
           <thead>
             <tr>
+              <th>#</th>
               <th>Fecha</th>
               <th>Articulo</th>
               <th>Total</th>
@@ -86,6 +87,7 @@ export function ComponentListadoVentas() {
           <tbody>
             {ventas.map((venta) => (
               <tr key={venta.id}>
+                <td>{venta.id}</td>
                 <td>{convertIsoToDMY(venta.fecha)}</td>
                 <td>{venta.articulo.nombre}</td>
                 <td>{venta.precio}</td>

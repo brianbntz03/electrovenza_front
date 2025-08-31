@@ -5,17 +5,15 @@ import { apiRest } from "../../service/apiRest";
 export const CrearPrducto = () => {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
-  const [precio, setPrecio] = useState("");
-  const [idCategoria, setIdCategoria] = useState("");
+  const [precio, setPrecio] = useState(0);
+  const [idCategoria, setIdCategoria] = useState(0);
   const [categorias, setCategorias] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [button, setButton] = useState(false);
 
   const handleRetry = () => {
     setLoading(false);
     setError(null);
-    setButton(false);
   };
   useEffect(() => {
     //MostrarAlerta();
@@ -53,7 +51,6 @@ export const CrearPrducto = () => {
     setLoading(true);
 
     try {
-      // Corregido el endpoint - asegúrate de que esta URL sea correcta para tu API
       const response = await fetch(`${apiRest}/articulos`, {
         method: "POST",
         headers: {
@@ -70,7 +67,6 @@ export const CrearPrducto = () => {
       const data = await response.json();
       console.log("Producto creado:", data);
       MostrarAlerta();
-      setButton(true);
       setLoading(false);
     } catch (error) {
       console.error("Error detallado:", error);
@@ -134,7 +130,7 @@ export const CrearPrducto = () => {
               <input
                 class="form-control"
                 value={precio}
-                onChange={(e) => setPrecio(e.target.value)}
+                onChange={(e) => setPrecio(Number(e.target.value))}
                 type="text"
                 name="precio"
                 required
@@ -146,7 +142,7 @@ export const CrearPrducto = () => {
                 type="text"
                 class="form-control"
                 value={idCategoria}
-                onChange={(e) => setIdCategoria(e.target.value)}
+                onChange={(e) => setIdCategoria(Number(e.target.value))}
                 name="idCategoria"
                 required
               >

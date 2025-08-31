@@ -15,7 +15,6 @@ export const CrearCategorias = () => {
     setButton(false);
   };
   useEffect(() => {
-    //MostrarAlerta();
   }, []);
 
   const MostrarAlerta = () => {
@@ -30,12 +29,21 @@ export const CrearCategorias = () => {
     });
   };
 
+  const ActualizarListadoEnLocalStorage = async() => {
+    const response = await fetch(`${apiRest}/categoria`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      console.log("Categorias desde la api:", data);
+      localStorage.setItem("categorias", JSON.stringify(data));
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // Corregido el endpoint - asegúrate de que esta URL sea correcta para tu API
       const response = await fetch(`${apiRest}/categoria`, {
         method: "POST",
         headers: {
@@ -49,8 +57,9 @@ export const CrearCategorias = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
-      console.log("Categoría creada:", data);
+      await response.json();
+
+      ActualizarListadoEnLocalStorage()
       MostrarAlerta();
       setButton(true);
       setLoading(false);

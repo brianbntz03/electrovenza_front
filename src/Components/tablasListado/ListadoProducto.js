@@ -71,6 +71,9 @@ export function ListadoProducto() {
     }
   };
   useEffect(() => {
+    /*
+    //Nota: por ahora lo dejo comentado, quiero que al cargar la pagina tome de la base 
+    // el listado de productos.
     const storedProductos = localStorage.getItem('productos');
     if (storedProductos) {
       setProductos(JSON.parse(storedProductos));
@@ -78,6 +81,8 @@ export function ListadoProducto() {
     } else {
       fetchProductos();
     }
+    */
+    fetchProductos();
   }, []);
 
   const handleRetry = () => {
@@ -115,6 +120,7 @@ export function ListadoProducto() {
       <div className="card-body table-responsive p-0">
         <table className="table table-striped table-valign-middle table-bordered">
           <tr>
+            <th> # </th>
             <th> nombre </th>
             <th> categoria </th>
             <th> precio minorista </th>
@@ -124,6 +130,7 @@ export function ListadoProducto() {
           </tr>
           {productos.map((producto) => (
             <tr key={producto.id}>
+              <td> {producto.id} </td>
               <td> {producto.nombre} </td>
               <td> {producto.categoria?.nombre || "Sin categoría"} </td>
               <td> {producto.precio} </td>

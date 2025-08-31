@@ -108,6 +108,7 @@ export function ListadoVendedores() {
       <table className="table table-striped table-valign-middle table-bordered">
         <thead>
           <tr>
+            <th>ID</th>
             <th>Nombre</th>
             <th>Telefono</th>
             <th>Direccion</th>
@@ -118,6 +119,7 @@ export function ListadoVendedores() {
         <tbody>
           {vendedores.map((vendedor, index) => (
             <tr key={index}>
+              <td>{vendedor.id}</td>
               <td>{vendedor.nombre}</td>
               <td>{vendedor.telefono}</td>
               <td>{vendedor.direccion}</td>
