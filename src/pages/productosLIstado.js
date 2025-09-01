@@ -26,11 +26,11 @@ const PageProductosListado = () => {
       <div className="card-header border-0">
         <h3 className="card-title">Productos</h3>
         <div className="card-tools">
-          
+
           <button  type="button" className="btn btn-sm btn-success float-right mr-2" onClick={handleExport}>Exportar <i className="fas fa-download" /></button>
           
           <button type="button" className="btn btn-sm btn-info float-right mr-2" onClick={() => window.location.href = "/crearPrducto"} >Crear</button>
-          
+
         </div>
       </div>
       <div className="card-body table-responsive p-0">{producto}</div>

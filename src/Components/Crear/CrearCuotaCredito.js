@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { apiRest } from "../../service/apiRest";
 
-export const CrearCuotaElectro = () => {
+export const CrearCuotaCredito = () => {
   const [numero, setNumero] = useState(0);
   const [descripcion, setDescripcion] = useState("");
   const [interes, setInteres] = useState(0);
@@ -26,7 +26,7 @@ export const CrearCuotaElectro = () => {
       draggable: true,
       timer: 1000,
     }).then(() => {
-      window.location.href = "/settingCuotasElectoListado";
+      window.location.href = "/SettingCuotasCreditoListado";
     });
   };
 
@@ -35,7 +35,7 @@ export const CrearCuotaElectro = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${apiRest}/settings/cuotas`, {
+      const response = await fetch(`${apiRest}/settings/cuotas_credito`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -88,7 +88,7 @@ export const CrearCuotaElectro = () => {
     <>
       <div class="card card-primary">
         <div class="card-header">
-          <h3 class="card-title">Crear Cuota Electro</h3>
+          <h3 class="card-title">Crear cuota credito</h3>
         </div>
         <form onSubmit={handleSubmit} style={{ marginBottom: "100px" }}>
           <div class="card-body">

@@ -7,7 +7,7 @@ const PageListadoSettingCuotasElectro = () => {
           <div className="card-header border-0">
             <h3 className="card-title">Configuración de Cuotas e Interes para Electro</h3>
             <div className="card-tools">
-              <a class="btn btn-sm btn-info float-right" href='/crearcategorias' > Crear Cuota</a>
+              <a class="btn btn-sm btn-info float-right" href='/crearcuotaelectro' > Crear Cuota</a>
               <a class="btn btn-sm btn-success float-right" >  Excel <i className="fas fa-download" /> </a>
               
             </div>

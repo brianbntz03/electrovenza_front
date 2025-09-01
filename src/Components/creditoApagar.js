@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { apiRest } from "../service/apiRest";
 
-export default function CuotaVencida(cuota) {
+export default function CreditaPagar({ id, fecha, articulo, valor, montoCobrado, vendedor, estado, incrementarContador }) {
   const [montoParcial, setMontoParcial] = useState("");
 
   const registrarPagoParcial = async () => {
@@ -12,24 +12,24 @@ export default function CuotaVencida(cuota) {
 
     try {
       const response = await fetch(
-        `${apiRest}/cuota_venta/monto-cobrado/${cuota.id}`,
+        `${apiRest}/cuota_venta/monto-cobrado/${id}`,
         {
           method: "PATCH",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ monto_cobrado: Number(montoParcial) }),
+          body: JSON.stringify({ monto_cobrado: montoParcial }),
         }
       );
 
       if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
 
       const data = await response.json();
-      cuota.incrementarContador();
+      incrementarContador();
       setMontoParcial("");
-      // Ocultar modal manualmente si no estás usando jQuery
-      document.getElementById(`cerrar-modal-${cuota.id}`).click();
+      // Ocultar modal manually si no estás usando jQuery
+      document.getElementById(`cerrar-modal-${id}`).click();
       return data;
     } catch (error) {
       console.error("Error al registrar pago parcial:", error);
@@ -43,9 +43,8 @@ export default function CuotaVencida(cuota) {
       );
       if (!confirmacion) return;
 
-      const response = await fetch(`${apiRest}/cuota_venta/${cuota.id}`, {
+      const response = await fetch(`${apiRest}/cuota_venta/${id}`, {
         method: "PATCH",
-
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -56,7 +55,7 @@ export default function CuotaVencida(cuota) {
         throw new Error(`HTTP error! status: ${response.status}`);
 
       const data = await response.json();
-      cuota.incrementarContador();
+      incrementarContador();
       return data;
     } catch (error) {
       console.error("Error detallado:", error);
@@ -66,25 +65,25 @@ export default function CuotaVencida(cuota) {
   return (
     <>
       <div className="col-md-3 col-sm-6 col-12">
-        <div className={cuota.estado===1 ? 'info-box bg-warning' : 'info-box bg-gradient-info'}>
+        <div className={estado===1 ? 'info-box bg-warning' : 'info-box bg-gradient-info'}>
           <span className="info-box-icon">
             <i className="far fa-calendar-alt"></i>
           </span>
           <div className="info-box-content">
             <span className="info-box-text">
-              {cuota.fecha} ({cuota.id})
+              {fecha} ({id})
             </span>
-            <span className="progress-description">{cuota.articulo}</span>
-            <span className="info-box-number">valor: ${cuota.valor}</span>
-            <span className="info-box-number">Pendiente: ${cuota.valor-cuota.montoCobrado}</span>
-            <span className="progress-description">{cuota.vendedor}</span>
+            <span className="progress-description">{articulo}</span>
+            <span className="info-box-number">valor: ${valor}</span>
+            <span className="info-box-number">monto: ${valor-montoCobrado}</span>
+            <span className="progress-description">vendedor: {vendedor}</span>
             <div className="row">
               <div className="col-6">
                 <button
                   type="button"
                   className="btn btn-success btn-sm"
                   data-toggle="modal"
-                  data-target={`#modal-warning-${cuota.id}`}
+                  data-target={`#modal-warning-${id}`}
                 >
                   Pago parcial
                 </button>
@@ -96,7 +95,6 @@ export default function CuotaVencida(cuota) {
                 >
                   Pagar
                 </button>
-
               </div>
             </div>
           </div>
@@ -106,24 +104,24 @@ export default function CuotaVencida(cuota) {
       {/* Modal pago parcial */}
       <div
         className="modal fade"
-        id={`modal-warning-${cuota.id}`}
+        id={`modal-warning-${id}`}
         tabIndex="-1"
         role="dialog"
-        aria-labelledby={`modalLabel-${cuota.id}`}
+        aria-labelledby={`modalLabel-${id}`}
         aria-hidden="true"
       >
         <div className="modal-dialog modal-md" role="document">
           <div className="modal-content bg-warning">
             <div className="modal-header">
-              <h5 className="modal-title" id={`modalLabel-${cuota.id}`}>
-                Registrar Pago parcial
+              <h5 className="modal-title" id={`modalLabel-${id}`}>
+                Registrar Cuota Parcial
               </h5>
               <button
                 type="button"
                 className="close"
                 data-dismiss="modal"
                 aria-label="Close"
-                id={`cerrar-modal-${cuota.id}`}
+                id={`cerrar-modal-${id}`}
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -135,7 +133,7 @@ export default function CuotaVencida(cuota) {
                 className="form-control"
                 value={montoParcial}
                 onChange={(e) => setMontoParcial(e.target.value)}
-                placeholder={`Ej: ${cuota.valor-cuota.montoCobrado}`}
+                placeholder={`Ej: ${valor-montoCobrado}`}
               />
             </div>
             <div className="modal-footer justify-content-between">
@@ -143,7 +141,7 @@ export default function CuotaVencida(cuota) {
                 type="button"
                 className="btn btn-default"
                 data-dismiss="modal"
-                id={`cerrar-modal-${cuota.id}`}
+                id={`cerrar-modal-${id}`}
               >
                 Cerrar
               </button>
@@ -154,11 +152,11 @@ export default function CuotaVencida(cuota) {
               >
                 registrar
               </button>
-
+              
             </div>
           </div>
         </div>
       </div>
     </>
-  );
-}
+  )
+};

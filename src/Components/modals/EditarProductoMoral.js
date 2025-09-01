@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
 
-export function EditaProductoModal({ producto, onClose, onProductosActualizado }) {
+export function EditaProductoModal({
+  producto,
+  onClose,
+  onProductosActualizado,
+}) {
   const [formData, setFormData] = useState({
     nombre: "",
     descripcion: "",
@@ -36,7 +40,11 @@ export function EditaProductoModal({ producto, onClose, onProductosActualizado }
         }
         const data = await response.json();
         // Show active categories AND the product's current category, even if inactive
-        const filteredData = data.filter(cat => cat.activo || (producto && producto.categoria && cat.id === producto.categoria.id));
+        const filteredData = data.filter(
+          (cat) =>
+            cat.activo ||
+            (producto && producto.categoria && cat.id === producto.categoria.id)
+        );
         setCategorias(filteredData);
       } catch (error) {
         setError(error.message);
@@ -76,7 +84,9 @@ export function EditaProductoModal({ producto, onClose, onProductosActualizado }
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Error al actualizar el producto: ${response.status} - ${errorText}`);
+        throw new Error(
+          `Error al actualizar el producto: ${response.status} - ${errorText}`
+        );
       }
 
       const productoActualizado = await response.json();
@@ -87,8 +97,11 @@ export function EditaProductoModal({ producto, onClose, onProductosActualizado }
         ...productoActualizado,
         categoria: categoriaSeleccionada || null,
       };
-      
-      console.log("Producto actualizado exitosamente:", productoConCategoriaCompleta);
+
+      console.log(
+        "Producto actualizado exitosamente:",
+        productoConCategoriaCompleta
+      );
       onProductosActualizado(productoConCategoriaCompleta);
       onClose();
     } catch (error) {
@@ -99,16 +112,29 @@ export function EditaProductoModal({ producto, onClose, onProductosActualizado }
   if (!producto) return null;
 
   return (
-    <div className="modal fade show" style={{ display: "block" }} tabIndex="-1" role="dialog">
+    <div
+      className="modal fade show"
+      style={{ display: "block" }}
+      tabIndex="-1"
+      role="dialog"
+    >
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Editar Producto</h5>
-            <button type="button" className="close" onClick={onClose} aria-label="Close">
+            <button
+              type="button"
+              className="close"
+              onClick={onClose}
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div className="modal-body" style={{ maxHeight: "60vh", overflowY: "auto" }}>
+          <div
+            className="modal-body"
+            style={{ maxHeight: "60vh", overflowY: "auto" }}
+          >
             {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={handleSubmit}>
               <div className="form-group">
@@ -178,7 +204,11 @@ export function EditaProductoModal({ producto, onClose, onProductosActualizado }
                 />
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={onClose}>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={onClose}
+                >
                   Cancelar
                 </button>
                 <button type="submit" className="btn btn-primary">

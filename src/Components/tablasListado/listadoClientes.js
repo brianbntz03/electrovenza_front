@@ -24,7 +24,7 @@ export function ListadoClientes() {
       c.id === clienteActualizado.id ? { ...c, ...clienteActualizado } : c
     );
     setClientes(nuevosClientes);
-    localStorage.setItem('clientes', JSON.stringify(nuevosClientes));
+    localStorage.setItem("clientes", JSON.stringify(nuevosClientes));
   };
 
   const handleEliminar = async (id) => {
@@ -36,7 +36,7 @@ export function ListadoClientes() {
 
       const nuevosClientes = clientes.filter((cliente) => cliente.id !== id);
       setClientes(nuevosClientes);
-      localStorage.setItem('clientes', JSON.stringify(nuevosClientes));
+      localStorage.setItem("clientes", JSON.stringify(nuevosClientes));
     } catch (error) {
       console.error("Error al eliminar el producto:", error);
     }
@@ -59,7 +59,7 @@ export function ListadoClientes() {
       const data = await response.json();
       console.log(data);
       setClientes(data);
-      localStorage.setItem('clientes', JSON.stringify(data));
+      localStorage.setItem("clientes", JSON.stringify(data));
       setLoading(false);
     } catch (error) {
       console.error("Error detallado:", error);
@@ -71,7 +71,7 @@ export function ListadoClientes() {
   };
 
   useEffect(() => {
-    const storedClientes = localStorage.getItem('clientes');
+    const storedClientes = localStorage.getItem("clientes");
     if (storedClientes) {
       setClientes(JSON.parse(storedClientes));
       setLoading(false);
