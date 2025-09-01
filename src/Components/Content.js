@@ -24,6 +24,7 @@ import { CrearCliente } from "./Crear/CrearClientes";
 import RegistroMovimientoCuenta from "../pages/RegistroMovimientoCuenta";
 import { CrearProveedor } from "./Crear/CrearProveedor";
 import PageOtorgarCredito from "../pages/PageOtorgarCredito";
+import PageCreditosCuotasPorCobrar from "../pages/PageCreditosCuotasPorCobrar";
 import PageComisionesPorVentaPendientes from "../pages/PageComisionesPorVentaPendientes";
 
 
@@ -76,8 +77,13 @@ export default function Content() {
                 <Route path="/ventas-listado" Component={PageListadoVentas}></Route>
                 <Route path="/ventas-comisiones-pendientes" element={<PageComisionesPorVentaPendientes />} />
                 <Route path="/print/cuotas/:venta_id" element={<PrintCuotas />} />
-                {/* Relacionados con vendedor: creditos */}
                 
+                {/* Relacionados con vendedor: creditos */}
+                <Route path="/otorgarcredito" Component={PageOtorgarCredito}></Route>
+                <Route path="/creditos-cuotas-por-cobrar" Component={PageCreditosCuotasPorCobrar} ></Route>
+                
+
+
                 <Route path="/crearPrducto" Component={CrearPrducto}></Route>
                 <Route path="/vendedores" Component={ListadoVendedores}></Route>
                 <Route path="/crearvendedores" Component={CrearVendedor}></Route>
@@ -94,7 +100,7 @@ export default function Content() {
                 <Route
                 path="/registrar-movimento" Component={RegistroMovimientoCuenta}>
                 </Route>
-                <Route path="/otorgarcredito" Component={PageOtorgarCredito}></Route>
+                
               </Routes>
             </div>
           </div>

@@ -101,6 +101,16 @@ export default function Aside() {
                         <i className="fas fa-angle-left right" />
                       </p>
                     </NavLink>
+                  </li>
+
+                  <li className="nav-item">
+                    <NavLink to="/creditos-cuotas-por-cobrar" className="nav-link">
+                      <i className="nav-icon fas fa-file-invoice-dollar" />
+                      <p>
+                        Cuotas por cobrar
+                        <i className="fas fa-angle-left right" />
+                      </p>
+                    </NavLink>
                   </li>    
                 </ul>
               </li>

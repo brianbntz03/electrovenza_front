@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../service/apiRest";
+import FlashMessage from "./tiny/FlashMessage";
+
 
 export const ArticuloPresupuesto = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -58,11 +60,13 @@ export const ArticuloPresupuesto = () => {
 
       const resultado = await response.text();
       setMensajeVenta(resultado);
-      setModalVisible(true);
+      FlashMessage("Registro de venta", "La venta se registro con exito", 2000, "success", "/cuotas-por-cobrar");
+
     } catch (error) {
       console.error("Error al registrar la venta:", error);
       setMensajeVenta(`Error al registrar: ${error.message}`);
-      setModalVisible(true);
+      FlashMessage("Registro de venta", `Error al registrar venta: ${error.message}`, 2000, "error");
+
     }
   };
 

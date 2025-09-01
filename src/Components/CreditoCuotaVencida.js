@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { apiRest } from "../service/apiRest";
 
-export default function CuotaVencida(cuota) {
+export default function CreditoCuotaVencida(cuota) {
   const [montoParcial, setMontoParcial] = useState("");
 
   const registrarPagoParcial = async () => {
@@ -12,7 +12,7 @@ export default function CuotaVencida(cuota) {
 
     try {
       const response = await fetch(
-        `${apiRest}/cuota_venta/monto-cobrado/${cuota.id}`,
+        `${apiRest}/cuota_credito/registrar-pago-parcial/${cuota.id}`,
         {
           method: "PATCH",
           headers: {
@@ -43,7 +43,7 @@ export default function CuotaVencida(cuota) {
       );
       if (!confirmacion) return;
 
-      const response = await fetch(`${apiRest}/cuota_venta/${cuota.id}`, {
+      const response = await fetch(`${apiRest}/cuota_credito/registrar-pago/${cuota.id}`, {
         method: "PATCH",
         headers: {
           Accept: "application/json",
@@ -73,7 +73,6 @@ export default function CuotaVencida(cuota) {
             <span className="info-box-text">
               {cuota.fecha} ({cuota.numero})
             </span>
-            <span className="progress-description">{cuota.articulo}</span>
             <span className="info-box-number">valor: ${cuota.valor}</span>
             <span className="info-box-number">Pendiente: ${cuota.valor-cuota.montoCobrado}</span>
             <span className="progress-description">{cuota.vendedor}</span>
