@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { apiRest } from "../../service/apiRest";
 
-export function EditarVendedorModal({ vendedor, onClose, onVendedoresActualizado }) {
+export const EditarVendedorModal = ({
+  vendedor,
+  onClose,
+  onVendedorActualizado,
+}) => {
   const [formData, setFormData] = useState({
     nombre: "",
-    telefono: "",
-    direccion: "",
-    email: "",
-    username: "",
-    password: "",
+    direccion:  "",
+    telefono: 0,
+    username:  "",
+    email:  "",
+    password: "", 
+    activo: true
   });
   const [error, setError] = useState(null);
 
@@ -16,28 +21,24 @@ export function EditarVendedorModal({ vendedor, onClose, onVendedoresActualizado
     if (vendedor) {
       setFormData({
         nombre: vendedor.nombre || "",
-        telefono: vendedor.telefono || "",
         direccion: vendedor.direccion || "",
-        email: vendedor.user.email || "",
-        username: vendedor.user.username || "",
-        password: "",
+        telefono: vendedor.telefono || 0,
+        username: vendedor.username || "",
+        email: vendedor.email || "",
+        password: "", // Password should not be pre-filled
       });
     }
   }, [vendedor]);
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
     try {
-      console.log("Enviando datos para actualizar cliente:", formData);
       const response = await fetch(`${apiRest}/vendedor/${vendedor.id}`, {
         method: "PATCH",
         headers: {
@@ -48,131 +49,127 @@ export function EditarVendedorModal({ vendedor, onClose, onVendedoresActualizado
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error(
-          "Error en la respuesta de la API:",
-          response.status,
-          errorText
-        );
         throw new Error(
-          `Error al actualizar el cliente: ${response.status} - ${errorText}`
+          `Error al actualizar el vendedor: ${response.status} - ${errorText}`
         );
       }
 
-      const clienteActualizado = await response.json();
-      console.log("Cliente actualizado exitosamente:", clienteActualizado);
-      onVendedoresActualizado(clienteActualizado);
+      const vendedorActualizado = await response.json();
+      console.log(
+        "Vendedor actualizado exitosamente:",
+        vendedorActualizado
+      );
+      if (onVendedorActualizado) {
+          onVendedorActualizado(vendedorActualizado);
+      }
       onClose();
     } catch (error) {
       setError(error.message);
     }
   };
 
-  if (!vendedor) {
-    return null;
-  }
-
   return (
     <div
       className="modal fade show"
-      style={{ display: "block" }}
+      style={{display: "block"}}
       tabIndex="-1"
       role="dialog"
     >
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Editar Cliente</h5>
-            <button
-              type="button"
-              className="close"
-              onClick={onClose}
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div
+        <h5>Editar Vendedor</h5>
+        <button 
+          type="button"
+          className="close"
+          onClick={onClose}
+          aria-label="Close"
+        >
+        <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div
             className="modal-body"
             style={{ maxHeight: "60vh", overflowY: "auto" }}
           >
             {error && <div className="alert alert-danger">{error}</div>}
-            <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label>Nombre</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="nombre"
-                  value={formData.nombre}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Telefono</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="telefono"
-                  value={formData.telefono}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Email</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Dirección </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="direccion"
-                  value={formData.direccion}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Nombre de usuario</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label>Contraseña</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={onClose}
-                >
-                  Cancelar
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  Guardar Cambios
-                </button>
-              </div>
-            </form>
+        <form onSubmit={handleSubmit}>
+          <div className="form-grouop">
+          <label>Nombre</label>
+          <input
+            type="text"
+            className="form-control"
+            name="nombre"
+            value={formData.nombre}
+            onChange={handleChange}
+          />
           </div>
-        </div>
+          <div className="form-group">
+            <label>Dirección</label>
+          <input
+            type="text"
+            name="direccion"
+            className="form-control "
+            value={formData.direccion}
+            onChange={handleChange}
+          />
+          </div>
+          <div className="form-group">
+            <label>Teléfono</label>
+          <input
+            type="text"
+            name="telefono"
+            className="form-control"
+            value={formData.telefono}
+            onChange={handleChange}
+          />
+          </div>
+          <div className="form-group">
+            <label>Usuario</label>
+          <input
+            type="text"
+            name="username"
+            className="form-control"
+            value={formData.username}
+            onChange={handleChange}
+          />
+          </div>
+          <div className="form-group">
+            <label>Email</label>
+          <input
+            type="email"
+            name="email"
+            className="form-control"
+            value={formData.email}
+            onChange={handleChange}
+          />
+          </div>
+          <div className="form-group">
+            <label>Contraseña</label>
+          <input
+            type="password"
+            name="password"
+            className="form-control "
+            value={formData.password}
+            onChange={handleChange}
+          />
+          </div>
+        <div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="btn btn-secondary "
+            >
+            Cancelar
+          </button>
+          <button type="submit" className="btn btn-primary">
+            Guardar cambios
+          </button>
+            </div>
+        </form>
+      </div>
+      </div>
       </div>
     </div>
   );
-}
+};

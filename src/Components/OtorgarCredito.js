@@ -82,7 +82,7 @@ const OtorgarCredito = () => {
         body: JSON.stringify({
           setting_cuotas_credito_id: parseInt(cuotaId),
           cliente_id: parseInt(cliente),
-          vendedor_id: 1,
+          vendedor_id: 23,
           monto: parseFloat(monto),
         }),
       });

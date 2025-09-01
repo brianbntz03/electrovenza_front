@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { apiRest } from "../service/apiRest";
 
-export default function CuotaVencida(cuota) {
+export default function CuotaAPagar(cuota) {
   const [montoParcial, setMontoParcial] = useState("");
 
   const registrarPagoParcial = async () => {

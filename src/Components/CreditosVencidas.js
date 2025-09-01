@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../service/apiRest";
-import CuotaAPagar from "./CuotaAPagar";
+import CreditaPagar from "./creditoApagar";
 
-export function CuotasVencidas() {
+export function CreditosVencidos() {
   const [cuotas, setCuotas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,7 +14,7 @@ export function CuotasVencidas() {
 
   const fetchCuotas = async () => {
     try {
-      const response = await fetch(`${apiRest}/cuota_venta`, {
+      const response = await fetch(`${apiRest}/credito/cuotas_vencidas`, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -57,7 +57,7 @@ export function CuotasVencidas() {
   if (loading) {
     return (
       <div className="loading-container">
-        <p>Cargando Cuotas a cobrar...</p>
+        <p>Cargando Creditos a cobrar...</p>
       </div>
     );
   }
@@ -93,7 +93,7 @@ export function CuotasVencidas() {
               <div class="card-footer p-0">
                 <div class="row">
                   {ListadoDeCuotas.map(cuota => (
-                    <CuotaAPagar id={cuota.id} fecha={cuota.fecha} articulo={cuota.articulo} valor={cuota.valor} montoCobrado={cuota.monto_cobrado} vendedor={cuota.vendedor} estado={cuota.estado} incrementarContador={incrementarContador} />
+                    <CreditaPagar id={cuota.id} fecha={cuota.fecha} articulo={cuota.articulo} valor={cuota.valor} montoCobrado={cuota.monto_cobrado} vendedor={cuota.vendedor} estado={cuota.estado} incrementarContador={incrementarContador} />
                   ))}
                 </div>
               </div>

@@ -25,6 +25,9 @@ import RegistroMovimientoCuenta from "../pages/RegistroMovimientoCuenta";
 import { CrearProveedor } from "./Crear/CrearProveedor";
 import PageOtorgarCredito from "../pages/PageOtorgarCredito";
 import PageComisionesPorVentaPendientes from "../pages/PageComisionesPorVentaPendientes";
+import PageCreditosPorCobrar from "../pages/PageCreditoPorCobrar";
+import { CrearCuotaElectro } from "./Crear/CrearCuota";
+import { CrearCuotaCredito } from "./Crear/CrearCuotaCredito";
 
 
 export default function Content() {
@@ -70,13 +73,11 @@ export default function Content() {
                 <Route path="/articulos" Component={Articulos}></Route>
                 
                 
-                {/* Relacionados con vendedor: venta electro */}
                 <Route path="/buscar-articulos-presupuesto" Component={PagePresupuestar}></Route>
                 <Route path="/cuotas-por-cobrar" Component={PageCuotasPorCobrar} ></Route>
                 <Route path="/ventas-listado" Component={PageListadoVentas}></Route>
                 <Route path="/ventas-comisiones-pendientes" element={<PageComisionesPorVentaPendientes />} />
                 <Route path="/print/cuotas/:venta_id" element={<PrintCuotas />} />
-                {/* Relacionados con vendedor: creditos */}
                 
                 <Route path="/crearPrducto" Component={CrearPrducto}></Route>
                 <Route path="/vendedores" Component={ListadoVendedores}></Route>
@@ -88,13 +89,14 @@ export default function Content() {
                 <Route path="/settingCuotasElectoListado" Component={PageListadoSettingCuotasElectro}></Route>
                 <Route path="/SettingCuotasCreditoListado" Component={PageSettingCuotasCreditoListado}></Route>
                 <Route path="/SettingBandasPreciosListado" Component={PageSettingBandasPreciosListado}></Route>
-                <Route path="/crearcliente" Component={CrearCliente}></Route>
-                {/* Vendedores */}
-                
+                <Route path="/crearcliente" Component={CrearCliente}></Route>                
                 <Route
                 path="/registrar-movimento" Component={RegistroMovimientoCuenta}>
                 </Route>
                 <Route path="/otorgarcredito" Component={PageOtorgarCredito}></Route>
+                <Route path="/credito-por-cobrar" Component={PageCreditosPorCobrar}></Route>
+                <Route path="/crearcuotaelectro" Component={CrearCuotaElectro}></Route>
+                <Route path="/crear-cuota-credito" Component={CrearCuotaCredito}></Route>
               </Routes>
             </div>
           </div>
