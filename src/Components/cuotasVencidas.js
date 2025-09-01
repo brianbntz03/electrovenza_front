@@ -1,108 +1,162 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { apiRest } from "../service/apiRest";
-import CuotaAPagar from "./CuotaAPagar";
 
-export function CuotasVencidas() {
-  const [cuotas, setCuotas] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [contador, setContador] = useState(0);
+export default function CuotaVencida(cuota) {
+  const [montoParcial, setMontoParcial] = useState("");
 
-  const incrementarContador = () => {
-    setContador(contador + 1);
+  const registrarPagoParcial = async () => {
+    if (!montoParcial || isNaN(montoParcial) || Number(montoParcial) <= 0) {
+      alert("Ingrese un monto válido");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${apiRest}/cuota_venta/monto-cobrado/${cuota.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ monto_cobrado: Number(montoParcial) }),
+        }
+      );
+
+      if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+
+      const data = await response.json();
+      cuota.incrementarContador();
+      setMontoParcial("");
+      // Ocultar modal manualmente si no estás usando jQuery
+      document.getElementById(`cerrar-modal-${cuota.id}`).click();
+      return data;
+    } catch (error) {
+      console.error("Error al registrar pago parcial:", error);
+    }
   };
 
-  const fetchCuotas = async () => {
+  const registrarPago = async () => {
     try {
-      const response = await fetch(`${apiRest}/cuota_venta`, {
-        method: "GET",
+      const confirmacion = window.confirm(
+        "¿Esta seguro de que quiere marcar como pagada la cuota?"
+      );
+      if (!confirmacion) return;
+
+      const response = await fetch(`${apiRest}/cuota_venta/${cuota.id}`, {
+        method: "PATCH",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
       });
 
-      if (!response.ok) {
+      if (!response.ok)
         throw new Error(`HTTP error! status: ${response.status}`);
-      }
 
       const data = await response.json();
-      setCuotas(data);
-      setLoading(false);
+      cuota.incrementarContador();
+      return data;
     } catch (error) {
       console.error("Error detallado:", error);
-      setError(
-        `No se pudo conectar con el servidor. Verifica que el servidor esté corriendo en el puerto 3001: ${error.message}`
-      );
-      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchCuotas();
-  }, [contador]);
-
-  const handleRetry = () => {
-    setLoading(true);
-    setError(null);
-    fetchCuotas();
-  };
-
-  const handleBorrarCuota = (cliente, idCuota) => {
-    const nuevaLista = { ...cuotas };
-    nuevaLista[cliente] = nuevaLista[cliente].filter((cuota) => cuota.id !== idCuota);
-    setCuotas(nuevaLista);
-  };
-
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <p>Cargando Cuotas a cobrar...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="error-container">
-        <h3>Error de conexión</h3>
-        <p>{error}</p>
-        <button onClick={handleRetry} className="retry-button">
-          Reintentar
-        </button>
-      </div>
-    );
-  }
-
-  if (!cuotas || Object.keys(cuotas).length === 0) {
-    return <div className="error-container">No hay cuotas pendientes</div>;
-  }
-
   return (
-    <div className="card-body">
-          { Object.entries(cuotas).map(([cliente, ListadoDeCuotas]) => (
-            <>
-            <div className='card card-widget'>
-              <div className='card-header'>
-                <div className="user-block">
-                  <img className="img-circle" src="../dist/img/user1-128x128.jpg" alt="face" />
-                  <span className="username">Cliente: {cliente}</span>
-                </div>
+    <>
+      <div className="col-md-3 col-sm-6 col-12">
+        <div className={cuota.estado===1 ? 'info-box bg-warning' : 'info-box bg-gradient-info'}>
+          <span className="info-box-icon">
+            <i className="far fa-calendar-alt"></i>
+          </span>
+          <div className="info-box-content">
+            <span className="info-box-text">
+              {cuota.fecha} ({cuota.id})
+            </span>
+            <span className="progress-description">{cuota.articulo}</span>
+            <span className="info-box-number">valor: ${cuota.valor}</span>
+            <span className="info-box-number">Pendiente: ${cuota.valor-cuota.montoCobrado}</span>
+            <span className="progress-description">{cuota.vendedor}</span>
+            <div className="row">
+              <div className="col-6">
+                <button
+                  type="button"
+                  className="btn btn-success btn-sm"
+                  data-toggle="modal"
+                  data-target={`#modal-warning-${cuota.id}`}
+                >
+                  Pago parcial
+                </button>
               </div>
-
-              <div class="card-footer p-0">
-                <div class="row">
-                  {ListadoDeCuotas.map(cuota => (
-                    <CuotaAPagar id={cuota.id} fecha={cuota.fecha} articulo={cuota.articulo} valor={cuota.valor} montoCobrado={cuota.monto_cobrado} vendedor={cuota.vendedor} estado={cuota.estado} incrementarContador={incrementarContador} />
-                  ))}
-                </div>
+              <div className="col-6">
+                <button
+                  onClick={registrarPago}
+                  className="btn btn-sm btn-primary"
+                >
+                  Pagar
+                </button>
               </div>
-
-              <hr />
             </div>
-            
-              </>
-      ))}
-    </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Modal pago parcial */}
+      <div
+        className="modal fade"
+        id={`modal-warning-${cuota.id}`}
+        tabIndex="-1"
+        role="dialog"
+        aria-labelledby={`modalLabel-${cuota.id}`}
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-md" role="document">
+          <div className="modal-content bg-warning">
+            <div className="modal-header">
+              <h5 className="modal-title" id={`modalLabel-${cuota.id}`}>
+                Registrar Pago parcial
+              </h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+                id={`cerrar-modal-${cuota.id}`}
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <label>Monto a pagar:</label>
+              <input
+                type="number"
+                className="form-control"
+                value={montoParcial}
+                onChange={(e) => setMontoParcial(e.target.value)}
+                placeholder={`Ej: ${cuota.valor-cuota.montoCobrado}`}
+              />
+            </div>
+            <div className="modal-footer justify-content-between">
+              <button
+                type="button"
+                className="btn btn-default"
+                data-dismiss="modal"
+                id={`cerrar-modal-${cuota.id}`}
+              >
+                Cerrar
+              </button>
+              <button
+                type="button"
+                className="btn btn-outline-dark"
+                onClick={registrarPagoParcial}
+              >
+                registrar
+              </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }

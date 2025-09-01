@@ -1,5 +1,4 @@
 import { ListadoVendedores } from "../Components/tablasListado/listadoVendedores";
-import { apiRest } from "../service/apiRest"; 
 
 const PageListadoVendedores = () => {
   let Listado_Vendedores = ListadoVendedores();
@@ -24,4 +23,3 @@ const PageListadoVendedores = () => {
 };
 
 export default PageListadoVendedores;
-

@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { EditarVendedorModal } from "../modals/EditarVendedorModal";
-import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
 import { apiRest } from "../../service/apiRest";
+import { EditarVendedorModal } from "../modals/EditarVendedorModal";
 
-export const ListadoVendedores = () => {
+export function ListadoVendedores() {
   const [vendedores, setVendedores] = useState([]);
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVendedor, setSelectedVendedor] = useState(null);
 
@@ -20,57 +19,57 @@ export const ListadoVendedores = () => {
     setIsModalOpen(false);
   };
 
-  const handleVendedorActualizado = async () => {
-    await fetchVendedores();
-    handleCloseModal();
+  const handleVendedorActualizado = (vendedorActualizado) => {
+    const nuevosVendedores = vendedores.map((v) =>
+      v.id === vendedorActualizado.id ? { ...v, ...vendedorActualizado } : v
+    );
+    setVendedores(nuevosVendedores);
+    localStorage.setItem("vendedores", JSON.stringify(nuevosVendedores));
   };
 
-  const handleDelete = async (id) => {
+  const handleEliminar = async (id) => {
     try {
-      const response = await fetch(`${apiRest}/vendedor/${id}`, {
+      await fetch(`${apiRest}/vendedor/${id}`, {
         method: "DELETE",
       });
+      console.log(`Vendedor con ${id} eliminado.`);
 
-      if (!response.ok) {
-        throw new Error("Error al eliminar el vendedor");
-      }
-      await fetchVendedores();
-    } catch (error) {
-      console.error("Error al eliminar el vendedor:", error);
-      Swal.fire(
-        "Error",
-        "Hubo un problema al eliminar el vendedor.",
-        "error"
+      const nuevosVendedores = vendedores.filter(
+        (vendedor) => vendedor.id !== id
       );
+      setVendedores(nuevosVendedores);
+      localStorage.setItem("vendedores", JSON.stringify(nuevosVendedores));
+    } catch (error) {
+      console.error("Error al eliminar el producto:", error);
     }
   };
 
   const fetchVendedores = async () => {
     try {
-      const response = await fetch(`${apiRest}/vendedor`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(`${apiRest}/vendedor`);
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      const activeVendedores = data.filter((vendedor) => vendedor.activo);
-      setVendedores(activeVendedores);
-      setLoading(false);
+      console.log("Vendedores desde la API:", data);
+      setVendedores(data);
+      localStorage.setItem("vendedores", JSON.stringify(data));
     } catch (error) {
-      console.error("Error detallado:", error);
-      setError(
-        "No se pudo conectar con el servidor. Por favor, inténtelo de nuevo más tarde."
-      );
+      setError(error);
+    } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
+    /*const storedVendedores = localStorage.getItem("vendedores");
+    if (storedVendedores) {
+      setVendedores(JSON.parse(storedVendedores));
+      setLoading(false);
+    } else {
+      fetchVendedores();
+    }
+      */
     fetchVendedores();
   }, []);
 
@@ -79,14 +78,14 @@ export const ListadoVendedores = () => {
     setError(null);
     fetchVendedores();
   };
+
   if (loading) {
     return (
       <div className="loading-container">
-        <p>Cargando vendedores...</p>
+        <p>Cargando Vendedores...</p>
       </div>
     );
   }
-
   if (error) {
     return (
       <div className="error-container">
@@ -98,57 +97,65 @@ export const ListadoVendedores = () => {
       </div>
     );
   }
-
   if (!vendedores || vendedores.length === 0) {
-    return (
-      <div className="error-container">
-        <h3>No hay vendedores disponibles</h3>
-      </div>
-    );
+    return <div className="error-container">No hay vendedores registrados</div>;
   }
 
   return (
-    <div className="card">
-      <div className="card-body table-responsive p-0">
-        <table className="table table-striped table-valign-middle table-bordered">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Dirección</th>
-              <th>Teléfono</th>
-              <th>Email</th>
-              <th>Username</th>
-              <th>Acciones</th>
+    <div class="card-body">
+      <p>Listado de vendedores</p>
+
+      <table className="table table-striped table-valign-middle table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Telefono</th>
+            <th>Direccion</th>
+            <th>Saldo CC</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {vendedores.map((vendedor, index) => (
+            <tr key={index}>
+              <td>{vendedor.id}</td>
+              <td>{vendedor.nombre}</td>
+              <td>{vendedor.telefono}</td>
+              <td>{vendedor.direccion}</td>
+              <td>{vendedor.cuentaCorriente?.saldo ?? 0}</td>
+              <td>
+                <button
+                  className="link-button"
+                  onClick={() => handleOpenModal(vendedor)}
+                >
+                  Editar
+                </button>
+                <button
+                  className="link-button"
+                  onClick={() => handleEliminar(vendedor.id)}
+                >
+                  Eliminar
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {vendedores.map((vendedor) => (
-              <tr key={vendedor.id}>
-                <td>{vendedor.nombre}</td>
-                <td>{vendedor.direccion}</td>
-                <td>{vendedor.telefono}</td>
-                <td>{vendedor.correo}</td> {/* ✅ Corregido aquí */}
-                <td>{vendedor.username}</td>
-                <td>
-                  <button onClick={() => handleOpenModal(vendedor)} className="btn btn-primary btn-sm mr-2">
-                    Editar
-                  </button>
-                  <button onClick={() => handleDelete(vendedor.id)} className="btn btn-danger btn-sm">
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {isModalOpen && (
-          <EditarVendedorModal
-            vendedor={selectedVendedor}
-            onClose={handleCloseModal}
-            onVendedorActualizado={handleVendedorActualizado}
-          />
-        )}
-      </div>
+          ))}
+
+          {/* Placeholder row for consistent table structure */}
+          <tr>
+            <td colSpan="4" className="text-center">
+              Total de vendedores: {vendedores.length}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      {isModalOpen && (
+        <EditarVendedorModal
+          vendedor={selectedVendedor}
+          onClose={handleCloseModal}
+          onVendedoresActualizado={handleVendedorActualizado}
+        />
+      )}
     </div>
   );
-};
+}
