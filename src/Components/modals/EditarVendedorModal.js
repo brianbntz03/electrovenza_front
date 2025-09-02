@@ -23,8 +23,8 @@ export const EditarVendedorModal = ({
         nombre: vendedor.nombre || "",
         direccion: vendedor.direccion || "",
         telefono: vendedor.telefono || 0,
-        username: vendedor.username || "",
-        email: vendedor.email || "",
+        username: vendedor.user.username || "",
+        email: vendedor.user.email || "",
         password: "", // Password should not be pre-filled
       });
     }
@@ -132,6 +132,7 @@ export const EditarVendedorModal = ({
             className="form-control"
             value={formData.username}
             onChange={handleChange}
+            readOnly
           />
           </div>
           <div className="form-group">

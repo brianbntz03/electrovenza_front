@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { apiRest } from "../../service/apiRest";
+import { CUOTA_TYPE_NAMES } from "../../constants/cuotaTypes";
+
 
 export const CrearCuotaElectro = () => {
   const [numero, setNumero] = useState(0);
   const [descripcion, setDescripcion] = useState("");
   const [interes, setInteres] = useState(0);
-  const [tipoCuota, setTipoCuota] = useState(1);
+  const [porcentajeVendedor, setPorcentajeVendedor] = useState(0);
+  const [tipoCuota, setTipoCuota] = useState(0);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -46,6 +49,7 @@ export const CrearCuotaElectro = () => {
           descripcion,
           interes: Number(interes),
           tipo_cuota: Number(tipoCuota),
+          porcentaje_vendedor: Number(porcentajeVendedor),
         }),
       });
 
@@ -128,15 +132,34 @@ export const CrearCuotaElectro = () => {
 
             <div class="form-group">
               <label for="tipo">Tipo :</label>
+             
+
+              <select
+              className="form-control"
+              value={tipoCuota}
+              name="tipoCuota"
+              onChange={(e) => setTipoCuota(e.target.value)}
+              >
+                <option value="">Seleccione una... </option>
+                { Object.entries(CUOTA_TYPE_NAMES).map(([key, value]) => (
+                  <option value={key}>{value}</option>
+                ))}
+              </select>
+
+              <div className="form-group">
+              <label for="interes">% comision vendedor:</label>
               <input
                 class="form-control"
-                value={tipoCuota}
-                onChange={(e) => setTipoCuota(e.target.value)}
+                value={porcentajeVendedor}
+                onChange={(e) => setPorcentajeVendedor(e.target.value)}
                 type="text"
-                name="tipoCuota"
+                name="porcentajeVendedor"
                 required
               />
             </div>
+            </div>
+
+
 
             <div class="card-footer">
               <button type="submit" class="btn btn-primary" disabled={loading}>

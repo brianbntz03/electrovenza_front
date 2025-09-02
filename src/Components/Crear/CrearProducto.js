@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { apiRest } from "../../service/apiRest";
 
-export const CrearPrducto = () => {
+export const CrearProducto = () => {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [precio, setPrecio] = useState(0);
+  const [precioMayorista, setPrecioMayorista] = useState(0);
   const [idCategoria, setIdCategoria] = useState(0);
+  const [porcentajeComisionVendedor, setPorcentajeComisionVendedor] = useState(0);
   const [categorias, setCategorias] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -57,7 +59,7 @@ export const CrearPrducto = () => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ nombre, descripcion, precio, idCategoria }),
+        body: JSON.stringify({ nombre, descripcion, precio, precio_mayorista: precioMayorista, idCategoria,porcentaje_comision_vendedor: porcentajeComisionVendedor }),
       });
 
       if (!response.ok) {
@@ -115,7 +117,7 @@ export const CrearPrducto = () => {
               />
             </div>
             <div class="form-group">
-              <label for="exampleInputDescription">descripcion</label>
+              <label for="exampleInputDescription">Descripcion</label>
               <input
                 class="form-control"
                 value={descripcion}
@@ -125,8 +127,9 @@ export const CrearPrducto = () => {
                 required
               />
             </div>
+            
             <div class="form-group">
-              <label for="exampleInputDescription">precio</label>
+              <label for="exampleInputDescription">Precio minorista</label>
               <input
                 class="form-control"
                 value={precio}
@@ -136,6 +139,31 @@ export const CrearPrducto = () => {
                 required
               />
             </div>
+
+            <div class="form-group">
+              <label for="exampleInputDescription">Precio mayorista</label>
+              <input
+                class="form-control"
+                value={precioMayorista}
+                onChange={(e) => setPrecioMayorista(Number(e.target.value))}
+                type="text"
+                name="precioMayorista"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputDescription">% Comision vendedor</label>
+              <input
+                class="form-control"
+                value={porcentajeComisionVendedor}
+                onChange={(e) => setPorcentajeComisionVendedor(Number(e.target.value))}
+                type="text"
+                name="porcentajeComisionVendedor"
+                required
+              />
+            </div>
+
             <div class="form-group">
               <label for="exampleInputDescription">categoria</label>
               <select

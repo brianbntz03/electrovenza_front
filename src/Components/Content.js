@@ -10,7 +10,7 @@ import Articulos from "../pages/Articulos";
 import PagePresupuestar from "../Presupuestos/presupuestossss";
 import PageListadoVentas from "../pages/PageListadoVentas";
 import Dashboard from "../pages/Index";
-import { CrearPrducto } from "./Crear/CrearProducto";
+import { CrearProducto } from "./Crear/CrearProducto";
 import ListadoVendedores from "../pages/PageListadoVendedores";
 import Clientes from "../pages/Clientes";
 import Proveedores from "../pages/Proveedores";
@@ -86,7 +86,7 @@ export default function Content() {
                 
 
 
-                <Route path="/crearPrducto" Component={CrearPrducto}></Route>
+                <Route path="/crearProducto" Component={CrearProducto}></Route>
                 <Route path="/vendedores" Component={ListadoVendedores}></Route>
                 <Route path="/crearvendedores" Component={CrearVendedor}></Route>
                 <Route path="/clientes" Component={Clientes}></Route>

@@ -125,6 +125,7 @@ export function ListadoProducto() {
             <th> categoria </th>
             <th> precio minorista </th>
             <th> precio mayorista </th>
+            <th> % comision vendedor </th>
             <th> stock </th>
             <th> </th>
           </tr>
@@ -135,6 +136,7 @@ export function ListadoProducto() {
               <td> {producto.categoria?.nombre || "Sin categoría"} </td>
               <td> {producto.precio} </td>
               <td> {producto.precio_mayorista} </td>
+              <td> {producto.porcentaje_comision_vendedor} </td>
               <td> {producto.stock} </td>
               <td>
                 <button

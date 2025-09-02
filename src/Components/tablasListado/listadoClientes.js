@@ -71,13 +71,8 @@ export function ListadoClientes() {
   };
 
   useEffect(() => {
-    const storedClientes = localStorage.getItem("clientes");
-    if (storedClientes) {
-      setClientes(JSON.parse(storedClientes));
-      setLoading(false);
-    } else {
-      fetchClientes();
-    }
+    fetchClientes();
+
   }, []);
 
   const handleRetry = () => {

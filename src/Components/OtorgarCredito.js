@@ -124,7 +124,7 @@ const OtorgarCredito = () => {
 
   useEffect(() => {
     if (monto > 0 && cuotaId) {
-      const cuotaSeleccionada = cuotasList.find((c) => c.id == cuotaId);
+      const cuotaSeleccionada = cuotasList.find((c) => c.id === cuotaId);
       if (cuotaSeleccionada) {
         const cuotas = cuotaSeleccionada.numero;
         const interesDecimal = cuotaSeleccionada.interes ;

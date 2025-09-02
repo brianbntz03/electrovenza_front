@@ -29,7 +29,7 @@ const PageProductosListado = () => {
 
           <button  type="button" className="btn btn-sm btn-success float-right mr-2" onClick={handleExport}>Exportar <i className="fas fa-download" /></button>
           
-          <button type="button" className="btn btn-sm btn-info float-right mr-2" onClick={() => window.location.href = "/crearPrducto"} >Crear</button>
+          <button type="button" className="btn btn-sm btn-info float-right mr-2" onClick={() => window.location.href = "/crearProducto"} >Crear</button>
 
         </div>
       </div>
