@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { apiRest } from "../../service/apiRest";
+import { CUOTA_TYPE_NAMES } from "../../constants/cuotaTypes";
 
 export const CrearCuotaCredito = () => {
   const [numero, setNumero] = useState(0);
   const [descripcion, setDescripcion] = useState("");
   const [interes, setInteres] = useState(0);
-  const [tipoCuota, setTipoCuota] = useState(1);
+  const [tipoCuota, setTipoCuota] = useState(0);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [comisionVendedor, setComisionVendedor] = useState(0);
 
   const handleRetry = () => {
     setLoading(false);
@@ -46,6 +48,7 @@ export const CrearCuotaCredito = () => {
           descripcion,
           interes: Number(interes),
           tipo_cuota: Number(tipoCuota),
+          comision_vendedor: Number(comisionVendedor),
         }),
       });
 
@@ -104,7 +107,7 @@ export const CrearCuotaCredito = () => {
               />
             </div>
             <div className="form-group">
-              <label for="numero">Numero :</label>
+              <label for="numero">Numero de cuotas:</label>
               <input
                 class="form-control"
                 value={numero}
@@ -128,12 +131,29 @@ export const CrearCuotaCredito = () => {
 
             <div class="form-group">
               <label for="tipo">Tipo :</label>
+
+              <select
+                className="form-control"
+                value={tipoCuota}
+                name="tipoCuota"
+                onChange={(e) => setTipoCuota(e.target.value)}
+                required
+                >
+                  <option value="">Seleccione una... </option>
+                  { Object.entries(CUOTA_TYPE_NAMES).map(([key, value]) => (
+                    <option value={key}>{value}</option>
+                  ))}
+                </select>
+            </div>
+
+            <div className="form-group">
+              <label for="interes">% Comision Vendedor:</label>
               <input
                 class="form-control"
-                value={tipoCuota}
-                onChange={(e) => setTipoCuota(e.target.value)}
+                value={comisionVendedor}
+                onChange={(e) => setComisionVendedor(e.target.value)}
                 type="text"
-                name="tipoCuota"
+                name="porcentajeVendedor"
                 required
               />
             </div>

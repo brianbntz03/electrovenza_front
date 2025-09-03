@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
+import { CUOTA_TYPE_NAMES } from "../../constants/cuotaTypes";
 
 export function EditarCuotaElectro({ cuotaElectro, onClose, onCuotaActualizada }) { // Cambiado a onCuotaActualizada
   const [formData, setFormData] = useState({
@@ -126,13 +127,21 @@ export function EditarCuotaElectro({ cuotaElectro, onClose, onCuotaActualizada }
               </div>
               <div className="form-group">
                 <label>Tipo</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="tipo_cuota"
-                  value={formData.tipo_cuota}
-                  onChange={handleChange}
-                />
+                
+
+                <select
+                className="form-control"
+                value={formData.tipo_cuota}
+                name="tipo_cuota"
+                onChange={handleChange}
+                required
+                >
+                  <option value="">Seleccione una... </option>
+                  { Object.entries(CUOTA_TYPE_NAMES).map(([key, value]) => (
+                    <option value={key}>{value}</option>
+                  ))}
+                </select>
+
               </div>
               <div className="modal-footer">
                 <button

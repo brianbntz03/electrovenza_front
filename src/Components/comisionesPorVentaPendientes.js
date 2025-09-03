@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { apiRest } from "../service/apiRest";
 import FlashMessage from "./tiny/FlashMessage";
+import { convertIsoToDMY } from "../miscellaneus/aux";
+
+
 
 export const ComisionesPorVentaPendientes = () => {
   const [vendedoresFiltrados, setVendedoresFiltrados] = useState([]);
@@ -19,17 +22,6 @@ export const ComisionesPorVentaPendientes = () => {
     setError(null);
   };
 
-  const MostrarAlerta = () => {
-      Swal.fire({
-        title: "Registro de pago de comisiones",
-        text: "Las comisiones fueron pagadas",
-        icon: "success",
-        draggable: true,
-        timer: 1000,
-      }).then(() => {
-        window.location.href = "/ventas-comisiones-pendientes";
-      });
-    };
 
   const registrarComisiones = async () => {
     try {
@@ -51,7 +43,8 @@ export const ComisionesPorVentaPendientes = () => {
 
       const resultado = await response.text();
       console.log(resultado);
-      MostrarAlerta();
+      FlashMessage("Registro de pago de comisiones", "Las comisiones fueron pagadas", 2000, "success", "/ventas-comisiones-pendientes" );
+
 
     } catch (error) {
       console.error("Error al registrar las comisiones:", error);
@@ -147,7 +140,7 @@ export const ComisionesPorVentaPendientes = () => {
                 </tr>
                 {comisiones.map((comision, index) => (
                   <tr key={index}>
-                    <td>{comision.fecha}</td>
+                    <td>{convertIsoToDMY( comision.fecha)}</td>
                     <td>{comision.cuota_venta.venta.cliente.nombre}</td>
                     <td>{comision.cuota_venta.venta.articulo.nombre}</td>
                     <td>{comision.monto}</td>

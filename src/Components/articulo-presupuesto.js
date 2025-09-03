@@ -130,9 +130,12 @@ export const ArticuloPresupuesto = () => {
   }
 
   const calcularPrecioConInteres = (precio, idCuotaSeleccionada) => {
+    console.log(`precio: ${precio}`)
     const cuotaSeleccionada = cuotasFiltrados.find(
       (c) => c.id == idCuotaSeleccionada 
     );
+    console.log(`cuotaSeleccionada numero: ${cuotaSeleccionada.numero}`);
+    console.log(`cuotaSeleccionada interes: ${cuotaSeleccionada.interes}`);
     if (!cuotaSeleccionada) return precio;
     const interes = cuotaSeleccionada.interes / 100;
     const precionConInteres = precio * (1 + interes); 

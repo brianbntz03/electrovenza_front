@@ -106,6 +106,7 @@ export function ListadoSettingCuotasCredito() {
               <th>numero</th>
               <th>interes</th>
               <th>tipo</th>
+              <th>% Comision Vendedor</th>
               <th></th>
             </tr>
           </thead>
@@ -117,6 +118,7 @@ export function ListadoSettingCuotasCredito() {
                 <td>{settingCuota.numero}</td>
                 <td>{settingCuota.interes}</td>
                 <td>{CUOTA_TYPE_NAMES[settingCuota.tipo_cuota]}</td>
+                <td>{settingCuota.comision_vendedor}</td>
                 <td>
                   <button
                     className="link-button"

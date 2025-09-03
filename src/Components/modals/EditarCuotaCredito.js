@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
+import { CUOTA_TYPE_NAMES } from "../../constants/cuotaTypes";
 
 export function EditarCuotaCredito({ cuotaCredito, onClose, onCuotaCreditoActualizada }) {
   const [formData, setFormData] = useState({
@@ -7,6 +8,7 @@ export function EditarCuotaCredito({ cuotaCredito, onClose, onCuotaCreditoActual
     numero: "",
     interes: "",
     tipo_cuota: "", 
+    comision_vendedor: 0,
   });
   const [error, setError] = useState(null);
 
@@ -17,6 +19,7 @@ export function EditarCuotaCredito({ cuotaCredito, onClose, onCuotaCreditoActual
         numero: String(cuotaCredito.numero) || "",
         interes: String(cuotaCredito.interes) || "",
         tipo_cuota: String(cuotaCredito.tipo_cuota) || "", 
+        comision_vendedor: String(cuotaCredito.comision_vendedor) || "", 
       });
     }
   }, [cuotaCredito]);
@@ -37,9 +40,8 @@ export function EditarCuotaCredito({ cuotaCredito, onClose, onCuotaCreditoActual
         numero: Number(formData.numero),
         interes: Number(formData.interes),
         tipo_cuota: Number(formData.tipo_cuota), 
+        comision_vendedor: Number(formData.comision_vendedor),
       };
-
-      console.log("Enviando datos para actualizar cuota:", dataToSend);
 
       const response = await fetch(`${apiRest}/settings/cuotas-credito/${cuotaCredito.id}`, {
         method: "PATCH",
@@ -125,14 +127,34 @@ export function EditarCuotaCredito({ cuotaCredito, onClose, onCuotaCreditoActual
               </div>
               <div className="form-group">
                 <label>Tipo</label>
+
+                <select
+                  className="form-control"
+                  value={formData.tipo_cuota}
+                  name="tipo_cuota"
+                  onChange={handleChange}
+                  required
+                  >
+                    <option value="">Seleccione una... </option>
+                    { Object.entries(CUOTA_TYPE_NAMES).map(([key, value]) => (
+                      <option value={key}>{value}</option>
+                    ))}
+                  </select>
+
+              </div>
+
+              <div className="form-group">
+                <label>Comision Vendedor</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="tipo_cuota" 
-                  value={formData.tipo_cuota}
+                  name="comision_vendedor" 
+                  value={formData.comision_vendedor}
                   onChange={handleChange}
                 />
               </div>
+
+
               <div className="modal-footer">
                 <button
                   type="button"

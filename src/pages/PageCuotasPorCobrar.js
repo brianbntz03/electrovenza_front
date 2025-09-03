@@ -1,7 +1,7 @@
-import CuotaVencida from "../Components/cuotasVencidas";
+import CuotasVencidas from "../Components/cuotasVencidas";
 
 const PageCuotasPorCobrar = () => {
-  let CuotasVencidas = CuotaVencida();
+  const cuotasVencidas = CuotasVencidas();
   return (
     <div className="card">
       <div class="card-header">
@@ -11,7 +11,7 @@ const PageCuotasPorCobrar = () => {
         </div>
       </div>
       <div className="card-body table-responsive p-0">
-        {CuotasVencidas}
+        {cuotasVencidas}
       </div>
     </div>
   );
