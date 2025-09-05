@@ -42,7 +42,7 @@ const FormCantidadCuota = ({ cuotaId, setCuotaId, cuotasList }) => (
       className="form-control"
       id="setting_cuotas_credito_id"
       value={cuotaId}
-      onChange={(e) => setCuotaId(e.target.value)}
+      onChange={(e) => setCuotaId(Number(e.target.value))}
     >
       <option value="">Seleccione cuotas</option>
       {cuotasList.map((c) => (
@@ -82,7 +82,7 @@ const OtorgarCredito = () => {
         body: JSON.stringify({
           setting_cuotas_credito_id: parseInt(cuotaId),
           cliente_id: parseInt(cliente),
-          vendedor_id: 23,
+          vendedor_id: 3, //todo: tomar el id de vendedor del header
           monto: parseFloat(monto),
         }),
       });
@@ -129,7 +129,7 @@ const OtorgarCredito = () => {
         const cuotas = cuotaSeleccionada.numero;
         const interesDecimal = cuotaSeleccionada.interes ;
         const total = monto * (1 + interesDecimal / 100 ) ;
-        const valorCuota = total / cuotas;
+        const valorCuota = Math.round( total / cuotas );
 
         const totalPagar = valorCuota * cuotas;
 

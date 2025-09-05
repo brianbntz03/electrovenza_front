@@ -1,13 +1,13 @@
 import React from 'react'
-import { ComisionesPorVentaPendientes } from '../Components/comisionesPorVentaPendientes';
+import { ComisionesPorCreditoPendientes } from '../Components/comisionesPorCreditoPendientes';
 
-const PageComisionesPorVentaPendientes = () => {
-    let comisionesPorVenta = ComisionesPorVentaPendientes();
+const PageComisionesPorCreditoPendientes = () => {
+    let comisionesPorCredito = ComisionesPorCreditoPendientes();
     return (
         <>
         <div className="card">
             <div className="card-header border-0">
-                <h1 className="card-title">Comisiones por venta pendientes</h1>
+                <h1 className="card-title">Comisiones por credito pendientes</h1>
                 <div className="card-tools">
                     <a href="#" className="btn btn-tool btn-sm">
                         <i className="fas fa-download" />
@@ -18,11 +18,11 @@ const PageComisionesPorVentaPendientes = () => {
                 </div>
             </div>
             <div className="card-body table-responsive p-0">
-               {comisionesPorVenta}
+               {comisionesPorCredito}
             </div>
         </div>
         </>
     )
 }
 
-export default PageComisionesPorVentaPendientes;
+export default PageComisionesPorCreditoPendientes;

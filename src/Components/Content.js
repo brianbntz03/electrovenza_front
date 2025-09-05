@@ -26,6 +26,7 @@ import { CrearProveedor } from "./Crear/CrearProveedor";
 import PageOtorgarCredito from "../pages/PageOtorgarCredito";
 import PageCreditosCuotasPorCobrar from "../pages/PageCreditosCuotasPorCobrar";
 import PageComisionesPorVentaPendientes from "../pages/PageComisionesPorVentaPendientes";
+import PageComisionesPorCreditoPendientes from "../pages/PageComisionesPorCreditoPendientes";
 import PageCreditosPorCobrar from "../pages/PageCreditoPorCobrar";
 import { CrearCuotaElectro } from "./Crear/CrearCuota";
 import { CrearCuotaCredito } from "./Crear/CrearCuotaCredito";
@@ -78,10 +79,11 @@ export default function Content() {
                 <Route path="/cuotas-por-cobrar" Component={PageCuotasPorCobrar} ></Route>
                 <Route path="/ventas-listado" Component={PageListadoVentas}></Route>
                 <Route path="/ventas-comisiones-pendientes" element={<PageComisionesPorVentaPendientes />} />
+                <Route path="/creditos-comisiones-pendientes" element={<PageComisionesPorCreditoPendientes />} />
                 <Route path="/print/cuotas/:venta_id" element={<PrintCuotas />} />
                 
                 {/* Relacionados con vendedor: creditos */}
-                <Route path="/otorgarcredito" Component={PageOtorgarCredito}></Route>
+                <Route path="/otorgar-credito" Component={PageOtorgarCredito}></Route>
                 <Route path="/creditos-cuotas-por-cobrar" Component={PageCreditosCuotasPorCobrar} ></Route>
                 
 
@@ -100,7 +102,6 @@ export default function Content() {
                 <Route
                 path="/registrar-movimento" Component={RegistroMovimientoCuenta}>
                 </Route>
-                <Route path="/otorgarcredito" Component={PageOtorgarCredito}></Route>
                 <Route path="/credito-por-cobrar" Component={PageCreditosPorCobrar}></Route>
                 <Route path="/crearcuotaelectro" Component={CrearCuotaElectro}></Route>
                 <Route path="/crear-cuota-credito" Component={CrearCuotaCredito}></Route>

@@ -86,7 +86,7 @@ export default function Aside() {
                 </a>
                 <ul class="nav nav-treeview">
                   <li className="nav-item">
-                    <NavLink to="/otorgarcredito" className="nav-link">
+                    <NavLink to="/otorgar-credito" className="nav-link">
                       <i className="nav-icon fas fa-table" />
                       <p>
                         Otorgar Credito
@@ -133,14 +133,23 @@ export default function Aside() {
                 </NavLink>
               </li> 
               <li className="nav-item">
-                    <NavLink to="/ventas-comisiones-pendientes" className="nav-link">
-                      <i className="nav-icon fas fa-file-invoice-dollar" />
-                      <p>
-                        Comisiones Pendientes
-                        <i className="fas fa-angle-left right" />
-                      </p>
-                    </NavLink>
-                  </li>
+                <NavLink to="/ventas-comisiones-pendientes" className="nav-link">
+                  <i className="nav-icon fas fa-file-invoice-dollar" />
+                  <p>
+                    Com.Pend. Electro
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to="/creditos-comisiones-pendientes" className="nav-link">
+                  <i className="nav-icon fas fa-file-invoice-dollar" />
+                  <p>
+                    Com.Pend. Creditos
+                    <i className="fas fa-angle-left right" />
+                  </p>
+                </NavLink>
+              </li>
 
 
               <li className="nav-header">VISTA ADMINISTRADOR</li>

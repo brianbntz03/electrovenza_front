@@ -75,7 +75,7 @@ export default function CreditoCuotaVencida(cuota) {
             </span>
             <span className="info-box-number">valor: ${cuota.valor}</span>
             <span className="info-box-number">Pendiente: ${cuota.valor-cuota.montoCobrado}</span>
-            <span className="progress-description">{cuota.vendedor}</span>
+            <span className="progress-description">Vendedor: {cuota.vendedor}</span>
             <div className="row">
               <div className="col-6">
                 <button
