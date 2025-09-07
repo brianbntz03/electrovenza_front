@@ -45,6 +45,9 @@ export default function Aside() {
                   ELECTRO
                   <i class="fas fa-angle-left right"></i>
                 </a>
+                { 
+                  //<ul class="nav nav-treeview">
+}
                 <ul class="nav nav-treeview">
                   <li className="nav-item">
                     <NavLink to="/buscar-articulos-presupuesto" className="nav-link" >
@@ -73,10 +76,10 @@ export default function Aside() {
                       </p>
                     </NavLink>
                   </li>
-
-                  
-
+                {//</ul> 
+                }
                 </ul>
+
               </li>
 
               <li className="nav-item">
@@ -84,7 +87,9 @@ export default function Aside() {
                   CREDITOS
                   <i class="fas fa-angle-left right"></i>
                 </a>
-                <ul class="nav nav-treeview">
+                {
+                //<ul class="nav nav-treeview">
+}
                   <li className="nav-item">
                     <NavLink to="/otorgar-credito" className="nav-link">
                       <i className="nav-icon fas fa-table" />
@@ -113,7 +118,9 @@ export default function Aside() {
                       </p>
                     </NavLink>
                   </li>
-                </ul>
+                  {
+                //</ul>
+                  }
               </li>
 
 
@@ -212,7 +219,9 @@ export default function Aside() {
                   CONFIGURACION
                   <i class="fas fa-angle-left right"></i>
                 </a>
-                <ul class="nav nav-treeview">
+                {
+                //<ul class="nav nav-treeview">
+}
                   <li className="nav-item">
                     <NavLink to="/settingCuotasElectoListado" className="nav-link">
                       <i className="nav-icon fas fa-table" />
@@ -237,8 +246,11 @@ export default function Aside() {
                         <i className="fas fa-angle-left right" />
                       </p>
                     </NavLink>
+
                   </li>
-                </ul>
+                  {
+                //</ul>
+                  }
               </li>
  
 
