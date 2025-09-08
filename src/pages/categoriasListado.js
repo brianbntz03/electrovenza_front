@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import { ListadoCategoria } from "../Components/tablasListado/listado_categoria"
 
 const Categorias = () => {
@@ -7,7 +8,8 @@ const Categorias = () => {
           <div className="card-header border-0">
             <h3 className="card-title">Categorias</h3>
             <div className="card-tools">
-              <a class="btn btn-sm btn-info float-right" href='/crearcategorias' > Crear Categorias</a>
+              
+              <NavLink to="/crearcategorias" className="btn btn-sm btn-info float-right">Crear Categoria</NavLink>
               <a class="btn btn-sm btn-success float-right" >  Excel <i className="fas fa-download" /> </a>
               
             </div>

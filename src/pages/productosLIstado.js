@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import { ListadoProducto } from "../Components/tablasListado/ListadoProducto";
 import { apiRest } from "../service/apiRest"; 
 
@@ -28,8 +29,7 @@ const PageProductosListado = () => {
         <div className="card-tools">
 
           <button  type="button" className="btn btn-sm btn-success float-right mr-2" onClick={handleExport}>Exportar <i className="fas fa-download" /></button>
-          
-          <button type="button" className="btn btn-sm btn-info float-right mr-2" onClick={() => window.location.href = "/crearProducto"} >Crear</button>
+          <NavLink to="/crearProducto" className="btn btn-sm btn-info float-right mr-2">Crear </NavLink>
 
         </div>
       </div>

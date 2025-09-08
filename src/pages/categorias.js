@@ -1,4 +1,4 @@
-import React from 'react';
+import { NavLink } from "react-router-dom";
 import { TodasLasCategorias } from '../Components/todas-las-categorias';
 
 
@@ -9,7 +9,8 @@ const categorias = () => {
       <div className="card-header border-0">
         <h1 className="card-title">Categorias</h1>
         <div className="card-tools">
-          <a class="btn btn-sm btn-info float-right" href='/crearcategorias' > Crear Categorias</a>
+
+          <NavLink to="/crearcategorias" className="btn btn-sm btn-info float-right"> Crear Categoria</NavLink>
           <a href="#" className="btn btn-tool btn-sm">
             <i className="fas fa-download" />
           </a>

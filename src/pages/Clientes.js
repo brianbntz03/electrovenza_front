@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import { ListadoClientes } from "../Components/tablasListado/listadoClientes";
 
 const Clientes = () => {
@@ -11,10 +12,7 @@ const Clientes = () => {
             {" "}
             Excel <i className="fas fa-download" />{" "}
           </a>
-           <a class="btn btn-sm btn-info float-right" href="/crearcliente">
-            {" "}
-            Crear Cliente
-          </a>
+          <NavLink to="/crearcliente" className="btn btn-sm btn-info float-right">Crear Cliente</NavLink>
         </div>
       </div>
       <div className="card-body table-responsive p-0">

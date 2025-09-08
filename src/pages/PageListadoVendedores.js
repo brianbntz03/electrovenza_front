@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import { ListadoVendedores } from "../Components/tablasListado/listadoVendedores";
 
 const PageListadoVendedores = () => {
@@ -11,10 +12,8 @@ const PageListadoVendedores = () => {
             {" "}
             Excel <i className="fas fa-download" />{" "}
           </a>
-          <a className="btn btn-sm btn-info float-right" href="/crearvendedores">
-            {" "}
-            Crear Vendedor
-          </a>
+          
+          <NavLink to="/crearvendedores" className="btn btn-sm btn-info float-right">Crear Vendedor</NavLink>
         </div>
       </div>
       <div className="card-body table-responsive p-0">{Listado_Vendedores}</div>
