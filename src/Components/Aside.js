@@ -1,13 +1,39 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 
 export default function Aside() {
+  const location = useLocation();
+  const [electroOpen, setElectroOpen] = useState(false);
+  const [creditosOpen, setCreditosOpen] = useState(false);
+  const [configOpen, setConfigOpen] = useState(false);
+
+  const electroPaths = ["/buscar-articulos-presupuesto", "/cuotas-por-cobrar", "/ventas-listado"];
+  const creditosPaths = ["/otorgarcredito", "/creditos-cuotas-por-cobrar", "/credito-por-cobrar"];
+  const configPaths = ["/settingCuotasElectoListado", "/SettingCuotasCreditoListado", "/SettingBandasPreciosListado"];
+
+  useEffect(() => {
+    setElectroOpen(electroPaths.some(path => location.pathname.startsWith(path)));
+    setCreditosOpen(creditosPaths.some(path => location.pathname.startsWith(path)));
+    setConfigOpen(configPaths.some(path => location.pathname.startsWith(path)));
+  }, [location]);
+
+  const toggleElectro = (e) => {
+    e.preventDefault();
+    setElectroOpen(!electroOpen);
+  };
+  const toggleCreditos = (e) => {
+    e.preventDefault();
+    setCreditosOpen(!creditosOpen);
+  };
+  const toggleConfig = (e) => {
+    e.preventDefault();
+    setConfigOpen(!configOpen);
+  };
+
   return (
     <div>
-      <NavLink to="" activeClassName=""></NavLink>
       <aside className="main-sidebar sidebar-dark-primary elevation-4">
-        {/* Brand Logo */}
-        <NavLink to="index" className="brand-link">
+        <NavLink to="/index" className="brand-link">
           <img
             src="dist/img/AdminLTELogo.png"
             alt="AdminLTE Logo"
@@ -16,249 +42,159 @@ export default function Aside() {
           />
           <span className="brand-text font-weight-light">EletroVenza</span>
         </NavLink>
-        {/* Sidebar */}
         <div className="sidebar">
-          {/* Sidebar Menu */}
           <nav className="mt-2">
             <ul
               className="nav nav-pills nav-sidebar flex-column"
-              data-widget="treeview"
               role="menu"
               data-accordion="false"
             >
-              {/* Add icons to the links using the .nav-icon class
-         with font-awesome or any other icon font library */}
               <li className="nav-item">
                 <NavLink to="/index" className="nav-link">
                   <i className="nav-icon fas fa-tachometer-alt" />
-                  <p>
-                    Inicio
-                    <i className="fas fa-angle-left right" />
-                  </p>
+                  <p>Inicio</p>
                 </NavLink>
               </li>
 
               <li className="nav-header">VISTA VENDEDOR</li>
 
-              <li className="nav-item">
-                <a href="#" class="nav-link">
-                  ELECTRO
-                  <i class="fas fa-angle-left right"></i>
+              <li className={`nav-item ${electroOpen ? "menu-is-opening menu-open" : ""}`}>
+                <a href="#" className="nav-link" onClick={toggleElectro}>
+                  <i className="nav-icon fas fa-bolt" />
+                  <p>
+                    ELECTRO
+                    <i className="fas fa-angle-left right"></i>
+                  </p>
                 </a>
-                { 
-                  //<ul class="nav nav-treeview">
-}
-                <ul class="nav nav-treeview">
+                <ul className="nav nav-treeview">
                   <li className="nav-item">
-                    <NavLink to="/buscar-articulos-presupuesto" className="nav-link" >
+                    <NavLink to="/buscar-articulos-presupuesto" className="nav-link">
                       <i className="nav-icon fas fa-dollar-sign" />
-                      <p>Vender
-                        <i className="fas fa-angle-left right" />
-                      </p>
+                      <p>Vender</p>
                     </NavLink>
                   </li>
-                  
                   <li className="nav-item">
                     <NavLink to="/cuotas-por-cobrar" className="nav-link">
                       <i className="nav-icon fas fa-file-invoice-dollar" />
-                      <p>
-                        Cuotas por cobrar
-                        <i className="fas fa-angle-left right" />
-                      </p>
+                      <p>Cuotas por cobrar</p>
                     </NavLink>
                   </li>
                   <li className="nav-item">
                     <NavLink to="/ventas-listado" className="nav-link">
                       <i className="nav-icon fas fa-file-invoice-dollar" />
-                      <p>
-                        Ventas
-                        <i className="fas fa-angle-left right" />
-                      </p>
+                      <p>Ventas</p>
                     </NavLink>
                   </li>
-                {//</ul> 
-                }
                 </ul>
-
               </li>
-
-              <li className="nav-item">
-                <a href="#" class="nav-link">
-                  CREDITOS
-                  <i class="fas fa-angle-left right"></i>
+              
+              <li className={`nav-item ${creditosOpen ? "menu-is-opening menu-open" : ""}`}>
+                <a href="#" className="nav-link" onClick={toggleCreditos}>
+                  <i className="nav-icon fas fa-credit-card" />
+                  <p>
+                    CREDITOS
+                    <i className="fas fa-angle-left right"></i>
+                  </p>
                 </a>
-                {
-                //<ul class="nav nav-treeview">
-}
+                <ul className="nav nav-treeview">
                   <li className="nav-item">
-                    <NavLink to="/otorgar-credito" className="nav-link">
+                    <NavLink to="/otorgarcredito" className="nav-link">
                       <i className="nav-icon fas fa-table" />
-                      <p>
-                        Otorgar Credito
-                        <i className="fas fa-angle-left right" />
-                      </p>
+                      <p>Otorgar Credito</p>
                     </NavLink>
                   </li>
-
                   <li className="nav-item">
                     <NavLink to="/creditos-cuotas-por-cobrar" className="nav-link">
                       <i className="nav-icon fas fa-file-invoice-dollar" />
-                      <p>
-                        Cuotas por cobrar
-                        <i className="fas fa-angle-left right" />
-                      </p>
+                      <p>Cuotas por cobrar</p>
                     </NavLink>
-                  </li>    
+                  </li>
                   <li className="nav-item">
                     <NavLink to="/credito-por-cobrar" className="nav-link">
                       <i className="nav-icon fas fa-file-invoice-dollar" />
-                      <p>
-                        Creditos por cobrar
-                        <i className="fas fa-angle-left right" />
-                      </p>
+                      <p>Creditos por cobrar</p>
                     </NavLink>
                   </li>
-                  {
-                //</ul>
-                  }
+                </ul>
               </li>
-
-
-
               
-
-                
-
               <li className="nav-header">CUENTA CORRIENTE</li>
               <li className="nav-item">
                 <NavLink to="/registrar-movimento" className="nav-link">
                   <i className="nav-icon fas fa-table" />
-                  <p>
-                    Registro de movimiento
-                    <i className="fas fa-angle-left right" />
-                  </p>
+                  <p>Registro de movimiento</p>
                 </NavLink>
-              </li> 
+              </li>
               <li className="nav-item">
                 <NavLink to="/ventas-comisiones-pendientes" className="nav-link">
                   <i className="nav-icon fas fa-file-invoice-dollar" />
-                  <p>
-                    Com.Pend. Electro
-                    <i className="fas fa-angle-left right" />
-                  </p>
+                  <p>Comisiones Pendientes</p>
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink to="/creditos-comisiones-pendientes" className="nav-link">
-                  <i className="nav-icon fas fa-file-invoice-dollar" />
-                  <p>
-                    Com.Pend. Creditos
-                    <i className="fas fa-angle-left right" />
-                  </p>
-                </NavLink>
-              </li>
-
-
               <li className="nav-header">VISTA ADMINISTRADOR</li>
               <li className="nav-item">
                 <NavLink to="/categoriasListado" className="nav-link">
                   <i className="nav-icon fas fa-table" />
-                  <p>
-                    Categorias
-                    <i className="fas fa-angle-left right" />
-                  </p>
+                  <p>Categorias</p>
                 </NavLink>
               </li>
-
               <li className="nav-item">
                 <NavLink to="/productosListado" className="nav-link">
                   <i className="nav-icon fas fa-barcode" />
-                  <p>
-                    Productos
-                    <i className="fas fa-angle-left right" />
-                  </p>
+                  <p>Productos</p>
                 </NavLink>
               </li>
-
-              
-
               <li className="nav-item">
                 <NavLink to="/vendedores" className="nav-link">
                   <i className="nav-icon fas fa-handshake" />
-                  <p>
-                    Vendedores
-                    <i className="fas fa-angle-left right" />
-                  </p>
+                  <p>Vendedores</p>
                 </NavLink>
               </li>
-
               <li className="nav-item">
                 <NavLink to="/clientes" className="nav-link">
                   <i className="nav-icon fas fa-user" />
-                  <p>
-                    Clientes
-                    <i className="fas fa-angle-left right" />
-                  </p>
+                  <p>Clientes</p>
                 </NavLink>
               </li>
-
               <li className="nav-item">
                 <NavLink to="/proveedores" className="nav-link">
                   <i className="nav-icon fas fa-truck" />
-                  <p>
-                    Proveedores
-                    <i className="fas fa-angle-left right" />
-                  </p>
+                  <p>Proveedores</p>
                 </NavLink>
               </li>
 
-              
               <li className="nav-header">SETUP</li>
-              <li className="nav-item">
-                <a href="#" class="nav-link">
-                  CONFIGURACION
-                  <i class="fas fa-angle-left right"></i>
+              
+              <li className={`nav-item ${configOpen ? "menu-is-opening menu-open" : ""}`}>
+                <a href="#" className="nav-link" onClick={toggleConfig}>
+                  <i className="nav-icon fas fa-cog" />
+                  <p>
+                    CONFIGURACION
+                    <i className="fas fa-angle-left right"></i>
+                  </p>
                 </a>
-                {
-                //<ul class="nav nav-treeview">
-}
+                <ul className="nav nav-treeview">
                   <li className="nav-item">
                     <NavLink to="/settingCuotasElectoListado" className="nav-link">
                       <i className="nav-icon fas fa-table" />
-                      <p>
-                        Cuotas Electro
-                        <i className="fas fa-angle-left right" />
-                      </p>
+                      <p>Cuotas Electro</p>
                     </NavLink>
                     <NavLink to="/SettingCuotasCreditoListado" className="nav-link">
                       <i className="nav-icon fas fa-table" />
-                      <p>
-                        Cuotas Credito
-                        <i className="fas fa-angle-left right" />
-                      </p>
+                      <p>Cuotas Credito</p>
                     </NavLink>
                   </li>
                   <li className="nav-item">
                     <NavLink to="/SettingBandasPreciosListado" className="nav-link">
                       <i className="nav-icon fas fa-table" />
-                      <p>
-                        Bandas Margen Precio
-                        <i className="fas fa-angle-left right" />
-                      </p>
+                      <p>Bandas Margen Precio</p>
                     </NavLink>
-
                   </li>
-                  {
-                //</ul>
-                  }
+                </ul>
               </li>
- 
-
             </ul>
           </nav>
-          {/* /.sidebar-menu */}
         </div>
-        {/* /.sidebar */}
       </aside>
     </div>
   );
