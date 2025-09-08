@@ -2,6 +2,7 @@
   "name": "ElectroVenza",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://electrovenza.com/gestion/",
   "dependencies": {
     "cra-template": "1.2.0",
     "devtools": "^7.16.3",
