@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrovenza - Tu tienda de tecnología y hogar</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #f8f9fa;
+            --dark-color: #343a40;
+            --light-color: #ffffff;
+            --gray-color: #6c757d;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            line-height: 1.6;
+            color: var(--dark-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1542393545-10b5c8713d7a?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+            color: var(--light-color);
+            height: 80vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3em;
+            margin-bottom: 0.5em;
+            font-weight: 700;
+        }
+
+        .hero-content p {
+            font-size: 1.2em;
+            margin-bottom: 2em;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #004085;
+        }
+
+        /* Product Categories Section */
+        .products-section {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .products-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 1em;
+            font-weight: 700;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background-color: var(--secondary-color);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .product-card .icon {
+            font-size: 3em;
+            margin-bottom: 0.5em;
+            color: var(--primary-color);
+        }
+
+        .product-card h3 {
+            margin-bottom: 0.5em;
+        }
+        
+        /* Benefits Section */
+        .benefits-section {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .benefits-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 1em;
+        }
+
+        .benefits-grid {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .benefit-item {
+            flex: 1;
+            max-width: 300px;
+            min-width: 200px;
+            text-align: center;
+        }
+        
+        .benefit-item .icon {
+            font-size: 3em;
+            margin-bottom: 0.5em;
+        }
+        
+        /* Final CTA Section */
+        .cta-section {
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .cta-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 1em;
+            font-weight: 700;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .footer-links a {
+            color: var(--light-color);
+            text-decoration: none;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* WhatsApp Button */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            font-size: 2em;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        .whatsapp-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2em;
+            }
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Electrovenza: La tecnología que necesitas, al alcance de tu mano.</h1>
+            <p>Descubre nuestra amplia gama de electrodomésticos, celulares, herramientas y mucho más. ¡Calidad y precio en un solo lugar!</p>
+            <a href="#productos" class="cta-button">Ver Nuestros Productos</a>
+        </div>
+    </section>
+
+    <section id="productos" class="products-section">
+        <div class="container">
+            <h2>Nuestras Categorías de Productos</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <span class="icon"><i class="fas fa-blender"></i></span>
+                    <h3>Electrodomésticos</h3>
+                    <p>Equipa tu hogar con lo último en tecnología. Lavadoras, neveras, microondas y más.</p>
+                </div>
+                <div class="product-card">
+                    <span class="icon"><i class="fas fa-laptop"></i></span>
+                    <h3>Tecnología</h3>
+                    <p>Smartphones, cámaras, auriculares, micrófonos y los gadgets más modernos para tu día a día.</p>
+                </div>
+                <div class="product-card">
+                    <span class="icon"><i class="fas fa-tools"></i></span>
+                    <h3>Herramientas</h3>
+                    <p>Todo lo que necesitas para tus proyectos. Taladros, destornilladores y kits completos.</p>
+                </div>
+                <div class="product-card">
+                    <span class="icon"><i class="fas fa-mug-hot"></i></span>
+                    <h3>Artículos Térmicos</h3>
+                    <p>Termos, mates, botellas y vasos térmicos para mantener tus bebidas a la temperatura ideal.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="benefits-section">
+        <div class="container">
+            <h2>¿Por qué elegir a Electrovenza?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <span class="icon"><i class="fas fa-shield-alt"></i></span>
+                    <h3>Garantía de Calidad</h3>
+                    <p>Todos nuestros productos tienen garantía y pasan por rigurosos controles de calidad.</p>
+                </div>
+                <div class="benefit-item">
+                    <span class="icon"><i class="fas fa-truck"></i></span>
+                    <h3>Envío Rápido y Seguro</h3>
+                    <p>Recibe tus compras en la puerta de tu casa en tiempo récord.</p>
+                </div>
+                <div class="benefit-item">
+                    <span class="icon"><i class="fas fa-headset"></i></span>
+                    <h3>Soporte 24/7</h3>
+                    <p>Estamos disponibles para ayudarte con cualquier pregunta o inconveniente.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>¿Listo para renovar tu hogar?</h2>
+            <a href="https://wa.me/XXXXXXXXXX" class="cta-button">¡Hablemos por WhatsApp!</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Electrovenza. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="#">Política de Privacidad</a> | 
+                <a href="#">Términos y Condiciones</a> | 
+                <a href="https://wa.me/XXXXXXXXXX" target="_blank">Contactar por WhatsApp</a>
+            </div>
+        </div>
+    </footer>
+    
+    <a href="https://wa.me/XXXXXXXXXX" class="whatsapp-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+</body>
+</html>
