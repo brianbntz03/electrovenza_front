@@ -66,7 +66,7 @@ export default function Aside() {
                     <i className="fas fa-angle-left right"></i>
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
+                <ul className="nav nav-treeview">
                   <li className="nav-item">
                     <NavLink to="/buscar-articulos-presupuesto" className="nav-link">
                       <i className="nav-icon fas fa-dollar-sign" />
@@ -85,11 +85,7 @@ export default function Aside() {
                       <p>Ventas</p>
                     </NavLink>
                   </li>
-
-                  
-
                 </ul>
-
               </li>
               
               <li className={`nav-item ${creditosOpen ? "menu-is-opening menu-open" : ""}`}>
@@ -100,9 +96,9 @@ export default function Aside() {
                     <i className="fas fa-angle-left right"></i>
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
+                <ul className="nav nav-treeview">
                   <li className="nav-item">
-                    <NavLink to="/otorgar-credito" className="nav-link">
+                    <NavLink to="/otorgarcredito" className="nav-link">
                       <i className="nav-icon fas fa-table" />
                       <p>Otorgar Credito</p>
                     </NavLink>
@@ -119,9 +115,7 @@ export default function Aside() {
                       <p>Creditos por cobrar</p>
                     </NavLink>
                   </li>
-                  {
-                //</ul>
-                  }
+                </ul>
               </li>
               
               <li className="nav-header">CUENTA CORRIENTE</li>
@@ -132,16 +126,11 @@ export default function Aside() {
                 </NavLink>
               </li>
               <li className="nav-item">
-                    <NavLink to="/ventas-comisiones-pendientes" className="nav-link">
-                      <i className="nav-icon fas fa-file-invoice-dollar" />
-                      <p>
-                        Comisiones Pendientes
-                        <i className="fas fa-angle-left right" />
-                      </p>
-                    </NavLink>
-                  </li>
-
-
+                <NavLink to="/ventas-comisiones-pendientes" className="nav-link">
+                  <i className="nav-icon fas fa-file-invoice-dollar" />
+                  <p>Comisiones Pendientes</p>
+                </NavLink>
+              </li>
               <li className="nav-header">VISTA ADMINISTRADOR</li>
               <li className="nav-item">
                 <NavLink to="/categoriasListado" className="nav-link">
@@ -184,7 +173,7 @@ export default function Aside() {
                     <i className="fas fa-angle-left right"></i>
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
+                <ul className="nav nav-treeview">
                   <li className="nav-item">
                     <NavLink to="/settingCuotasElectoListado" className="nav-link">
                       <i className="nav-icon fas fa-table" />
@@ -200,11 +189,8 @@ export default function Aside() {
                       <i className="nav-icon fas fa-table" />
                       <p>Bandas Margen Precio</p>
                     </NavLink>
-
                   </li>
-                  {
-                //</ul>
-                  }
+                </ul>
               </li>
             </ul>
           </nav>
