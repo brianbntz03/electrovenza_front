@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrovenza - ¡Llegando pronto!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <div class="max-w-4xl w-full mx-auto p-8 md:p-12 bg-gray-800 rounded-3xl shadow-2xl transform transition-all hover:scale-[1.01]">
+        
+        <header class="mb-10">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-blue-400 mb-2 drop-shadow-md">
+                electrovenza.com
+            </h1>
+            <p class="text-xl md:text-2xl font-light text-gray-400 mb-6 animate-pulse">
+                El futuro de tu hogar está en construcción.
+            </p>
+        </header>
+
+        <main class="mb-8">
+            <h2 class="text-2xl md:text-4xl font-semibold mb-4 text-white">
+                Estamos creando algo increíble para ti.
+            </h2>
+            <p class="text-lg md:text-xl font-normal text-gray-300 leading-relaxed max-w-2xl mx-auto">
+                Pronto seremos tu destino favorito para **electrodomésticos**, **electrónica**, **artículos para el hogar** y mucho más.
+                ¡Precios que te sorprenderán y la mejor experiencia de compra en línea!
+            </p>
+        </main>
+        
+        <section class="max-w-md mx-auto">
+            <h3 class="text-xl md:text-2xl font-bold mb-4 text-blue-300">
+                Pronto te estaremos mostrando el catálogo completo!!!
+            </h3>
+            
+            <div id="message" class="mt-4 text-lg font-semibold text-green-400">
+                ¡Gracias! Te avisaremos cuando estemos listos.
+            </div>
+        </section>
+
+        <footer class="mt-12 text-center text-gray-500 text-sm">
+            <div class="flex justify-center space-x-4 mb-2">
+                <a href="#" class="hover:text-gray-400 transition-colors">Facebook</a>
+                <span class="text-gray-600">•</span>
+                <a href="#" class="hover:text-gray-400 transition-colors">Instagram</a>
+                <span class="text-gray-600">•</span>
+                <a href="#" class="hover:text-gray-400 transition-colors">LinkedIn</a>
+            </div>
+            <p>&copy; 2024 Electrovenza. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('subscribeForm');
+            const messageDiv = document.getElementById('message');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                // Aquí es donde se enviaría la información a un servidor.
+                // Por ahora, solo simulamos un éxito.
+                
+                form.style.display = 'none';
+                messageDiv.style.display = 'block';
+
+                // Opcional: limpiar los campos del formulario
+                document.getElementById('name').value = '';
+                document.getElementById('email').value = '';
+
+                console.log('Formulario enviado con éxito.');
+            });
+        });
+    </script>
+
+</body>
+</html>
