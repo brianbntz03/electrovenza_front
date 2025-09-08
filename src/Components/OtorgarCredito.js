@@ -74,7 +74,7 @@ const OtorgarCredito = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/credito`, {
+      const response = await fetch(`${apiRest}/credito`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
