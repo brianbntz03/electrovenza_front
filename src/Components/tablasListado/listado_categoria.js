@@ -64,12 +64,7 @@ export function ListadoCategoria() {
 
   useEffect(() => {
     const storeCategorias = localStorage.getItem("categorias");
-    if (storeCategorias) {
-      setCategorias(JSON.parse(storeCategorias));
-      setLoading(false);
-    } else {
-      fetchCategorias();
-    }
+    fetchCategorias();
   }, []);
 
   const handleRetry = () => {

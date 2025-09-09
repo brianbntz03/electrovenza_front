@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { apiRest } from "../../service/apiRest";
+import { apiRest, publicUrl } from "../../service/apiRest";
 
 export const CrearCliente = () => {
   const [nombre, setNombre] = useState("");
@@ -30,7 +30,7 @@ export const CrearCliente = () => {
       icon: "success",
       timer: 1500,
     }).then(() => {
-      window.location.href = "/clientes";
+      window.location.href = `${publicUrl}/clientes`;
     });
   };
 

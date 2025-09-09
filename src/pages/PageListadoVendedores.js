@@ -8,10 +8,7 @@ const PageListadoVendedores = () => {
       <div class="card-header">
         <h3 class="card-title">vendedores</h3>
         <div className="card-tools">
-          <a className="btn btn-sm btn-success float-right" href="">
-            {" "}
-            Excel <i className="fas fa-download" />{" "}
-          </a>
+          
           
           <NavLink to="/crearvendedores" className="btn btn-sm btn-info float-right">Crear Vendedor</NavLink>
         </div>

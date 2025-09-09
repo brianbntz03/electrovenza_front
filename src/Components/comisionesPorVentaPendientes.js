@@ -43,7 +43,7 @@ export const ComisionesPorVentaPendientes = () => {
 
       const resultado = await response.text();
       console.log(resultado);
-      FlashMessage("Registro de pago de comisiones", "Las comisiones fueron pagadas", 2000, "success", "/ventas-comisiones-pendientes" );
+      FlashMessage("Registro de pago de comisiones", "Las comisiones fueron pagadas", 2000, "success", "ventas-comisiones-pendientes" );
 
 
     } catch (error) {

@@ -8,10 +8,7 @@ const Proveedores = () => {
       <div class="card-header">
         <h3 className="card-title">Proveedores</h3>
         <div className="card-tools">
-          <a class="btn btn-sm btn-success float-right">
-            {" "}
-            Excel <i className="fas fa-download" />{" "}
-          </a>
+          
           
           <NavLink to="/crearproveedor" className="btn btn-sm btn-info float-right mr-2"> Crear Proveedor </NavLink>
         </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { apiRest } from "../../service/apiRest";
+import { apiRest, publicUrl } from "../../service/apiRest";
 import { CUOTA_TYPE_NAMES } from "../../constants/cuotaTypes";
 
 export const CrearCuotaCredito = () => {
@@ -28,7 +28,7 @@ export const CrearCuotaCredito = () => {
       draggable: true,
       timer: 1000,
     }).then(() => {
-      window.location.href = "/SettingCuotasCreditoListado";
+      window.location.href = `${publicUrl}/SettingCuotasCreditoListado`;
     });
   };
 

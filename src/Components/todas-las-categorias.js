@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { apiRest } from "../service/apiRest";
+import { apiRest, publicUrl } from "../service/apiRest";
 
 export const CrearCategorias = () => {
   const [nombre, setNombre] = useState("");
@@ -26,7 +26,7 @@ export const CrearCategorias = () => {
       draggable: true,
       timer: 1000,
     }).then(() => {
-      window.location.href = "/categoriasListado";
+      window.location.href = `${publicUrl}/categoriasListado`;
     });
   };
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { apiRest } from "../../service/apiRest";
+import { apiRest, publicUrl } from "../../service/apiRest";
 
 export const CrearVendedor = () => {
   const [nombre, setNombre] = useState("");
@@ -48,7 +48,7 @@ export const CrearVendedor = () => {
       showConfirmButton: false,
     }).then(() => {
       localStorage.removeItem('crearVendedorForm');
-      window.location.href = "/vendedores";
+      window.location.href = `${publicUrl}/vendedores`;
     });
   };
 

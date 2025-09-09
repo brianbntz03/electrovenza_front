@@ -71,17 +71,6 @@ export function ListadoProducto() {
     }
   };
   useEffect(() => {
-    /*
-    //Nota: por ahora lo dejo comentado, quiero que al cargar la pagina tome de la base 
-    // el listado de productos.
-    const storedProductos = localStorage.getItem('productos');
-    if (storedProductos) {
-      setProductos(JSON.parse(storedProductos));
-      setLoading(false);
-    } else {
-      fetchProductos();
-    }
-    */
     fetchProductos();
   }, []);
 

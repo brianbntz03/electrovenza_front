@@ -60,7 +60,7 @@ export const ArticuloPresupuesto = () => {
 
       const resultado = await response.text();
       setMensajeVenta(resultado);
-      FlashMessage("Registro de venta", "La venta se registro con exito", 2000, "success", "/cuotas-por-cobrar");
+      FlashMessage("Registro de venta", "La venta se registro con exito", 2000, "success", "cuotas-por-cobrar");
 
     } catch (error) {
       console.error("Error al registrar la venta:", error);

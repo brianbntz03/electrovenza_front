@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { apiRest } from "../../service/apiRest";
+import { apiRest, publicUrl } from "../../service/apiRest";
 import { CUOTA_TYPE_NAMES } from "../../constants/cuotaTypes";
 
 
@@ -29,7 +29,7 @@ export const CrearCuotaElectro = () => {
       draggable: true,
       timer: 1000,
     }).then(() => {
-      window.location.href = "/settingCuotasElectoListado";
+      window.location.href = `${publicUrl}/settingCuotasElectoListado`;
     });
   };
 

@@ -8,10 +8,7 @@ const Clientes = () => {
       <div class="card-header">
         <h3 className="card-title">Clientes</h3>
         <div className="card-tools">
-          <a class="btn btn-sm btn-success float-right">
-            {" "}
-            Excel <i className="fas fa-download" />{" "}
-          </a>
+          
           <NavLink to="/crearcliente" className="btn btn-sm btn-info float-right">Crear Cliente</NavLink>
         </div>
       </div>

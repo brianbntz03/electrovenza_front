@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { apiRest } from "../../service/apiRest";
+import { apiRest, publicUrl } from "../../service/apiRest";
 
 export const CrearProducto = () => {
   const [nombre, setNombre] = useState("");
@@ -29,7 +29,7 @@ export const CrearProducto = () => {
       draggable: true,
       timer: 1000,
     }).then(() => {
-      window.location.href = "/productosListado";
+      window.location.href = `${publicUrl}/productosListado`;
     });
   };
 

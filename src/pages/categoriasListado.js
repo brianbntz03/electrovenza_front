@@ -10,7 +10,7 @@ const Categorias = () => {
             <div className="card-tools">
               
               <NavLink to="/crearcategorias" className="btn btn-sm btn-info float-right">Crear Categoria</NavLink>
-              <a class="btn btn-sm btn-success float-right" >  Excel <i className="fas fa-download" /> </a>
+              
               
             </div>
           </div>

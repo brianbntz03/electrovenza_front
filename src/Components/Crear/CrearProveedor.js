@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { apiRest } from "../../service/apiRest";
+import { apiRest, publicUrl } from "../../service/apiRest";
 
 
 export const CrearProveedor = () => {
@@ -26,7 +26,7 @@ export const CrearProveedor = () => {
       draggable: true,
       timer: 1000,
     }).then(() => {
-      window.location.href = "/proveedores";
+      window.location.href = `${publicUrl}/proveedores`;
     });
   };
 

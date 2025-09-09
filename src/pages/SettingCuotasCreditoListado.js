@@ -10,7 +10,6 @@ const PageSettingCuotasCreditoListado = () => {
             <h3 className="card-title">Configuracion de Cuotas e Interes aplicable a créditos</h3>
             <div className="card-tools">
               <NavLink to="/crear-cuota-credito" className="btn btn-sm btn-info float-right"> Crear Cuota </NavLink>
-              <a class="btn btn-sm btn-success float-right" href="/" >  Excel <i className="fas fa-download" /> </a>
             </div>
           </div>
           <div className="card-body table-responsive p-0">

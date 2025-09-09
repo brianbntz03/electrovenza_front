@@ -62,14 +62,6 @@ export function ListadoVendedores() {
   };
 
   useEffect(() => {
-    /*const storedVendedores = localStorage.getItem("vendedores");
-    if (storedVendedores) {
-      setVendedores(JSON.parse(storedVendedores));
-      setLoading(false);
-    } else {
-      fetchVendedores();
-    }
-      */
     fetchVendedores();
   }, []);
 

@@ -72,7 +72,6 @@ export function ListadoClientes() {
 
   useEffect(() => {
     fetchClientes();
-
   }, []);
 
   const handleRetry = () => {

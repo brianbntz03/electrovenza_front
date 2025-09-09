@@ -41,13 +41,7 @@ export function Listadoproveedores() {
   };
 
   useEffect(() => {
-    const storedProveedores = localStorage.getItem("proveedores");
-    if (storedProveedores) {
-      setProveedores(JSON.parse(storedProveedores));
-      setLoading(false);
-    } else {
-      fetchProveedores();
-    }
+    fetchProveedores();
   }, []);
 
   const handleRetry = () => {
