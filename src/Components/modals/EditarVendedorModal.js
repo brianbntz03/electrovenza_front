@@ -4,7 +4,7 @@ import { apiRest } from "../../service/apiRest";
 export const EditarVendedorModal = ({
   vendedor,
   onClose,
-  onVendedorActualizado,
+  onVendedoresActualizado,
 }) => {
   const [formData, setFormData] = useState({
     nombre: "",
@@ -55,13 +55,8 @@ export const EditarVendedorModal = ({
       }
 
       const vendedorActualizado = await response.json();
-      console.log(
-        "Vendedor actualizado exitosamente:",
-        vendedorActualizado
-      );
-      if (onVendedorActualizado) {
-          onVendedorActualizado(vendedorActualizado);
-      }
+      
+      onVendedoresActualizado(vendedorActualizado);
       onClose();
     } catch (error) {
       setError(error.message);

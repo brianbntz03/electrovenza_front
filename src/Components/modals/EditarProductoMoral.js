@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
+import { toSnakeCase } from "../../miscellaneus/aux"
 
 export function EditaProductoModal({
   producto,
@@ -14,6 +15,7 @@ export function EditaProductoModal({
     stock: 0,
     idCategoria: "",
     activo: true,
+    porcentajeComisionVendedor: 0,
   });
   const [error, setError] = useState(null);
   const [categorias, setCategorias] = useState([]);
@@ -27,6 +29,8 @@ export function EditaProductoModal({
         precio_mayorista: Number(producto.precio_mayorista) || 0,
         stock: Number(producto.stock) || 0,
         idCategoria: producto.categoria ? Number(producto.categoria.id) : 0,
+        porcentajeComisionVendedor: Number(producto.porcentaje_comision_vendedor) || 0,
+        activo: producto.activo || true,
       });
     }
   }, [producto]);
@@ -36,7 +40,7 @@ export function EditaProductoModal({
       try {
         const response = await fetch(`${apiRest}/categoria`);
         if (!response.ok) {
-          throw new Error("No se pudo obtener la lista de categorias");
+          throw new Error("No se pudo obtener informacion del producto");
         }
         const data = await response.json();
         // Show active categories AND the product's current category, even if inactive
@@ -79,7 +83,7 @@ export function EditaProductoModal({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(toSnakeCase(formData)),
       });
 
       if (!response.ok) {
@@ -193,6 +197,7 @@ export function EditaProductoModal({
                   onChange={handleChangeNumber}
                 />
               </div>
+              
               <div className="form-group">
                 <label>Stock</label>
                 <input
@@ -203,6 +208,19 @@ export function EditaProductoModal({
                   onChange={handleChangeNumber}
                 />
               </div>
+
+              <div className="form-group">
+                <label>% Comision Vendedor</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="porcentajeComisionVendedor"
+                  value={formData.porcentajeComisionVendedor}
+                  onChange={handleChangeNumber}
+                />
+              </div>
+
+
               <div className="modal-footer">
                 <button
                   type="button"

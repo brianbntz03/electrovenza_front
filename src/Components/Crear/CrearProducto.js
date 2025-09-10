@@ -7,6 +7,7 @@ export const CrearProducto = () => {
   const [descripcion, setDescripcion] = useState("");
   const [precio, setPrecio] = useState(0);
   const [precioMayorista, setPrecioMayorista] = useState(0);
+  const [stock, setStock] = useState(0);
   const [idCategoria, setIdCategoria] = useState(0);
   const [porcentajeComisionVendedor, setPorcentajeComisionVendedor] = useState(0);
   const [categorias, setCategorias] = useState([]);
@@ -59,7 +60,7 @@ export const CrearProducto = () => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ nombre, descripcion, precio, precio_mayorista: precioMayorista, idCategoria,porcentaje_comision_vendedor: porcentajeComisionVendedor }),
+        body: JSON.stringify({ nombre, descripcion, precio, precio_mayorista: precioMayorista, stock, idCategoria,porcentaje_comision_vendedor: porcentajeComisionVendedor }),
       });
 
       if (!response.ok) {
@@ -148,6 +149,18 @@ export const CrearProducto = () => {
                 onChange={(e) => setPrecioMayorista(Number(e.target.value))}
                 type="text"
                 name="precioMayorista"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputDescription">Stock</label>
+              <input
+                class="form-control"
+                value={stock}
+                onChange={(e) => setStock(Number(e.target.value))}
+                type="text"
+                name="stock"
                 required
               />
             </div>

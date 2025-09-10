@@ -1,7 +1,8 @@
+import {  publicUrl } from "../../service/apiRest";
 export function BotonImprimirCuotas(venta){
   
   const handlePrint = () => {
-    window.open(`/print/cuotas/${venta.id}`, '_blank');
+    window.open(`${publicUrl}/print/cuotas/${venta.id}`, '_blank');
   };
 
   return (
