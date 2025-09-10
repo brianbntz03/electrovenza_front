@@ -18,14 +18,22 @@ generate:
 	cp $(PAGE_FILE) $(DEST_PAGE_FILE)/Page$(NEW_TEXT).js
 	@echo "Replacing '$(OLD_TEXT)' with '$(NEW_TEXT)'"
 	sed -i 's/$(OLD_TEXT)/$(NEW_TEXT)/g' $(DEST_PAGE_FILE)/Page$(NEW_TEXT).js
+	@echo "  Listo...  \n"
 
 # Copiando el listado
 	@echo "Copying $(LIST_FILE) to $(DEST_LIST_FILE)/Listado$(NEW_TEXT).js"
-	cp $(LIST_FILE) $(DEST_PAGE_FILE)/Listado$(NEW_TEXT).js
+	cp $(LIST_FILE) $(DEST_LIST_FILE)/Listado$(NEW_TEXT).js
+	@echo "Replacing '$(OLD_TEXT)' with '$(NEW_TEXT)'"
+	sed -i 's/$(OLD_TEXT)/$(NEW_TEXT)/g' $(DEST_LIST_FILE)/Listado$(NEW_TEXT).js
+	@echo "  Listo...  \n"
+
 
 # Copiando el modal
 	@echo "Copying $(MODAL_FILE) to $(DEST_MODAL_FILE)/Modal$(NEW_TEXT).js"
 	cp $(MODAL_FILE) $(DEST_MODAL_FILE)/Modal$(NEW_TEXT).js
+	@echo "  Listo...  \n\n"
+
+	@echo "  Todo Listo...  \n\n"
 
 # Function-style targets
 generate-%:

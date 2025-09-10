@@ -1,22 +1,22 @@
 import { NavLink } from "react-router-dom";
-import { ListadoTEMPLATE_LISTADO_NAME } from "../Components/Lists/ListadoTEMPLATE_LISTADO_NAME";
+import { ListadoBandasPrecios } from "../Components/Lists/ListadoBandasPrecios";
 
-const TEMPLATE_LISTADO_NAME = () => {
-  let listadoTEMPLATE_LISTADO_NAME = ListadoTEMPLATE_LISTADO_NAME();
+const BandasPrecios = () => {
+  let listadoBandasPrecios = ListadoBandasPrecios();
   return (
     <div className="card">
       <div class="card-header">
-        <h3 className="card-title">TEMPLATE_LISTADO_NAME</h3>
+        <h3 className="card-title">BandasPrecios</h3>
         <div className="card-tools">
           
           <NavLink to="/crearcliente" className="btn btn-sm btn-info float-right">Crear</NavLink>
         </div>
       </div>
       <div className="card-body table-responsive p-0">
-        {listadoTEMPLATE_LISTADO_NAME}
+        {listadoBandasPrecios}
       </div>
     </div>
   );
 };
 
-export default TEMPLATE_LISTADO_NAME;
+export default BandasPrecios;

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
-import { ModalEditarTEMPLATE_LISTADO_NAMEModal } from "../modals/EditarObjectModal";
+import { ModalEditarBandasPreciosModal } from "../modals/EditarObjectModal";
 
-export function ListadoTEMPLATE_LISTADO_NAME() {
+export function ListadoBandasPrecios() {
   const storaObjectName =  "colectivo";
   const urlObject = `${apiRest}/cliente`;
   const titlePlural = "Clientes";
@@ -140,7 +140,7 @@ export function ListadoTEMPLATE_LISTADO_NAME() {
         </tbody>
       </table>
       {isModalOpen && (
-        <ModalEditarTEMPLATE_LISTADO_NAMEModal
+        <ModalEditarBandasPreciosModal
           object={selectedObject}
           onClose={handleCloseModal}
           onObjectActualizado={handleObjectActualizado}
