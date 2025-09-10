@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
-import { ModalEditarBandasPreciosModal } from "../modals/EditarObjectModal";
+import { ModalEditarBandasPrecios } from "../modals/ModalEditarBandasPrecios";
+import FlashMessage from "../tiny/FlashMessage";
+import FlashMessageConfirm from "../tiny/ConfirmMessage";
 
 export function ListadoBandasPrecios() {
-  const storaObjectName =  "colectivo";
-  const urlObject = `${apiRest}/cliente`;
-  const titlePlural = "Clientes";
-  const titleSingular = "Cliente";
+  const storageObjectName =  "colectivo";
+  const urlObject = `${apiRest}/setting-escala-precios`;
+  const titlePlural = "Bandas de precios";
+  const titleSingular = "Banda";
   
   const [colectivo, setColectivo] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,10 +33,16 @@ export function ListadoBandasPrecios() {
       c.id === objectActualizado.id ? { ...c, ...objectActualizado } : c
     );
     setColectivo(nuevosObjects);
-    localStorage.setItem(storaObjectName, JSON.stringify(nuevosObjects));
+    localStorage.setItem(storageObjectName, JSON.stringify(nuevosObjects));
   };
 
   const handleEliminar = async (id) => {
+
+    const response = await FlashMessageConfirm("Eliminar Banda","Seguro que desea eliminar la banda?");
+    if (!response) {
+      return;
+    }
+
     try {
       await fetch(`${urlObject}/${id}`, {
         method: "DELETE",
@@ -43,7 +51,7 @@ export function ListadoBandasPrecios() {
 
       const nuevosObjects = colectivo.filter((object) => object.id !== id);
       setColectivo(nuevosObjects);
-      localStorage.setItem(storaObjectName, JSON.stringify(nuevosObjects));
+      localStorage.setItem(storageObjectName, JSON.stringify(nuevosObjects));
     } catch (error) {
       console.error(`Error al eliminar ${titleSingular}:`, error);
     }
@@ -64,9 +72,8 @@ export function ListadoBandasPrecios() {
       }
 
       const data = await response.json();
-      console.log(data);
       setColectivo(data);
-      localStorage.setItem(storaObjectName, JSON.stringify(data));
+      localStorage.setItem(storageObjectName, JSON.stringify(data));
       setLoading(false);
     } catch (error) {
       console.error("Error detallado:", error);
@@ -90,7 +97,7 @@ export function ListadoBandasPrecios() {
   if (loading) {
     return (
       <div className="loading-container">
-        <p>Cargando ({titlePlural})...</p>
+        <p>Cargando {titlePlural}...</p>
       </div>
     );
   }
@@ -111,22 +118,26 @@ export function ListadoBandasPrecios() {
 
   return (
     <div className="card-body">
-      <p>Listado de ({titlePlural})</p>
+      <p>Listado de {titlePlural}</p>
       <table className="table table-striped table-valign-middle table-bordered">
         <thead>
           <tr>
-            <th>Dato 1</th>
-            <th>Dato 2</th>
+            <th>Descripcion</th>
+            <th>Banda superior</th>
+            <th>Porcentaje Minorista</th>
+            <th>Porcentaje Mayorista</th>
+            <th>% Comision Vendedor</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
           {colectivo
-            .filter((c) => c && c.nombre)
             .map((object) => (
               <tr key={object.id}>
-                <td>{object.dato1}</td>
-                <td>{object.dato2}</td>
+                <td>{object.descripcion}</td>
+                <td>{object.porcentaje_minorista}</td>
+                <td>{object.porcentaje_mayorista}</td>
+                <td>{object.porcentaje_comision_vendedor}</td>
                 <td>
                   <button onClick={() => handleOpenModal(object)}>
                     editar
@@ -140,7 +151,7 @@ export function ListadoBandasPrecios() {
         </tbody>
       </table>
       {isModalOpen && (
-        <ModalEditarBandasPreciosModal
+        <ModalEditarBandasPrecios
           object={selectedObject}
           onClose={handleCloseModal}
           onObjectActualizado={handleObjectActualizado}

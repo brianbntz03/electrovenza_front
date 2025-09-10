@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
-import { ModalEditarTEMPLATE_LISTADO_NAMEModal } from "../modals/EditarObjectModal";
+import { ModalEditarTEMPLATE_LISTADO_NAME } from "../modals/ModalEditarTEMPLATE_LISTADO_NAME";
 
 export function ListadoTEMPLATE_LISTADO_NAME() {
   const storaObjectName =  "colectivo";
@@ -122,7 +122,6 @@ export function ListadoTEMPLATE_LISTADO_NAME() {
         </thead>
         <tbody>
           {colectivo
-            .filter((c) => c && c.nombre)
             .map((object) => (
               <tr key={object.id}>
                 <td>{object.dato1}</td>
@@ -140,7 +139,7 @@ export function ListadoTEMPLATE_LISTADO_NAME() {
         </tbody>
       </table>
       {isModalOpen && (
-        <ModalEditarTEMPLATE_LISTADO_NAMEModal
+        <ModalEditarTEMPLATE_LISTADO_NAME
           object={selectedObject}
           onClose={handleCloseModal}
           onObjectActualizado={handleObjectActualizado}

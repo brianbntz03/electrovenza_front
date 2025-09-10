@@ -1,15 +1,15 @@
 import { NavLink } from "react-router-dom";
 import { ListadoBandasPrecios } from "../Components/Lists/ListadoBandasPrecios";
 
-const BandasPrecios = () => {
+const PageBandasPrecios = () => {
   let listadoBandasPrecios = ListadoBandasPrecios();
   return (
     <div className="card">
       <div class="card-header">
-        <h3 className="card-title">BandasPrecios</h3>
+        <h3 className="card-title">Bandas de Precios</h3>
         <div className="card-tools">
           
-          <NavLink to="/crearcliente" className="btn btn-sm btn-info float-right">Crear</NavLink>
+          <NavLink to="/CrearSettingBandasPrecios" className="btn btn-sm btn-info float-right">Crear</NavLink>
         </div>
       </div>
       <div className="card-body table-responsive p-0">
@@ -19,4 +19,4 @@ const BandasPrecios = () => {
   );
 };
 
-export default BandasPrecios;
+export default PageBandasPrecios;

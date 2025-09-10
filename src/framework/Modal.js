@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
 
-export function EditarObjectModal({ object, onClose, onObjectActualizado }) {
+export function ModalEditarTEMPLATE_LISTADO_NAME({ object, onClose, onObjectActualizado }) {
   const urlObject = `${apiRest}/cliente`;
   const titleSingular = "Cliente";  
 

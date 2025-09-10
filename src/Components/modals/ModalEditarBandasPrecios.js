@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
 
-export function EditarObjectModal({ object, onClose, onObjectActualizado }) {
-  const urlObject = `${apiRest}/cliente`;
-  const titleSingular = "Cliente";  
+export function ModalEditarBandasPrecios({ object, onClose, onObjectActualizado }) {
+  const urlObject = `${apiRest}/setting-escala-precios`;
+  const titleSingular = "Banda de precios";  
 
   const [formData, setFormData] = useState({
-    dato1: "",
-    dato2: "",
+    descripcion: "",
+    banda_superior: 0,
+    porcentaje_minorista: 0,
+    porcentaje_mayorista: 0,
+    porcentaje_comision_vendedor: 0,
   });
   const [colectivo, setColectivo] = useState([]);
   const [error, setError] = useState(null);
@@ -15,8 +18,11 @@ export function EditarObjectModal({ object, onClose, onObjectActualizado }) {
   useEffect(() => {
     if (object) {
       setFormData({
-        dato1: object.dato1 || "",
-        dato2: Number(object.dato2) || 0,
+        descripcion: object.descripcion || "",
+        banda_superior: Number(object.banda_superior) || 0,
+        porcentaje_minorista: Number(object.porcentaje_minorista) || 0,
+        porcentaje_mayorista: Number(object.porcentaje_mayorista) || 0,
+        porcentaje_comision_vendedor: Number(object.porcentaje_comision_vendedor) || 0,
       });
     }
   }, [object]);
@@ -37,13 +43,13 @@ export function EditarObjectModal({ object, onClose, onObjectActualizado }) {
     fetchColectivo();
   }, []);
 
-  
-const handleChange = (e) => {
+
+const handleChangeString = (e) => {
   const { name, value } = e.target;
-  setFormData((prevState) => ({
-    ...prevState,
-    [name]: value,
-  }));
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    })); 
 };
 
 const handleChangeNumber = (e) => {
@@ -52,7 +58,22 @@ const handleChangeNumber = (e) => {
       ...prevState,
       [name]: Number(value),
     }));
-  };
+  };  
+  
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  let numbers = ["banda_superior", "porcentaje_minorista", "porcentaje_mayorista", "porcentaje_comision_vendedor"]
+  let isNumber = numbers.includes(name);
+  if(isNumber){
+    console.log("number", name)
+    handleChangeNumber(e);
+  }else{
+    console.log("string", name)
+    handleChangeString(e)
+  }
+};
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -103,7 +124,7 @@ const handleChangeNumber = (e) => {
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Editar ({titleSingular})</h5>
+            <h5 className="modal-title">Editar {titleSingular}</h5>
             <button
               type="button"
               className="close"
@@ -119,26 +140,22 @@ const handleChangeNumber = (e) => {
           >
             {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label>Dato 1</label>
+              
+              {
+              Object.entries(formData).map(([key, value]) =>(
+                <div className="form-group">
+                <label>{key}</label>
                 <input
                   type="text"
                   className="form-control"
-                  name="dato1"
-                  value={formData.dato1}
+                  name={key}
+                  value={value}
                   onChange={handleChange}
                 />
               </div>
-              <div className="form-group">
-                <label>Dato 2</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="dato2"
-                  value={formData.dato2}
-                  onChange={handleChange}
-                />
-              </div>
+              ))}
+              
+              
               
               <div className="modal-footer">
                 <button

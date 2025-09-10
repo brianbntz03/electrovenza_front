@@ -16,7 +16,8 @@ import Clientes from "../pages/Clientes";
 import Proveedores from "../pages/Proveedores";
 import PageListadoSettingCuotasElectro from "../pages/SettingCuotasElectroListado";
 import PageSettingCuotasCreditoListado from "../pages/SettingCuotasCreditoListado";
-import PageSettingBandasPreciosListado from "../pages/SettingBandasPrecios";
+import PageBandasPrecios from "../pages/PageBandasPrecios";
+import { CrearBandasPrecios } from "./Crear/CrearBandasPrecios";
 import PageCuotasPorCobrar from "../pages/PageCuotasPorCobrar";
 import PrintCuotas from "../pages/print/PageCuotasImprimir";
 import { CrearVendedor } from "./Crear/CrearVendedor";
@@ -97,7 +98,8 @@ export default function Content() {
                 
                 <Route path="/settingCuotasElectoListado" Component={PageListadoSettingCuotasElectro}></Route>
                 <Route path="/SettingCuotasCreditoListado" Component={PageSettingCuotasCreditoListado}></Route>
-                <Route path="/SettingBandasPreciosListado" Component={PageSettingBandasPreciosListado}></Route>
+                <Route path="/SettingBandasPreciosListado" Component={PageBandasPrecios}></Route>
+                <Route path="/CrearSettingBandasPrecios" Component={CrearBandasPrecios}></Route>
                 <Route path="/crearcliente" Component={CrearCliente}></Route>                
                 <Route
                 path="/registrar-movimento" Component={RegistroMovimientoCuenta}>
@@ -116,3 +118,5 @@ export default function Content() {
     </div>
   );
 }
+
+                <Route path="/crearcuotaelectro" Component={CrearCuotaElectro}></Route>
