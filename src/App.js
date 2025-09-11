@@ -1,34 +1,38 @@
-// src/App.js
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import FormularioLogin from "./FormularioLogin";
 import Header from "./Components/Header";
-import Aside from "./Components/Aside";
 import Content from "./Components/Content";
 import Footer from "./Components/Footer";
-import FormularioDeLogin from "./FormularioDeLogin";
-import { useNavigate } from "react-router-dom";
+import Aside from "./Components/Aside";
 
 export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    !!localStorage.getItem("jwt_token")
-  );
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
 
-  const handleLoginSuccess = () => {
+  const handleLoginSuccess = (role) => {
     setIsAuthenticated(true);
-    // Ya no es necesario guardar 'isLoggedIn'
+    setUserRole(role);
+    localStorage.setItem("user_role", role);
     navigate("/index");
   };
 
   const handleLogout = () => {
-    // Cuando el usuario cierra sesión, se elimina el token
     localStorage.removeItem("jwt_token");
+    localStorage.removeItem("user_role");
     setIsAuthenticated(false);
+    setUserRole(null);
     navigate("/");
   };
 
-  // Se ejecuta solo una vez para verificar la autenticación inicial
   useEffect(() => {
-    setIsAuthenticated(!!localStorage.getItem("jwt_token"));
+    const token = localStorage.getItem("jwt_token");
+    const role = localStorage.getItem("user_role");
+    if (token && role) {
+      setIsAuthenticated(true);
+      setUserRole(role);
+    }
   }, []);
 
   return (
@@ -36,12 +40,12 @@ export default function App() {
       {isAuthenticated ? (
         <>
           <Header onLogout={handleLogout} />
-          <Aside />
+          <Aside  />
           <Content />
           <Footer />
         </>
       ) : (
-        <FormularioDeLogin onLoginSuccess={handleLoginSuccess} />
+        <FormularioLogin onLoginSuccess={handleLoginSuccess} />
       )}
     </div>
   );

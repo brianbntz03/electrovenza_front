@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { apiRest } from "./service/apiRest";
 
-export function FormularioDeLogin({ onLoginSuccess }) {
+export function FormularioLogin({ onLoginSuccess }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     if (!username || !password) {
-      alert("Por favor, completa todos los campos.");
+      console.log("Por favor, completa todos los campos.");
       return;
     }
 
     try {
+     
       const response = await fetch(`${apiRest}/auth/login`, {
         method: "POST",
         headers: {
@@ -24,21 +26,23 @@ export function FormularioDeLogin({ onLoginSuccess }) {
       const data = await response.json();
 
       if (response.ok) {
-        console.log('Login Exitoso:', data);
-
+        console.log("Login Exitoso:", data);
         const token = data.access_token;
-        if (token) {
-          localStorage.setItem('jwt_token', token);
-          onLoginSuccess();
+        const userRole = data.user ? data.user.role : null; // Se asume que el rol está en data.user.role
+
+        if (token && userRole) {
+          localStorage.setItem("jwt_token", token);
+          localStorage.setItem("user_role", userRole); // Guardar el rol en localStorage
+          onLoginSuccess(userRole);
         } else {
-          alert('No se recibió el token de autenticación');
+          console.log("No se recibió el token o el rol de autenticación. Por favor, verifica la respuesta de tu API.");
         }
       } else {
-        alert(data.message || 'Error en el login.');
+        console.log(data.message || "Error en el login.");
       }
     } catch (error) {
-      console.error('Hubo un problema con la solicitud:', error);
-      alert('No se pudo conectar con el servidor.');
+      console.error("Hubo un problema con la solicitud:", error);
+      console.log("No se pudo conectar con el servidor.");
     }
   };
 
@@ -52,7 +56,7 @@ export function FormularioDeLogin({ onLoginSuccess }) {
               <div className="form-group">
                 <label htmlFor="emailInput">Correo electronico</label>
                 <input
-                  type="username"
+                  type="text"
                   name="username"
                   className="form-control"
                   id="username"
@@ -91,4 +95,4 @@ export function FormularioDeLogin({ onLoginSuccess }) {
   );
 }
 
-export default FormularioDeLogin;
+export default FormularioLogin;
