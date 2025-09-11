@@ -7,6 +7,7 @@ export default function Aside() {
   const [electroOpen, setElectroOpen] = useState(false);
   const [creditosOpen, setCreditosOpen] = useState(false);
   const [configOpen, setConfigOpen] = useState(false);
+  const [cuentaCorrienteOpen, setCuentaCorrienteOpen] = useState(false);
 
   const electroPaths = [
     "/buscar-articulos-presupuesto",
@@ -55,9 +56,14 @@ export default function Aside() {
     setConfigOpen(!configOpen);
   };
 
+  const toggleCuentaCorriente = (e) => {
+    e.preventDefault();
+    setCuentaCorrienteOpen(!cuentaCorrienteOpen);
+  }
+
   const renderVendedorMenu = () => (
     <>
-      <li className="nav-header">VISTA VENDEDOR</li>
+      <li className="nav-header"><i>VISTA VENDEDOR</i></li>
       <li
         className={`nav-item ${electroOpen ? "menu-is-opening menu-open" : ""}`}
       >
@@ -128,20 +134,34 @@ export default function Aside() {
   const renderAdminMenu = () => (
     <>
       {renderVendedorMenu()}
-      <li className="nav-header">CUENTA CORRIENTE</li>
-      <li className="nav-item">
-        <NavLink to="/registrar-movimento" className="nav-link">
-          <i className="nav-icon fas fa-table" />
-          <p>Registro de movimiento</p>
-        </NavLink>
+      <li className="nav-header"><hr></hr></li>
+      <li className="nav-header"><i>VISTA ADMINISTRADOR</i></li>
+      
+      <li className={`nav-item ${cuentaCorrienteOpen ? "menu-is-opening menu-open" : ""}`}>
+        <a href="#" className="nav-link" onClick={toggleCuentaCorriente}>
+          <p>
+            CUENTA CORRIENTE
+            <i className="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul className="nav nav-treeview">
+          <li className="nav-item">
+          <NavLink to="/registrar-movimento" className="nav-link">
+            <i className="nav-icon fas fa-table" />
+            <p>Registrar movimento</p>
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to="/ventas-comisiones-pendientes" className="nav-link">
+            <i className="nav-icon fas fa-file-invoice-dollar" />
+            <p>Comisiones Pendientes</p>
+          </NavLink>
+        </li>
+        </ul>
+      
       </li>
-      <li className="nav-item">
-        <NavLink to="/ventas-comisiones-pendientes" className="nav-link">
-          <i className="nav-icon fas fa-file-invoice-dollar" />
-          <p>Comisiones Pendientes</p>
-        </NavLink>
-      </li>
-      <li className="nav-header">VISTA ADMINISTRADOR</li>
+      
+      
       <li className="nav-item">
         <NavLink to="/categoriasListado" className="nav-link">
           <i className="nav-icon fas fa-table" />
