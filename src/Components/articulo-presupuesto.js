@@ -1,7 +1,17 @@
-import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../service/apiRest";
-import FlashMessage from "./tiny/FlashMessage";
+
+const FlashMessage = ({ title, message, type, onDismiss }) => {
+  if (!message) return null;
+  return (
+    <div className={`alert alert-${type} alert-dismissible fade show`} role="alert">
+      <strong>{title}</strong> {message}
+      <button type="button" className="close" onClick={onDismiss} aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  );
+};
 
 
 export const ArticuloPresupuesto = () => {
@@ -16,14 +26,57 @@ export const ArticuloPresupuesto = () => {
   const [articulosLoading, setArticulosLoading] = useState(false);
   const [searchPerformed, setSearchPerformed] = useState(false);
   const [idCliente, setIdCliente] = useState("");
-  const [idVendedor, setIdVendedor] = useState("");
   const [idinteres, setIdInteres] = useState("");
+  const [userName, setUserName] = useState("");
+  const [idVendedor, setIdVendedor] = useState("");
+  const [selectedVendedorId, setSelectedVendedorId] = useState("");
+  // Inicializamos el rol por defecto.
+  const [userRole, setUserRole] = useState("vendedor");
+  const [flash, setFlash] = useState(null);
 
+
+  const showFlashMessage = (title, message, type) => {
+    setFlash({ title, message, type });
+    setTimeout(() => {
+      setFlash(null);
+    }, 2000);
+  };
+
+  // Cargar vendedores, clientes y cuotas al inicio
   useEffect(() => {
+    const storedUserRole = localStorage.getItem("user_role");
+    const storedUserName = localStorage.getItem("user_name");
+    
+    if (storedUserRole) {
+      setUserRole(storedUserRole);
+    }
+    if (storedUserName) {
+      setUserName(storedUserName);
+    }
+
     cargarVendedores();
     cargarClientes();
     cargarCuotas();
   }, []);
+
+  // Ajusta el nombre del vendedor y su ID después de que la lista de vendedores se haya cargado
+  useEffect(() => {
+    if (userRole === "vendedor" && vendedoresFiltrados.length > 0) {
+      const storedUserName = localStorage.getItem("user_name");
+      const vendedor = vendedoresFiltrados.find(v => v.nombre === storedUserName);
+      
+      if (vendedor) {
+        setUserName(vendedor.nombre);
+        setIdVendedor(vendedor.id);
+      } else if (vendedoresFiltrados.length > 0) {
+        // Fallback al primer vendedor si no hay nombre en localStorage
+        const defaultVendedor = vendedoresFiltrados[0];
+        setUserName(defaultVendedor.nombre);
+        setIdVendedor(defaultVendedor.id);
+      }
+    }
+  }, [userRole, vendedoresFiltrados]);
+
   const [presupuesto, setPresupuesto] = useState(() => {
     const stored = localStorage.getItem("presupuesto");
     return [];
@@ -31,11 +84,13 @@ export const ArticuloPresupuesto = () => {
 
   const registrarVenta = async () => {
     setAccionActual("registrar Ventas");
+    const vendedorIdToUse = userRole === "administrador" ? selectedVendedorId : idVendedor;
+
     try {
       const ventaData = {
         nro_cuotas_id: parseInt(idinteres) || 1,
         cliente_id: parseInt(idCliente) || 1,
-        vendedor_id: parseInt(idVendedor) || 1,
+        vendedor_id: parseInt(vendedorIdToUse) || 1,
         articulos: presupuesto.map((item) => ({
           id: item.id,
           cantidad: item.cantidad,
@@ -60,12 +115,12 @@ export const ArticuloPresupuesto = () => {
 
       const resultado = await response.text();
       setMensajeVenta(resultado);
-      FlashMessage("Registro de venta", "La venta se registro con exito", 2000, "success", "cuotas-por-cobrar");
+      showFlashMessage("Registro de venta", "La venta se registro con exito", "success");
 
     } catch (error) {
       console.error("Error al registrar la venta:", error);
       setMensajeVenta(`Error al registrar: ${error.message}`);
-      FlashMessage("Registro de venta", `Error al registrar venta: ${error.message}`, 2000, "error");
+      showFlashMessage("Registro de venta", `Error al registrar venta: ${error.message}`, "error");
 
     }
   };
@@ -188,27 +243,31 @@ export const ArticuloPresupuesto = () => {
     return (
       <div className="row">
         <div className="col-md-2">
-          <label style={{ marginRight: "5px" }}>Buscar Vendedor:</label>
+          <label style={{ marginRight: "5px" }}>Vendedor:</label>
         </div>
         <div className="col-md-3 input-group">
-          <select
-          className="form-control"
-          value={idVendedor}
-          name="idVendedor"
-          onChange={(e) => setIdVendedor(e.target.value)}
-        >
-          <option value="">-- Seleccionar Vendedor --</option>
-          {vendedoresFiltrados.map((vendedor) => (
-            <option key={vendedor.id} value={vendedor.id}>
-              {vendedor.nombre}
-            </option>
-          ))}
-        </select>
+          {userRole === "vendedor" ? (
+            <p className="form-control-plaintext">{userName}</p>
+          ) : (
+            <select
+              className="form-control"
+              value={selectedVendedorId}
+              name="idVendedor"
+              onChange={(e) => setSelectedVendedorId(e.target.value)}
+            >
+              <option value="">-- Seleccionar Vendedor --</option>
+              {vendedoresFiltrados.map((vendedor) => (
+                <option key={vendedor.id} value={vendedor.id}>
+                  {vendedor.nombre}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
       </div>
-      
     );
   };
+
 
   const FormCliente = () => {
     return (
@@ -374,6 +433,7 @@ export const ArticuloPresupuesto = () => {
 
   return (
     <div className="container-fluid">
+      <FlashMessage {...flash} onDismiss={() => setFlash(null)} />
       <FormVendedor />
       <FormCliente />
       <FormNumeroCuotas />
@@ -643,7 +703,6 @@ export const ArticuloPresupuesto = () => {
                   Registrar Venta
                   </button>
               </div>
-              
             </>
           )}
         </>

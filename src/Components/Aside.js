@@ -3,18 +3,43 @@ import { NavLink, useLocation } from "react-router-dom";
 
 export default function Aside() {
   const location = useLocation();
+  const [userRole, setUserRole] = useState(null);
   const [electroOpen, setElectroOpen] = useState(false);
   const [creditosOpen, setCreditosOpen] = useState(false);
   const [configOpen, setConfigOpen] = useState(false);
 
-  const electroPaths = ["/buscar-articulos-presupuesto", "/cuotas-por-cobrar", "/ventas-listado"];
-  const creditosPaths = ["/otorgarcredito", "/creditos-cuotas-por-cobrar", "/credito-por-cobrar"];
-  const configPaths = ["/settingCuotasElectoListado", "/SettingCuotasCreditoListado", "/SettingBandasPreciosListado"];
+  const electroPaths = [
+    "/buscar-articulos-presupuesto",
+    "/cuotas-por-cobrar",
+    "/ventas-listado",
+  ];
+  const creditosPaths = [
+    "/otorgarcredito",
+    "/creditos-cuotas-por-cobrar",
+    "/credito-por-cobrar",
+  ];
+  const configPaths = [
+    "/settingCuotasElectoListado",
+    "/SettingCuotasCreditoListado",
+    "/SettingBandasPreciosListado",
+  ];
 
   useEffect(() => {
-    setElectroOpen(electroPaths.some(path => location.pathname.startsWith(path)));
-    setCreditosOpen(creditosPaths.some(path => location.pathname.startsWith(path)));
-    setConfigOpen(configPaths.some(path => location.pathname.startsWith(path)));
+    // Leer el rol del usuario del localStorage al cargar el componente
+    const role = localStorage.getItem("user_role");
+    if (role) {
+      setUserRole(role);
+    }
+    // Lógica para abrir los menús basándose en la ruta actual
+    setElectroOpen(
+      electroPaths.some((path) => location.pathname.startsWith(path))
+    );
+    setCreditosOpen(
+      creditosPaths.some((path) => location.pathname.startsWith(path))
+    );
+    setConfigOpen(
+      configPaths.some((path) => location.pathname.startsWith(path))
+    );
   }, [location]);
 
   const toggleElectro = (e) => {
@@ -29,6 +54,158 @@ export default function Aside() {
     e.preventDefault();
     setConfigOpen(!configOpen);
   };
+
+  const renderVendedorMenu = () => (
+    <>
+      <li className="nav-header">VISTA VENDEDOR</li>
+      <li
+        className={`nav-item ${electroOpen ? "menu-is-opening menu-open" : ""}`}
+      >
+        <a href="#" className="nav-link" onClick={toggleElectro}>
+          <i className="nav-icon fas fa-bolt" />
+          <p>
+            ELECTRO
+            <i className="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul className="nav nav-treeview">
+          <li className="nav-item">
+            <NavLink to="/buscar-articulos-presupuesto" className="nav-link">
+              <i className="nav-icon fas fa-dollar-sign" />
+              <p>Vender</p>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/cuotas-por-cobrar" className="nav-link">
+              <i className="nav-icon fas fa-file-invoice-dollar" />
+              <p>Cuotas por cobrar</p>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/ventas-listado" className="nav-link">
+              <i className="nav-icon fas fa-file-invoice-dollar" />
+              <p>Ventas</p>
+            </NavLink>
+          </li>
+        </ul>
+      </li>
+      <li
+        className={`nav-item ${
+          creditosOpen ? "menu-is-opening menu-open" : ""
+        }`}
+      >
+        <a href="#" className="nav-link" onClick={toggleCreditos}>
+          <i className="nav-icon fas fa-credit-card" />
+          <p>
+            CREDITOS
+            <i className="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul className="nav nav-treeview">
+          <li className="nav-item">
+            <NavLink to="/otorgarcredito" className="nav-link">
+              <i className="nav-icon fas fa-table" />
+              <p>Otorgar Credito</p>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/creditos-cuotas-por-cobrar" className="nav-link">
+              <i className="nav-icon fas fa-file-invoice-dollar" />
+              <p>Cuotas por cobrar</p>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/credito-por-cobrar" className="nav-link">
+              <i className="nav-icon fas fa-file-invoice-dollar" />
+              <p>Creditos por cobrar</p>
+            </NavLink>
+          </li>
+        </ul>
+      </li>
+    </>
+  );
+
+  const renderAdminMenu = () => (
+    <>
+      {renderVendedorMenu()}
+      <li className="nav-header">CUENTA CORRIENTE</li>
+      <li className="nav-item">
+        <NavLink to="/registrar-movimento" className="nav-link">
+          <i className="nav-icon fas fa-table" />
+          <p>Registro de movimiento</p>
+        </NavLink>
+      </li>
+      <li className="nav-item">
+        <NavLink to="/ventas-comisiones-pendientes" className="nav-link">
+          <i className="nav-icon fas fa-file-invoice-dollar" />
+          <p>Comisiones Pendientes</p>
+        </NavLink>
+      </li>
+      <li className="nav-header">VISTA ADMINISTRADOR</li>
+      <li className="nav-item">
+        <NavLink to="/categoriasListado" className="nav-link">
+          <i className="nav-icon fas fa-table" />
+          <p>Categorias</p>
+        </NavLink>
+      </li>
+      <li className="nav-item">
+        <NavLink to="/productosListado" className="nav-link">
+          <i className="nav-icon fas fa-barcode" />
+          <p>Productos</p>
+        </NavLink>
+      </li>
+      <li className="nav-item">
+        <NavLink to="/vendedores" className="nav-link">
+          <i className="nav-icon fas fa-handshake" />
+          <p>Vendedores</p>
+        </NavLink>
+      </li>
+      <li className="nav-item">
+        <NavLink to="/clientes" className="nav-link">
+          <i className="nav-icon fas fa-user" />
+          <p>Clientes</p>
+        </NavLink>
+      </li>
+      <li className="nav-item">
+        <NavLink to="/proveedores" className="nav-link">
+          <i className="nav-icon fas fa-truck" />
+          <p>Proveedores</p>
+        </NavLink>
+      </li>
+      <li className="nav-header">SETUP</li>
+      <li
+        className={`nav-item ${configOpen ? "menu-is-opening menu-open" : ""}`}
+      >
+        <a href="#" className="nav-link" onClick={toggleConfig}>
+          <i className="nav-icon fas fa-cog" />
+          <p>
+            CONFIGURACION
+            <i className="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul className="nav nav-treeview">
+          <li className="nav-item">
+            <NavLink to="/settingCuotasElectoListado" className="nav-link">
+              <i className="nav-icon fas fa-table" />
+              <p>Cuotas Electro</p>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/SettingCuotasCreditoListado" className="nav-link">
+              <i className="nav-icon fas fa-table" />
+              <p>Cuotas Credito</p>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/SettingBandasPreciosListado" className="nav-link">
+              <i className="nav-icon fas fa-table" />
+              <p>Bandas Margen Precio</p>
+            </NavLink>
+          </li>
+        </ul>
+      </li>
+    </>
+  );
 
   return (
     <div>
@@ -55,143 +232,7 @@ export default function Aside() {
                   <p>Inicio</p>
                 </NavLink>
               </li>
-
-              <li className="nav-header">VISTA VENDEDOR</li>
-
-              <li className={`nav-item ${electroOpen ? "menu-is-opening menu-open" : ""}`}>
-                <a href="#" className="nav-link" onClick={toggleElectro}>
-                  <i className="nav-icon fas fa-bolt" />
-                  <p>
-                    ELECTRO
-                    <i className="fas fa-angle-left right"></i>
-                  </p>
-                </a>
-                <ul className="nav nav-treeview">
-                  <li className="nav-item">
-                    <NavLink to="/buscar-articulos-presupuesto" className="nav-link">
-                      <i className="nav-icon fas fa-dollar-sign" />
-                      <p>Vender</p>
-                    </NavLink>
-                  </li>
-                  <li className="nav-item">
-                    <NavLink to="/cuotas-por-cobrar" className="nav-link">
-                      <i className="nav-icon fas fa-file-invoice-dollar" />
-                      <p>Cuotas por cobrar</p>
-                    </NavLink>
-                  </li>
-                  <li className="nav-item">
-                    <NavLink to="/ventas-listado" className="nav-link">
-                      <i className="nav-icon fas fa-file-invoice-dollar" />
-                      <p>Ventas</p>
-                    </NavLink>
-                  </li>
-                </ul>
-              </li>
-              
-              <li className={`nav-item ${creditosOpen ? "menu-is-opening menu-open" : ""}`}>
-                <a href="#" className="nav-link" onClick={toggleCreditos}>
-                  <i className="nav-icon fas fa-credit-card" />
-                  <p>
-                    CREDITOS
-                    <i className="fas fa-angle-left right"></i>
-                  </p>
-                </a>
-                <ul className="nav nav-treeview">
-                  <li className="nav-item">
-                    <NavLink to="/otorgarcredito" className="nav-link">
-                      <i className="nav-icon fas fa-table" />
-                      <p>Otorgar Credito</p>
-                    </NavLink>
-                  </li>
-                  <li className="nav-item">
-                    <NavLink to="/creditos-cuotas-por-cobrar" className="nav-link">
-                      <i className="nav-icon fas fa-file-invoice-dollar" />
-                      <p>Cuotas por cobrar</p>
-                    </NavLink>
-                  </li>
-                  <li className="nav-item">
-                    <NavLink to="/credito-por-cobrar" className="nav-link">
-                      <i className="nav-icon fas fa-file-invoice-dollar" />
-                      <p>Creditos por cobrar</p>
-                    </NavLink>
-                  </li>
-                </ul>
-              </li>
-              
-              <li className="nav-header">CUENTA CORRIENTE</li>
-              <li className="nav-item">
-                <NavLink to="/registrar-movimento" className="nav-link">
-                  <i className="nav-icon fas fa-table" />
-                  <p>Registro de movimiento</p>
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/ventas-comisiones-pendientes" className="nav-link">
-                  <i className="nav-icon fas fa-file-invoice-dollar" />
-                  <p>Comisiones Pendientes</p>
-                </NavLink>
-              </li>
-              <li className="nav-header">VISTA ADMINISTRADOR</li>
-              <li className="nav-item">
-                <NavLink to="/categoriasListado" className="nav-link">
-                  <i className="nav-icon fas fa-table" />
-                  <p>Categorias</p>
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/productosListado" className="nav-link">
-                  <i className="nav-icon fas fa-barcode" />
-                  <p>Productos</p>
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/vendedores" className="nav-link">
-                  <i className="nav-icon fas fa-handshake" />
-                  <p>Vendedores</p>
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/clientes" className="nav-link">
-                  <i className="nav-icon fas fa-user" />
-                  <p>Clientes</p>
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/proveedores" className="nav-link">
-                  <i className="nav-icon fas fa-truck" />
-                  <p>Proveedores</p>
-                </NavLink>
-              </li>
-
-              <li className="nav-header">SETUP</li>
-              
-              <li className={`nav-item ${configOpen ? "menu-is-opening menu-open" : ""}`}>
-                <a href="#" className="nav-link" onClick={toggleConfig}>
-                  <i className="nav-icon fas fa-cog" />
-                  <p>
-                    CONFIGURACION
-                    <i className="fas fa-angle-left right"></i>
-                  </p>
-                </a>
-                <ul className="nav nav-treeview">
-                  <li className="nav-item">
-                    <NavLink to="/settingCuotasElectoListado" className="nav-link">
-                      <i className="nav-icon fas fa-table" />
-                      <p>Cuotas Electro</p>
-                    </NavLink>
-                    <NavLink to="/SettingCuotasCreditoListado" className="nav-link">
-                      <i className="nav-icon fas fa-table" />
-                      <p>Cuotas Credito</p>
-                    </NavLink>
-                  </li>
-                  <li className="nav-item">
-                    <NavLink to="/SettingBandasPreciosListado" className="nav-link">
-                      <i className="nav-icon fas fa-table" />
-                      <p>Bandas Margen Precio</p>
-                    </NavLink>
-                  </li>
-                </ul>
-              </li>
+              {userRole === "admin" ? renderAdminMenu() : renderVendedorMenu()}
             </ul>
           </nav>
         </div>
