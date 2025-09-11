@@ -19,7 +19,6 @@ export const ArticuloPresupuesto = () => {
   const [mensajeVenta, setMensajeVenta] = useState("");
   const [accionActual, setAccionActual] = useState(null);
   const [articulosFiltrados, setArticulosFiltrados] = useState([]);
-  const [vendedoresFiltrados, setVendedoresFiltrados] = useState([]);
   const [clientesFiltrados, setClientesFiltrados] = useState([]);
   const [cuotasFiltrados, setCuotasFiltrados] = useState([]);
   const [error, setError] = useState(null);
@@ -27,7 +26,7 @@ export const ArticuloPresupuesto = () => {
   const [searchPerformed, setSearchPerformed] = useState(false);
   const [idCliente, setIdCliente] = useState("");
   const [idinteres, setIdInteres] = useState("");
-  const [userName, setUserName] = useState("");
+  const [nombreVendedor, setNombreVendedor] = useState("");
   const [idVendedor, setIdVendedor] = useState("");
   const [selectedVendedorId, setSelectedVendedorId] = useState("");
   // Inicializamos el rol por defecto.
@@ -45,37 +44,46 @@ export const ArticuloPresupuesto = () => {
   // Cargar vendedores, clientes y cuotas al inicio
   useEffect(() => {
     const storedUserRole = localStorage.getItem("user_role");
-    const storedUserName = localStorage.getItem("user_name");
     
     if (storedUserRole) {
       setUserRole(storedUserRole);
     }
-    if (storedUserName) {
-      setUserName(storedUserName);
-    }
 
-    cargarVendedores();
     cargarClientes();
     cargarCuotas();
   }, []);
 
   // Ajusta el nombre del vendedor y su ID después de que la lista de vendedores se haya cargado
-  useEffect(() => {
-    if (userRole === "vendedor" && vendedoresFiltrados.length > 0) {
-      const storedUserName = localStorage.getItem("user_name");
-      const vendedor = vendedoresFiltrados.find(v => v.nombre === storedUserName);
-      
-      if (vendedor) {
-        setUserName(vendedor.nombre);
-        setIdVendedor(vendedor.id);
-      } else if (vendedoresFiltrados.length > 0) {
-        // Fallback al primer vendedor si no hay nombre en localStorage
-        const defaultVendedor = vendedoresFiltrados[0];
-        setUserName(defaultVendedor.nombre);
-        setIdVendedor(defaultVendedor.id);
+  useEffect( () => {
+
+    async function fetchVendedor() {
+      const storedUserId = localStorage.getItem("user_id");
+      console.log("user id", storedUserId)
+      const response = await fetch(`${apiRest}/vendedor/user_id/${storedUserId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error al registrar la venta: ${response.status}`);
       }
+
+      console.log("response", response);
+
+      const vendedor = await response.json();
+      if (vendedor) {
+        setNombreVendedor(vendedor.nombre);
+        setIdVendedor(vendedor.id);
+      } 
+      console.log("vendedor encontrado:", nombreVendedor)
+
     }
-  }, [userRole, vendedoresFiltrados]);
+    fetchVendedor();
+
+    
+  }, []);
 
   const [presupuesto, setPresupuesto] = useState(() => {
     const stored = localStorage.getItem("presupuesto");
@@ -88,9 +96,9 @@ export const ArticuloPresupuesto = () => {
 
     try {
       const ventaData = {
-        nro_cuotas_id: parseInt(idinteres) || 1,
-        cliente_id: parseInt(idCliente) || 1,
-        vendedor_id: parseInt(vendedorIdToUse) || 1,
+        nro_cuotas_id: parseInt(idinteres),
+        cliente_id: parseInt(idCliente),
+        vendedor_id: parseInt(idVendedor),
         articulos: presupuesto.map((item) => ({
           id: item.id,
           cantidad: item.cantidad,
@@ -246,23 +254,7 @@ export const ArticuloPresupuesto = () => {
           <label style={{ marginRight: "5px" }}>Vendedor:</label>
         </div>
         <div className="col-md-3 input-group">
-          {userRole === "vendedor" ? (
-            <p className="form-control-plaintext">{userName}</p>
-          ) : (
-            <select
-              className="form-control"
-              value={selectedVendedorId}
-              name="idVendedor"
-              onChange={(e) => setSelectedVendedorId(e.target.value)}
-            >
-              <option value="">-- Seleccionar Vendedor --</option>
-              {vendedoresFiltrados.map((vendedor) => (
-                <option key={vendedor.id} value={vendedor.id}>
-                  {vendedor.nombre}
-                </option>
-              ))}
-            </select>
-          )}
+          <p className="form-control-plaintext">{nombreVendedor}</p>
         </div>
       </div>
     );
@@ -385,17 +377,6 @@ export const ArticuloPresupuesto = () => {
     }
   };
 
-  const cargarVendedores = async () => {
-    try {
-      const response = await fetch(`${apiRest}/vendedor`);
-      if (response.ok) {
-        const data = await response.json();
-        setVendedoresFiltrados(data);
-      }
-    } catch (error) {
-      console.error("Error cargando vendedores:", error);
-    }
-  };
 
   const cargarClientes = async () => {
     try {
