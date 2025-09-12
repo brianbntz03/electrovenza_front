@@ -15,7 +15,7 @@ export default function Aside() {
     "/ventas-listado",
   ];
   const creditosPaths = [
-    "/otorgarcredito",
+    "/otorgar-credito",
     "/creditos-cuotas-por-cobrar",
     "/credito-por-cobrar",
   ];
@@ -109,7 +109,7 @@ export default function Aside() {
         </a>
         <ul className="nav nav-treeview">
           <li className="nav-item">
-            <NavLink to="/otorgarcredito" className="nav-link">
+            <NavLink to="/otorgar-credito" className="nav-link">
               <i className="nav-icon fas fa-table" />
               <p>Otorgar Credito</p>
             </NavLink>
