@@ -35,6 +35,12 @@ export default function App() {
     }
   }, []);
 
+  useEffect(() => {
+    if (isAuthenticated && window.AdminLTE) {
+      window.AdminLTE.init();
+    }
+  }, [isAuthenticated]);
+
   return (
     <div>
       {isAuthenticated ? (
