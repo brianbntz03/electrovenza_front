@@ -44,8 +44,9 @@ export default function App() {
   useEffect(() => {
     if (isAuthenticated) {
       // Agregar overlay para cerrar menú en móviles
-      const handleOverlayClick = () => {
-        if (window.innerWidth <= 991.98) {
+      const handleOverlayClick = (e) => {
+        // Solo cerrar si el clic es en el overlay, no en el sidebar
+        if (e.target.classList.contains('sidebar-overlay') && window.innerWidth <= 991.98) {
           document.body.classList.remove('sidebar-open');
         }
       };
