@@ -23,6 +23,7 @@
   
   .sidebar-open .sidebar-overlay {
     pointer-events: auto;
+    display: block;
   }
   
   .sidebar-open .main-sidebar {

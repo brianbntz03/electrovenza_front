@@ -99,6 +99,12 @@ export default function Aside() {
     setElectroConfigOpen(!electroConfigOpen);
   }
 
+  const closeMobileSidebar = () => {
+    if (window.innerWidth <= 991.98) {
+      document.body.classList.remove('sidebar-open');
+    }
+  };
+
   const renderVendedorMenu = () => (
     <>
       <li className="nav-header"><i>VISTA VENDEDOR</i></li>
@@ -114,19 +120,19 @@ export default function Aside() {
         </a>
         <ul className="nav nav-treeview">
           <li className="nav-item">
-            <NavLink to="/buscar-articulos-presupuesto" className="nav-link">
+            <NavLink to="/buscar-articulos-presupuesto" className="nav-link" onClick={closeMobileSidebar}>
               <i className="nav-icon fas fa-dollar-sign" />
               <p>Vender</p>
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/cuotas-por-cobrar" className="nav-link">
+            <NavLink to="/cuotas-por-cobrar" className="nav-link" onClick={closeMobileSidebar}>
               <i className="nav-icon fas fa-file-invoice-dollar" />
               <p>Cuotas por cobrar</p>
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/ventas-listado" className="nav-link">
+            <NavLink to="/ventas-listado" className="nav-link" onClick={closeMobileSidebar}>
               <i className="nav-icon fas fa-file-invoice-dollar" />
               <p>Ventas</p>
             </NavLink>
@@ -147,19 +153,19 @@ export default function Aside() {
         </a>
         <ul className="nav nav-treeview">
           <li className="nav-item">
-            <NavLink to="/otorgar-credito" className="nav-link">
+            <NavLink to="/otorgar-credito" className="nav-link" onClick={closeMobileSidebar}>
               <i className="nav-icon fas fa-table" />
               <p>Otorgar Credito</p>
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/creditos-cuotas-por-cobrar" className="nav-link">
+            <NavLink to="/creditos-cuotas-por-cobrar" className="nav-link" onClick={closeMobileSidebar}>
               <i className="nav-icon fas fa-file-invoice-dollar" />
               <p>Cuotas por cobrar</p>
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/credito-por-cobrar" className="nav-link">
+            <NavLink to="/credito-por-cobrar" className="nav-link" onClick={closeMobileSidebar}>
               <i className="nav-icon fas fa-file-invoice-dollar" />
               <p>Creditos por cobrar</p>
             </NavLink>
@@ -176,13 +182,13 @@ export default function Aside() {
       <li className="nav-header"><i>VISTA ADMINISTRADOR</i></li>
 
       <li className="nav-item">
-        <NavLink to="/vendedores" className="nav-link">
+        <NavLink to="/vendedores" className="nav-link" onClick={closeMobileSidebar}>
           <i className="nav-icon fas fa-handshake" />
           <p>Vendedores</p>
         </NavLink>
       </li>
       <li className="nav-item">
-        <NavLink to="/clientes" className="nav-link">
+        <NavLink to="/clientes" className="nav-link" onClick={closeMobileSidebar}>
           <i className="nav-icon fas fa-user" />
           <p>Clientes</p>
         </NavLink>
@@ -304,7 +310,7 @@ export default function Aside() {
   return (
     <div>
       <aside className="main-sidebar sidebar-dark-primary elevation-4">
-        <NavLink to="/index" className="brand-link">
+        <NavLink to="/index" className="brand-link" onClick={closeMobileSidebar}>
           <img
             src="dist/img/AdminLTELogo.png"
             alt="AdminLTE Logo"
@@ -321,7 +327,7 @@ export default function Aside() {
               data-accordion="false"
             >
               <li className="nav-item">
-                <NavLink to="/index" className="nav-link">
+                <NavLink to="/index" className="nav-link" onClick={closeMobileSidebar}>
                   <i className="nav-icon fas fa-tachometer-alt" />
                   <p>Inicio</p>
                 </NavLink>
