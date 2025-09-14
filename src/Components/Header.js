@@ -5,10 +5,12 @@ export default function Header({ onLogout }) {
     e.preventDefault();
     const body = document.body;
     
-    // Para móviles, usar sidebar-open en lugar de sidebar-collapse
     if (window.innerWidth <= 991.98) {
+      // En móviles: alternar entre mostrar/ocultar completamente
       body.classList.toggle('sidebar-open');
+      body.classList.remove('sidebar-collapse');
     } else {
+      // En desktop: comportamiento normal de colapso
       body.classList.toggle('sidebar-collapse');
     }
   };
