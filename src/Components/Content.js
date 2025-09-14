@@ -31,6 +31,8 @@ import PageComisionesPorCreditoPendientes from "../pages/PageComisionesPorCredit
 import PageCreditosPorCobrar from "../pages/PageCreditoPorCobrar";
 import { CrearCuotaElectro } from "./Crear/CrearCuota";
 import { CrearCuotaCredito } from "./Crear/CrearCuotaCredito";
+import PageCompras from "../pages/PageCompras";
+import { CrearCompras } from "./Crear/CrearCompras";
 
 
 export default function Content() {
@@ -99,7 +101,7 @@ export default function Content() {
                 <Route path="/settingCuotasElectoListado" Component={PageListadoSettingCuotasElectro}></Route>
                 <Route path="/SettingCuotasCreditoListado" Component={PageSettingCuotasCreditoListado}></Route>
                 <Route path="/SettingBandasPreciosListado" Component={PageBandasPrecios}></Route>
-                <Route path="/CrearSettingBandasPrecios" Component={CrearBandasPrecios}></Route>
+                <Route path="/crear-setting-bandas-precios" Component={CrearBandasPrecios}></Route>
                 <Route path="/crearcliente" Component={CrearCliente}></Route>                
                 <Route
                 path="/registrar-movimento" Component={RegistroMovimientoCuenta}>
@@ -107,7 +109,15 @@ export default function Content() {
                 <Route path="/credito-por-cobrar" Component={PageCreditosPorCobrar}></Route>
                 <Route path="/crearcuotaelectro" Component={CrearCuotaElectro}></Route>
                 <Route path="/crear-cuota-credito" Component={CrearCuotaCredito}></Route>
+
+                {/* COMPRAS */}
+                <Route path="/compras-listado" Component={PageCompras}></Route>
+                <Route path="/compras-registrar" Component={CrearCompras}></Route>
+
               </Routes>
+              <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+                <i class="fas fa-chevron-up"></i>
+              </a>
             </div>
           </div>
           {/* /.row */}

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
 import { ModalEditarCompras } from "../modals/ModalEditarCompras";
+import { convertIsoToDMY } from "../../miscellaneus/aux";
 
 export function ListadoCompras() {
-  const storaObjectName =  "colectivo";
-  const urlObject = `${apiRest}/cliente`;
-  const titlePlural = "Clientes";
-  const titleSingular = "Cliente";
+  const storaObjectName =  "compras";
+  const urlObject = `${apiRest}/compra`;
+  const titlePlural = "Compras";
+  const titleSingular = "Compra";
   
   const [colectivo, setColectivo] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -106,7 +107,7 @@ export function ListadoCompras() {
     );
   }
   if (!colectivo || colectivo.length === 0) {
-    return <div className="error-container">No hay ({titlePlural}) registrados</div>;
+    return <div className="error-container">No hay {titlePlural} registrados</div>;
   }
 
   return (
@@ -115,8 +116,9 @@ export function ListadoCompras() {
       <table className="table table-striped table-valign-middle table-bordered">
         <thead>
           <tr>
-            <th>Dato 1</th>
-            <th>Dato 2</th>
+            <th>Fecha</th>
+            <th>Proveedor</th>
+            <th>Total</th>
             <th></th>
           </tr>
         </thead>
@@ -124,8 +126,9 @@ export function ListadoCompras() {
           {colectivo
             .map((object) => (
               <tr key={object.id}>
-                <td>{object.dato1}</td>
-                <td>{object.dato2}</td>
+                <td>{convertIsoToDMY(object.fecha)}</td>
+                <td>{object.proveedor.nombre}</td>
+                <td>{object.total}</td>
                 <td>
                   <button onClick={() => handleOpenModal(object)}>
                     editar

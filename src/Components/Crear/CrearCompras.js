@@ -1,17 +1,12 @@
 import { useState, useEffect } from "react";
-import { apiRest, publicUrl } from "../../service/apiRest";
+import { publicUrl, apiRest } from "../../service/apiRest";
 import FlashMessage from "../tiny/FlashMessage";
 
-
 export const CrearCompras = () => {
-  const urlObject = `${apiRest}/cliente`;
-  const urlRedirection = `${publicUrl}/clienteListado`;
-  const titlePlural = "Clientes";
-  const titleSingular = "Cliente";
-  const storaObjectName =  "colectivo";
-
-  const [dato1, setDato1] = useState("");
-  const [dato2, setDato2] = useState(0);
+  const [proveedorId, setProveedorId] = useState("");
+  const [articulos, setArticulos] = useState([{ id: "", cantidad: "", precio: "" }]);
+  const [proveedores, setProveedores] = useState([]);
+  const [articulosDisponibles, setArticulosDisponibles] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -19,33 +14,76 @@ export const CrearCompras = () => {
     setLoading(false);
     setError(null);
   };
+
   useEffect(() => {
+    fetchProveedores();
+    fetchArticulos();
   }, []);
 
-
-  const ActualizarListadoEnLocalStorage = async() => {
-    const response = await fetch(`${urlObject}`);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+  const fetchProveedores = async () => {
+    try {
+      const response = await fetch(`${apiRest}/proveedor`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
       const data = await response.json();
-      console.log(`${titlePlural} desde la api:`, data);
-      localStorage.setItem(storaObjectName, JSON.stringify(data));
-  }
+      setProveedores(data);
+    } catch (error) {
+      console.error("Error fetching proveedores:", error);
+    }
+  };
+
+  const fetchArticulos = async () => {
+    try {
+      const response = await fetch(`${apiRest}/articulos`);
+      const data = await response.json();
+      setArticulosDisponibles(data);
+    } catch (error) {
+      console.error("Error fetching articulos:", error);
+    }
+  };
+
+  const agregarArticulo = () => {
+    setArticulos([...articulos, { id: "", cantidad: "", precio: "" }]);
+  };
+
+  const eliminarArticulo = (index) => {
+    setArticulos(articulos.filter((_, i) => i !== index));
+  };
+
+  const actualizarArticulo = (index, campo, valor) => {
+    const nuevosArticulos = [...articulos];
+    nuevosArticulos[index][campo] = valor;
+    setArticulos(nuevosArticulos);
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
+    const articulosValidos = articulos.filter(art => art.id && art.cantidad && art.precio);
+    
+    const compraData = {
+      proveedorId: parseInt(proveedorId),
+      articulos: articulosValidos.map(art => ({
+        id: parseInt(art.id),
+        cantidad: parseInt(art.cantidad),
+        precio: parseFloat(art.precio)
+      }))
+    };
+
     try {
-      const response = await fetch(`${urlObject}`, {
+      const response = await fetch(`${apiRest}/compra`, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(
-          { dato1, dato2 }),
+        body: JSON.stringify(compraData),
       });
 
       if (!response.ok) {
@@ -53,22 +91,18 @@ export const CrearCompras = () => {
       }
 
       await response.json();
-
-      ActualizarListadoEnLocalStorage()
-      FlashMessage("","Creacion exitosa", 2000, "success", urlRedirection);
+      FlashMessage("", "Compra creada exitosamente", 2000, "success", `${publicUrl}/compra`);
       setLoading(false);
     } catch (error) {
       console.error("Error detallado:", error);
-      setError(
-        `No se pudo conectar con el servidor. Verifica que el servidor esté corriendo en el puerto 3001: ${error.message}`
-      );
+      setError(`Error al crear la compra: ${error.message}`);
       setLoading(false);
     }
   };
   if (loading) {
     return (
       <div className="loading-container">
-        <p>Cargando ({titlePlural})...</p>
+        <p>Cargando compra...</p>
       </div>
     );
   }
@@ -85,38 +119,101 @@ export const CrearCompras = () => {
   }
 
   return (
-    <>
-      <div class="card card-primary">
-        <div class="card-header">
-          <h3 class="card-title">Crear ({titleSingular})</h3>
-        </div>
-        <form onSubmit={handleSubmit} style={{ marginBottom: "100px" }}>
-          <div class="card-body">
-            <div className="form-group">
-              <label for="exampleInputName">
-                Dato 1 :
-                </label>
+    <div className="card card-primary">
+      <div className="card-header">
+        <h3 className="card-title">Crear Compra</h3>
+      </div>
+      <form onSubmit={handleSubmit} style={{ marginBottom: "100px" }}>
+        <div className="card-body">
+          <div className="form-group">
+            <label>Proveedor:</label>
+            <select 
+              className="form-control"
+              value={proveedorId}
+              onChange={(e) => setProveedorId(e.target.value)}
+              required
+            >
+              <option value="">Seleccionar proveedor</option>
+              {proveedores.map(proveedor => (
+                <option key={proveedor.id} value={proveedor.id}>
+                  {proveedor.nombre}
+                </option>
+              ))}
+            </select>
+          </div>
+          
+          <h5>Artículos:</h5>
+          {articulos.map((articulo, index) => (
+            <div key={index} className="row mb-3">
+              <div className="col-md-4">
+                <select 
+                  className="form-control"
+                  value={articulo.id}
+                  onChange={(e) => actualizarArticulo(index, 'id', e.target.value)}
+                  required
+                >
+                  <option value="">Seleccionar artículo</option>
+                  {articulosDisponibles.map(art => (
+                    <option key={art.id} value={art.id}>
+                      {art.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="col-md-3">
                 <input 
-                  class="form-control"
-                  value={dato1}
-                  onChange={(e) => setDato1(e.target.value)}
-                  type="text"
-                  name="dato1"
+                  className="form-control"
+                  type="number"
+                  placeholder="Cantidad"
+                  value={articulo.cantidad}
+                  onChange={(e) => actualizarArticulo(index, 'cantidad', e.target.value)}
                   required
                 />
+              </div>
+              <div className="col-md-3">
+                <input 
+                  className="form-control"
+                  type="number"
+                  step="0.01"
+                  placeholder="Precio"
+                  value={articulo.precio}
+                  onChange={(e) => actualizarArticulo(index, 'precio', e.target.value)}
+                  required
+                />
+              </div>
+              <div className="col-md-2">
+                {articulos.length > 1 && (
+                  <button 
+                    type="button" 
+                    className="btn btn-danger"
+                    onClick={() => eliminarArticulo(index)}
+                  >
+                    Eliminar
+                  </button>
+                )}
+              </div>
             </div>
-            <div class="card-footer">
-            <button
-              type="submit"
-              class="btn btn-primary"
-              disabled={loading}
-            >
-              {loading ? "Creando..." : `Crear ${titleSingular}`}
-            </button>  
-            </div>      
-          </div>
-        </form>
-      </div>
-    </>
+          ))}
+          
+          <button 
+            type="button" 
+            className="btn btn-secondary mb-3"
+            onClick={agregarArticulo}
+          >
+            Agregar Artículo
+          </button>
+        </div>
+        
+        <div className="card-footer">
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={loading}
+          >
+            {loading ? "Creando..." : "Crear Compra"}
+          </button>  
+        </div>
+      </form>
+    </div>
   );
 };

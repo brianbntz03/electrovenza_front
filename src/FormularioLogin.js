@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { apiRest } from "./service/apiRest";
+import FlashMessage from "./Components/tiny/FlashMessage"
 
 export function FormularioLogin({ onLoginSuccess }) {
   const [username, setUsername] = useState("");
@@ -10,6 +11,7 @@ export function FormularioLogin({ onLoginSuccess }) {
 
     if (!username || !password) {
       console.log("Por favor, completa todos los campos.");
+      FlashMessage("Login", "Por favor, completa todos los campos.", 2000, "error");
       return;
     }
 
@@ -41,9 +43,11 @@ export function FormularioLogin({ onLoginSuccess }) {
           console.log("No se recibió el token o el rol de autenticación. Por favor, verifica la respuesta de tu API.");
         }
       } else {
+        FlashMessage("Login", "Verifique el usuario y contraseña ingresado", 2000, "error");
         console.log(data.message || "Error en el login.");
       }
     } catch (error) {
+      FlashMessage("Login", "Error en servidor, intente más tarde o contactese con el soporte técnico", 2000, "error");
       console.error("Hubo un problema con la solicitud:", error);
       console.log("No se pudo conectar con el servidor.");
     }

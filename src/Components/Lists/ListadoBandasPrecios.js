@@ -135,6 +135,7 @@ export function ListadoBandasPrecios() {
             .map((object) => (
               <tr key={object.id}>
                 <td>{object.descripcion}</td>
+                <td>{object.banda_superior}</td>
                 <td>{object.porcentaje_minorista}</td>
                 <td>{object.porcentaje_mayorista}</td>
                 <td>{object.porcentaje_comision_vendedor}</td>

@@ -8,6 +8,8 @@ export default function Aside() {
   const [creditosOpen, setCreditosOpen] = useState(false);
   const [configOpen, setConfigOpen] = useState(false);
   const [cuentaCorrienteOpen, setCuentaCorrienteOpen] = useState(false);
+  const [comprasOpen, setComprasOpen] = useState(false);
+  const [electroConfigOpen, setElectroConfigOpen] = useState(false);
 
   const electroPaths = [
     "/buscar-articulos-presupuesto",
@@ -23,6 +25,23 @@ export default function Aside() {
     "/settingCuotasElectoListado",
     "/SettingCuotasCreditoListado",
     "/SettingBandasPreciosListado",
+  ];
+  
+  const cuentaCorrientePaths = [
+    "/registrar-movimento",
+    "/ventas-comisiones-pendientes",
+  ]
+
+  const comprasPaths = [
+    "/compras-listado",
+    "/crear-compra",
+    "/crear-proveedor",
+    "/proveedores-listado",
+  ];
+
+  const electroConfigPaths = [
+    "/categoriasListado",
+    "/productosListado",
   ];
 
   useEffect(() => {
@@ -40,6 +59,15 @@ export default function Aside() {
     );
     setConfigOpen(
       configPaths.some((path) => location.pathname.startsWith(path))
+    );
+    setCuentaCorrienteOpen(
+      cuentaCorrientePaths.some((path) => location.pathname.startsWith(path))
+    );
+    setComprasOpen(
+      comprasPaths.some((path) => location.pathname.startsWith(path))
+    );
+    setElectroConfigOpen(
+      electroConfigPaths.some((path) => location.pathname.startsWith(path))
     );
   }, [location]);
 
@@ -59,6 +87,16 @@ export default function Aside() {
   const toggleCuentaCorriente = (e) => {
     e.preventDefault();
     setCuentaCorrienteOpen(!cuentaCorrienteOpen);
+  }
+
+  const toggleCompras = (e) => {
+    e.preventDefault();
+    setComprasOpen(!comprasOpen);
+  }
+
+  const toggleElectroConfig = (e) => {
+    e.preventDefault();
+    setElectroConfigOpen(!electroConfigOpen);
   }
 
   const renderVendedorMenu = () => (
@@ -136,6 +174,19 @@ export default function Aside() {
       {renderVendedorMenu()}
       <li className="nav-header"><hr></hr></li>
       <li className="nav-header"><i>VISTA ADMINISTRADOR</i></li>
+
+      <li className="nav-item">
+        <NavLink to="/vendedores" className="nav-link">
+          <i className="nav-icon fas fa-handshake" />
+          <p>Vendedores</p>
+        </NavLink>
+      </li>
+      <li className="nav-item">
+        <NavLink to="/clientes" className="nav-link">
+          <i className="nav-icon fas fa-user" />
+          <p>Clientes</p>
+        </NavLink>
+      </li>
       
       <li className={`nav-item ${cuentaCorrienteOpen ? "menu-is-opening menu-open" : ""}`}>
         <a href="#" className="nav-link" onClick={toggleCuentaCorriente}>
@@ -160,38 +211,61 @@ export default function Aside() {
         </ul>
       
       </li>
+      <li className={`nav-item ${comprasOpen ? "menu-is-opening menu-open" : ""}`}>
+        <a href="#" className="nav-link" onClick={toggleCompras}>
+          <p>
+            COMPRAS
+            <i className="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul className="nav nav-treeview">
+          
+        <li className="nav-item">
+          <NavLink to="/compras-listado" className="nav-link">
+            <i className="nav-icon fas fa-table" />
+            <p>Compras</p>
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to="/proveedores" className="nav-link">
+            <i className="nav-icon fas fa-truck" />
+            <p>Proveedores</p>
+          </NavLink>
+        </li>
+        
+        </ul>
+      
+      </li>
+
+      <li className={`nav-item ${electroConfigOpen ? "menu-is-opening menu-open" : ""}`}>
+        <a href="#" className="nav-link" onClick={toggleElectroConfig}>
+          <p>
+            ELECTRO
+            <i className="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul className="nav nav-treeview">
+          <li className="nav-item">
+            <NavLink to="/categoriasListado" className="nav-link">
+              <i className="nav-icon fas fa-table" />
+              <p>Categorias</p>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/productosListado" className="nav-link">
+              <i className="nav-icon fas fa-barcode" />
+              <p>Productos</p>
+            </NavLink>
+          </li>
+        
+        </ul>
+      
+      </li>
       
       
-      <li className="nav-item">
-        <NavLink to="/categoriasListado" className="nav-link">
-          <i className="nav-icon fas fa-table" />
-          <p>Categorias</p>
-        </NavLink>
-      </li>
-      <li className="nav-item">
-        <NavLink to="/productosListado" className="nav-link">
-          <i className="nav-icon fas fa-barcode" />
-          <p>Productos</p>
-        </NavLink>
-      </li>
-      <li className="nav-item">
-        <NavLink to="/vendedores" className="nav-link">
-          <i className="nav-icon fas fa-handshake" />
-          <p>Vendedores</p>
-        </NavLink>
-      </li>
-      <li className="nav-item">
-        <NavLink to="/clientes" className="nav-link">
-          <i className="nav-icon fas fa-user" />
-          <p>Clientes</p>
-        </NavLink>
-      </li>
-      <li className="nav-item">
-        <NavLink to="/proveedores" className="nav-link">
-          <i className="nav-icon fas fa-truck" />
-          <p>Proveedores</p>
-        </NavLink>
-      </li>
+      
+      
+      
       <li className="nav-header">SETUP</li>
       <li
         className={`nav-item ${configOpen ? "menu-is-opening menu-open" : ""}`}
