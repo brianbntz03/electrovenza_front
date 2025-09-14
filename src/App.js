@@ -41,6 +41,32 @@ export default function App() {
     }
   }, [isAuthenticated]);
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Agregar overlay para cerrar menú en móviles
+      const handleOverlayClick = () => {
+        if (window.innerWidth <= 991.98) {
+          document.body.classList.remove('sidebar-open');
+        }
+      };
+
+      // Crear overlay si no existe
+      let overlay = document.querySelector('.sidebar-overlay');
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'sidebar-overlay';
+        overlay.addEventListener('click', handleOverlayClick);
+        document.body.appendChild(overlay);
+      }
+
+      return () => {
+        if (overlay) {
+          overlay.removeEventListener('click', handleOverlayClick);
+        }
+      };
+    }
+  }, [isAuthenticated]);
+
   return (
     <div>
       {isAuthenticated ? (

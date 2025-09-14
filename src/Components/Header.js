@@ -3,7 +3,14 @@ import React from 'react';
 export default function Header({ onLogout }) {
   const handleMenuToggle = (e) => {
     e.preventDefault();
-    document.body.classList.toggle('sidebar-collapse');
+    const body = document.body;
+    
+    // Para móviles, usar sidebar-open en lugar de sidebar-collapse
+    if (window.innerWidth <= 991.98) {
+      body.classList.toggle('sidebar-open');
+    } else {
+      body.classList.toggle('sidebar-collapse');
+    }
   };
 
   return (
