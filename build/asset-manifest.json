@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "http://electrovenza.com/gestion/static/css/main.47c5c680.css",
-    "main.js": "http://electrovenza.com/gestion/static/js/main.b0c96e76.js",
+    "main.js": "http://electrovenza.com/gestion/static/js/main.332768e2.js",
     "static/js/488.c9ef29e2.chunk.js": "http://electrovenza.com/gestion/static/js/488.c9ef29e2.chunk.js",
     "static/media/logo_para_marca_de_agua.png": "http://electrovenza.com/gestion/static/media/logo_para_marca_de_agua.0f42fef715600f2272f7.png",
     "index.html": "http://electrovenza.com/gestion/index.html",
     "main.47c5c680.css.map": "http://electrovenza.com/gestion/static/css/main.47c5c680.css.map",
-    "main.b0c96e76.js.map": "http://electrovenza.com/gestion/static/js/main.b0c96e76.js.map",
+    "main.332768e2.js.map": "http://electrovenza.com/gestion/static/js/main.332768e2.js.map",
     "488.c9ef29e2.chunk.js.map": "http://electrovenza.com/gestion/static/js/488.c9ef29e2.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.47c5c680.css",
-    "static/js/main.b0c96e76.js"
+    "static/js/main.332768e2.js"
   ]
 }
