@@ -1,23 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../service/apiRest";
-
-const FlashMessage = ({ title, message, type, onDismiss }) => {
-  if (!message) return null;
-  return (
-    <div className={`alert alert-${type} alert-dismissible fade show`} role="alert">
-      <strong>{title}</strong> {message}
-      <button type="button" className="close" onClick={onDismiss} aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-  );
-};
+import FlashMessage from "./tiny/FlashMessage";
 
 
 export const ArticuloPresupuesto = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [mensajeVenta, setMensajeVenta] = useState("");
-  const [accionActual, setAccionActual] = useState(null);
   const [articulosFiltrados, setArticulosFiltrados] = useState([]);
   const [vendedoresFiltrados, setVendedoresFiltrados] = useState([]);
   const [clientesFiltrados, setClientesFiltrados] = useState([]);
@@ -28,19 +14,11 @@ export const ArticuloPresupuesto = () => {
   const [idCliente, setIdCliente] = useState("");
   const [idinteres, setIdInteres] = useState("");
   const [nombreVendedor, setNombreVendedor] = useState("");
-  const [idVendedor, setIdVendedor] = useState("");
   const [selectedVendedorId, setSelectedVendedorId] = useState("");
   // Inicializamos el rol por defecto.
   const [userRole, setUserRole] = useState("vendedor");
   const [flash, setFlash] = useState(null);
 
-
-  const showFlashMessage = (title, message, type) => {
-    setFlash({ title, message, type });
-    setTimeout(() => {
-      setFlash(null);
-    }, 2000);
-  };
 
   // Cargar vendedores, clientes y cuotas al inicio
   useEffect(() => {
@@ -94,7 +72,6 @@ export const ArticuloPresupuesto = () => {
   });
 
   const registrarVenta = async () => {
-    setAccionActual("registrar Ventas");
     
     try {
       const ventaData = {
@@ -123,20 +100,17 @@ export const ArticuloPresupuesto = () => {
         throw new Error(`Error al registrar la venta: ${response.status}`);
       }
 
-      const resultado = await response.text();
-      setMensajeVenta(resultado);
-      showFlashMessage("Registro de venta", "La venta se registro con exito", "success");
+      FlashMessage("Registro de venta", "La venta se registro con exito", 2000, "success", "cuotas-por-cobrar"  )
 
     } catch (error) {
       console.error("Error al registrar la venta:", error);
-      setMensajeVenta(`Error al registrar: ${error.message}`);
-      showFlashMessage("Registro de venta", `Error al registrar venta: ${error.message}`, "error");
+      FlashMessage("Registro de venta", "La venta se registro con exito", 2000, "error")
+      
 
     }
   };
 
   const agregarAlPresupuesto = (nuevoArticulo) => {
-    setAccionActual("agregar");
     const yaAgregado = presupuesto.find((item) => item.id === nuevoArticulo.id);
     let nuevoPresupuesto;
 
@@ -330,7 +304,6 @@ export const ArticuloPresupuesto = () => {
   };
 
   const handleSearch = async (busqueda) => {
-    setAccionActual("buscar");
     setSearchPerformed(true);
     setArticulosLoading(true);
     try {
@@ -443,7 +416,6 @@ export const ArticuloPresupuesto = () => {
 
   return (
     <div className="container-fluid">
-      <FlashMessage {...flash} onDismiss={() => setFlash(null)} />
       <FormVendedor />
       <FormCliente />
       <FormNumeroCuotas />
@@ -604,42 +576,7 @@ export const ArticuloPresupuesto = () => {
                     Registrar Venta
                   </button>
 
-                  {modalVisible && (
-                    <div
-                      style={{
-                        position: "fixed",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        backgroundColor: "rgba(0,0,0,0.5)",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        zIndex: 1000,
-                      }}
-                    >
-                      <div
-                        style={{
-                          backgroundColor: "white",
-                          padding: "20px",
-                          borderRadius: "5px",
-                          maxWidth: "500px",
-                          width: "90%",
-                        }}
-                      >
-                        <h5>Resultado de la venta</h5>
-                        <p>Se registró la venta: {mensajeVenta}</p>
-                        <button
-                          className="btn btn-secondary"
-                          onClick={() => setModalVisible(false)}
-                        >
-                          Cerrar
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </td>
+                  </td>
               </tr>
             </tfoot>
           </table>
