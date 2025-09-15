@@ -172,6 +172,19 @@ export default function Aside() {
           </li>
         </ul>
       </li>
+      <li
+        className={`nav-item ${
+          creditosOpen ? "menu-is-opening menu-open" : ""
+        }`}
+      >
+        <a href="#" className="nav-link" >
+          <i className="nav-icon fas fa-credit-card" />
+          <p>
+            CLIENTES
+            <i className="fas fa-angle-left right"></i>
+          </p>
+        </a>
+      </li>
     </>
   );
 

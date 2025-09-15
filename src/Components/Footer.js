@@ -4,12 +4,8 @@ export default function Footer() {
   return (
     <footer className="main-footer">
       <strong>
-        Copyright © 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.
+        Copyright @ 2025 <a href="https://www.softpymes.com/">Software Para Pymes</a>.
       </strong>
-      All rights reserved.
-      <div className="float-right d-none d-sm-inline-block">
-        <b>Version</b> 3.1.0
-      </div>
     </footer>
   );
 }
