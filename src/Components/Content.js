@@ -33,6 +33,7 @@ import { CrearCuotaElectro } from "./Crear/CrearCuota";
 import { CrearCuotaCredito } from "./Crear/CrearCuotaCredito";
 import PageCompras from "../pages/PageCompras";
 import { CrearCompras } from "./Crear/CrearCompras";
+import Clientes_filtrado_vendedor from "./Clientes-Filtrado-vendedor";
 
 
 export default function Content() {
@@ -113,6 +114,7 @@ export default function Content() {
                 {/* COMPRAS */}
                 <Route path="/compras-listado" Component={PageCompras}></Route>
                 <Route path="/compras-registrar" Component={CrearCompras}></Route>
+                <Route path="/clientes-filtrado-vendedor" Component={Clientes_filtrado_vendedor}> </Route>
 
               </Routes>
               <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">

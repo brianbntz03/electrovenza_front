@@ -10,6 +10,7 @@ export default function Aside() {
   const [cuentaCorrienteOpen, setCuentaCorrienteOpen] = useState(false);
   const [comprasOpen, setComprasOpen] = useState(false);
   const [electroConfigOpen, setElectroConfigOpen] = useState(false);
+  const [Clientes_filtrado_vendedor_Open, setClientes_filtrado_vendedor_Open] = useState(false);
 
   const electroPaths = [
     "/buscar-articulos-presupuesto",
@@ -21,6 +22,11 @@ export default function Aside() {
     "/creditos-cuotas-por-cobrar",
     "/credito-por-cobrar",
   ];
+
+  const Clientes_filtrado_vendedor_Paths = [
+    "/clientes-filtrado-vendedor",
+  ];
+
   const configPaths = [
     "/settingCuotasElectoListado",
     "/SettingCuotasCreditoListado",
@@ -57,6 +63,9 @@ export default function Aside() {
     setCreditosOpen(
       creditosPaths.some((path) => location.pathname.startsWith(path))
     );
+    setClientes_filtrado_vendedor_Open(
+      Clientes_filtrado_vendedor_Paths.some((path) => location.pathname.startsWith(path))
+    );
     setConfigOpen(
       configPaths.some((path) => location.pathname.startsWith(path))
     );
@@ -75,6 +84,12 @@ export default function Aside() {
     e.preventDefault();
     setElectroOpen(!electroOpen);
   };
+
+  const Toggle_cliente_filtrado_vendedor = (e) => {
+    e.preventDefault();
+    setClientes_filtrado_vendedor_Open(!Clientes_filtrado_vendedor_Open);
+  };
+
   const toggleCreditos = (e) => {
     e.preventDefault();
     setCreditosOpen(!creditosOpen);
@@ -105,7 +120,7 @@ export default function Aside() {
     }
   };
 
-  const renderVendedorMenu = () => (
+ const renderVendedorMenu = () => (
     <>
       <li className="nav-header"><i>VISTA VENDEDOR</i></li>
       <li
@@ -133,7 +148,7 @@ export default function Aside() {
           </li>
           <li className="nav-item">
             <NavLink to="/ventas-listado" className="nav-link" onClick={closeMobileSidebar}>
-              <i className="nav-icon fas fa-file-invoice-dollar" />
+              <i className="nav-icon fas fa-list-alt" />
               <p>Ventas</p>
             </NavLink>
           </li>
@@ -154,7 +169,7 @@ export default function Aside() {
         <ul className="nav nav-treeview">
           <li className="nav-item">
             <NavLink to="/otorgar-credito" className="nav-link" onClick={closeMobileSidebar}>
-              <i className="nav-icon fas fa-table" />
+              <i className="nav-icon fas fa-hand-holding-usd"></i>
               <p>Otorgar Credito</p>
             </NavLink>
           </li>
@@ -166,7 +181,7 @@ export default function Aside() {
           </li>
           <li className="nav-item">
             <NavLink to="/credito-por-cobrar" className="nav-link" onClick={closeMobileSidebar}>
-              <i className="nav-icon fas fa-file-invoice-dollar" />
+              <i className="nav-icon fas fa-list-alt" />
               <p>Creditos por cobrar</p>
             </NavLink>
           </li>
@@ -174,16 +189,24 @@ export default function Aside() {
       </li>
       <li
         className={`nav-item ${
-          creditosOpen ? "menu-is-opening menu-open" : ""
+          Clientes_filtrado_vendedor_Open ? "menu-is-opening menu-open" : ""
         }`}
       >
-        <a href="#" className="nav-link" >
-          <i className="nav-icon fas fa-credit-card" />
+        <a href="#" className="nav-link" onClick={Toggle_cliente_filtrado_vendedor}>
+          <i className="nav-icon fas fa-user-friends" />
           <p>
             CLIENTES
             <i className="fas fa-angle-left right"></i>
           </p>
         </a>
+        <ul className="nav nav-treeview">
+            <li className="nav-item">
+                <NavLink to="/clientes-filtrado-vendedor" className="nav-link" onClick={closeMobileSidebar}>
+                <i className="nav-icon fas fa-users"></i>
+                <p>Listado de Clientes</p>
+                </NavLink>
+            </li>
+        </ul>
       </li>
     </>
   );
@@ -196,19 +219,20 @@ export default function Aside() {
 
       <li className="nav-item">
         <NavLink to="/vendedores" className="nav-link" onClick={closeMobileSidebar}>
-          <i className="nav-icon fas fa-handshake" />
+          <i className="nav-icon fas fa-briefcase" />
           <p>Vendedores</p>
         </NavLink>
       </li>
       <li className="nav-item">
         <NavLink to="/clientes" className="nav-link" onClick={closeMobileSidebar}>
-          <i className="nav-icon fas fa-user" />
+          <i className="nav-icon fas fa-users" />
           <p>Clientes</p>
         </NavLink>
       </li>
       
       <li className={`nav-item ${cuentaCorrienteOpen ? "menu-is-opening menu-open" : ""}`}>
         <a href="#" className="nav-link" onClick={toggleCuentaCorriente}>
+          <i className="nav-icon fas fa-file-invoice-dollar" />
           <p>
             CUENTA CORRIENTE
             <i className="fas fa-angle-left right"></i>
@@ -217,13 +241,13 @@ export default function Aside() {
         <ul className="nav nav-treeview">
           <li className="nav-item">
           <NavLink to="/registrar-movimento" className="nav-link">
-            <i className="nav-icon fas fa-table" />
-            <p>Registrar movimento</p>
+            <i className="nav-icon fas fa-plus-circle"/>
+            <p> Registrar movimento </p>
           </NavLink>
         </li>
         <li className="nav-item">
           <NavLink to="/ventas-comisiones-pendientes" className="nav-link">
-            <i className="nav-icon fas fa-file-invoice-dollar" />
+            <i className="nav-icon fas fa-percent" />
             <p>Comisiones Pendientes</p>
           </NavLink>
         </li>
@@ -232,6 +256,7 @@ export default function Aside() {
       </li>
       <li className={`nav-item ${comprasOpen ? "menu-is-opening menu-open" : ""}`}>
         <a href="#" className="nav-link" onClick={toggleCompras}>
+          <i className="nav-icon fas fa-shopping-cart" />
           <p>
             COMPRAS
             <i className="fas fa-angle-left right"></i>
@@ -241,13 +266,13 @@ export default function Aside() {
           
         <li className="nav-item">
           <NavLink to="/compras-listado" className="nav-link">
-            <i className="nav-icon fas fa-table" />
+            <i className="nav-icon fas fa-list-alt" />
             <p>Compras</p>
           </NavLink>
         </li>
         <li className="nav-item">
           <NavLink to="/proveedores" className="nav-link">
-            <i className="nav-icon fas fa-truck" />
+            <i className="nav-icon fas fa-handshake" />
             <p>Proveedores</p>
           </NavLink>
         </li>
@@ -258,6 +283,7 @@ export default function Aside() {
 
       <li className={`nav-item ${electroConfigOpen ? "menu-is-opening menu-open" : ""}`}>
         <a href="#" className="nav-link" onClick={toggleElectroConfig}>
+          <i className="nav-icon fas fa-tools" />
           <p>
             ELECTRO
             <i className="fas fa-angle-left right"></i>
@@ -266,7 +292,7 @@ export default function Aside() {
         <ul className="nav nav-treeview">
           <li className="nav-item">
             <NavLink to="/categoriasListado" className="nav-link">
-              <i className="nav-icon fas fa-table" />
+              <i className="nav-icon fas fa-sitemap" />
               <p>Categorias</p>
             </NavLink>
           </li>
@@ -299,19 +325,19 @@ export default function Aside() {
         <ul className="nav nav-treeview">
           <li className="nav-item">
             <NavLink to="/settingCuotasElectoListado" className="nav-link">
-              <i className="nav-icon fas fa-table" />
+              <i className="nav-icon fas fa-calendar-alt" />
               <p>Cuotas Electro</p>
             </NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="/SettingCuotasCreditoListado" className="nav-link">
-              <i className="nav-icon fas fa-table" />
+              <i className="nav-icon fas fa-calendar-alt" />
               <p>Cuotas Credito</p>
             </NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="/SettingBandasPreciosListado" className="nav-link">
-              <i className="nav-icon fas fa-table" />
+              <i className="nav-icon fas fa-percent" />
               <p>Bandas Margen Precio</p>
             </NavLink>
           </li>
@@ -341,7 +367,7 @@ export default function Aside() {
             >
               <li className="nav-item">
                 <NavLink to="/index" className="nav-link" onClick={closeMobileSidebar}>
-                  <i className="nav-icon fas fa-tachometer-alt" />
+                 <i className="fas fa-home" />
                   <p>Inicio</p>
                 </NavLink>
               </li>
