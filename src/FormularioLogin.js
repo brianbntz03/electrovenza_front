@@ -32,12 +32,16 @@ export function FormularioLogin({ onLoginSuccess }) {
         const token = data.access_token;
         const userRole = data.user ? data.user.role : null; // Se asume que el rol está en data.user.role
         const userId = data.user ? data.user.id : null; // Se asume que el id está en data.user.id
+        const vendedorId = data.vendedor ? data.vendedor.id : null;
+        const vendedorName = data.vendedor ? data.vendedor.name : null;
 
 
         if (token && userRole) {
           localStorage.setItem("jwt_token", token);
           localStorage.setItem("user_role", userRole); // Guardar el rol en localStorage
           localStorage.setItem("user_id", userId); // Guardar el rol en localStorage
+          localStorage.setItem("vendedor_id", vendedorId); // Guardar el rol en localStorage
+          localStorage.setItem("vendedor_nombre", vendedorName); // Guardar el rol en localStorage
           onLoginSuccess(userRole);
         } else {
           console.log("No se recibió el token o el rol de autenticación. Por favor, verifica la respuesta de tu API.");

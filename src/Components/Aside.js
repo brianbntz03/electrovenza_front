@@ -19,7 +19,7 @@ export default function Aside() {
   const creditosPaths = [
     "/otorgar-credito",
     "/creditos-cuotas-por-cobrar",
-    "/credito-por-cobrar",
+    "/creditos-listado",
   ];
   const configPaths = [
     "/settingCuotasElectoListado",
@@ -165,7 +165,7 @@ export default function Aside() {
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/credito-por-cobrar" className="nav-link" onClick={closeMobileSidebar}>
+            <NavLink to="/creditos-listado" className="nav-link" onClick={closeMobileSidebar}>
               <i className="nav-icon fas fa-file-invoice-dollar" />
               <p>Creditos por cobrar</p>
             </NavLink>

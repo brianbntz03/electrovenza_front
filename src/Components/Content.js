@@ -33,6 +33,7 @@ import { CrearCuotaElectro } from "./Crear/CrearCuota";
 import { CrearCuotaCredito } from "./Crear/CrearCuotaCredito";
 import PageCompras from "../pages/PageCompras";
 import { CrearCompras } from "./Crear/CrearCompras";
+import PageCreditos from "../pages/PageCreditos"; 
 
 
 export default function Content() {
@@ -88,6 +89,7 @@ export default function Content() {
                 {/* Relacionados con vendedor: creditos */}
                 <Route path="/otorgar-credito" Component={PageOtorgarCredito}></Route>
                 <Route path="/creditos-cuotas-por-cobrar" Component={PageCreditosCuotasPorCobrar} ></Route>
+                <Route path="/creditos-listado" Component={PageCreditos} ></Route>
                 
 
 

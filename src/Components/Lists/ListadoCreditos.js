@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
-import { ModalEditarTEMPLATE_LISTADO_NAME } from "../modals/ModalEditarTEMPLATE_LISTADO_NAME";
+import { ModalEditarCreditos } from "../modals/ModalEditarCreditos";
 
-export function ListadoTEMPLATE_LISTADO_NAME() {
+export function ListadoCreditos() {
   const storaObjectName =  "colectivo";
-  const urlObject = `${apiRest}/cliente`;
-  const titlePlural = "Clientes";
-  const titleSingular = "Cliente";
+  const urlObject = `${apiRest}/credito/filter-by-vendedor`;
+  const titlePlural = "Creditos Otorgandos";
+  const titleSingular = "Credito";
   
   const [colectivo, setColectivo] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -51,7 +51,8 @@ export function ListadoTEMPLATE_LISTADO_NAME() {
 
   const fetchColectivo = async () => {
     try {
-      const response = await fetch(`${urlObject}`, {
+      const vendedorId = localStorage.getItem("vendedor_id");
+      const response = await fetch(`${urlObject}/${vendedorId}`, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -139,7 +140,7 @@ export function ListadoTEMPLATE_LISTADO_NAME() {
         </tbody>
       </table>
       {isModalOpen && (
-        <ModalEditarTEMPLATE_LISTADO_NAME
+        <ModalEditarCreditos
           object={selectedObject}
           onClose={handleCloseModal}
           onObjectActualizado={handleObjectActualizado}

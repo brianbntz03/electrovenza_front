@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../service/apiRest";
 import Swal from "sweetalert2";
+import FlashMessage from "./tiny/FlashMessage";
 
 const FormClienteCard = ({ cliente, setCliente, clientesList }) => (
   <div className="form-group">
@@ -74,6 +75,7 @@ const OtorgarCredito = () => {
     }
 
     try {
+      const vendedorId = Number(localStorage.getItem("vendedor_id"));
       const response = await fetch(`${apiRest}/credito`, {
         method: "POST",
         headers: {
@@ -82,7 +84,7 @@ const OtorgarCredito = () => {
         body: JSON.stringify({
           setting_cuotas_credito_id: parseInt(cuotaId),
           cliente_id: parseInt(cliente),
-          vendedor_id: 3, //todo: tomar el id de vendedor del header
+          vendedor_id: vendedorId, //todo: tomar el id de vendedor del header
           monto: parseFloat(monto),
         }),
       });
@@ -92,7 +94,7 @@ const OtorgarCredito = () => {
         throw new Error(`Error ${response.status}: ${errorData.message}`);
       }
 
-      Swal.fire("¡Éxito!", "El crédito ha sido otorgado correctamente.", "success");
+      FlashMessage("Otorgar Crédito", "El crédito ha sido otorgado correctamente.", 2000, "success", "creditos-cuotas-por-cobrar" )
 
       // limpiar después de guardar
       setCliente("");
