@@ -1,61 +1,37 @@
-import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import { ListadoClientesFiltradoVendedor } from "./listadoClienteFiltradoVendedor";
+import { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 
-export default function Clientes_filtrado_vendedor() {
-  const [clientes, setClientes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const user = JSON.parse(localStorage.getItem("user"));
+const Clientes_filtrado_vendedor = () => {
+  const [vendedorId, setVendedorId] = useState(null);
 
   useEffect(() => {
-    const fetchClientes = async () => {
-      if (!user) {
-        setLoading(false);
-        return;
-      }
-
-      setLoading(true);
+    const token = localStorage.getItem("token");
+    if (token) {
       try {
-        let endpoint = "http://tu-api.com/cliente"; 
-
-        if (user.role === "vendedor") {
-          endpoint = `http://tu-api.com/cliente/filtro-por-vendedor/${user.id}`;
-        }
-
-        const response = await fetch(endpoint);
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setClientes(data);
+        const decodedToken = jwtDecode(token);
+        setVendedorId(decodedToken.id);
       } catch (error) {
-        console.error("Error fetching clients:", error);
-      } finally {
-        setLoading(false);
+        console.error("Error decodificando el token:", error);
       }
-    };
-
-    fetchClientes();
-  }, [user]);
-
-  if (loading) {
-    return <div>Cargando clientes...</div>;
-  }
-
+    }
+  }, []); 
+  
   return (
-    <div>
-      <h1>Listado de Clientes</h1>
-      {clientes.length > 0 ? (
-        <ul>
-          {clientes.map((cliente) => (
-            <li key={cliente.id}>
-              {cliente.nombre} {cliente.apellido}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No se encontraron clientes.</p>
-      )}
+    <div className="card">
+      <div className="card-header">
+        <h3 className="card-title">Clientes</h3>
+        <div className="card-tools">
+          
+          <NavLink to="/crearclienteFiltrado" className="btn btn-sm btn-info float-right">Crear Cliente Filtrado</NavLink>
+        </div>
+      </div>
+      <div className="card-body table-responsive p-0">
+        <ListadoClientesFiltradoVendedor vendedorId={vendedorId} />
+      </div>
     </div>
   );
-}
+};
+
+export default Clientes_filtrado_vendedor;

@@ -1,10 +1,19 @@
 import React, { useState } from "react";
 import { apiRest } from "./service/apiRest";
 import FlashMessage from "./Components/tiny/FlashMessage"
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 export function FormularioLogin({ onLoginSuccess }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -76,18 +85,27 @@ export function FormularioLogin({ onLoginSuccess }) {
                   onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
-              <div className="form-group">
-                <label htmlFor="passwordInput">Contraseña</label>
-                <input
-                  type="password"
-                  name="password"
-                  className="form-control"
-                  id="passwordInput"
-                  placeholder="Contraseña"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
+               <div className="input-group mb-3">
+      <input
+        type={showPassword ? 'text' : 'password'}
+        className="form-control"
+        name="pass"
+        id="pass"
+        data-testid="royal-pass"
+        placeholder="Contraseña"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        aria-label="Contraseña"
+        tabIndex="0"
+      />
+      <button
+        className="btn btn-outline-secondary"
+        type="button"
+        onClick={togglePasswordVisibility}
+      >
+        <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+      </button>
+    </div>
               <div className="row">
                 <div className="col-12">
                   <button
