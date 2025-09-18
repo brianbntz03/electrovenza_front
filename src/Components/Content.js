@@ -35,6 +35,7 @@ import PageCompras from "../pages/PageCompras";
 import { CrearCompras } from "./Crear/CrearCompras";
 import PageCreditos from "../pages/PageCreditos"; 
 import Clientes_filtrado_vendedor from "./Clientes-Filtrado-vendedor";
+import { CrearClienteFiltrado } from "./Crear/CrearClientesFiltrado";
 
 
 export default function Content() {
@@ -105,7 +106,8 @@ export default function Content() {
                 <Route path="/SettingCuotasCreditoListado" Component={PageSettingCuotasCreditoListado}></Route>
                 <Route path="/SettingBandasPreciosListado" Component={PageBandasPrecios}></Route>
                 <Route path="/crear-setting-bandas-precios" Component={CrearBandasPrecios}></Route>
-                <Route path="/crearcliente" Component={CrearCliente}></Route>                
+                <Route path="/crearcliente" Component={CrearCliente}></Route>    
+                <Route path="/crearclientefiltrado" Component={CrearClienteFiltrado}></Route>             
                 <Route
                 path="/registrar-movimento" Component={RegistroMovimientoCuenta}>
                 </Route>
@@ -119,9 +121,9 @@ export default function Content() {
                 <Route path="/clientes-filtrado-vendedor" Component={Clientes_filtrado_vendedor}> </Route>
 
               </Routes>
-              <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
-                <i class="fas fa-chevron-up"></i>
-              </a>
+              <button id="back-to-top" type="button" className="btn btn-primary back-to-top" aria-label="Scroll to top">
+                <i className="fas fa-chevron-up"></i>
+              </button>
             </div>
           </div>
           {/* /.row */}
@@ -133,4 +135,4 @@ export default function Content() {
   );
 }
 
-                <Route path="/crearcuotaelectro" Component={CrearCuotaElectro}></Route>
+<Route path="/crearcuotaelectro" Component={CrearCuotaElectro}></Route>

@@ -4,6 +4,10 @@
   "private": true,
   "homepage": "https://electrovenza.com/gestion",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.0.1",
+    "@fortawesome/free-solid-svg-icons": "^7.0.1",
+    "@fortawesome/react-fontawesome": "^3.0.2",
+    "@hello-pangea/dnd": "^18.0.1",
     "cra-template": "1.2.0",
     "devtools": "^7.16.3",
     "install": "^0.13.0",
