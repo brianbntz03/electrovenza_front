@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
 import { ModalEditarCreditos } from "../modals/ModalEditarCreditos";
+import { convertIsoToDMY } from "../../miscellaneus/aux";
 
 export function ListadoCreditos() {
   const storaObjectName =  "colectivo";
   const urlObject = `${apiRest}/credito/filter-by-vendedor`;
   const titlePlural = "Creditos Otorgandos";
-  const titleSingular = "Credito";
   
   const [colectivo, setColectivo] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedObject, setSelectedObject] = useState(null);
-
   
-
-  const handleOpenModal = (object) => {
-    setSelectedObject(object);
-    setIsModalOpen(true);
-  };
+  // Fechas por defecto: 30 días atrás y hoy
+  const today = new Date();
+  const thirtyDaysAgo = new Date(today.getTime() - (30 * 24 * 60 * 60 * 1000));
+  
+  const [fechaInicio, setFechaInicio] = useState(thirtyDaysAgo.toISOString().split('T')[0]);
+  const [fechaFin, setFechaFin] = useState(today.toISOString().split('T')[0]);
 
   const handleCloseModal = () => {
     setSelectedObject(null);
@@ -34,26 +34,19 @@ export function ListadoCreditos() {
     localStorage.setItem(storaObjectName, JSON.stringify(nuevosObjects));
   };
 
-  const handleEliminar = async (id) => {
-    try {
-      await fetch(`${urlObject}/${id}`, {
-        method: "DELETE",
-      });
-      console.log(`${titleSingular} con id ${id} eliminado. `);
-
-      const nuevosObjects = colectivo.filter((object) => object.id !== id);
-      setColectivo(nuevosObjects);
-      localStorage.setItem(storaObjectName, JSON.stringify(nuevosObjects));
-    } catch (error) {
-      console.error(`Error al eliminar ${titleSingular}:`, error);
-    }
-  };
-
-  const fetchColectivo = async () => {
+  const fetchColectivo = async (fechaInicioParam = fechaInicio, fechaFinParam = fechaFin) => {
     try {
       const vendedorId = localStorage.getItem("vendedor_id");
-      const response = await fetch(`${urlObject}/${vendedorId}`, {
-        method: "GET",
+      const url = Number(vendedorId)>0 ? `${urlObject}/${vendedorId}` : `${apiRest}/credito/`;
+      console.log("url", url);
+      const response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          vendedor_id: vendedorId,
+          fecha_inicio: fechaInicioParam,
+          fecha_fin: fechaFinParam,
+        }),
+        mode: "cors",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -65,7 +58,6 @@ export function ListadoCreditos() {
       }
 
       const data = await response.json();
-      console.log(data);
       setColectivo(data);
       localStorage.setItem(storaObjectName, JSON.stringify(data));
       setLoading(false);
@@ -86,6 +78,13 @@ export function ListadoCreditos() {
     setLoading(true);
     setError(null);
     fetchColectivo();
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    fetchColectivo(fechaInicio, fechaFin);
   };
 
   if (loading) {
@@ -113,28 +112,51 @@ export function ListadoCreditos() {
   return (
     <div className="card-body">
       <p>Listado de {titlePlural}</p>
+      
+      <form onSubmit={handleSubmit} className="mb-3">
+        <div className="row">
+          <div className="col-md-4">
+            <label>Fecha Inicio:</label>
+            <input
+              type="date"
+              className="form-control"
+              value={fechaInicio}
+              onChange={(e) => setFechaInicio(e.target.value)}
+            />
+          </div>
+          <div className="col-md-4">
+            <label>Fecha Fin:</label>
+            <input
+              type="date"
+              className="form-control"
+              value={fechaFin}
+              onChange={(e) => setFechaFin(e.target.value)}
+            />
+          </div>
+          <div className="col-md-4 d-flex align-items-end">
+            <button type="submit" className="btn btn-primary">
+              Filtrar
+            </button>
+          </div>
+        </div>
+      </form>
       <table className="table table-striped table-valign-middle table-bordered">
         <thead>
           <tr>
-            <th>Dato 1</th>
-            <th>Dato 2</th>
-            <th></th>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Monto</th>
+            <th>Vendedor</th>
           </tr>
         </thead>
         <tbody>
           {colectivo
             .map((object) => (
               <tr key={object.id}>
-                <td>{object.dato1}</td>
-                <td>{object.dato2}</td>
-                <td>
-                  <button onClick={() => handleOpenModal(object)}>
-                    editar
-                  </button>
-                  <button onClick={() => handleEliminar(object.id)}>
-                    eliminar
-                  </button>
-                </td>
+                <td>{convertIsoToDMY(object.fecha)}</td>
+                <td>{object.cliente.nombre}</td>
+                <td>{object.monto}</td>
+                <td>{object.vendedor.nombre}</td>
               </tr>
             ))}
         </tbody>

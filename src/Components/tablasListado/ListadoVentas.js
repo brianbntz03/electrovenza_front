@@ -11,7 +11,9 @@ export function ComponentListadoVentas() {
 
  const fetchVentas = async () => {
        try {
-                 const response = await fetch(`${apiRest}/ventas/last-ten`, {
+                 const vendedorId = localStorage.getItem("vendedor_id");
+                 const url = Number(vendedorId)>0 ? `${apiRest}/ventas/filter-by-vendedor/${vendedorId}` : `${apiRest}/ventas/last-ten`; 
+                 const response = await fetch(url, {
                      method: 'GET',
                      headers: {
                          'Accept': 'application/json',
