@@ -10,6 +10,7 @@ export const CrearProducto = () => {
   const [stock, setStock] = useState(0);
   const [idCategoria, setIdCategoria] = useState(0);
   const [porcentajeComisionVendedor, setPorcentajeComisionVendedor] = useState(0);
+  const [imagen, setImagen] = useState(null);
   const [categorias, setCategorias] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -54,13 +55,22 @@ export const CrearProducto = () => {
     setLoading(true);
 
     try {
+      // Crear producto con JSON
       const response = await fetch(`${apiRest}/articulos`, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ nombre, descripcion, precio, precio_mayorista: precioMayorista, stock, idCategoria,porcentaje_comision_vendedor: porcentajeComisionVendedor }),
+        body: JSON.stringify({ 
+          nombre, 
+          descripcion, 
+          precio, 
+          precio_mayorista: precioMayorista, 
+          stock, 
+          idCategoria, 
+          porcentaje_comision_vendedor: porcentajeComisionVendedor 
+        }),
       });
 
       if (!response.ok) {
@@ -68,6 +78,18 @@ export const CrearProducto = () => {
       }
 
       const data = await response.json();
+      
+      // Si hay imagen, subirla por separado
+      if (imagen && data.id) {
+        const formData = new FormData();
+        formData.append('imagen', imagen);
+        
+        await fetch(`${apiRest}/articulos/${data.id}/imagen`, {
+          method: "POST",
+          body: formData,
+        });
+      }
+      
       console.log("Producto creado:", data);
       MostrarAlerta();
       setLoading(false);
@@ -195,6 +217,17 @@ export const CrearProducto = () => {
                     </option>
                   ))}
               </select>
+            </div>
+
+            <div class="form-group">
+              <label for="imagen">Imagen</label>
+              <input
+                class="form-control"
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImagen(e.target.files[0])}
+                name="imagen"
+              />
             </div>
             <div class="card-footer">
               <button type="submit" class="btn btn-primary" disabled={loading}>

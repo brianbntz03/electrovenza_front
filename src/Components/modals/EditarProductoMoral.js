@@ -17,6 +17,7 @@ export function EditaProductoModal({
     activo: true,
     porcentajeComisionVendedor: 0,
   });
+  const [imagen, setImagen] = useState(null);
   const [error, setError] = useState(null);
   const [categorias, setCategorias] = useState([]);
 
@@ -73,6 +74,26 @@ export function EditaProductoModal({
     }));
   };
 
+  const handleImageUpload = async () => {
+    if (!imagen) return;
+    
+    try {
+      const formData = new FormData();
+      formData.append('imagen', imagen);
+      
+      const response = await fetch(`${apiRest}/articulos/${producto.id}/imagen`, {
+        method: "POST",
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        throw new Error('Error al subir la imagen');
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -94,6 +115,12 @@ export function EditaProductoModal({
       }
 
       const productoActualizado = await response.json();
+      
+      // Subir imagen si existe
+      if (imagen) {
+        await handleImageUpload();
+      }
+      
       const categoriaSeleccionada = categorias.find(
         (cat) => cat.id === formData.idCategoria
       );
@@ -220,6 +247,22 @@ export function EditaProductoModal({
                 />
               </div>
 
+              <div className="form-group">
+                <label>Imagen actual</label>
+                <div>
+                  <img src={`${apiRest}/articulos/${producto.id}/imagen`} width={100} alt=""></img>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Nueva imagen</label>
+                <input
+                  type="file"
+                  className="form-control"
+                  accept="image/*"
+                  onChange={(e) => setImagen(e.target.files[0])}
+                />
+              </div>
 
               <div className="modal-footer">
                 <button

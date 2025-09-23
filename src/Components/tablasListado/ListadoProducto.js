@@ -116,6 +116,7 @@ export function ListadoProducto() {
             <th> precio mayorista </th>
             <th> % comision vendedor </th>
             <th> stock </th>
+            <th> Img </th>
             <th> </th>
           </tr>
           {productos.map((producto) => (
@@ -127,6 +128,7 @@ export function ListadoProducto() {
               <td> {producto.precio_mayorista} </td>
               <td> {producto.porcentaje_comision_vendedor} </td>
               <td> {producto.stock} </td>
+              <td><img src={`${apiRest}/articulos/${producto.id}/imagen`} width={100} alt=""></img></td>
               <td>
                 <button
                   onClick={() => handleOpenModal(producto)}

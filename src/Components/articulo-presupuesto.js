@@ -437,6 +437,7 @@ export const ArticuloPresupuesto = () => {
                   <th>Articulo</th>
                   <th>Categoría</th>
                   <th>Precio</th>
+                  <th>Img</th>
                   <th></th>
                 </tr>
               </thead>
@@ -450,6 +451,9 @@ export const ArticuloPresupuesto = () => {
                     </td>
                     <td>
                       {articulo.precio.toLocaleString()}
+                    </td>
+                    <td>
+                      <img src={`${apiRest}/articulos/${articulo.id}/imagen`} width={100} alt=""></img>
                     </td>
                     <td>
                       <button
