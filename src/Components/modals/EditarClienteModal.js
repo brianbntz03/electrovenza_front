@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { apiRest } from "../../service/apiRest";
 
 export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
@@ -13,6 +13,7 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
   });
   const [vendedores, setVendedores] = useState([]);
   const [error, setError] = useState(null);
+  const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
     if (cliente) {
@@ -29,19 +30,24 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
   }, [cliente]);
 
   useEffect(() => {
-    const fetchVendedores = async () => {
-      try {
-        const response = await fetch(`${apiRest}/vendedor`);
-        if (!response.ok) {
-          throw new Error("No se pudo actualizar los datos del cliente");
+    const role = localStorage.getItem("user_role");
+    setUserRole(role);
+
+    if (role === "admin") {
+      const fetchVendedores = async () => {
+        try {
+          const response = await fetch(`${apiRest}/vendedor`);
+          if (!response.ok) {
+            throw new Error("No se pudo cargar los vendedores");
+          }
+          const data = await response.json();
+          setVendedores(data);
+        } catch (error) {
+          setError(error.message);
         }
-        const data = await response.json();
-        setVendedores(data);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-    fetchVendedores();
+      };
+      fetchVendedores();
+    }
   }, []);
 
   
@@ -63,14 +69,29 @@ const handleChangeNumber = (e) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (isNaN(Number(formData.dni))) {
+      setError("El DNI debe ser un número válido.");
+      return;
+    }
+    
+    setError(null);
+
     try {
-      console.log("Enviando datos para actualizar cliente:", formData);
+      const dataToSend = {
+        ...formData,
+        dni: Number(formData.dni),
+        telefono1: Number(formData.telefono1),
+        telefono2: Number(formData.telefono2),
+      };
+
+      console.log("Enviando datos para actualizar cliente:", dataToSend);
       const response = await fetch(`${apiRest}/cliente/${cliente.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(dataToSend),
       });
 
      if (!response.ok) {
@@ -80,11 +101,11 @@ const handleChangeNumber = (e) => {
 
       const clienteActualizado = await response.json();
       const vendedorSeleccionado = vendedores.find(
-        (vendedor) => Number(vendedor.id) === formData.vendedor_id
+        (vendedor) => Number(vendedor.id) === dataToSend.vendedor_id
       );
       const clienteConVendedorCompleto = {
         ...clienteActualizado,
-        vendedor: vendedorSeleccionado || null,
+        vendedor: vendedorSeleccionado || (cliente.vendedor || null),
       };
 
       console.log("Cliente actualizado exitosamente:", clienteConVendedorCompleto);
@@ -186,6 +207,7 @@ const handleChangeNumber = (e) => {
                   onChange={handleChange}
                 />
               </div>
+              {userRole === "admin" && (
               <div className="form-group">
                 <label>Vendedor</label>
                 <select
@@ -202,6 +224,7 @@ const handleChangeNumber = (e) => {
                   ))}
                 </select>
               </div>
+              )}
               <div className="modal-footer">
                 <button
                   type="button"

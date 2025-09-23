@@ -141,7 +141,7 @@ export function ListadoVendedores() {
           </tr>
         </tbody>
       </table>
-      {isModalOpen && (
+      {isModalOpen && selectedVendedor && (
         <EditarVendedorModal
           vendedor={selectedVendedor}
           onClose={handleCloseModal}
