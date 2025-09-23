@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
-export default function Aside() {
+export default function   Aside() {
   const location = useLocation();
   const [userRole, setUserRole] = useState(null);
   const [electroOpen, setElectroOpen] = useState(false);

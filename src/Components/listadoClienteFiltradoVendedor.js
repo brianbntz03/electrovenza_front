@@ -218,12 +218,12 @@ const handleOnDragEnd = async (result) => {
     );
   }
 
-  
 
   return (
     <div className="card-body">
-      <h2 className="card-title">Listado de Clientes</h2>
-
+       <div className="mb-3">
+          <h2 className="card-title">Listado de Clientes</h2>
+       </div>
       <div className="mb-3">
         <input
           type="text"
@@ -236,7 +236,6 @@ const handleOnDragEnd = async (result) => {
           }}
         />
       </div>
-
       {filteredClients.length > 0 ? (
         <>
           <DragDropContext onDragEnd={handleOnDragEnd}>

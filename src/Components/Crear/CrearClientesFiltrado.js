@@ -9,12 +9,14 @@ export const CrearClienteFiltrado = () => {
   const [direccioncasa, setDireccioncasa] = useState("");
   const [telefono1, setTelefono1] = useState("");
   const [telefono2, setTelefono2] = useState("");
-  const [listaVendedores, setListaVendedores] = useState([]); 
-  const [vendedorSeleccionado, setVendedorSeleccionado] = useState(""); 
+  const [listaVendedores, setListaVendedores] = useState([]);
+  const [vendedorSeleccionado, setVendedorSeleccionado] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [userRole, setUserRole] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [button, setButton] = useState(false);
-
+  
   const handleRetry = () => {
     setLoading(false);
     setError(null);
@@ -33,68 +35,131 @@ export const CrearClienteFiltrado = () => {
   };
 
   useEffect(() => {
-    const obtenerVendedores = async () => {
+    const role = localStorage.getItem("user_role");
+    const id = localStorage.getItem("user_id");
+    setUserRole(role);
+    setUserId(id);
+
+    // Test de conectividad
+    const testBackend = async () => {
       try {
         const response = await fetch(`${apiRest}/vendedor`);
-        const data = await response.json();
-        setListaVendedores(data);
+        console.log("Backend status:", response.status);
+        if (response.ok) {
+          console.log("✅ Backend conectado correctamente");
+        }
       } catch (error) {
-        console.error("Error al cargar vendedores:", error);
-        setError("No se pudieron cargar los vendedores.");
+        console.error("❌ Backend no disponible:", error);
+        setError("El servidor no está disponible. Verifica que esté corriendo en puerto 3001.");
       }
     };
+    testBackend();
 
-    obtenerVendedores();
+    if (role === "admin") {
+      const obtenerVendedores = async () => {
+        try {
+          const response = await fetch(`${apiRest}/vendedor`);
+          const data = await response.json();
+          setListaVendedores(data);
+        } catch (error) {
+          console.error("Error al cargar vendedores:", error);
+          setError("No se pudieron cargar los vendedores.");
+        }
+      };
+      obtenerVendedores();
+    }
   }, []);
 
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
+
+    if (isNaN(Number(dni))) {
+        setLoading(false);
+        setError("El DNI debe ser un número válido.");
+        return;
+    }
+
+    let vendedorId = null;
+    if (userRole === "admin") {
+        if (!vendedorSeleccionado || vendedorSeleccionado === "0" || isNaN(Number(vendedorSeleccionado))) {
+            setLoading(false);
+            setError("Por favor, selecciona un vendedor válido.");
+            return;
+        }
+        vendedorId = Number(vendedorSeleccionado);
+    } else if (userRole === "vendedor") {
+        vendedorId = localStorage.getItem("vendedor_id");
+    } else {
+        setLoading(false);
+        setError("Error: Rol de usuario no válido. No se puede crear un cliente.");
+        return;
+    }
+
+    // Validaciones adicionales
+    if (!nombre.trim()) {
+        setLoading(false);
+        setError("El nombre es requerido.");
+        return;
+    }
+
+    if (!telefono1.trim() || isNaN(Number(telefono1))) {
+        setLoading(false);
+        setError("El teléfono 1 debe ser un número válido.");
+        return;
+    }
+
+    if (telefono2 && isNaN(Number(telefono2))) {
+        setLoading(false);
+        setError("El teléfono 2 debe ser un número válido.");
+        return;
+    }
+
+    // Prepara los datos para que coincidan con el esquema del backend
+    const clienteData = {
+        nombre: nombre,
+        'dni': Number(dni),
+        direccion_local: direccionlocal,
+        direccion_casa: direccioncasa,
+        'telefono1': Number(telefono1),
+        'telefono2': Number(telefono2),
+        vendedor_id: Number(vendedorId),
+    };
+    
+    console.log("Datos a enviar:", clienteData);
+    console.log("Vendedor ID:", vendedorId, "Tipo:", typeof vendedorId); 
 
     try {
+        const response = await fetch(`${apiRest}/cliente`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(clienteData),
+        });
 
-      const response = await fetch(`${apiRest}/cliente`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nombre,
-          'dni': Number(dni),
-          direccion_local: direccionlocal,
-          direccion_casa: direccioncasa,
-          'telefono1': Number(telefono1),
-          'telefono2': Number(telefono2),
-          vendedor_id: Number(vendedorSeleccionado),
-        }),
-      });
+        if (!response.ok) {
+            const text = await response.text();
+            console.error("Error del servidor:", {
+                status: response.status,
+                statusText: response.statusText,
+                body: text,
+                url: response.url
+            });
+            throw new Error(`HTTP error! status: ${response.status} - ${text}`);
+        }
 
-      if (!response.ok) {
-        const text = await response.text();
-        throw new Error(`HTTP error! status: ${response.status} - ${text}`);
-      }
-
-      const data = await response.json();
-      
-      const storedClientes = localStorage.getItem('clientes');
-      const clientes = storedClientes ? JSON.parse(storedClientes) : [];
-      const updatedClientes = [...clientes, data];
-      localStorage.setItem('clientes', JSON.stringify(updatedClientes));
-
-      console.log("Cliente creado:", data);
-      MostrarAlerta();
-      setButton(true);
-      setLoading(false);
+        const data = await response.json();
+        console.log("Cliente creado:", data);
+        MostrarAlerta();
+        setLoading(false);
     } catch (error) {
-      console.error("Error detallado:", error);
-      setError(
-        `No se pudo conectar con el servidor. Verifica que el servidor esté corriendo en el puerto 3001: ${error.message}`
-      );
-      setLoading(false);
+        setError(`No se pudo crear el cliente: ${error.message}`);
+        setLoading(false);
     }
-  };
+};
 
   if (loading) {
     return <p>Cargando...</p>;
@@ -103,7 +168,7 @@ export const CrearClienteFiltrado = () => {
   if (error) {
     return (
       <div className="error-container">
-        <h3>Error de conexión</h3>
+        <h3>Error</h3>
         <p>{error}</p>
         <button onClick={handleRetry}>Intentar nuevamente</button>
       </div>
@@ -111,73 +176,74 @@ export const CrearClienteFiltrado = () => {
   }
 
   return (
-    <>
-      <div className="card card-primary">
-        <div className="card-header">
-          <h3 className="card-title">Crear Cliente</h3>
-        </div>
-        <form onSubmit={handleSubmit} style={{ marginBottom: "100px" }}>
-          <div className="card-body">
-            <div className="form-group">
-              <label>Nombre:</label>
-              <input
-                className="form-control"
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
-                type="text"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>DNI:</label>
-              <input
-                className="form-control"
-                value={dni}
-                onChange={(e) => setDni(e.target.value)}
-                type="text"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Dirección Local:</label>
-              <input
-                className="form-control"
-                value={direccionlocal}
-                onChange={(e) => setDireccionlocal(e.target.value)}
-                type="text"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Dirección Casa:</label>
-              <input
-                className="form-control"
-                value={direccioncasa}
-                onChange={(e) => setDireccioncasa(e.target.value)}
-                type="text"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Teléfono 1:</label>
-              <input
-                className="form-control"
-                value={telefono1}
-                onChange={(e) => setTelefono1(e.target.value)}
-                type="text"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Teléfono 2:</label>
-              <input
-                className="form-control"
-                value={telefono2}
-                onChange={(e) => setTelefono2(e.target.value)}
-                type="text"
-                required
-              />
-            </div>
+    <div className="card card-primary">
+      <div className="card-header">
+        <h3 className="card-title">Crear Cliente</h3>
+      </div>
+      <form onSubmit={handleSubmit} style={{ marginBottom: "100px" }}>
+        <div className="card-body">
+          <div className="form-group">
+            <label>Nombre:</label>
+            <input
+              className="form-control"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              type="text"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>DNI:</label>
+            <input
+              className="form-control"
+              value={dni}
+              onChange={(e) => setDni(e.target.value)}
+              type="text"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Dirección Local:</label>
+            <input
+              className="form-control"
+              value={direccionlocal}
+              onChange={(e) => setDireccionlocal(e.target.value)}
+              type="text"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Dirección Casa:</label>
+            <input
+              className="form-control"
+              value={direccioncasa}
+              onChange={(e) => setDireccioncasa(e.target.value)}
+              type="text"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Teléfono 1:</label>
+            <input
+              className="form-control"
+              value={telefono1}
+              onChange={(e) => setTelefono1(e.target.value)}
+              type="text"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Teléfono 2:</label>
+            <input
+              className="form-control"
+              value={telefono2}
+              onChange={(e) => setTelefono2(e.target.value)}
+              type="text"
+              required
+            />
+          </div>
+
+          {userRole === "admin" && (
             <div className="form-group">
               <label>Vendedor:</label>
               <select
@@ -186,7 +252,7 @@ export const CrearClienteFiltrado = () => {
                 onChange={(e) => setVendedorSeleccionado(e.target.value)}
                 required
               >
-                <option value="">Selecciona un vendedor</option>
+                <option value="">Selecciona un Vendedor</option>
                 {listaVendedores.map((v) => (
                   <option key={v.id} value={v.id}>
                     {v.nombre}
@@ -194,14 +260,14 @@ export const CrearClienteFiltrado = () => {
                 ))}
               </select>
             </div>
-          </div>
-          <div className="card-footer">
-            <button type="submit" className="btn btn-primary" disabled={loading}>
-              {loading ? "Creando..." : "Crear Cliente"}
-            </button>
-          </div>
-        </form>
-      </div>
-    </>
+          )}
+        </div>
+        <div className="card-footer">
+          <button type="submit" className="btn btn-primary" disabled={loading}>
+            {loading ? "Creando..." : "Crear Cliente"}
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };

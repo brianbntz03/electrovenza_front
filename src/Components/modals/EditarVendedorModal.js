@@ -23,9 +23,9 @@ export const EditarVendedorModal = ({
         nombre: vendedor.nombre || "",
         direccion: vendedor.direccion || "",
         telefono: vendedor.telefono || 0,
-        username: vendedor.user.username || "",
-        email: vendedor.user.email || "",
-        password: "", // Password should not be pre-filled
+        username: vendedor.user?.username || "",
+        email: vendedor.user?.email || "",
+        password: "", 
       });
     }
   }, [vendedor]);
