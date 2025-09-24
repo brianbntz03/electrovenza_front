@@ -74,6 +74,8 @@ export default function Content() {
                   Component={HistorialPresupuesto}
                 ></Route>
                 <Route path="/lista" Component={ListaPresupuesto}></Route>
+                
+                {/* Categorias y productos */}
                 <Route
                   path="/crearcategorias"
                   Component={CreacionCategorias}
