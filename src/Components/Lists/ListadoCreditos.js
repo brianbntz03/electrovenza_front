@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
 import { ModalEditarCreditos } from "../modals/ModalEditarCreditos";
 import { convertIsoToDMY } from "../../miscellaneus/aux";
+import { BotonImprimirCuotasCredito } from "../tiny/BotonImprimirCuotasCredito";
 
 export function ListadoCreditos() {
   const storaObjectName =  "colectivo";
@@ -163,6 +164,7 @@ export function ListadoCreditos() {
             <th>Cliente</th>
             <th>Monto</th>
             <th>Vendedor</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -173,6 +175,7 @@ export function ListadoCreditos() {
                 <td>{object.cliente.nombre}</td>
                 <td>{object.monto}</td>
                 <td>{object.vendedor.nombre}</td>
+                <td><BotonImprimirCuotasCredito id={object.id} /></td>
               </tr>
             ))}
         </tbody>
