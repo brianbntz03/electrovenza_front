@@ -2,6 +2,8 @@ import { NavLink } from "react-router-dom";
 import { ListadoProducto } from "../Components/tablasListado/ListadoProducto";
 import { apiRest } from "../service/apiRest"; 
 
+
+
 const PageProductosListado = () => {
   const producto = ListadoProducto();
 
