@@ -129,7 +129,7 @@ export function ListadoCreditos() {
   return (
     <div className="card-body">
       <p>Listado de {titlePlural}</p>
-      
+      {/*
       <form onSubmit={handleSubmit} className="mb-3">
         <div className="row">
           <div className="col-md-4">
@@ -157,6 +157,7 @@ export function ListadoCreditos() {
           </div>
         </div>
       </form>
+      */}
       <table className="table table-striped table-valign-middle table-bordered">
         <thead>
           <tr>
