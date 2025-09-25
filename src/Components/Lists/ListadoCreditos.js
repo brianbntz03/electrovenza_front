@@ -39,10 +39,14 @@ export function ListadoCreditos() {
       const vendedorId = localStorage.getItem("vendedor_id");
       const url = Number(vendedorId)>0 ? `${urlObject}/${vendedorId}` : `${apiRest}/credito/`;
       console.log("url", url);
-      const response = await fetch(url, {
+      let response = null;
+
+      if(vendedorId>0){
+        console.log("vendedorId", vendedorId);
+        response = await fetch(url, {
         method: "POST",
         body: JSON.stringify({
-          vendedor_id: vendedorId,
+          vendedor_id: Number(vendedorId),
           fecha_inicio: fechaInicioParam,
           fecha_fin: fechaFinParam,
         }),
@@ -52,6 +56,18 @@ export function ListadoCreditos() {
           "Content-Type": "application/json",
         },
       });
+      }else{
+        response = await fetch(url, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+
+      }
+      
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
