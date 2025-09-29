@@ -21,6 +21,7 @@ export default function   Aside() {
     "/otorgar-credito",
     "/creditos-cuotas-por-cobrar",
     "/creditos-listado",
+    "/cuota-vencida",
   ];
 
   const Clientes_filtrado_vendedor_Paths = [
@@ -183,6 +184,12 @@ export default function   Aside() {
             <NavLink to="/creditos-listado" className="nav-link" onClick={closeMobileSidebar}>
               <i className="nav-icon fas fa-file-invoice-dollar" />
               <p>Creditos Asignados</p>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/cuota-vencida" className="nav-link" onClick={closeMobileSidebar} >
+              <i className="nav-icon fas fa-exclamation-triangle" />
+              <p>Cuotas Vencidas</p>
             </NavLink>
           </li>
         </ul>
@@ -358,7 +365,7 @@ export default function   Aside() {
           />
           <span className="brand-text font-weight-light">EletroVenza</span>
         </NavLink>
-        <div className="sidebar">
+        <div className="sidebar" style={{ height: 'calc(100vh - 57px)', overflowY: 'auto' }}>
           <nav className="mt-2">
             <ul
               className="nav nav-pills nav-sidebar flex-column"
