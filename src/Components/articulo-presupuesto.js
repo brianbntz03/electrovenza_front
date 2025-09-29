@@ -382,7 +382,15 @@ export const ArticuloPresupuesto = () => {
 
   const cargarClientes = async () => {
     try {
-      const response = await fetch(`${apiRest}/cliente`);
+      const response = await fetch(
+        `${apiRest}/cliente`,{
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
+        },
+      });
       if (response.ok) {
         const data = await response.json();
         setClientesFiltrados(data);
