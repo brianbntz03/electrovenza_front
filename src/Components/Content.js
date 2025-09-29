@@ -37,6 +37,7 @@ import { CrearCompras } from "./Crear/CrearCompras";
 import PageCreditos from "../pages/PageCreditos"; 
 import Clientes_filtrado_vendedor from "./Clientes-Filtrado-vendedor";
 import { CrearClienteFiltrado } from "./Crear/CrearClientesFiltrado";
+import PageCuotasVencidas from "../pages/pageCuotasVencidas";
 
 
 export default function Content() {
@@ -96,7 +97,7 @@ export default function Content() {
                 <Route path="/otorgar-credito" Component={PageOtorgarCredito}></Route>
                 <Route path="/creditos-cuotas-por-cobrar" Component={PageCreditosCuotasPorCobrar} ></Route>
                 <Route path="/creditos-listado" Component={PageCreditos} ></Route>
-                
+                <Route path="/cuota-vencida" Component={PageCuotasVencidas}></Route>
 
 
                 <Route path="/crearProducto" Component={CrearProducto}></Route>

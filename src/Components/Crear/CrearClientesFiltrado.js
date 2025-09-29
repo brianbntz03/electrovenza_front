@@ -30,6 +30,9 @@ export const CrearClienteFiltrado = () => {
       icon: "success",
       timer: 1500,
     }).then(() => {
+      if (window.refreshClientList) {
+        window.refreshClientList();
+      }
       window.location.href = `${publicUrl}/clientes-filtrado-vendedor`;
     });
   };
@@ -126,6 +129,7 @@ const handleSubmit = async (e) => {
         'telefono1': Number(telefono1),
         'telefono2': Number(telefono2),
         vendedor_id: Number(vendedorId),
+        creado_por: Number(userId),
     };
     
     console.log("Datos a enviar:", clienteData);

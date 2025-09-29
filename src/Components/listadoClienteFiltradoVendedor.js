@@ -4,7 +4,7 @@ import { EditarClienteModal } from "./modals/EditarClienteModal";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import Swal from "sweetalert2";
 
-export function ListadoClientesFiltradoVendedor({ vendedorId } = {}) {
+export function ListadoClientesFiltradoVendedor({ vendedorId, onRefresh } = {}) {
   const [clientes, setClientes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -32,6 +32,21 @@ export function ListadoClientesFiltradoVendedor({ vendedorId } = {}) {
     localStorage.setItem("clientes", JSON.stringify(nuevosClientes));
   };
 
+  const handleClienteCreado = () => {
+    fetchClientes();
+  };
+
+  useEffect(() => {
+    if (onRefresh) {
+      window.refreshClientList = handleClienteCreado;
+    }
+    return () => {
+      if (window.refreshClientList) {
+        delete window.refreshClientList;
+      }
+    };
+  }, [onRefresh]);
+
   const handleEliminar = async (id) => {
     try {
       await fetch(`${apiRest}/cliente/${id}`, {
@@ -52,13 +67,14 @@ export function ListadoClientesFiltradoVendedor({ vendedorId } = {}) {
     setError(null);
     try {
       const apiUrl = `${apiRest}/cliente`;
-      console.log("Fetching all clients from URL:", apiUrl);
+      console.log("Fetching clients from URL:", apiUrl);
 
       const response = await fetch(apiUrl, {
         method: "GET",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          "authorization": `Bearer ${localStorage.getItem("jwt_token")}`
         },
       });
 
@@ -94,7 +110,31 @@ export function ListadoClientesFiltradoVendedor({ vendedorId } = {}) {
   const filteredClients = useMemo(() => {
     let clientsToFilter = clientes;
 
-    if (vendedorId) {
+    const userRole = localStorage.getItem("user_role");
+    const currentUserId = localStorage.getItem("user_id");
+
+    console.log("=== DEBUG FILTRO ===");
+    console.log("userRole:", userRole);
+    console.log("currentUserId:", currentUserId);
+    console.log("vendedor_id from localStorage:", localStorage.getItem("vendedor_id"));
+    console.log("Total clientes:", clientes.length);
+    console.log("Clientes data:", clientes.map(c => ({ id: c.id, nombre: c.nombre, creado_por: c.creado_por, vendedor_id: c.vendedor?.id })));
+
+    if (userRole === "vendedor" && currentUserId) {
+      console.log("Aplicando filtro de vendedor...");
+      const vendedorId = localStorage.getItem("vendedor_id");
+      clientsToFilter = clientsToFilter.filter(
+        (cliente) => {
+          // Primero intenta con creado_por, si no existe usa vendedor_id
+          const matchCreado = cliente.creado_por === parseInt(currentUserId);
+          const matchVendedor = cliente.vendedor?.id === parseInt(vendedorId);
+          const match = matchCreado || (cliente.creado_por === undefined && matchVendedor);
+          console.log(`Cliente ${cliente.nombre}: creado_por=${cliente.creado_por}, vendedor_id=${cliente.vendedor?.id}, currentUserId=${currentUserId}, vendedorId=${vendedorId}, match=${match}`);
+          return match;
+        }
+      );
+      console.log("Clientes después del filtro:", clientsToFilter.length);
+    } else if (vendedorId) {
       clientsToFilter = clientsToFilter.filter(
         (cliente) => cliente.vendedor?.id === vendedorId
       );
@@ -361,6 +401,7 @@ const handleOnDragEnd = async (result) => {
       ) : (
         <div className="text-center py-5">
           <p>No se encontraron clientes con ese criterio de búsqueda.</p>
+          <p><small>Total de clientes en BD: {clientes.length}</small></p>
         </div>
       )}
     </div>
