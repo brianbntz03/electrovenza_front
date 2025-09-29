@@ -186,12 +186,7 @@ export default function   Aside() {
               <p>Creditos Asignados</p>
             </NavLink>
           </li>
-          <li className="nav-item">
-            <NavLink to="/cuota-vencida" className="nav-link" onClick={closeMobileSidebar} >
-              <i className="nav-icon fas fa-exclamation-triangle" />
-              <p>Cuotas Vencidas</p>
-            </NavLink>
-          </li>
+          
         </ul>
       </li>
       <li

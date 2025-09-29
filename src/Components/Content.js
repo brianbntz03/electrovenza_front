@@ -97,7 +97,6 @@ export default function Content() {
                 <Route path="/otorgar-credito" Component={PageOtorgarCredito}></Route>
                 <Route path="/creditos-cuotas-por-cobrar" Component={PageCreditosCuotasPorCobrar} ></Route>
                 <Route path="/creditos-listado" Component={PageCreditos} ></Route>
-                <Route path="/cuota-vencida" Component={PageCuotasVencidas}></Route>
 
 
                 <Route path="/crearProducto" Component={CrearProducto}></Route>

@@ -113,7 +113,14 @@ const OtorgarCredito = () => {
 
   // Traer clientes y cuotas
   useEffect(() => {
-    fetch(`${apiRest}/cliente`)
+    fetch(`${apiRest}/cliente`,{
+      method: 'GET',
+      headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
+        },
+    })
       .then((res) => res.json())
       .then((data) => setClientesList(Array.isArray(data) ? data : []))
       .catch((error) => console.error("Error fetching clientes:", error));
