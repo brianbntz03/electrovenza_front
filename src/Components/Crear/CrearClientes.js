@@ -60,6 +60,8 @@ export const CrearCliente = () => {
 
     try {
 
+      const userId = localStorage.getItem("user_id");
+      
       const response = await fetch(`${apiRest}/cliente`, {
         method: "POST",
         headers: {
@@ -74,6 +76,7 @@ export const CrearCliente = () => {
           'telefono1': Number(telefono1),
           'telefono2': Number(telefono2),
           vendedor_id: Number(vendedorSeleccionado),
+          creado_por: Number(userId),
         }),
       });
 

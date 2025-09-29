@@ -19,25 +19,29 @@ export default function Header({ onLogout }) {
   };
 
   return (
-    <nav className="main-header navbar navbar-expand navbar-white navbar-light">
+    <nav className="main-header navbar navbar-expand navbar-white navbar-light d-flex justify-between items-center px-3">
       {/* Left navbar links */}
-      <ul className="navbar-nav">
+      <ul className="navbar-nav d-flex align-items-center">
         <li className="nav-item">
-          <a className="nav-link" onClick={handleMenuToggle} href="#" role="button"><i className="fas fa-bars"></i></a>
+          <a className="nav-link d-flex align-items-center" onClick={handleMenuToggle} href="#" role="button">
+            <i className="fas fa-bars"></i>
+          </a>
         </li>
       </ul>
 
       {/* Right navbar links */}
-      <ul className="navbar-nav ml-auto">
-        <li className='nav-item'>{username}</li>
-        <li className="nav-item">
+      <ul className="navbar-nav ml-auto d-flex align-items-center">
+        <li className="nav-item d-flex align-items-center mx-2">
+          <span className="text-dark font-weight-bold">{username}</span>
+        </li>
+        <li className="nav-item d-flex align-items-center">
           <a
-            className="nav-link"
+            className="nav-link d-flex align-items-center"
             href="#"
             role="button"
-            onClick={onLogout} // Aquí se llama a la función para cerrar sesión
+            onClick={onLogout}
           >
-            <i className="fas fa-sign-out-alt"></i> Cerrar Sesión
+            <i className="fas fa-sign-out-alt mr-1"></i> Cerrar Sesión
           </a>
         </li>
       </ul>
