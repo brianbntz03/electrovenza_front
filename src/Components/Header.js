@@ -1,6 +1,9 @@
 import React from 'react';
 
 export default function Header({ onLogout }) {
+  
+  const username = localStorage.getItem('user_name');
+  
   const handleMenuToggle = (e) => {
     e.preventDefault();
     const body = document.body;
@@ -26,6 +29,7 @@ export default function Header({ onLogout }) {
 
       {/* Right navbar links */}
       <ul className="navbar-nav ml-auto">
+        <li className='nav-item'>{username}</li>
         <li className="nav-item">
           <a
             className="nav-link"
