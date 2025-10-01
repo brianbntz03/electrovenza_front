@@ -1,13 +1,19 @@
+
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
 import { EditarClienteModal } from "../modals/EditarClienteModal";
 
 export function ListadoClientes() {
+  const [allClientes, setAllClientes] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCliente, setSelectedCliente] = useState(null);
+
+  // Estados para la Paginación del lado del cliente
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(4);
 
   const handleOpenModal = (cliente) => {
     setSelectedCliente(cliente);
@@ -20,23 +26,25 @@ export function ListadoClientes() {
   };
 
   const handleClienteActualizado = (clienteActualizado) => {
-    const nuevosClientes = clientes.map((c) =>
+    const nuevosClientes = allClientes.map((c) =>
       c.id === clienteActualizado.id ? { ...c, ...clienteActualizado } : c
     );
-    setClientes(nuevosClientes);
-    localStorage.setItem("clientes", JSON.stringify(nuevosClientes));
+    setAllClientes(nuevosClientes);
   };
 
   const handleEliminar = async (id) => {
     try {
       await fetch(`${apiRest}/cliente/${id}`, {
         method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
+        },
       });
       console.log(`Producto con id ${id} eliminado. `);
 
-      const nuevosClientes = clientes.filter((cliente) => cliente.id !== id);
-      setClientes(nuevosClientes);
-      localStorage.setItem("clientes", JSON.stringify(nuevosClientes));
+      const nuevosClientes = allClientes.filter((cliente) => cliente.id !== id);
+      setAllClientes(nuevosClientes);
+
     } catch (error) {
       console.error("Error al eliminar el producto:", error);
     }
@@ -58,9 +66,7 @@ export function ListadoClientes() {
       }
 
       const data = await response.json();
-      console.log(data);
-      setClientes(data);
-      localStorage.setItem("clientes", JSON.stringify(data));
+      setAllClientes(data);
       setLoading(false);
     } catch (error) {
       console.error("Error detallado:", error);
@@ -75,11 +81,38 @@ export function ListadoClientes() {
     fetchClientes();
   }, []);
 
+  useEffect(() => {
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = allClientes.slice(indexOfFirstItem, indexOfLastItem);
+    setClientes(currentItems);
+  }, [currentPage, itemsPerPage, allClientes]);
+
   const handleRetry = () => {
     setLoading(true);
     setError(null);
     fetchClientes();
   };
+
+  const totalPages = Math.ceil(allClientes.length / itemsPerPage);
+
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxPagesToShow = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+    let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+    if (endPage - startPage + 1 < maxPagesToShow) {
+      startPage = Math.max(1, endPage - maxPagesToShow + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+    return pages;
+  };
+
+  const pageNumbers = getPageNumbers();
 
   if (loading) {
     return (
@@ -99,7 +132,7 @@ export function ListadoClientes() {
       </div>
     );
   }
-  if (!clientes || clientes.length === 0) {
+  if (allClientes.length === 0 && !loading) {
     return <div className="error-container">No hay clientes registrados</div>;
   }
 
@@ -121,7 +154,6 @@ export function ListadoClientes() {
         </thead>
         <tbody>
           {clientes
-            .filter((c) => c && c.nombre)
             .map((cliente) => (
               <tr key={cliente.id}>
                 <td>{cliente.nombre}</td>
@@ -141,6 +173,11 @@ export function ListadoClientes() {
                 </td>
               </tr>
             ))}
+            <tr>
+            <td colSpan="8" className="text-center">
+              Total de clientes: {allClientes.length}
+            </td>
+          </tr>
         </tbody>
       </table>
       {isModalOpen && (
@@ -149,6 +186,48 @@ export function ListadoClientes() {
           onClose={handleCloseModal}
           onClienteActualizado={handleClienteActualizado}
         />
+      )}
+      {totalPages > 1 && (
+        <nav aria-label="Paginación" className="mt-3">
+          <ul className="pagination justify-content-center">
+            {/* Botón Anterior */}
+            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <a
+                className="page-link"
+                href="#!"
+                onClick={(e) => { e.preventDefault(); setCurrentPage(currentPage - 1); }}
+              >
+                &laquo; Anterior
+              </a>
+            </li>
+
+            {/* Números de Página */}
+            {pageNumbers.map(number => (
+              <li
+                key={number}
+                className={`page-item ${number === currentPage ? 'active' : ''}`}
+              >
+                <a
+                  className="page-link"
+                  href="#!"
+                  onClick={(e) => { e.preventDefault(); setCurrentPage(number); }}
+                >
+                  {number}
+                </a>
+              </li>
+            ))}
+
+            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+              <a
+                className="page-link"
+                href="#!"
+                onClick={(e) => { e.preventDefault(); setCurrentPage(currentPage + 1); }}
+              >
+                Siguiente &raquo;
+              </a>
+            </li>
+          </ul>
+        </nav>
       )}
     </div>
   );

@@ -9,6 +9,9 @@ export function ListadoCategoria() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectCategoria, setSelectCategoria] = useState(null);
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5); 
 
   const handleOpenModal = (categoria) => {
     setSelectCategoria(categoria);
@@ -28,7 +31,6 @@ export function ListadoCategoria() {
     localStorage.setItem('categorias', JSON.stringify(nuevasCategorias));
   }
  
-   
   const handleEliminar = async (id) => {
     try {
       await fetch(`${apiRest}/categoria/${id}`, {
@@ -52,18 +54,21 @@ export function ListadoCategoria() {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      console.log("Categorias desde la api:", data);
-      setCategorias(data);
-      localStorage.setItem("categorias", JSON.stringify(data));
+      
+      const categoriasArray = Array.isArray(data) ? data : []; 
+      
+      console.log("Categorias desde la api:", categoriasArray);
+      setCategorias(categoriasArray);
+      localStorage.setItem("categorias", JSON.stringify(categoriasArray));
+      setCurrentPage(1); 
     } catch (error) {
-      setError(false);
+      setError(error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    const storeCategorias = localStorage.getItem("categorias");
     fetchCategorias();
   }, []);
 
@@ -72,6 +77,39 @@ export function ListadoCategoria() {
     setError(null);
     fetchCategorias();
   };
+  
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  
+  const currentCategorias = categorias.slice(indexOfFirstItem, indexOfLastItem);
+  
+  const totalPages = Math.ceil(categorias.length / itemsPerPage);
+  
+  const getPageNumbers = () => {
+      const pages = [];
+      const maxPagesToShow = 5;
+      let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+      let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+      
+      if (endPage - startPage + 1 < maxPagesToShow) {
+          startPage = Math.max(1, endPage - maxPagesToShow + 1);
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+          pages.push(i);
+      }
+      return pages;
+  };
+  
+  const pageNumbers = getPageNumbers();
+  
+  const goToPage = (page) => {
+      if (page >= 1 && page <= totalPages) {
+          setCurrentPage(page);
+      }
+  };
+
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -83,7 +121,7 @@ export function ListadoCategoria() {
     return (
       <div className="error-container">
         <h3>Error de conexión</h3>
-        <p>{error}</p>
+        <p>{error.message}</p>
         <button onClick={handleRetry} className="retry-button">
           Reintentar
         </button>
@@ -102,36 +140,82 @@ export function ListadoCategoria() {
     <div className="card">
       <div className="card-body table-responsive p-0">
         <table className="table table-striped table-valign-middle table-bordered">
-          <tr>
-            <th> id </th>
-            <th> nombre </th>
-            <th> descripcion </th>
-            <th> activo </th>
-            <th> </th>
-          </tr>
-          {categorias.map((categoria) => (
-            <tr key={categoria.id}>
-              <td> {categoria.id} </td>
-              <td> {categoria.nombre} </td>
-              <td> {categoria.descripcion} </td>
-              <td> {categoria.activo} </td>
-              <td>
-                <button
-                  className="link-button"
-                  onClick={() => handleOpenModal(categoria)}
-                >
-                  editar
-                </button>
-                <button
-                  className="link-button"
-                  onClick={() => handleEliminar(categoria.id)}
-                >
-                  eliminar
-                </button>
-              </td>
+          <thead>
+            <tr>
+              <th> id </th>
+              <th> nombre </th>
+              <th> descripcion </th>
+              <th> activo </th>
+              <th> </th>
             </tr>
-          ))}
+          </thead>
+          <tbody>
+            {currentCategorias.map((categoria) => (
+              <tr key={categoria.id}>
+                <td> {categoria.id} </td>
+                <td> {categoria.nombre} </td>
+                <td> {categoria.descripcion} </td>
+                <td> {categoria.activo ? 'Sí' : 'No'} </td> {/* Display boolean more clearly */}
+                <td>
+                  <button
+                    className="link-button"
+                    onClick={() => handleOpenModal(categoria)}
+                  >
+                    editar
+                  </button>
+                  <button
+                    className="link-button"
+                    onClick={() => handleEliminar(categoria.id)}
+                  >
+                    eliminar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
+
+        {totalPages > 1 && (
+            <nav aria-label="Pagination" className="mt-3">
+                <ul className="pagination justify-content-center"> 
+                    <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                        <a 
+                            className="page-link" 
+                            href="#!" 
+                            onClick={(e) => { e.preventDefault(); goToPage(currentPage - 1); }}
+                        >
+                            &laquo; Anterior
+                        </a>
+                    </li>
+
+                    {pageNumbers.map(number => (
+                        <li 
+                            key={number} 
+                            className={`page-item ${number === currentPage ? 'active' : ''}`}
+                        >
+                            <a 
+                                className="page-link" 
+                                href="#!" 
+                                onClick={(e) => { e.preventDefault(); goToPage(number); }}
+                            >
+                                {number}
+                            </a>
+                        </li>
+                    ))}
+
+                    <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                        <a 
+                            className="page-link" 
+                            href="#!" 
+                            onClick={(e) => { e.preventDefault(); goToPage(currentPage + 1); }}
+                        >
+                            Siguiente &raquo;
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        )}
+
         {isModalOpen && (
           <EditarCategoriaModal
             categoria={selectCategoria}

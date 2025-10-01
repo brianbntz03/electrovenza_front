@@ -8,6 +8,13 @@ export function ListadoVendedores() {
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVendedor, setSelectedVendedor] = useState(null);
+  
+  // Estados para la Paginación del lado del Servidor
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(4); 
+  const [apiTotalItems, setApiTotalItems] = useState(0); 
+  
+  // --- LÓGICA DE MANEJO DE VENDEDORES ---
 
   const handleOpenModal = (vendedor) => {
     setSelectedVendedor(vendedor);
@@ -20,11 +27,12 @@ export function ListadoVendedores() {
   };
 
   const handleVendedorActualizado = (vendedorActualizado) => {
-    const nuevosVendedores = vendedores.map((v) =>
+    const safeVendedores = Array.isArray(vendedores) ? vendedores : [];
+    
+    const nuevosVendedores = safeVendedores.map((v) =>
       v.id === vendedorActualizado.id ? { ...v, ...vendedorActualizado } : v
     );
     setVendedores(nuevosVendedores);
-    localStorage.setItem("vendedores", JSON.stringify(nuevosVendedores));
   };
 
   const handleEliminar = async (id) => {
@@ -34,11 +42,8 @@ export function ListadoVendedores() {
       });
       console.log(`Vendedor con ${id} eliminado.`);
 
-      const nuevosVendedores = vendedores.filter(
-        (vendedor) => vendedor.id !== id
-      );
-      setVendedores(nuevosVendedores);
-      localStorage.setItem("vendedores", JSON.stringify(nuevosVendedores));
+      // Refrescar la página actual después de eliminar
+      fetchVendedores(); 
     } catch (error) {
       console.error("Error al eliminar el producto:", error);
     }
@@ -46,14 +51,25 @@ export function ListadoVendedores() {
 
   const fetchVendedores = async () => {
     try {
-      const response = await fetch(`${apiRest}/vendedor`);
+      // URL para Paginación del Servidor
+      const apiUrl = `${apiRest}/vendedor?page=${currentPage}&limit=${itemsPerPage}`;
+      console.log("Fetching vendors from URL:", apiUrl);
+
+      const response = await fetch(apiUrl);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+      
       const data = await response.json();
       console.log("Vendedores desde la API:", data);
-      setVendedores(data);
-      localStorage.setItem("vendedores", JSON.stringify(data));
+
+      // **Extracción segura de datos y total** (Ajustar según la estructura de tu API)
+      const vendorsArray = Array.isArray(data) ? data : data.data || []; 
+      const totalItemsFromApi = data.totalItems || data.total || 0; 
+
+      setVendedores(vendorsArray);
+      setApiTotalItems(totalItemsFromApi); 
+      
     } catch (error) {
       setError(error);
     } finally {
@@ -61,15 +77,42 @@ export function ListadoVendedores() {
     }
   };
 
+  // **Efecto para recargar al cambiar la página**
   useEffect(() => {
     fetchVendedores();
-  }, []);
+  }, [currentPage, itemsPerPage]);
+
+  // --- LÓGICA DE PAGINACIÓN INTEGRADA Y RENDERIZADO ---
 
   const handleRetry = () => {
     setLoading(true);
     setError(null);
     fetchVendedores();
   };
+  
+  const safeVendedores = Array.isArray(vendedores) ? vendedores : [];
+  const totalPages = Math.ceil(apiTotalItems / itemsPerPage);
+
+  // Función para generar un array simple de números de página (puedes mejorar esta lógica si necesitas elipsis)
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxPagesToShow = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+    let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+    
+    if (endPage - startPage + 1 < maxPagesToShow) {
+        startPage = Math.max(1, endPage - maxPagesToShow + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+    }
+    return pages;
+  };
+  
+  const pageNumbers = getPageNumbers();
+
+  // --- RENDERING ---
 
   if (loading) {
     return (
@@ -89,7 +132,7 @@ export function ListadoVendedores() {
       </div>
     );
   }
-  if (!vendedores || vendedores.length === 0) {
+  if (apiTotalItems === 0 && !loading) {
     return <div className="error-container">No hay vendedores registrados</div>;
   }
 
@@ -109,8 +152,9 @@ export function ListadoVendedores() {
           </tr>
         </thead>
         <tbody>
-          {vendedores.map((vendedor, index) => (
-            <tr key={index}>
+          {/* Mapea directamente sobre el array parcial del servidor */}
+          {safeVendedores.map((vendedor) => (
+            <tr key={vendedor.id}> 
               <td>{vendedor.id}</td>
               <td>{vendedor.nombre}</td>
               <td>{vendedor.telefono}</td>
@@ -133,20 +177,65 @@ export function ListadoVendedores() {
             </tr>
           ))}
 
-          {/* Placeholder row for consistent table structure */}
           <tr>
-            <td colSpan="4" className="text-center">
-              Total de vendedores: {vendedores.length}
+            <td colSpan="6" className="text-center">
+              Total de vendedores: {apiTotalItems}
             </td>
           </tr>
         </tbody>
       </table>
+      
+      {/* Modal ... */}
       {isModalOpen && selectedVendedor && (
         <EditarVendedorModal
           vendedor={selectedVendedor}
           onClose={handleCloseModal}
           onVendedoresActualizado={handleVendedorActualizado}
         />
+      )}
+
+      {/* --- CÓDIGO DE PAGINACIÓN INTEGRADO --- */}
+      {totalPages > 1 && (
+        <nav aria-label="Paginación" className="mt-3">
+          <ul className="pagination justify-content-center">
+            {/* Botón Anterior */}
+            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <a 
+                className="page-link" 
+                href="#!" 
+                onClick={(e) => { e.preventDefault(); setCurrentPage(currentPage - 1); }}
+              >
+                &laquo; Anterior
+              </a>
+            </li>
+
+            {/* Números de Página */}
+            {pageNumbers.map(number => (
+              <li 
+                key={number} 
+                className={`page-item ${number === currentPage ? 'active' : ''}`}
+              >
+                <a 
+                  className="page-link" 
+                  href="#!" 
+                  onClick={(e) => { e.preventDefault(); setCurrentPage(number); }}
+                >
+                  {number}
+                </a>
+              </li>
+            ))}
+
+            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+              <a 
+                className="page-link" 
+                href="#!" 
+                onClick={(e) => { e.preventDefault(); setCurrentPage(currentPage + 1); }}
+              >
+                Siguiente &raquo;
+              </a>
+            </li>
+          </ul>
+        </nav>
       )}
     </div>
   );
