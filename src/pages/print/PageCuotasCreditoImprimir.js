@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { apiRest } from "../../service/apiRest";
 import { useEffect, useState } from "react";
 import { convertIsoToDMY } from "../../miscellaneus/aux";
-import "../../pages/print/cuotas_imprimir.css";
+
 import BottonImprimirPaginaActual from "./BotonImprimir";
 
 export default function PrintCuotasCredito() {
@@ -49,6 +49,45 @@ export default function PrintCuotasCredito() {
 
   return (
     <div>
+      <style>{`
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+          .print-container,
+          .print-container * {
+            visibility: visible;
+          }
+          .print-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+          }
+          h2{
+            padding-bottom: 20px;
+            font-size: 20px;
+          }
+          .row{
+            flex-wrap: wrap;
+            margin-right: -7.5px;
+            margin-left: -7.5px;
+          }
+          .cuotas{
+            background-image: url("/img/logo_para_marca_de_agua.png");
+            background-repeat: repeat;
+          }
+          .col-md-3{
+            position: relative;
+            flex: 0 0 25%;
+            max-width: 25%;
+            padding-right: 7.5px;
+            padding-left: 7.5px;
+            padding-top: 35px;
+            border:1px dashed #d3d3d3;
+          }
+        }
+      `}</style>
       <div className="print-container">
         <h1>Electrovenza</h1>
         <h2>Te: 11.6398.5857 - Instagram/Facebook: @electrovenza</h2>
