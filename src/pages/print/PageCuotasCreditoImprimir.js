@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { apiRest } from "../../service/apiRest";
 import { useEffect, useState } from "react";
 import { convertIsoToDMY } from "../../miscellaneus/aux";
-import "./cuotas_imprimir.css";
+import "../../pages/print/cuotas_imprimir.css";
 import BottonImprimirPaginaActual from "./BotonImprimir";
 
 export default function PrintCuotasCredito() {
