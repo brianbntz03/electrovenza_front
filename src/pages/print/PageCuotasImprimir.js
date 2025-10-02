@@ -81,7 +81,7 @@ export default function PrintCuotas() {
             max-width: 25%;
             padding-right: 7.5px;
             padding-left: 7.5px;
-            padding-top: 35px;
+            padding-top: 36px;
             border:1px dashed #d3d3d3;
           }
         }
