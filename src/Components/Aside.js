@@ -10,6 +10,7 @@ export default function   Aside() {
   const [cuentaCorrienteOpen, setCuentaCorrienteOpen] = useState(false);
   const [comprasOpen, setComprasOpen] = useState(false);
   const [electroConfigOpen, setElectroConfigOpen] = useState(false);
+  const [reporteOpen, setReporte] = useState(false)
   const [Clientes_filtrado_vendedor_Open, setClientes_filtrado_vendedor_Open] = useState(false);
 
   const electroPaths = [
@@ -50,6 +51,10 @@ export default function   Aside() {
     "/categoriasListado",
     "/productosListado",
   ];
+  const reportesConfigPaths = [
+    "/reporte-cobranza",
+    "/reporte-ganancia",
+  ]
 
   useEffect(() => {
     // Leer el rol del usuario del localStorage al cargar el componente
@@ -57,7 +62,6 @@ export default function   Aside() {
     if (role) {
       setUserRole(role);
     }
-    // Lógica para abrir los menús basándose en la ruta actual
     setElectroOpen(
       electroPaths.some((path) => location.pathname.startsWith(path))
     );
@@ -78,6 +82,9 @@ export default function   Aside() {
     );
     setElectroConfigOpen(
       electroConfigPaths.some((path) => location.pathname.startsWith(path))
+    );
+    setReporte(
+      reportesConfigPaths.some((path) => location.pathname.startsWith(path))
     );
   }, [location]);
 
@@ -113,6 +120,11 @@ export default function   Aside() {
   const toggleElectroConfig = (e) => {
     e.preventDefault();
     setElectroConfigOpen(!electroConfigOpen);
+  }
+  
+  const togglesReportes = (e) => {
+    e.preventDefault();
+    setReporte(!reporteOpen);
   }
 
   const closeMobileSidebar = () => {
@@ -265,7 +277,6 @@ export default function   Aside() {
           </p>
         </a>
         <ul className="nav nav-treeview">
-          
         <li className="nav-item">
           <NavLink to="/compras-listado" className="nav-link">
             <i className="nav-icon fas fa-list-alt" />
@@ -278,9 +289,7 @@ export default function   Aside() {
             <p>Proveedores</p>
           </NavLink>
         </li>
-        
         </ul>
-      
       </li>
 
       <li className={`nav-item ${electroConfigOpen ? "menu-is-opening menu-open" : ""}`}>
@@ -309,7 +318,30 @@ export default function   Aside() {
       
       </li>
       
-      
+      <li className={`nav-item ${reporteOpen ? "menu-is-opening menu-open" : ""}`}>
+        <a href="#" className="nav-link" onClick={togglesReportes}>
+          <i className="nav-icon fas fa-tools" />
+          <p>
+            REPORTES
+            <i className="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul className="nav nav-treeview">
+          <li className="nav-item">
+            <NavLink to="/reporte-cobranza" className="nav-link">
+              <i className="nav-icon fas fa-sitemap" />
+              <p>Reporte de Cobranza</p>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/reporte-ganancia" className="nav-link">
+              <i className="nav-icon fas fa-barcode" />
+              <p>Reporte de Ganancias</p>
+            </NavLink>
+          </li>
+
+        </ul>
+      </li>
       
       
       

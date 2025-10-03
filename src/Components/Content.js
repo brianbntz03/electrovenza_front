@@ -38,6 +38,8 @@ import PageCreditos from "../pages/PageCreditos";
 import Clientes_filtrado_vendedor from "./Clientes-Filtrado-vendedor";
 import { CrearClienteFiltrado } from "./Crear/CrearClientesFiltrado";
 import PageCuotasVencidas from "../pages/pageCuotasVencidas";
+import PageReporteCobranza from "../pages/pageReporteCobranza";
+import PageReporteGanancia from "../pages/pageReporteGanancias";
 
 
 export default function Content() {
@@ -123,7 +125,8 @@ export default function Content() {
                 <Route path="/compras-listado" Component={PageCompras}></Route>
                 <Route path="/compras-registrar" Component={CrearCompras}></Route>
                 <Route path="/clientes-filtrado-vendedor" Component={Clientes_filtrado_vendedor}> </Route>
-
+                <Route path="reporte-cobranza" Component={PageReporteCobranza}></Route>
+                <Route path="reporte-ganancia" Component={PageReporteGanancia}></Route>
               </Routes>
               <button id="back-to-top" type="button" className="btn btn-primary back-to-top" aria-label="Scroll to top">
                 <i className="fas fa-chevron-up"></i>
