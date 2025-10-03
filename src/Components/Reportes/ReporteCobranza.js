@@ -74,28 +74,20 @@ const ReporteCobranza = () => {
     let url = `${apiRest}/report/cobranzas`;
     const params = new URLSearchParams();
 
-    let body = new FormData();
-
-    if (fechaDesde) body.append("fecha_desde", fechaDesde);
-    if (fechaHasta) body.append("fecha_hasta", fechaHasta);
-    if (vendedor) body.append("vendedor_id", vendedor);
-    if (filtros.electro) {
-      body.append("tipo", "electro");
-    } else if (filtros.creditos) {
-      body.append("tipo", "creditos");
-    } else {
-      body.append("tipo", "todo");
-    }
-
-    //const queryString = params.toString();
-    //if (queryString) url += `?${queryString}`;
-
+    
     try {
-      console.log("Fetching reporte data with body:", body);
       const response = await fetch(url,
         {
         method: "POST",
-        body: body,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          "fecha_desde": fechaDesde,
+          "fecha_hasta": fechaHasta,
+          "vendedor_id": Number(vendedor) || null,
+          "tipo": filtros.electro ? "electro" : filtros.creditos ? "creditos" : "todos",
+        }),
       }
       );
       const data = await response.json();
