@@ -51,10 +51,20 @@ export default function PrintCuotas() {
       <div className="print-container">
       <h1>Electrovenza</h1>
       <h2>Te: 11.6398.5857 - Instagram/Facebook: @electrovenza</h2>
-      <p>Articulo: {articulo}</p>
-      <p>Cliente: {cliente}</p>
-      <p>Vendedor: {vendedor}</p>
-      <p>valor de cuota: {cuotas && cuotas[0] && cuotas[0].valor}</p>
+
+
+      <div className="row">
+          <div className="col-md-6"><h3>Cliente: {cliente}</h3></div>
+          <div className="col-md-6"><h3>Vendedor: {vendedor}</h3></div>  
+        </div>
+          
+        <div className="row">
+          <div className="col-md-6"><h3>Articulo: {articulo}</h3></div>
+          
+          <div className="col-md-6"><h3>valor de cuota: {cuotas && cuotas[0] && cuotas[0].valor}</h3></div>
+        </div>
+        <div>&nbsp;</div>
+      
 
       <div className="row cuotas">
         {cuotas.map((cuota) => (
