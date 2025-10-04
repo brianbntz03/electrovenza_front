@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import { apiRest } from "../../service/apiRest";
 import { useEffect, useState } from "react";
 import { convertIsoToDMY } from "../../miscellaneus/aux";
-
 import BottonImprimirPaginaActual from "./BotonImprimir";
 
 export default function PrintCuotasCredito() {
@@ -74,13 +73,13 @@ export default function PrintCuotasCredito() {
             margin-left: -7.5px;
           }
           .cuotas{
-            background-image: url("/img/logo_para_marca_de_agua.png");
+            background-image: url("https://electrovenza.com/gestion/img/logo_para_marca_de_agua.png");
             background-repeat: repeat;
           }
-          .col-md-3{
+          .col-md-2{
             position: relative;
-            flex: 0 0 25%;
-            max-width: 25%;
+            flex: 0 0 16%;
+            max-width: 16%;
             padding-right: 7.5px;
             padding-left: 7.5px;
             padding-top: 35px;
@@ -94,17 +93,13 @@ export default function PrintCuotasCredito() {
         <p>Cliente: {cliente}</p>
         <p>Vendedor: {vendedor}</p>
         <p>Monto otorgado: {montoOtorgado}</p>
+        <p>valor de cuota: {cuotas && cuotas[0] && cuotas[0].valor}</p>
 
         <div className="row cuotas">
           {cuotas.map((cuota) => (
-            <div className="col-md-3">
-              <p>
-                ({cuota.numero.toString().padStart(2, "0")})
-                {convertIsoToDMY(cuota.fecha)} &nbsp;
-                {cuota.monto_cobrado > 0
-                  ? cuota.monto_cobrado.toString().padStart(8, " ")
-                  : ". ".repeat(14)}
-              </p>
+            <div className="col-md-2">
+              <p>({cuota.numero.toString().padStart(2, "0")}) {convertIsoToDMY(cuota.fecha)} &nbsp;</p>
+              <p>{cuota.monto_cobrado > 0 ? cuota.monto_cobrado.toString().padStart(8, " ") : ". ".repeat(16)}</p>
             </div>
           ))}
         </div>

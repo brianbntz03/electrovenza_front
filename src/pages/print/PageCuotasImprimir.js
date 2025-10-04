@@ -72,13 +72,13 @@ export default function PrintCuotas() {
             margin-left: -7.5px;
           }
           .cuotas{
-            background-image: url("/img/logo_para_marca_de_agua.png");
+            background-image: url("https://electrovenza.com/gestion/img/logo_para_marca_de_agua.png");
             background-repeat: repeat;
           }
-          .col-md-3{
+          .col-md-2{
             position: relative;
-            flex: 0 0 25%;
-            max-width: 25%;
+            flex: 0 0 16%;
+            max-width: 16%;
             padding-right: 7.5px;
             padding-left: 7.5px;
             padding-top: 36px;
@@ -92,10 +92,11 @@ export default function PrintCuotas() {
       <p>Articulo: {articulo}</p>
       <p>Cliente: {cliente}</p>
       <p>Vendedor: {vendedor}</p>
+      <p>valor de cuota: {cuotas && cuotas[0] && cuotas[0].valor}</p>
 
       <div className="row cuotas">
         {cuotas.map((cuota) => (
-          <div className="col-md-3">
+          <div className="col-md-2">
             <p>
               ({cuota.numero.toString().padStart(2, '0')}) 
               {convertIsoToDMY(cuota.fecha)} &nbsp;
