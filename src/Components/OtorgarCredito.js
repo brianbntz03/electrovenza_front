@@ -15,7 +15,7 @@ const FormClienteCard = ({ cliente, setCliente, clientesList }) => (
       <option value="">Seleccione un cliente</option>
       {clientesList.map((c) => (
         <option key={c.id} value={c.id}>
-          {c.nombre}
+          {c.nombre} ({c.id})
         </option>
       ))}
     </select>

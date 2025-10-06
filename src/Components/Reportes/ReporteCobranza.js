@@ -48,6 +48,7 @@ const ReporteCobranza = () => {
   });
 
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
+  const [loading, setLoading] = useState(false);
 
   // Cargar vendedores
   useEffect(() => {
@@ -118,20 +119,25 @@ const ReporteCobranza = () => {
 
   useEffect(() => {
     fetchReporteData();
-  }, [fetchReporteData]);
+  }, []); 
+
+  const handleApplyFilters = (e) => {
+    e.preventDefault();
+    fetchReporteData();
+  };
 
   // Configurar datos del gráfico
   useEffect(() => {
     if (totalesPeriodo.totalCobrado > 0 || totalesPeriodo.totalCredito > 0 || totalesPeriodo.totalElectro > 0) {
       setChartData({
-        labels: ["Total Cobrado", "Créditos", "Electro"],
+        labels: [ "Créditos", "Electro"],
         datasets: [
           {
-            data: [totalesPeriodo.totalCobrado, totalesPeriodo.totalCredito, totalesPeriodo.totalElectro],
+            data: [totalesPeriodo.totalCredito, totalesPeriodo.totalElectro],
             backgroundColor: [
               "#1EB264", // Verde
               "#FFB237", // Amarillo
-              "#F0604B", // Rojo
+              //"#F0604B", // Rojo
             ],
             borderColor: "#ffffff",
             borderWidth: 3,
@@ -167,100 +173,106 @@ const ReporteCobranza = () => {
       <section className="content">
         <div className="container-fluid">
           {/* FILTROS */}
-          <div className="card">
-            <div className="card-header">
-              <h3 className="card-title">Filtros de Reporte</h3>
-            </div>
-            <div className="card-body">
-              {" "}
-              <div className="row">
-                <div className="col-md-3">
-                  <div className="form-group">
-                    <label>Desde:</label>
-                    <input
-                      type="date"
-                      className="form-control"
-                      name="fechaDesde"
-                      value={fechaDesde}
-                      onChange={(e) => setFechaDesde(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="col-md-3">
-                  <div className="form-group">
-                    <label>Hasta:</label>
-                    <input
-                      type="date"
-                      className="form-control"
-                      name="fechaHasta"
-                      value={fechaHasta}
-                      onChange={(e) => setFechaHasta(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="col-md-3">
-                  <div className="form-group">
-                    <label>Vendedor:</label>
-                    <select
-                      className="form-control"
-                      name="vendedor"
-                      value={vendedor}
-                      onChange={(e) => setVendedor(e.target.value)}
-                    >
-                      <option value="">Seleccione un vendedor</option>
-                      {vendedores.map((v) => (
-                        <option key={v.id} value={v.id}>
-                          {v.nombre}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
+          <form onSubmit={handleApplyFilters}>
+            <div className="card">
+              <div className="card-header">
+                <h3 className="card-title">Filtros de Reporte</h3>
               </div>
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="form-group">
-                    <label>Filtros Adicionales: &nbsp;</label>
-                    <div className="form-check-inline">
-                      <div className="icheck-primary d-inline mr-3">
-                        <input
-                          type="radio"
-                          name="filtro"
-                          value="todo"
-                          id="todo"
-                          checked={filtros.todo}
-                          onChange={() => setFiltros({ todo: true, electro: false, credito: false })}
-                        />
-                        <label htmlFor="todo">Todo</label>
-                      </div>
-                      <div className="icheck-primary d-inline mr-3">
-                        <input
-                          type="radio"
-                          value="electro"
-                          id="electro"
-                          name="filtro"
-                          checked={filtros.electro}
-                          onChange={() => setFiltros({ todo: false, electro: true, credito: false })}
-                        />
-                        <label htmlFor="electro">Electro</label>
-                      </div>
-                      <div className="icheck-primary d-inline">
-                        <input
-                          type="radio"
-                          value="credito"
-                          id="credito"
-                          name="filtro"
-                          checked={filtros.credito}
-                          onChange={() => setFiltros({ todo: false, electro: false, credito: true })}
-                        />
-                        <label htmlFor="credito">Créditos</label>
+              <div className="card-body">
+                <div className="row">
+                  <div className="col-md-3">
+                    <div className="form-group">
+                      <label>Desde:</label>
+                      <input
+                        type="date"
+                        className="form-control"
+                        name="fechaDesde"
+                        value={fechaDesde}
+                        onChange={(e) => setFechaDesde(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-3">
+                    <div className="form-group">
+                      <label>Hasta:</label>
+                      <input
+                        type="date"
+                        className="form-control"
+                        name="fechaHasta"
+                        value={fechaHasta}
+                        onChange={(e) => setFechaHasta(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-3">
+                    <div className="form-group">
+                      <label>Vendedor:</label>
+                      <select
+                        className="form-control"
+                        name="vendedor"
+                        value={vendedor}
+                        onChange={(e) => setVendedor(e.target.value)}
+                      >
+                        <option value="">Seleccione un vendedor</option>
+                        {vendedores.map((v) => (
+                          <option key={v.id} value={v.id}>
+                            {v.nombre}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      <label>Filtros Adicionales: &nbsp;</label>
+                      <div className="form-check-inline">
+                        <div className="icheck-primary d-inline mr-3">
+                          <input
+                            type="radio"
+                            name="filtro"
+                            value="todo"
+                            id="todo"
+                            checked={filtros.todo}
+                            onChange={() => setFiltros({ todo: true, electro: false, credito: false })}
+                          /> &nbsp;
+                          <label htmlFor="todo">Todo</label>
+                        </div>
+                        <div className="icheck-primary d-inline mr-3">
+                          <input
+                            type="radio"
+                            value="electro"
+                            id="electro"
+                            name="filtro"
+                            checked={filtros.electro}
+                            onChange={() => setFiltros({ todo: false, electro: true, credito: false })}
+                          />&nbsp;
+                          <label htmlFor="electro">Electro</label>
+                        </div>
+                        <div className="icheck-primary d-inline">
+                          <input
+                            type="radio"
+                            value="credito"
+                            id="credito"
+                            name="filtro"
+                            checked={filtros.credito}
+                            onChange={() => setFiltros({ todo: false, electro: false, credito: true })}
+                          />&nbsp;
+                          <label htmlFor="credito">Créditos </label>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <div className="card-footer">
+                <button type="submit" className="btn btn-primary" disabled={loading}> 
+                  {loading ? "creando" : "Aplicar Filtros"}
+                </button>
+              </div>
             </div>
-          </div>
+          </form>
           {/* GRÁFICO Y TOTALES */}
           <div className="row">
             <div className="col-lg-6">

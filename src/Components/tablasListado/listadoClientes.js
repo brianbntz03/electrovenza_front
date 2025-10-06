@@ -142,6 +142,7 @@ export function ListadoClientes() {
       <table className="table table-striped table-valign-middle table-bordered">
         <thead>
           <tr>
+            <th>N°cliente</th>
             <th>Nombre</th>
             <th>DNI</th>
             <th>Dirección del Local</th>
@@ -156,6 +157,7 @@ export function ListadoClientes() {
           {clientes
             .map((cliente) => (
               <tr key={cliente.id}>
+                <td>{String(cliente.id).padStart(3, '0')}</td>
                 <td>{cliente.nombre}</td>
                 <td>{cliente.dni}</td>
                 <td>{cliente.direccion_local}</td>

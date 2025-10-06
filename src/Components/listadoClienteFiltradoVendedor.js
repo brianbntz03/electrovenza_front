@@ -282,7 +282,7 @@ const handleOnDragEnd = async (result) => {
             <table className="table table-striped table-valign-middle table-bordered">
               <thead>
                 <tr>
-                  <th></th>
+                  <th>N°cliente</th>
                   <th>Nombre</th>
                   <th>DNI</th>
                   <th>Dirección del Local</th>
@@ -312,6 +312,7 @@ const handleOnDragEnd = async (result) => {
                                 <i className="fas fa-bars"></i>
                               </span>
                             </td>
+                            <td>{String(cliente.id).padStart(3, "0")}</td>
                             <td>{cliente.nombre}</td>
                             <td>{cliente.dni}</td>
                             <td>{cliente.direccion_local}</td>
