@@ -36,7 +36,7 @@ const ReporteCobranza = () => {
   const [filtros, setFiltros] = useState({
     todo: true,
     electro: false,
-    creditos: false,
+    credito: false,
   });
 
   const [vendedores, setVendedores] = useState([]);
@@ -86,7 +86,7 @@ const ReporteCobranza = () => {
           "fecha_desde": fechaDesde,
           "fecha_hasta": fechaHasta,
           "vendedor_id": Number(vendedor) || null,
-          "tipo": filtros.electro ? "electro" : filtros.creditos ? "creditos" : "todos",
+          "tipo": filtros.electro ? "electro" : filtros.credito ? "credito" : "todos",
         }),
       }
       );
@@ -148,7 +148,7 @@ const ReporteCobranza = () => {
     setFiltros({
       todo: name === "todo",
       electro: name === "electro",
-      creditos: name === "creditos",
+      credito: name === "credito",
     });
   };
 
@@ -220,15 +220,16 @@ const ReporteCobranza = () => {
               <div className="row">
                 <div className="col-md-12">
                   <div className="form-group">
-                    <label>Filtros Adicionales:</label>
+                    <label>Filtros Adicionales: &nbsp;</label>
                     <div className="form-check-inline">
                       <div className="icheck-primary d-inline mr-3">
                         <input
                           type="radio"
                           name="filtro"
                           value="todo"
+                          id="todo"
                           checked={filtros.todo}
-                          onChange={() => setFiltros({ todo: true, electro: false, creditos: false })}
+                          onChange={() => setFiltros({ todo: true, electro: false, credito: false })}
                         />
                         <label htmlFor="todo">Todo</label>
                       </div>
@@ -236,9 +237,10 @@ const ReporteCobranza = () => {
                         <input
                           type="radio"
                           value="electro"
+                          id="electro"
                           name="filtro"
                           checked={filtros.electro}
-                          onChange={() => setFiltros({ todo: false, electro: true, creditos: false })}
+                          onChange={() => setFiltros({ todo: false, electro: true, credito: false })}
                         />
                         <label htmlFor="electro">Electro</label>
                       </div>
@@ -246,11 +248,12 @@ const ReporteCobranza = () => {
                         <input
                           type="radio"
                           value="credito"
+                          id="credito"
                           name="filtro"
-                          checked={filtros.creditos}
-                          onChange={() => setFiltros({ todo: false, electro: false, creditos: true })}
+                          checked={filtros.credito}
+                          onChange={() => setFiltros({ todo: false, electro: false, credito: true })}
                         />
-                        <label htmlFor="creditos">Créditos</label>
+                        <label htmlFor="credito">Créditos</label>
                       </div>
                     </div>
                   </div>
