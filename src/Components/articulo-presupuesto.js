@@ -17,8 +17,6 @@ export const ArticuloPresupuesto = () => {
   const [selectedVendedorId, setSelectedVendedorId] = useState("");
   // Inicializamos el rol por defecto.
   const [userRole, setUserRole] = useState("vendedor");
-  const [flash, setFlash] = useState(null);
-
 
   // Cargar vendedores, clientes y cuotas al inicio
   useEffect(() => {
@@ -240,7 +238,7 @@ export const ArticuloPresupuesto = () => {
               onChange={(e) => setSelectedVendedorId(e.target.value)}
             >
               <option value="">-- Seleccionar Vendedor --</option>
-              {vendedoresFiltrados.map((vendedor) => (
+              {vendedoresFiltrados && vendedoresFiltrados.map((vendedor) => (
                 <option key={vendedor.id} value={vendedor.id}>
                   {vendedor.nombre}
                 </option>
@@ -370,10 +368,11 @@ export const ArticuloPresupuesto = () => {
 
   const cargarVendedores = async () => {
     try {
-      const response = await fetch(`${apiRest}/vendedor`);
+      const response = await fetch(`${apiRest}/vendedor?page=1&limit=200`);
       if (response.ok) {
         const data = await response.json();
-        setVendedoresFiltrados(data);
+        console.log(data)
+        setVendedoresFiltrados(data.data);
       }
     } catch (error) {
       console.error("Error cargando vendedores:", error);

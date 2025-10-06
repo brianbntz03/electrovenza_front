@@ -18,7 +18,7 @@ export function ComponentListadoVentas() {
                      headers: {
                          'Accept': 'application/json',
                          'Content-Type': 'application/json',
-                         'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
+                         'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`,
                      },
                  });
  

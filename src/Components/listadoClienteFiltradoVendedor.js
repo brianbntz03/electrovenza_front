@@ -74,7 +74,7 @@ export function ListadoClientesFiltradoVendedor({ vendedorId, onRefresh } = {}) 
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          "authorization": `Bearer ${localStorage.getItem("jwt_token")}`
+          'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
         },
       });
 
