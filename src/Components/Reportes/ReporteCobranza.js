@@ -1,18 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { apiRest } from "../../service/apiRest";
 
-ChartJS.register(
-  ArcElement,
-  Tooltip,
-  Legend
-);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const CHART_OPTIONS_EJEMPLO = {
   responsive: true,
@@ -75,22 +66,23 @@ const ReporteCobranza = () => {
     let url = `${apiRest}/report/cobranzas`;
     const params = new URLSearchParams();
 
-    
     try {
-      const response = await fetch(url,
-        {
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ 
-          "fecha_desde": fechaDesde,
-          "fecha_hasta": fechaHasta,
-          "vendedor_id": Number(vendedor) || null,
-          "tipo": filtros.electro ? "electro" : filtros.credito ? "credito" : "todos",
+        body: JSON.stringify({
+          fecha_desde: fechaDesde,
+          fecha_hasta: fechaHasta,
+          vendedor_id: Number(vendedor) || null,
+          tipo: filtros.electro
+            ? "electro"
+            : filtros.credito
+            ? "credito"
+            : "todos",
         }),
-      }
-      );
+      });
       const data = await response.json();
 
       if (data && Array.isArray(data.cobranzas)) {
@@ -119,7 +111,7 @@ const ReporteCobranza = () => {
 
   useEffect(() => {
     fetchReporteData();
-  }, []); 
+  }, []);
 
   const handleApplyFilters = (e) => {
     e.preventDefault();
@@ -128,9 +120,13 @@ const ReporteCobranza = () => {
 
   // Configurar datos del gráfico
   useEffect(() => {
-    if (totalesPeriodo.totalCobrado > 0 || totalesPeriodo.totalCredito > 0 || totalesPeriodo.totalElectro > 0) {
+    if (
+      totalesPeriodo.totalCobrado > 0 ||
+      totalesPeriodo.totalCredito > 0 ||
+      totalesPeriodo.totalElectro > 0
+    ) {
       setChartData({
-        labels: [ "Créditos", "Electro"],
+        labels: ["Créditos", "Electro"],
         datasets: [
           {
             data: [totalesPeriodo.totalCredito, totalesPeriodo.totalElectro],
@@ -169,7 +165,7 @@ const ReporteCobranza = () => {
           </div>
         </div>
       </section>
-      
+
       <section className="content">
         <div className="container-fluid">
           {/* FILTROS */}
@@ -235,8 +231,15 @@ const ReporteCobranza = () => {
                             value="todo"
                             id="todo"
                             checked={filtros.todo}
-                            onChange={() => setFiltros({ todo: true, electro: false, credito: false })}
-                          /> &nbsp;
+                            onChange={() =>
+                              setFiltros({
+                                todo: true,
+                                electro: false,
+                                credito: false,
+                              })
+                            }
+                          />{" "}
+                          &nbsp;
                           <label htmlFor="todo">Todo</label>
                         </div>
                         <div className="icheck-primary d-inline mr-3">
@@ -246,8 +249,15 @@ const ReporteCobranza = () => {
                             id="electro"
                             name="filtro"
                             checked={filtros.electro}
-                            onChange={() => setFiltros({ todo: false, electro: true, credito: false })}
-                          />&nbsp;
+                            onChange={() =>
+                              setFiltros({
+                                todo: false,
+                                electro: true,
+                                credito: false,
+                              })
+                            }
+                          />
+                          &nbsp;
                           <label htmlFor="electro">Electro</label>
                         </div>
                         <div className="icheck-primary d-inline">
@@ -257,8 +267,15 @@ const ReporteCobranza = () => {
                             id="credito"
                             name="filtro"
                             checked={filtros.credito}
-                            onChange={() => setFiltros({ todo: false, electro: false, credito: true })}
-                          />&nbsp;
+                            onChange={() =>
+                              setFiltros({
+                                todo: false,
+                                electro: false,
+                                credito: true,
+                              })
+                            }
+                          />
+                          &nbsp;
                           <label htmlFor="credito">Créditos </label>
                         </div>
                       </div>
@@ -267,7 +284,11 @@ const ReporteCobranza = () => {
                 </div>
               </div>
               <div className="card-footer">
-                <button type="submit" className="btn btn-primary" disabled={loading}> 
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={loading}
+                >
                   {loading ? "creando" : "Aplicar Filtros"}
                 </button>
               </div>
@@ -283,7 +304,10 @@ const ReporteCobranza = () => {
                 <div className="card-body">
                   <div style={{ height: "300px", position: "relative" }}>
                     {chartData.labels.length > 0 ? (
-                      <Doughnut data={chartData} options={CHART_OPTIONS_EJEMPLO} />
+                      <Doughnut
+                        data={chartData}
+                        options={CHART_OPTIONS_EJEMPLO}
+                      />
                     ) : (
                       <p className="text-center text-muted">
                         Sin datos para el gráfico.
@@ -293,7 +317,7 @@ const ReporteCobranza = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="col-lg-6">
               <div className="card">
                 <div className="card-header">
@@ -301,7 +325,9 @@ const ReporteCobranza = () => {
                 </div>
                 <div className="card-body">
                   <div className="info-box mb-3">
-                    <span className="info-box-icon bg-success"><i className="fas fa-dollar-sign"></i></span>
+                    <span className="info-box-icon bg-success">
+                      <i className="fas fa-dollar-sign"></i>
+                    </span>
                     <div className="info-box-content">
                       <span className="info-box-text">Total Cobrado</span>
                       <span className="info-box-number">
@@ -309,9 +335,11 @@ const ReporteCobranza = () => {
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className="info-box mb-3">
-                    <span className="info-box-icon bg-warning"><i className="fas fa-credit-card"></i></span>
+                    <span className="info-box-icon bg-warning">
+                      <i className="fas fa-credit-card"></i>
+                    </span>
                     <div className="info-box-content">
                       <span className="info-box-text">Total Créditos</span>
                       <span className="info-box-number">
@@ -319,9 +347,11 @@ const ReporteCobranza = () => {
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className="info-box">
-                    <span className="info-box-icon bg-info"><i className="fas fa-bolt"></i></span>
+                    <span className="info-box-icon bg-info">
+                      <i className="fas fa-bolt"></i>
+                    </span>
                     <div className="info-box-content">
                       <span className="info-box-text">Total Electro</span>
                       <span className="info-box-number">
@@ -333,8 +363,6 @@ const ReporteCobranza = () => {
               </div>
             </div>
           </div>
-
-
         </div>
       </section>
     </div>
