@@ -307,13 +307,14 @@ export const ArticuloPresupuesto = () => {
     try {
       const url = busqueda
         ? `${apiRest}/articulos/find`
-        : `${apiRest}/articulos`;
+        : `${apiRest}/articulos?page=1&limit=1000`;
       const method = busqueda ? "POST" : "GET";
       const options = {
         method: method,
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
       };
 
@@ -325,10 +326,8 @@ export const ArticuloPresupuesto = () => {
 
       if (!response.ok)
         throw new Error(`Error en la solicitud: ${response.status}`);
-      const data = await response.json();
-      
-
-      
+      const { data } = await response.json();
+            
       const articulosConCategoria = data.map((articulo) => {
       
 
