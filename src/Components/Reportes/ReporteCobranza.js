@@ -92,6 +92,7 @@ const ReporteCobranza = () => {
       }
       );
       const data = await response.json();
+      console.log(data)
 
       if (data && Array.isArray(data.cobranzas)) {
         setReporteData(data.cobranzas);
@@ -305,7 +306,7 @@ const ReporteCobranza = () => {
                     <div className="info-box-content">
                       <span className="info-box-text">Total Cobrado</span>
                       <span className="info-box-number">
-                        ${totalesPeriodo.totalCobrado.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        ${totalesPeriodo.totalCobrado}
                       </span>
                     </div>
                   </div>
@@ -315,7 +316,7 @@ const ReporteCobranza = () => {
                     <div className="info-box-content">
                       <span className="info-box-text">Total Créditos</span>
                       <span className="info-box-number">
-                        ${totalesPeriodo.totalCredito.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        ${totalesPeriodo.totalCredito}
                       </span>
                     </div>
                   </div>
@@ -325,7 +326,7 @@ const ReporteCobranza = () => {
                     <div className="info-box-content">
                       <span className="info-box-text">Total Electro</span>
                       <span className="info-box-number">
-                        ${totalesPeriodo.totalElectro.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        ${totalesPeriodo.totalElectro}
                       </span>
                     </div>
                   </div>
