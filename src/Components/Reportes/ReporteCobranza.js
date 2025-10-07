@@ -92,7 +92,6 @@ const ReporteCobranza = () => {
       }
       );
       const data = await response.json();
-      console.log(data)
 
       if (data && Array.isArray(data.cobranzas)) {
         setReporteData(data.cobranzas);
