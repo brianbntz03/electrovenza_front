@@ -157,7 +157,7 @@ export function ListadoClientes() {
           {clientes
             .map((cliente) => (
               <tr key={cliente.id}>
-                <td>{String(cliente.id).padStart(3, '0')}</td>
+                <td>{cliente.id_formatted}</td>
                 <td>{cliente.nombre}</td>
                 <td>{cliente.dni}</td>
                 <td>{cliente.direccion_local}</td>

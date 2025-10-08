@@ -267,7 +267,7 @@ export const ArticuloPresupuesto = () => {
             <option value="">-- Seleccionar Cliente --</option>
             {clientesFiltrados.map((cliente) => (
               <option key={cliente.id} value={cliente.id}>
-                {cliente.nombre} ({cliente.id})
+              {cliente.id} - {cliente.nombre} 
               </option>
             ))}
           </select>
