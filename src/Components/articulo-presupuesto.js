@@ -307,7 +307,7 @@ export const ArticuloPresupuesto = () => {
     try {
       const url = busqueda
         ? `${apiRest}/articulos/find`
-        : `${apiRest}/articulos?page=1&limit=1000`;
+        : `${apiRest}/articulos?page=1&limit=10000`;
       const method = busqueda ? "POST" : "GET";
       const options = {
         method: method,
@@ -326,9 +326,9 @@ export const ArticuloPresupuesto = () => {
 
       if (!response.ok)
         throw new Error(`Error en la solicitud: ${response.status}`);
-      const { data } = await response.json();
+      const { data: listadoArticulos } = await response.json();
             
-      const articulosConCategoria = data.map((articulo) => {
+      const articulosConCategoria = listadoArticulos.map((articulo) => {
       
 
         if (!articulo.categoria) {

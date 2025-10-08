@@ -32,7 +32,7 @@ export function RegistrarMovimieto() {
         throw new Error("Error al cargar los datos para el formulario.");
       }
 
-      const vendedoresData = await vendedoresResponse.json();
+      const { data: vendedoresData } = await vendedoresResponse.json();
       const tiposMovimientoData = await tiposMovimientoResponse.json();
 
       setVendedores(vendedoresData);

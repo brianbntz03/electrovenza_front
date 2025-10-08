@@ -104,7 +104,7 @@ export const ComisionesPorVentaPendientes = () => {
     try {
       const response = await fetch(`${apiRest}/vendedor`);
       if (response.ok) {
-        const data = await response.json();
+        const { data } = await response.json();
         setVendedoresFiltrados(data);
       }
     } catch (error) {
