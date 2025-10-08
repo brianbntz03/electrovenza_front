@@ -312,7 +312,7 @@ const handleOnDragEnd = async (result) => {
                                 <i className="fas fa-bars"></i>
                               </span>
                             </td>
-                            <td>{String(cliente.id).padStart(3, "0")}</td>
+                            <td>{cliente.id_formatted}</td>
                             <td>{cliente.nombre}</td>
                             <td>{cliente.dni}</td>
                             <td>{cliente.direccion_local}</td>
