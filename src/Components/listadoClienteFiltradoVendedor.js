@@ -282,6 +282,7 @@ const handleOnDragEnd = async (result) => {
             <table className="table table-striped table-valign-middle table-bordered">
               <thead>
                 <tr>
+                  <th></th>
                   <th>N°cliente</th>
                   <th>Nombre</th>
                   <th>DNI</th>
