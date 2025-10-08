@@ -8,10 +8,12 @@ import { convertIsoToDMY } from "../miscellaneus/aux";
 
 export const ComisionesPorVentaPendientes = () => {
   const [vendedoresFiltrados, setVendedoresFiltrados] = useState([]);
-  const [comisiones, setComisiones] = useState([]);
+  const [comisionesVentas, setComisionesVentas] = useState([]);
+  const [comisionesCreditos, setComisionesCreditos] = useState([]);
   const [error, setError] = useState(null);
   const [idVendedor, setIdVendedor] = useState(0);
-  const [totalComisiones, setTotalComisiones] = useState(0);
+  const [totalComisionesPorVenta, setTotalComisionesPorVenta] = useState(0);
+  const [totalComisionesPorCredito, setTotalComisionesPorCredito] = useState(0);
 
   useEffect(() => {
     cargarVendedores();
@@ -23,13 +25,13 @@ export const ComisionesPorVentaPendientes = () => {
   };
 
 
-  const registrarComisiones = async () => {
+  const liquidarComisionesVentas = async () => {
     try {
       if (!idVendedor) {
         FlashMessage("Liquidar Comisiones", "Debe seleccionar un vendedor", 2000, "warning");
         return;
       }
-      const response = await fetch(`${apiRest}/ventas/comisiones/marcar-comisiones-como-pagadas/`, {
+      const responseVentas = await fetch(`${apiRest}/ventas/comisiones/marcar-comisiones-como-pagadas/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,17 +39,47 @@ export const ComisionesPorVentaPendientes = () => {
         body: JSON.stringify({ vendedor_id: Number(idVendedor) }),
       });
 
-      if (!response.ok) {
-        throw new Error(`Error al pagar las comisiones: ${response.status}`);
+      if (!responseVentas.ok) {
+        throw new Error(`Error al pagar las comisiones por ventas: ${responseVentas.status}`);
       }
 
-      const resultado = await response.text();
+      const resultado = await responseVentas.text();
       console.log(resultado);
       FlashMessage("Registro de pago de comisiones", "Las comisiones fueron pagadas", 2000, "success", "ventas-comisiones-pendientes" );
 
 
     } catch (error) {
       console.error("Error al registrar las comisiones:", error);
+    }
+  };
+
+  const liquidarComisionesCreditos = async () => {
+    try {
+      if (!idVendedor) {
+        FlashMessage("Liquidar Comisiones", "Debe seleccionar un vendedor", 2000, "warning");
+        return;
+      }
+
+      const responseCreditos = await fetch(`${apiRest}/credito/comisiones/marcar-comisiones-como-pagadas/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ vendedor_id: Number(idVendedor) }),
+      });
+
+      if (!responseCreditos.ok) {
+        throw new Error(`Error al pagar las comisiones por creditos: ${responseCreditos.status}`);
+      }
+
+
+      const resultado = await responseCreditos.text();
+      console.log(resultado);
+      FlashMessage("Registro de pago de comisiones", "Las comisiones fueron pagadas", 2000, "success", "ventas-comisiones-pendientes" );
+
+
+    } catch (error) {
+      console.error("Error al registrar las comisiones por creditos:", error);
     }
   };
 
@@ -82,17 +114,32 @@ export const ComisionesPorVentaPendientes = () => {
 
   const ComisionesPorVendedor = async(vededorId) =>{
     setIdVendedor(Number(vededorId));
+    
+    //Comisiones por ventas
     try {
       const response = await fetch(`${apiRest}/ventas/comisiones/get-comisiones-pendientes/${vededorId}`);
       if (response.ok) {
-        const data = await response.json();
-        setTotalComisiones(0);
-        const total = data.reduce((sum, comision) => sum + Number(comision.monto), 0);
-        setTotalComisiones(total);
-        setComisiones(data);
+        const comisionesVentas = await response.json();
+        setTotalComisionesPorVenta(0);
+        const total = comisionesVentas.reduce((sum, comision) => sum + Number(comision.monto), 0);
+        setTotalComisionesPorVenta(total);
+        setComisionesVentas(comisionesVentas);
       }
     } catch (error) {
-      console.error("Error cargando listado de comisiones pendientes:", error);
+      console.error("Error cargando listado de comisiones por venta pendientes:", error);
+    }
+
+    //Comisiones por creditos
+    try {
+      const response = await fetch(`${apiRest}/credito/comisiones/get-comisiones-pendientes/${vededorId}`);
+      if (response.ok) {
+        const comisionesCreditos = await response.json();
+        const total = comisionesCreditos.reduce((sum, comision) => sum + Number(comision.monto), 0);
+        setTotalComisionesPorCredito(total);
+        setComisionesCreditos(comisionesCreditos);
+      }
+    } catch (error) {
+      console.error("Error cargando listado de comisiones por credito pendientes:", error);
     }
   }
   useEffect(() => {
@@ -130,6 +177,7 @@ export const ComisionesPorVentaPendientes = () => {
     </div>
     <div className="card-body">
             <>
+            <h1>Comisiones pendientes por ventas</h1>
             <table className="table table-striped table-valign-middle table-bordered">
               <tbody>
                 <tr>
@@ -138,11 +186,12 @@ export const ComisionesPorVentaPendientes = () => {
                   <th>Articulo</th>
                   <th>Comision</th>
                 </tr>
-                {comisiones.map((comision, index) => (
+                {comisionesVentas.map((comision, index) => (
                   <tr key={index}>
                     <td>{convertIsoToDMY( comision.fecha)}</td>
                     <td>{comision.cuota_venta.venta.cliente.nombre}</td>
                     <td>{comision.cuota_venta.venta.articulo.nombre}</td>
+                    <td>{comision.cuota_venta.monto}</td>
                     <td>{comision.monto}</td>
                   </tr>
                 ))}
@@ -151,7 +200,7 @@ export const ComisionesPorVentaPendientes = () => {
                 <tfoot>
                   <tr>
                     <td>Total:</td>
-                    <td colSpan={3}>{totalComisiones.toLocaleString()}</td>
+                    <td colSpan={3}>{totalComisionesPorVenta.toLocaleString()}</td>
                     
                   </tr>
                   <tr>
@@ -161,9 +210,52 @@ export const ComisionesPorVentaPendientes = () => {
                     className="btn btn-primary"
                     data-toggle="modal"
                     data-target="#exampleModal"
-                    onClick={() => registrarComisiones()}
+                    onClick={() => liquidarComisionesVentas()}
                   >
-                    Liquidar Comisiones
+                    Liquidar Comisiones por Ventas
+                  </button>
+                    </td>
+                  </tr>
+                </tfoot>
+            </table>
+
+            <h1>Comisiones pendientes por creditos</h1>
+            <table className="table table-striped table-valign-middle table-bordered">
+              <tbody>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Cliente</th>
+                  <th>cuota numero</th>
+                  <th>cuota monto</th>
+                  <th>Comision</th>
+                </tr>
+                {comisionesCreditos.map((comision, index) => (
+                  <tr key={index}>
+                    <td>{convertIsoToDMY( comision.fecha)}</td>
+                    <td>{comision.cuota_credito.credito.cliente.nombre}</td>
+                    <td>{comision.cuota_credito.numero}</td>
+                    <td>{comision.cuota_credito.monto_cobrado}</td>
+                    <td>{comision.monto}</td>
+                  </tr>
+                ))}
+                
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td>Total:</td>
+                    <td colSpan={3}>{totalComisionesPorCredito.toLocaleString()}</td>
+                    
+                  </tr>
+                  <tr>
+                    <td colSpan={4} className="text-right">
+                      <button
+                    type="button"
+                    className="btn btn-primary"
+                    data-toggle="modal"
+                    data-target="#exampleModal"
+                    onClick={() => liquidarComisionesCreditos()}
+                  >
+                    Liquidar Comisiones por Créditos
                   </button>
                     </td>
                   </tr>

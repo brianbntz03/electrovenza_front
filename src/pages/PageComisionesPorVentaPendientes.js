@@ -7,7 +7,7 @@ const PageComisionesPorVentaPendientes = () => {
         <>
         <div className="card">
             <div className="card-header border-0">
-                <h1 className="card-title">Comisiones por venta pendientes</h1>
+                <h1 className="card-title">Comisiones por pendientes de liquidación</h1>
                 <div className="card-tools">
                     <a href="#" className="btn btn-tool btn-sm">
                         <i className="fas fa-download" />
