@@ -60,7 +60,7 @@ export function ListadoProducto() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
+      const { data } = await response.json();
       
       const productosArray = Array.isArray(data) ? data : []; 
       
