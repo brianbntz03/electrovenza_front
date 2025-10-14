@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
 
 export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
@@ -36,12 +36,12 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
     if (role === "admin") {
       const fetchVendedores = async () => {
         try {
-          const response = await fetch(`${apiRest}/vendedor`);
+          const response = await fetch(`${apiRest}/vendedor?limit=1000`);
           if (!response.ok) {
             throw new Error("No se pudo cargar los vendedores");
           }
-          const data = await response.json();
-          setVendedores(data);
+          const { data } = await response.json();
+          setVendedores(Array.isArray(data) ? data : data.vendedores || []);
         } catch (error) {
           setError(error.message);
         }
@@ -50,16 +50,15 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
     }
   }, []);
 
-  
-const handleChange = (e) => {
-  const { name, value } = e.target;
-  setFormData((prevState) => ({
-    ...prevState,
-    [name]: value,
-  }));
-};
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
-const handleChangeNumber = (e) => {
+  const handleChangeNumber = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
@@ -74,7 +73,7 @@ const handleChangeNumber = (e) => {
       setError("El DNI debe ser un número válido.");
       return;
     }
-    
+
     setError(null);
 
     try {
@@ -94,9 +93,11 @@ const handleChangeNumber = (e) => {
         body: JSON.stringify(dataToSend),
       });
 
-     if (!response.ok) {
+      if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Error al actualizar el producto: ${response.status} - ${errorText}`);
+        throw new Error(
+          `Error al actualiz   el producto: ${response.status} - ${errorText}`
+        );
       }
 
       const clienteActualizado = await response.json();
@@ -105,17 +106,19 @@ const handleChangeNumber = (e) => {
       );
       const clienteConVendedorCompleto = {
         ...clienteActualizado,
-        vendedor: vendedorSeleccionado || (cliente.vendedor || null),
+        vendedor: vendedorSeleccionado || cliente.vendedor || null,
       };
 
-      console.log("Cliente actualizado exitosamente:", clienteConVendedorCompleto);
+      console.log(
+        "Cliente actualizado exitosamente:",
+        clienteConVendedorCompleto
+      );
       onClienteActualizado(clienteConVendedorCompleto);
       onClose();
     } catch (error) {
       setError(error.message);
     }
   };
-
 
   if (!cliente) {
     return null;
@@ -208,22 +211,22 @@ const handleChangeNumber = (e) => {
                 />
               </div>
               {userRole === "admin" && (
-              <div className="form-group">
-                <label>Vendedor</label>
-                <select
-                  className="form-control"
-                  name="vendedor_id"
-                  value={Number(formData.vendedor_id)}
-                  onChange={handleChangeNumber}
-                >
-                  <option value="">Seleccione un vendedor</option>
-                  {vendedores.map((vendedor) => (
-                    <option key={vendedor.id} value={String(vendedor.id)}>
-                      {vendedor.nombre}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                <div className="form-group">
+                  <label>Vendedor</label>
+                  <select
+                    className="form-control"
+                    name="vendedor_id"
+                    value={Number(formData.vendedor_id)}
+                    onChange={handleChangeNumber}
+                  >
+                    <option value="">Seleccione un vendedor</option>
+                    {vendedores.map((vendedor) => (
+                      <option key={vendedor.id} value={String(vendedor.id)}>
+                        {vendedor.nombre}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               )}
               <div className="modal-footer">
                 <button
