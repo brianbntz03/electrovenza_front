@@ -56,7 +56,8 @@ export function ListadoArticulosVendedor() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   
-  const currentProductos = productos.slice(indexOfFirstItem, indexOfLastItem);
+  //const currentProductos = productos.slice(indexOfFirstItem, indexOfLastItem);
+  const currentProductos = productos
   
   const totalPages = Math.ceil(productos.length / itemsPerPage);
   
