@@ -48,7 +48,7 @@ export function ListadoProducto() {
 
   const fetchProductos = async () => {
     try {
-      const response = await fetch(`${apiRest}/articulos`, {
+      const response = await fetch(`${apiRest}/articulos?page=1&limit=100000`, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -75,7 +75,7 @@ export function ListadoProducto() {
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     fetchProductos();
   }, []);
@@ -89,7 +89,8 @@ export function ListadoProducto() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   
-  const currentProductos = productos.slice(indexOfFirstItem, indexOfLastItem);
+  //const currentProductos = productos.slice(indexOfFirstItem, indexOfLastItem);
+  const currentProductos = productos
   
   const totalPages = Math.ceil(productos.length / itemsPerPage);
   
