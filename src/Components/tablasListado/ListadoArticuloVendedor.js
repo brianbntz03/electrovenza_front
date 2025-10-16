@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
 import { apiRest } from "../../service/apiRest";
-import { EditaProductoModal } from "../modals/EditarProductoMoral";
+import React, { useEffect, useState } from "react";
 
-export function ListadoProducto() {
+export function ListadoArticulosVendedor() {
   const [productos, setProductos] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -12,40 +11,7 @@ export function ListadoProducto() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5); 
-  const handleOpenModal = (producto) => {
-    setSelectedProducto(producto);
-    setIsModalOpen(true);
-  };
 
-  const handleCloseModal = () => {
-    setSelectedProducto(null);
-    setIsModalOpen(false);
-  };
-
-  const handleProductosActualizado = (productoActualizado) => {
-    setProductos((prevProductos) => {
-      const nuevosProductos = prevProductos.map((p) =>
-        p.id === productoActualizado.id ? { ...p, ...productoActualizado } : p
-      );
-      localStorage.setItem('productos', JSON.stringify(nuevosProductos));
-      return nuevosProductos;
-    });
-  };
-
-  const handleEliminar = async (id) => {
-    try {
-      await fetch(`${apiRest}/articulos/${id}`, {
-        method: "DELETE",
-      });
-      console.log(`Producto con id ${id} eliminado. `);
-
-      const nuevosProductos = productos.filter((producto) => producto.id !== id);
-      setProductos(nuevosProductos);
-      localStorage.setItem('productos', JSON.stringify(nuevosProductos));
-    } catch (error) {
-      console.error("Error al eliminar el producto:", error);
-    }
-  };
 
   const fetchProductos = async () => {
     setLoading(true);
@@ -77,7 +43,7 @@ export function ListadoProducto() {
         setLoading(false);
     }
   };
-
+  
   useEffect(() => {
     fetchProductos();
   }, []);
@@ -90,8 +56,7 @@ export function ListadoProducto() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   
-  //const currentProductos = productos.slice(indexOfFirstItem, indexOfLastItem);
-  const currentProductos = productos
+  const currentProductos = productos.slice(indexOfFirstItem, indexOfLastItem);
   
   const totalPages = Math.ceil(productos.length / itemsPerPage);
   
@@ -263,7 +228,6 @@ export function ListadoProducto() {
                     <th> % comision vendedor </th>
                     <th> stock </th>
                     <th> Img </th>
-                    <th> </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -277,18 +241,6 @@ export function ListadoProducto() {
                       <td> {producto.porcentaje_comision_vendedor} </td>
                       <td> {producto.stock} </td>
                       <td><a href={`${apiRest}/articulos/${producto.id}/imagen`} target="_blank" rel="noreferrer"><img src={`${apiRest}/articulos/${producto.id}/imagen`} width={100} ></img></a></td>
-                      <td>
-                        <button
-                          onClick={() => handleOpenModal(producto)}
-                        >
-                          Editar
-                        </button>
-                        <button
-                          onClick={() => handleEliminar(producto.id)}
-                        >
-                          Eliminar
-                        </button>
-                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -343,13 +295,6 @@ export function ListadoProducto() {
     <div>
       <FormArticulos />
       <RenderContent />
-      {isModalOpen && (
-        <EditaProductoModal
-          producto={selectedProducto}
-          onClose={handleCloseModal}
-          onProductosActualizado={handleProductosActualizado}
-        />
-      )}
     </div>
   );
 }

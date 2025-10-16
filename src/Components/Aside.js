@@ -165,6 +165,12 @@ export default function   Aside() {
               <p>Ventas</p>
             </NavLink>
           </li>
+           <li className="nav-item">
+            <NavLink to="/articulos-listado" className="nav-link" onClick={closeMobileSidebar}>
+              <i className="nav-icon fas fa-list-alt" />
+              <p>Articulos</p>
+            </NavLink>
+          </li>
         </ul>
       </li>
       <li

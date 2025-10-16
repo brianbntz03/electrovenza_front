@@ -66,7 +66,7 @@ export const ArticuloPresupuesto = () => {
 
   const [presupuesto, setPresupuesto] = useState(() => {
     const stored = localStorage.getItem("presupuesto");
-    return [];
+    return stored ? JSON.parse(stored) : [];
   });
 
   const registrarVenta = async () => {
@@ -158,7 +158,7 @@ export const ArticuloPresupuesto = () => {
   const sumarCuotas = () => {
     const totalConInteres = calcularTotalConInteres();
     const cuotaSeleccionada = cuotasFiltrados.find(
-      (c) => c.id == idinteres
+      (c) => c.id === parseInt(idinteres, 10)
     );
 
     const total = totalConInteres / cuotaSeleccionada.numero
@@ -168,7 +168,7 @@ export const ArticuloPresupuesto = () => {
 
   const calcularPrecioConInteres = (precio, idCuotaSeleccionada) => {
     const cuotaSeleccionada = cuotasFiltrados.find(
-      (c) => c.id == idCuotaSeleccionada 
+      (c) => c.id === parseInt(idCuotaSeleccionada, 10)
     );
     if (!cuotaSeleccionada) return precio;
     const interes = cuotaSeleccionada.interes / 100;
@@ -195,8 +195,7 @@ export const ArticuloPresupuesto = () => {
           }}
         >
       <div className="row">
-        
-          <div className="col-md-2">
+         <div className="col-md-2">
             <label style={{ marginRight: "5px" }}>Buscar artículo</label>
           </div>
           <div className="col-md-3 input-group">
@@ -553,10 +552,10 @@ export const ArticuloPresupuesto = () => {
                   <strong>
                     {idinteres
                       ? `${
-                          cuotasFiltrados.find((c) => c.id == idinteres)
+                          cuotasFiltrados.find((c) => c.id === parseInt(idinteres, 10))
                             ?.interes || 0
                         }% (${
-                          cuotasFiltrados.find((c) => c.id == idinteres)
+                          cuotasFiltrados.find((c) => c.id === parseInt(idinteres, 10))
                             ?.numero || 0
                         } cuotas)`
                       : "No seleccionado"}
@@ -610,11 +609,8 @@ export const ArticuloPresupuesto = () => {
                   {presupuesto.map((item) => {
                     const subtotal = parseFloat(item.precio) * item.cantidad;
                     const numeroCuotas =
-                      cuotasFiltrados.find((c) => c.id == idinteres)?.numero ||
+                      cuotasFiltrados.find((c) => c.id === parseInt(idinteres, 10))?.numero ||
                       1;
-                    const interes =
-                      cuotasFiltrados.find((c) => c.id == idinteres).interes ||
-                      0;
                     const conInteres = calcularPrecioConInteres(
                       subtotal,
                       idinteres

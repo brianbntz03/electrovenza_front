@@ -40,6 +40,7 @@ import { CrearClienteFiltrado } from "./Crear/CrearClientesFiltrado";
 import PageCuotasVencidas from "../pages/pageCuotasVencidas";
 import PageReporteCobranza from "../pages/pageReporteCobranza";
 import PageReporteGanancia from "../pages/pageReporteGanancias";
+import PageArticulosListado from "../pages/articulosListados";
 
 
 export default function Content() {
@@ -120,6 +121,7 @@ export default function Content() {
                 <Route path="/credito-por-cobrar" Component={PageCreditosPorCobrar}></Route>
                 <Route path="/crearcuotaelectro" Component={CrearCuotaElectro}></Route>
                 <Route path="/crear-cuota-credito" Component={CrearCuotaCredito}></Route>
+                <Route path="/articulos-listado" Component={PageArticulosListado}></Route>
 
                 {/* COMPRAS */}
                 <Route path="/compras-listado" Component={PageCompras}></Route>
