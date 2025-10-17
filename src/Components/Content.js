@@ -27,6 +27,7 @@ import RegistroMovimientoCuenta from "../pages/RegistroMovimientoCuenta";
 import { CrearProveedor } from "./Crear/CrearProveedor";
 import PageOtorgarCredito from "../pages/PageOtorgarCredito";
 import PageCreditosCuotasPorCobrar from "../pages/PageCreditosCuotasPorCobrar";
+import PageCreditoCuotasPendientes from "../pages/PageCreditoCuotasPendientes";
 import PageComisionesPorVentaPendientes from "../pages/PageComisionesPorVentaPendientes";
 import PageComisionesPorCreditoPendientes from "../pages/PageComisionesPorCreditoPendientes";
 import PageCreditosPorCobrar from "../pages/PageCreditoPorCobrar";
@@ -99,7 +100,9 @@ export default function Content() {
                 {/* Relacionados con vendedor: creditos */}
                 <Route path="/otorgar-credito" Component={PageOtorgarCredito}></Route>
                 <Route path="/creditos-cuotas-por-cobrar" Component={PageCreditosCuotasPorCobrar} ></Route>
+                <Route path="/credito-cuotas-pendientes/:credito_id" Component={PageCreditoCuotasPendientes} ></Route>
                 <Route path="/creditos-listado" Component={PageCreditos} ></Route>
+                
 
 
                 <Route path="/crearProducto" Component={CrearProducto}></Route>

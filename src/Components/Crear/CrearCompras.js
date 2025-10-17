@@ -38,8 +38,8 @@ export const CrearCompras = () => {
 
   const fetchArticulos = async () => {
     try {
-      const response = await fetch(`${apiRest}/articulos`);
-      const data = await response.json();
+      const response = await fetch(`${apiRest}/articulos?page=1&limit=10000000`);
+      const { data } = await response.json();
       setArticulosDisponibles(data);
     } catch (error) {
       console.error("Error fetching articulos:", error);
