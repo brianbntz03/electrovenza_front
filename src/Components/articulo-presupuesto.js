@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { apiRest } from "../service/apiRest";
 import FlashMessage from "./tiny/FlashMessage";
 
-
 export const ArticuloPresupuesto = () => {
   const [articulosFiltrados, setArticulosFiltrados] = useState([]);
   const [vendedoresFiltrados, setVendedoresFiltrados] = useState([]);

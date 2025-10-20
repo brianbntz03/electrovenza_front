@@ -319,6 +319,12 @@ export default function   Aside() {
               <p>Productos</p>
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink to="/actualizacion-masiva" className="nav-link">
+              <i className="nav-icon fas fa-barcode" />
+              <p>Articulos Masiva</p>
+            </NavLink>
+          </li>
         
         </ul>
       

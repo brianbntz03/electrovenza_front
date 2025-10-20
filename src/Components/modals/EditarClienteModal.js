@@ -9,6 +9,7 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
     direccion_casa: "",
     telefono1: "",
     telefono2: "",
+    rubro: "",
     vendedor_id: 0,
   });
   const [vendedores, setVendedores] = useState([]);
@@ -24,6 +25,7 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
         direccion_casa: cliente.direccion_casa || "",
         telefono1: Number(cliente.telefono1) || 0,
         telefono2: Number(cliente.telefono2) || 0,
+        rubro: cliente.rubro || "",
         vendedor_id: cliente.vendedor ? Number(cliente.vendedor.id) : 0,
       });
     }
@@ -207,6 +209,16 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
                   className="form-control"
                   name="telefono2"
                   value={formData.telefono2}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Rubro</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="rubro"
+                  value={formData.rubro}
                   onChange={handleChange}
                 />
               </div>

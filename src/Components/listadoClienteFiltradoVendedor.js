@@ -118,7 +118,7 @@ export function ListadoClientesFiltradoVendedor({ vendedorId, onRefresh } = {}) 
     console.log("currentUserId:", currentUserId);
     console.log("vendedor_id from localStorage:", localStorage.getItem("vendedor_id"));
     console.log("Total clientes:", clientes.length);
-    console.log("Clientes data:", clientes.map(c => ({ id: c.id, nombre: c.nombre, creado_por: c.creado_por, vendedor_id: c.vendedor?.id })));
+    console.log("Clientes data:", clientes.map(c => ({ id: c.id, nombre: c.nombre, creado_por: c.creado_por, vendedor_id: c.vendedor?.id, rubro: c.rubro })));
 
     if (userRole === "vendedor" && currentUserId) {
       console.log("Aplicando filtro de vendedor...");
@@ -290,6 +290,7 @@ const handleOnDragEnd = async (result) => {
                   <th>Dirección de Casa</th>
                   <th>Teléfono 1</th>
                   <th>Teléfono 2</th>
+                  <th>Rubro</th>
                   <th>Orden</th>
                   <th>Acciones</th>
                 </tr>
@@ -320,6 +321,7 @@ const handleOnDragEnd = async (result) => {
                             <td>{cliente.direccion_casa}</td>
                             <td>{cliente.telefono1}</td>
                             <td>{cliente.telefono2}</td>
+                            <td>{cliente.rubro}</td>
                             <td>{cliente.orden}</td>
                             <td>
                               <button onClick={() => handleOpenModal(cliente)}>

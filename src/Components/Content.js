@@ -42,6 +42,7 @@ import PageCuotasVencidas from "../pages/pageCuotasVencidas";
 import PageReporteCobranza from "../pages/pageReporteCobranza";
 import PageReporteGanancia from "../pages/pageReporteGanancias";
 import PageArticulosListado from "../pages/articulosListados";
+import PageActualizacionMasiva from "../pages/PageActualizacionMasiva";
 
 
 export default function Content() {
@@ -125,7 +126,7 @@ export default function Content() {
                 <Route path="/crearcuotaelectro" Component={CrearCuotaElectro}></Route>
                 <Route path="/crear-cuota-credito" Component={CrearCuotaCredito}></Route>
                 <Route path="/articulos-listado" Component={PageArticulosListado}></Route>
-
+                <Route path="/actualizacion-masiva" Component={PageActualizacionMasiva}></Route>
                 {/* COMPRAS */}
                 <Route path="/compras-listado" Component={PageCompras}></Route>
                 <Route path="/compras-registrar" Component={CrearCompras}></Route>

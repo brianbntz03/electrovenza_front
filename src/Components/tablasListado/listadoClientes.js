@@ -149,6 +149,7 @@ export function ListadoClientes() {
             <th>Dirección de Casa</th>
             <th>Teléfono 1</th>
             <th>Teléfono 2</th>
+            <th>Rubro</th>
             <th>Vendedor</th>
             <th></th>
           </tr>
@@ -164,6 +165,7 @@ export function ListadoClientes() {
                 <td>{cliente.direccion_casa}</td>
                 <td>{cliente.telefono1}</td>
                 <td>{cliente.telefono2}</td>
+                <td>{cliente.rubro}</td>
                 <td>{cliente.vendedor?.nombre || "Sin vendedor"}</td>
                 <td>
                   <button onClick={() => handleOpenModal(cliente)}>

@@ -9,6 +9,7 @@ export const CrearCliente = () => {
   const [direccioncasa, setDireccioncasa] = useState("");
   const [telefono1, setTelefono1] = useState("");
   const [telefono2, setTelefono2] = useState("");
+  const [rubro, setRubro] = useState("");
 
   const [listaVendedores, setListaVendedores] = useState([]); // ✅ lista de vendedores
   const [vendedorSeleccionado, setVendedorSeleccionado] = useState(""); // ✅ id del vendedor elegido
@@ -39,7 +40,7 @@ export const CrearCliente = () => {
       try {
         const response = await fetch(`${apiRest}/vendedor`);
         const data = await response.json();
-        setListaVendedores(data);
+        setListaVendedores(data.data || data.vendedores || []);
       } catch (error) {
         console.error("Error al cargar vendedores:", error);
         setError("No se pudieron cargar los vendedores.");
@@ -77,6 +78,7 @@ export const CrearCliente = () => {
           'telefono2': Number(telefono2),
           vendedor_id: Number(vendedorSeleccionado),
           creado_por: Number(userId),
+          "rubro": rubro
         }),
       });
 
@@ -183,6 +185,16 @@ export const CrearCliente = () => {
                 className="form-control"
                 value={telefono2}
                 onChange={(e) => setTelefono2(e.target.value)}
+                type="text"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Rubro:</label>
+              <input
+                className="form-control"
+                value={rubro}
+                onChange={(e) => setRubro(e.target.value)}
                 type="text"
                 required
               />
