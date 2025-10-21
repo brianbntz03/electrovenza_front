@@ -13,7 +13,7 @@ export function ListadoClientes() {
 
   // Estados para la Paginación del lado del cliente
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(4);
+  const [itemsPerPage] = useState(20);
 
   const handleOpenModal = (cliente) => {
     setSelectedCliente(cliente);
@@ -98,7 +98,7 @@ export function ListadoClientes() {
 
   const getPageNumbers = () => {
     const pages = [];
-    const maxPagesToShow = 5;
+    const maxPagesToShow = 100;
     let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
     let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
 
@@ -178,7 +178,7 @@ export function ListadoClientes() {
               </tr>
             ))}
             <tr>
-            <td colSpan="8" className="text-center">
+            <td colSpan="10" className="text-center">
               Total de clientes: {allClientes.length}
             </td>
           </tr>
