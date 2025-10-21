@@ -291,7 +291,6 @@ const handleOnDragEnd = async (result) => {
                   <th>Teléfono 1</th>
                   <th>Teléfono 2</th>
                   <th>Rubro</th>
-                  <th>Orden</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -322,7 +321,6 @@ const handleOnDragEnd = async (result) => {
                             <td>{cliente.telefono1}</td>
                             <td>{cliente.telefono2}</td>
                             <td>{cliente.rubro}</td>
-                            <td>{cliente.orden}</td>
                             <td>
                               <button onClick={() => handleOpenModal(cliente)}>
                                 editar
