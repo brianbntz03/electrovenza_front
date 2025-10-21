@@ -15,6 +15,7 @@ export const CrearClienteFiltrado = () => {
   const [loading, setLoading] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [Rubro, setRubro] = useState("");
   const [button, setButton] = useState(false);
   
   const handleRetry = () => {
@@ -129,6 +130,7 @@ const handleSubmit = async (e) => {
         'telefono1': Number(telefono1),
         'telefono2': Number(telefono2),
         vendedor_id: Number(vendedorId),
+        rubro: Rubro,
         creado_por: Number(userId),
     };
     
@@ -242,6 +244,16 @@ const handleSubmit = async (e) => {
               className="form-control"
               value={telefono2}
               onChange={(e) => setTelefono2(e.target.value)}
+              type="text"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Rubro:</label>
+            <input
+              className="form-control"
+              value={Rubro}
+              onChange={(e) => setRubro(e.target.value)}
               type="text"
               required
             />
