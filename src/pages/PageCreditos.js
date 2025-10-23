@@ -9,7 +9,7 @@ const PageCreditos = () => {
         <h3 className="card-title">Creditos</h3>
         <div className="card-tools">
           
-          <NavLink to="/crearCreditos" className="btn btn-sm btn-info float-right">Crear</NavLink>
+          
         </div>
       </div>
       <div className="card-body table-responsive p-0">

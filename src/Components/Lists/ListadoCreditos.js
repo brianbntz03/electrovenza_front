@@ -4,6 +4,7 @@ import { ModalEditarCreditos } from "../modals/ModalEditarCreditos";
 import { convertIsoToDMY } from "../../miscellaneus/aux";
 import { BotonImprimirCuotasCredito } from "../tiny/BotonImprimirCuotasCredito";
 import { BotonCuotasPendientes } from "../tiny/BotonCuotasPendientes";
+import { BotonAnularCredito } from "../tiny/BotonAnularCredito";
 
 export function ListadoCreditos() {
   const storaObjectName =  "colectivo";
@@ -179,7 +180,9 @@ export function ListadoCreditos() {
                 <td>{object.vendedor.nombre}</td>
                 <td>
                   <BotonImprimirCuotasCredito id={object.id} /> &nbsp;
-                  <BotonCuotasPendientes id={object.id} />
+                  <BotonCuotasPendientes id={object.id} /> &nbsp;
+                  <BotonAnularCredito id={object.id} />
+
                 </td>
               </tr>
             ))}
