@@ -3,6 +3,8 @@ import { apiRest } from "../service/apiRest";
 import Swal from "sweetalert2";
 import FlashMessage from "./tiny/FlashMessage";
 
+import { CUOTA_TYPE_NAMES } from "../constants/cuotaTypes";
+
 const FormClienteCard = ({ cliente, setCliente, clientesList }) => (
   <div className="form-group">
     <label htmlFor="cliente">Cliente</label>
@@ -48,7 +50,7 @@ const FormCantidadCuota = ({ cuotaId, setCuotaId, cuotasList }) => (
       <option value="">Seleccione cuotas</option>
       {cuotasList.map((c) => (
         <option key={c.id} value={c.id}>
-          {c.descripcion} ({c.interes}%)
+          {CUOTA_TYPE_NAMES[c.tipo_cuota]}: {c.descripcion}  ({c.interes}%)
         </option>
       ))}
     </select>

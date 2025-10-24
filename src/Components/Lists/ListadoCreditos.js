@@ -5,9 +5,11 @@ import { convertIsoToDMY } from "../../miscellaneus/aux";
 import { BotonImprimirCuotasCredito } from "../tiny/BotonImprimirCuotasCredito";
 import { BotonCuotasPendientes } from "../tiny/BotonCuotasPendientes";
 import { BotonAnularCredito } from "../tiny/BotonAnularCredito";
+import { CUOTA_TYPE_NAMES } from "../../constants/cuotaTypes";
+
 
 export function ListadoCreditos() {
-  const storaObjectName =  "colectivo";
+  const storaObjectName =  "creditos";
   const urlObject = `${apiRest}/credito/filter-by-vendedor`;
   const titlePlural = "Creditos Otorgandos";
   
@@ -37,7 +39,7 @@ export function ListadoCreditos() {
     localStorage.setItem(storaObjectName, JSON.stringify(nuevosObjects));
   };
 
-  const fetchColectivo = async (fechaInicioParam = fechaInicio, fechaFinParam = fechaFin) => {
+  const fetchCreditosAsignados = async (fechaInicioParam = fechaInicio, fechaFinParam = fechaFin) => {
     try {
       const vendedorId = localStorage.getItem("vendedor_id");
       const url = Number(vendedorId)>0 ? `${urlObject}/${vendedorId}` : `${apiRest}/credito/`;
@@ -90,20 +92,20 @@ export function ListadoCreditos() {
   };
 
   useEffect(() => {
-    fetchColectivo();
+    fetchCreditosAsignados();
   }, []);
 
   const handleRetry = () => {
     setLoading(true);
     setError(null);
-    fetchColectivo();
+    fetchCreditosAsignados();
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    fetchColectivo(fechaInicio, fechaFin);
+    fetchCreditosAsignados(fechaInicio, fechaFin);
   };
 
   if (loading) {
@@ -166,6 +168,8 @@ export function ListadoCreditos() {
             <th>Fecha</th>
             <th>Cliente</th>
             <th>Monto</th>
+            <th>Tipo</th>
+            <th># cuotas</th>
             <th>Vendedor</th>
             <th></th>
           </tr>
@@ -177,6 +181,8 @@ export function ListadoCreditos() {
                 <td>{convertIsoToDMY(object.fecha)}</td>
                 <td>{object.cliente.nombre}</td>
                 <td>{object.monto}</td>
+                <td>{CUOTA_TYPE_NAMES[object.setting_cuotas_credito.tipo_cuota]}</td>
+                <td>{object.setting_cuotas_credito.descripcion}</td>
                 <td>{object.vendedor.nombre}</td>
                 <td>
                   <BotonImprimirCuotasCredito id={object.id} /> &nbsp;
