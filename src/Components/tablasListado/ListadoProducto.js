@@ -260,6 +260,7 @@ export function ListadoProducto() {
                     <th> categoria </th>
                     <th> precio minorista </th>
                     <th> precio mayorista </th>
+                    <th> precio compra</th>
                     <th> % comision vendedor </th>
                     <th> stock </th>
                     <th> Img </th>
@@ -274,6 +275,7 @@ export function ListadoProducto() {
                       <td> {producto.categoria?.nombre || "Sin categoría"} </td>
                       <td> {producto.precio} </td>
                       <td> {producto.precio_mayorista} </td>
+                      <td> {producto.precio_compra}</td>
                       <td> {producto.porcentaje_comision_vendedor} </td>
                       <td> {producto.stock} </td>
                       <td><a href={`${apiRest}/articulos/${producto.id}/imagen`} target="_blank" rel="noreferrer"><img src={`${apiRest}/articulos/${producto.id}/imagen`} width={100} ></img></a></td>

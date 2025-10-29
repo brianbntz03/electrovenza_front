@@ -13,6 +13,7 @@ export function EditaProductoModal({
     precio: 0,
     precio_mayorista: 0,
     stock: 0,
+    precio_compra: 0 , 
     idCategoria: "",
     activo: true,
     porcentajeComisionVendedor: 0,
@@ -221,6 +222,17 @@ export function EditaProductoModal({
                   className="form-control"
                   name="precio_mayorista"
                   value={formData.precio_mayorista}
+                  onChange={handleChangeNumber}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Precio Compra</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="precio_compra"
+                  value={formData.precio_compra}
                   onChange={handleChangeNumber}
                 />
               </div>
