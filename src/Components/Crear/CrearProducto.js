@@ -10,6 +10,7 @@ export const CrearProducto = () => {
   const [stock, setStock] = useState(0);
   const [idCategoria, setIdCategoria] = useState(0);
   const [porcentajeComisionVendedor, setPorcentajeComisionVendedor] = useState(0);
+  const [precioCompra, setPrecioCompra] = useState(0);
   const [imagen, setImagen] = useState(null);
   const [categorias, setCategorias] = useState([]);
   const [error, setError] = useState(null);
@@ -67,6 +68,7 @@ export const CrearProducto = () => {
           descripcion, 
           precio, 
           precio_mayorista: precioMayorista, 
+          precioCompra: precioCompra, 
           stock, 
           idCategoria, 
           porcentaje_comision_vendedor: porcentajeComisionVendedor 
@@ -169,6 +171,18 @@ export const CrearProducto = () => {
                 class="form-control"
                 value={precioMayorista}
                 onChange={(e) => setPrecioMayorista(Number(e.target.value))}
+                type="text"
+                name="precioMayorista"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputDescription">Precio Compra</label>
+              <input
+                class="form-control"
+                value={precioCompra}
+                onChange={(e) => setPrecioCompra(Number(e.target.value))}
                 type="text"
                 name="precioMayorista"
                 required
