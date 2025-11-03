@@ -30,6 +30,7 @@ export function EditaProductoModal({
         precio: Number(producto.precio) || 0,
         precio_mayorista: Number(producto.precio_mayorista) || 0,
         stock: Number(producto.stock) || 0,
+        precio_compra: Number(producto.precio_compra) || 0,
         idCategoria: producto.categoria ? Number(producto.categoria.id) : 0,
         porcentajeComisionVendedor: Number(producto.porcentaje_comision_vendedor) || 0,
         activo: producto.activo || true,

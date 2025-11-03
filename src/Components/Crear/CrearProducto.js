@@ -68,7 +68,7 @@ export const CrearProducto = () => {
           descripcion, 
           precio, 
           precio_mayorista: precioMayorista, 
-          precioCompra: precioCompra, 
+          precio_compra: precioCompra, 
           stock, 
           idCategoria, 
           porcentaje_comision_vendedor: porcentajeComisionVendedor 
@@ -184,7 +184,7 @@ export const CrearProducto = () => {
                 value={precioCompra}
                 onChange={(e) => setPrecioCompra(Number(e.target.value))}
                 type="text"
-                name="precioMayorista"
+                name="precio_compra"
                 required
               />
             </div>
@@ -208,7 +208,7 @@ export const CrearProducto = () => {
                 value={porcentajeComisionVendedor}
                 onChange={(e) => setPorcentajeComisionVendedor(Number(e.target.value))}
                 type="text"
-                name="porcentajeComisionVendedor"
+                name="porcentaje_comision_Vendedor"
                 required
               />
             </div>
