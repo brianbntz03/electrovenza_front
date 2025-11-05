@@ -1,14 +1,21 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
+import { apiRest } from "../service/apiRest";
+import FlashMessageConfirm from "./tiny/ConfirmMessage";
 
 export default function ActualizacionMasiva() {
   const [porcentaje, setPorcentaje] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const response = await FlashMessageConfirm("Seguro que desea actualizar masivamente?", "Ejecutará una actualización masiva precios, quiere continuar?");
+        if(!response){
+          return ; 
+        }
     
     try {
-      const response = await fetch("/articulos/actualizacion_masiva", {
+      const response = await fetch(`${apiRest}/articulos/actualizacion-masiva`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,7 +54,9 @@ export default function ActualizacionMasiva() {
           onChange={(e) => setPorcentaje(e.target.value)}
           className="form-control d-inline-block"
           style={{ width: "200px" }}
-          placeholder="Ingrese el porcentaje"
+          placeholder="Ingrese el porcentaje (1-100)"
+          min="1"
+          max="100"
           required
         />&nbsp;
         <button type="submit" className="btn btn-sm btn-info">
