@@ -5,18 +5,30 @@ import FlashMessage from "./tiny/FlashMessage";
 import { CUOTA_TYPE_NAMES } from "../constants/cuotaTypes";
 
 
-const FormOtorgarFecha = ({ fecha, setFecha }) => (
-  <div className="form-group">
-    <label htmlFor="fecha_otorgamiento">Fecha de Otorgamiento</label>
-    <input
-      type="date"
-      className="form-control"
-      id="fecha"
-      value={fecha || ""}
-      onChange={(e) => setFecha(e.target.value)}
-    />
-  </div>
-);
+const FormOtorgarFecha = ({ fecha, setFecha }) => {
+  let displayValue = "";
+
+  if (fecha) {
+    if (typeof fecha === "string" && fecha.includes("T")) {
+      displayValue = fecha.split("T")[0];
+    } else {
+      displayValue = fecha;
+    }
+  }
+
+  return (
+    <div className="form-group">
+      <label htmlFor="fecha_otorgamiento">Fecha de Otorgamiento</label>
+      <input
+        type="date"
+        className="form-control"
+        id="fecha"
+        value={displayValue} // <--- Usamos el valor formateado
+        onChange={(e) => setFecha(e.target.value)}
+      />
+    </div>
+  );
+};
 
 const FormClienteCard = ({ cliente, setCliente, clientesList }) => (
   <div className="form-group">
@@ -63,7 +75,11 @@ const FormCantidadCuota = ({ cuotaId, setCuotaId, cuotasList }) => (
       <option value="">Seleccione cuotas</option>
       {cuotasList.map((c) => (
         <option key={c.id} value={c.id}>
+<<<<<<< HEAD
           {CUOTA_TYPE_NAMES[c.tipo_cuota]}: {c.descripcion}  ({c.interes}%)
+=======
+          {[c.tipo_cuota]}: {c.descripcion} ({c.interes}%)
+>>>>>>> 4719aab (actualizacion de fecha)
         </option>
       ))}
     </select>
@@ -77,14 +93,14 @@ const OtorgarCredito = () => {
   const [detallesFinanciacion, setDetallesFinanciacion] = useState(null);
   const [clientesList, setClientesList] = useState([]);
   const [cuotasList, setCuotasList] = useState([]);
-  const [fecha, setFecha] = useState(null);
+  const [fecha, setFecha] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    if (!cliente || !monto || !cuotaId || !detallesFinanciacion) {
+    if (!cliente || !monto || !cuotaId || !detallesFinanciacion || !fecha) {
       Swal.fire(
         "Campos incompletos",
         "Por favor, complete todos los campos.",
@@ -96,17 +112,19 @@ const OtorgarCredito = () => {
 
     try {
       const vendedorId = Number(localStorage.getItem("vendedor_id"));
-      const response = await fetch(`${apiRest}/credito  `, {
+      const data = JSON.stringify({
+          setting_cuotas_credito_id: parseInt(cuotaId),
+          cliente_id: parseInt(cliente),
+          vendedor_id: vendedorId,
+          monto: parseFloat(monto),
+          fecha: fecha,
+        });
+      const response = await fetch(`${apiRest}/credito`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          setting_cuotas_credito_id: parseInt(cuotaId),
-          cliente_id: parseInt(cliente),
-          vendedor_id: vendedorId, //todo: tomar el id de vendedor del header
-          monto: parseFloat(monto),
-        }),
+        body: data,
       });
 
       if (!response.ok) {
@@ -237,6 +255,5 @@ const OtorgarCredito = () => {
     </div>
   );
 };
-
 
 export default OtorgarCredito;
