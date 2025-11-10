@@ -177,6 +177,7 @@ const handleOnDragEnd = async (result) => {
   const reorderedPaginatedClients = Array.from(paginatedClients);
   const [movedItem] = reorderedPaginatedClients.splice(source.index, 1);
   reorderedPaginatedClients.splice(destination.index, 0, movedItem);
+  
 
   // Now, we need to map the new order back to the full `clientes` array.
   const newFullClientList = Array.from(clientes);
@@ -258,6 +259,7 @@ const handleOnDragEnd = async (result) => {
     );
   }
 
+  const userRole = localStorage.getItem("user_role");
 
   return (
     <div className="card-body">
@@ -322,11 +324,13 @@ const handleOnDragEnd = async (result) => {
                             <td>{cliente.telefono2}</td>
                             <td>{cliente.rubro}</td>
                             <td>
-                              <button onClick={() => handleOpenModal(cliente)}>
+                              <button onClick={() => handleOpenModal(cliente)} 
+                              disabled={userRole === "vendedor"}>
                                 editar
                               </button>
                               <button
-                                onClick={() => handleEliminar(cliente.id)}
+                                onClick={() => handleEliminar(cliente.id)} 
+                                disabled={userRole === "vendedor"}
                               >
                                 eliminar
                               </button>

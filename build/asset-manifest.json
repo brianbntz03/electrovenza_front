@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "https://electrovenza.com/gestion/static/css/main.e63a117c.css",
-    "main.js": "https://electrovenza.com/gestion/static/js/main.214b1f13.js",
+    "main.js": "https://electrovenza.com/gestion/static/js/main.f239a7db.js",
     "static/js/488.4be9b44e.chunk.js": "https://electrovenza.com/gestion/static/js/488.4be9b44e.chunk.js",
     "index.html": "https://electrovenza.com/gestion/index.html",
     "main.e63a117c.css.map": "https://electrovenza.com/gestion/static/css/main.e63a117c.css.map",
-    "main.214b1f13.js.map": "https://electrovenza.com/gestion/static/js/main.214b1f13.js.map",
+    "main.f239a7db.js.map": "https://electrovenza.com/gestion/static/js/main.f239a7db.js.map",
     "488.4be9b44e.chunk.js.map": "https://electrovenza.com/gestion/static/js/488.4be9b44e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e63a117c.css",
-    "static/js/main.214b1f13.js"
+    "static/js/main.f239a7db.js"
   ]
 }
