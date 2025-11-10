@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { apiRest } from "../service/apiRest";
-
+import { convertIsoToDMY } from "../miscellaneus/aux"
 export default function CreditoCuotaVencida(cuota) {
   const [montoParcial, setMontoParcial] = useState("");
 
@@ -71,10 +71,17 @@ export default function CreditoCuotaVencida(cuota) {
           </span>
           <div className="info-box-content">
             <span className="info-box-text">
-              {cuota.fecha} ({cuota.numero})
+              Fecha cuota: {cuota.fecha}
+            </span>
+            <span className="info-box-text">
+              Cuota número: {cuota.numero}
             </span>
             <span className="info-box-number">valor: ${cuota.valor}</span>
             <span className="info-box-number">Pendiente: ${cuota.valor-cuota.montoCobrado}</span>
+            <hr></hr>
+            <span className="info-box-number">Credito Nro: {cuota.credito_numero}</span>
+            <span className="info-box-number">monto otorgado: ${cuota.credito_monto}</span>
+            <span className="info-box-number">fecha otorgamiento: {convertIsoToDMY(cuota.credito_fecha)}</span>
             <span className="progress-description">Vendedor: {cuota.vendedor}</span>
             <div className="row">
               <div className="col-6">

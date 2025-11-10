@@ -94,7 +94,7 @@ export function CreditosCuotasVencidas() {
               <div class="card-footer p-0">
                 <div class="row">
                   {ListadoDeCuotas.map(cuota => (
-                    <CreditoCuotaVencida id={cuota.id} numero={cuota.numero} fecha={cuota.fecha} articulo={cuota.articulo} valor={cuota.valor} montoCobrado={cuota.monto_cobrado} vendedor={cuota.vendedor} estado={cuota.estado} incrementarContador={incrementarContador} />
+                    <CreditoCuotaVencida id={cuota.id} numero={cuota.numero} fecha={cuota.fecha} articulo={cuota.articulo} valor={cuota.valor} montoCobrado={cuota.monto_cobrado} vendedor={cuota.vendedor} estado={cuota.estado} credito_fecha={cuota.credito_fecha} credito_monto={cuota.credito_monto} credito_numero={cuota.credito_numero} incrementarContador={incrementarContador} />
                   ))}
                 </div>
               </div>
