@@ -6,6 +6,7 @@ import { BotonImprimirCuotasCredito } from "../tiny/BotonImprimirCuotasCredito";
 import { BotonCuotasPendientes } from "../tiny/BotonCuotasPendientes";
 import { BotonAnularCredito } from "../tiny/BotonAnularCredito";
 import { CUOTA_TYPE_NAMES } from "../../constants/cuotaTypes";
+import { EstadosCredito } from "../../constants/creditos"
 
 
 export function ListadoCreditos() {
@@ -165,12 +166,14 @@ export function ListadoCreditos() {
       <table className="table table-striped table-valign-middle table-bordered">
         <thead>
           <tr>
+            <th>Id</th>
             <th>Fecha</th>
             <th>Cliente</th>
             <th>Monto</th>
             <th>Tipo</th>
             <th># cuotas</th>
             <th>Vendedor</th>
+            <th>Estado</th>
             <th></th>
           </tr>
         </thead>
@@ -178,12 +181,14 @@ export function ListadoCreditos() {
           {colectivo
             .map((object) => (
               <tr key={object.id}>
+                <td>{object.cliente.id}</td>
                 <td>{convertIsoToDMY(object.fecha)}</td>
                 <td>{object.cliente.nombre}</td>
                 <td>{object.monto}</td>
                 <td>{CUOTA_TYPE_NAMES[object.setting_cuotas_credito.tipo_cuota]}</td>
                 <td>{object.setting_cuotas_credito.descripcion}</td>
                 <td>{object.vendedor.nombre}</td>
+                <td>{EstadosCredito[object.estado_credito]}</td>
                 <td>
                   <BotonImprimirCuotasCredito id={object.id} /> &nbsp;
                   <BotonCuotasPendientes id={object.id} /> &nbsp;
