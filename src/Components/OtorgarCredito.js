@@ -76,10 +76,7 @@ const FormCantidadCuota = ({ cuotaId, setCuotaId, cuotasList }) => (
       {cuotasList.map((c) => (
         <option key={c.id} value={c.id}>
           {CUOTA_TYPE_NAMES[c.tipo_cuota]}: {c.descripcion}  ({c.interes}%)
-<<<<<<< HEAD
-=======
           {[c.tipo_cuota]}: {c.descripcion} ({c.interes}%)
->>>>>>> 915418e (agreado de fotos de documento y servicio)
         </option>
       ))}
     </select>
