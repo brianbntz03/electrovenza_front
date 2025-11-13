@@ -17,6 +17,10 @@ export const CrearClienteFiltrado = () => {
   const [userId, setUserId] = useState(null);
   const [Rubro, setRubro] = useState("");
   const [button, setButton] = useState(false);
+  const [documentoFrente, setDocumentoFrente] = useState(null);
+  const [documentoDorso, setDocumentoDorso] = useState(null);
+  const [servicio1, setServicio1] = useState(null);
+  const [servicio2, setServicio2] = useState(null);
   
   const handleRetry = () => {
     setLoading(false);
@@ -73,6 +77,26 @@ export const CrearClienteFiltrado = () => {
       obtenerVendedores();
     }
   }, []);
+
+  const uploadImageByType = async (clienteId, file, tipo) => {
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("imagen", file);
+
+    try {
+      const response = await fetch(`${apiRest}/cliente/${clienteId}/imagen/${tipo}`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        console.error(`Error al subir ${tipo}: ${response.status}`);
+      }
+    } catch (error) {
+      console.error(`Error al subir ${tipo}:`, error);
+    }
+  };
 
 
 const handleSubmit = async (e) => {
@@ -158,6 +182,18 @@ const handleSubmit = async (e) => {
         }
 
         const data = await response.json();
+        const newClienteId = data.id;
+
+        if (newClienteId) {
+          const uploadPromises = [
+            uploadImageByType(newClienteId, documentoFrente, 'documento_frente'),
+            uploadImageByType(newClienteId, documentoDorso, 'documento_dorso'),
+            uploadImageByType(newClienteId, servicio1, 'servicio1'),
+            uploadImageByType(newClienteId, servicio2, 'servicio2'),
+          ];
+          await Promise.allSettled(uploadPromises);
+        }
+
         console.log("Cliente creado:", data);
         MostrarAlerta();
         setLoading(false);
@@ -277,6 +313,48 @@ const handleSubmit = async (e) => {
               </select>
             </div>
           )}
+          
+          <hr />
+          
+          <div className="form-group">
+            <label>Documento Frente:</label>
+            <input
+              className="form-control"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setDocumentoFrente(e.target.files[0])}
+            />
+          </div>
+          
+          <div className="form-group">
+            <label>Documento Dorso:</label>
+            <input
+              className="form-control"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setDocumentoDorso(e.target.files[0])}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Servicio 1:</label>
+            <input
+              className="form-control"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setServicio1(e.target.files[0])}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Servicio 2:</label>
+            <input
+              className="form-control"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setServicio2(e.target.files[0])}
+            />
+          </div>
         </div>
         <div className="card-footer">
           <button type="submit" className="btn btn-primary" disabled={loading}>

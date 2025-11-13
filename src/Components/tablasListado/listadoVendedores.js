@@ -148,6 +148,10 @@ export function ListadoVendedores() {
             <th>Telefono</th>
             <th>Direccion</th>
             <th>Saldo CC</th>
+            <th>foto documento de frente</th>
+            <th>foto documento de reverso</th>
+            <th>servicio n°1</th>
+            <th>servicio n°2</th>
             <th></th>
           </tr>
         </thead>
@@ -160,6 +164,10 @@ export function ListadoVendedores() {
               <td>{vendedor.telefono}</td>
               <td>{vendedor.direccion}</td>
               <td>{vendedor.cuentaCorriente?.saldo ?? 0}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
               <td>
                 <button
                   className="link-button"
@@ -178,7 +186,7 @@ export function ListadoVendedores() {
           ))}
 
           <tr>
-            <td colSpan="6" className="text-center">
+            <td colSpan="10" className="text-center">
               Total de vendedores: {apiTotalItems}
             </td>
           </tr>

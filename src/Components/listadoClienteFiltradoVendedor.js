@@ -4,7 +4,10 @@ import { EditarClienteModal } from "./modals/EditarClienteModal";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import Swal from "sweetalert2";
 
-export function ListadoClientesFiltradoVendedor({ vendedorId, onRefresh } = {}) {
+export function ListadoClientesFiltradoVendedor({
+  vendedorId,
+  onRefresh,
+} = {}) {
   const [clientes, setClientes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -62,6 +65,8 @@ export function ListadoClientesFiltradoVendedor({ vendedorId, onRefresh } = {}) 
     }
   };
 
+  const currentCliente = clientes;
+
   const fetchClientes = async () => {
     setLoading(true);
     setError(null);
@@ -74,7 +79,7 @@ export function ListadoClientesFiltradoVendedor({ vendedorId, onRefresh } = {}) 
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
       });
 
@@ -116,23 +121,36 @@ export function ListadoClientesFiltradoVendedor({ vendedorId, onRefresh } = {}) 
     console.log("=== DEBUG FILTRO ===");
     console.log("userRole:", userRole);
     console.log("currentUserId:", currentUserId);
-    console.log("vendedor_id from localStorage:", localStorage.getItem("vendedor_id"));
+    console.log(
+      "vendedor_id from localStorage:",
+      localStorage.getItem("vendedor_id")
+    );
     console.log("Total clientes:", clientes.length);
-    console.log("Clientes data:", clientes.map(c => ({ id: c.id, nombre: c.nombre, creado_por: c.creado_por, vendedor_id: c.vendedor?.id, rubro: c.rubro })));
+    console.log(
+      "Clientes data:",
+      clientes.map((c) => ({
+        id: c.id,
+        nombre: c.nombre,
+        creado_por: c.creado_por,
+        vendedor_id: c.vendedor?.id,
+        rubro: c.rubro,
+      }))
+    );
 
     if (userRole === "vendedor" && currentUserId) {
       console.log("Aplicando filtro de vendedor...");
       const vendedorId = localStorage.getItem("vendedor_id");
-      clientsToFilter = clientsToFilter.filter(
-        (cliente) => {
-          // Primero intenta con creado_por, si no existe usa vendedor_id
-          const matchCreado = cliente.creado_por === parseInt(currentUserId);
-          const matchVendedor = cliente.vendedor?.id === parseInt(vendedorId);
-          const match = matchCreado || (cliente.creado_por === undefined && matchVendedor);
-          console.log(`Cliente ${cliente.nombre}: creado_por=${cliente.creado_por}, vendedor_id=${cliente.vendedor?.id}, currentUserId=${currentUserId}, vendedorId=${vendedorId}, match=${match}`);
-          return match;
-        }
-      );
+      clientsToFilter = clientsToFilter.filter((cliente) => {
+        // Primero intenta con creado_por, si no existe usa vendedor_id
+        const matchCreado = cliente.creado_por === parseInt(currentUserId);
+        const matchVendedor = cliente.vendedor?.id === parseInt(vendedorId);
+        const match =
+          matchCreado || (cliente.creado_por === undefined && matchVendedor);
+        console.log(
+          `Cliente ${cliente.nombre}: creado_por=${cliente.creado_por}, vendedor_id=${cliente.vendedor?.id}, currentUserId=${currentUserId}, vendedorId=${vendedorId}, match=${match}`
+        );
+        return match;
+      });
       console.log("Clientes después del filtro:", clientsToFilter.length);
     } else if (vendedorId) {
       clientsToFilter = clientsToFilter.filter(
@@ -159,77 +177,80 @@ export function ListadoClientesFiltradoVendedor({ vendedorId, onRefresh } = {}) 
     return filteredClients.slice(indexOfFirstItem, indexOfLastItem);
   }, [filteredClients, currentPage, itemsPerPage]);
 
-const handleOnDragEnd = async (result) => {
-  if (!result.destination) {
-    return;
-  }
-
-  const { source, destination } = result;
-
-  if (
-    source.droppableId === destination.droppableId &&
-    source.index === destination.index
-  ) {
-    return;
-  }
-
-  // Use a copy of the currently filtered and paginated list for the drag logic
-  const reorderedPaginatedClients = Array.from(paginatedClients);
-  const [movedItem] = reorderedPaginatedClients.splice(source.index, 1);
-  reorderedPaginatedClients.splice(destination.index, 0, movedItem);
-  
-
-  // Now, we need to map the new order back to the full `clientes` array.
-  const newFullClientList = Array.from(clientes);
-  const clientMap = new Map(newFullClientList.map(c => [c.id, c]));
-
-  const reorderedIds = reorderedPaginatedClients.map(c => c.id);
-  const nonFilteredClients = newFullClientList.filter(c => !filteredClients.some(fc => fc.id === c.id));
-  const combinedList = [...reorderedPaginatedClients, ...nonFilteredClients];
-
-  const finalOrderedClients = combinedList.map((c, index) => ({
-    ...clientMap.get(c.id),
-    orden: index,
-  }));
-
-  setClientes(finalOrderedClients);
-
-  try {
-    // Loop through the final ordered list and send one API call for each client
-    for (const client of finalOrderedClients) {
-      const payload = {
-        id: client.id,
-        orden: client.orden
-      };
-
-      const response = await fetch(`${apiRest}/cliente/ordenar`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        // Log the error and break the loop if a single request fails
-        const errorBody = await response.json().catch(() => null);
-        console.error("Error response status:", response.status);
-        console.error("Error response body:", JSON.stringify(errorBody, null, 2));
-        throw new Error("Error al guardar el nuevo orden");
-      }
+  const handleOnDragEnd = async (result) => {
+    if (!result.destination) {
+      return;
     }
 
-  } catch (error) {
-    console.error("Error updating order:", error);
-    // Revert to the original state if any API call fails
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: 'Error al guardar el nuevo orden. Reviertiendo los cambios.',
-    });
-    setClientes(clientes); // Revert to the state before the drag-and-drop
-  }
-};
+    const { source, destination } = result;
+
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    ) {
+      return;
+    }
+
+    // Use a copy of the currently filtered and paginated list for the drag logic
+    const reorderedPaginatedClients = Array.from(paginatedClients);
+    const [movedItem] = reorderedPaginatedClients.splice(source.index, 1);
+    reorderedPaginatedClients.splice(destination.index, 0, movedItem);
+
+    // Now, we need to map the new order back to the full `clientes` array.
+    const newFullClientList = Array.from(clientes);
+    const clientMap = new Map(newFullClientList.map((c) => [c.id, c]));
+
+    const reorderedIds = reorderedPaginatedClients.map((c) => c.id);
+    const nonFilteredClients = newFullClientList.filter(
+      (c) => !filteredClients.some((fc) => fc.id === c.id)
+    );
+    const combinedList = [...reorderedPaginatedClients, ...nonFilteredClients];
+
+    const finalOrderedClients = combinedList.map((c, index) => ({
+      ...clientMap.get(c.id),
+      orden: index,
+    }));
+
+    setClientes(finalOrderedClients);
+
+    try {
+      // Loop through the final ordered list and send one API call for each client
+      for (const client of finalOrderedClients) {
+        const payload = {
+          id: client.id,
+          orden: client.orden,
+        };
+
+        const response = await fetch(`${apiRest}/cliente/ordenar`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          // Log the error and break the loop if a single request fails
+          const errorBody = await response.json().catch(() => null);
+          console.error("Error response status:", response.status);
+          console.error(
+            "Error response body:",
+            JSON.stringify(errorBody, null, 2)
+          );
+          throw new Error("Error al guardar el nuevo orden");
+        }
+      }
+    } catch (error) {
+      console.error("Error updating order:", error);
+      // Revert to the original state if any API call fails
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Error al guardar el nuevo orden. Reviertiendo los cambios.",
+      });
+      setClientes(clientes); // Revert to the state before the drag-and-drop
+    }
+  };
 
   if (loading) {
     return (
@@ -259,13 +280,11 @@ const handleOnDragEnd = async (result) => {
     );
   }
 
-  const userRole = localStorage.getItem("user_role");
-
   return (
     <div className="card-body">
-       <div className="mb-3">
-          <h2 className="card-title">Listado de Clientes</h2>
-       </div>
+      <div className="mb-3">
+        <h2 className="card-title">Listado de Clientes</h2>
+      </div>
       <div className="mb-3">
         <input
           type="text"
@@ -293,6 +312,10 @@ const handleOnDragEnd = async (result) => {
                   <th>Teléfono 1</th>
                   <th>Teléfono 2</th>
                   <th>Rubro</th>
+                  <th>Documento Frontal</th>
+                  <th>Documento Dorsal</th>
+                  <th>Servicio 1</th>
+                  <th>servicio 2</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -324,13 +347,39 @@ const handleOnDragEnd = async (result) => {
                             <td>{cliente.telefono2}</td>
                             <td>{cliente.rubro}</td>
                             <td>
-                              <button onClick={() => handleOpenModal(cliente)} 
-                              disabled={userRole === "vendedor"}>
+                              <img
+                                src={`${apiRest}/cliente/${cliente.id}/imagen/documento_frente`}
+                                width={100}
+                                alt=""
+                              ></img>
+                            </td>
+                            <td>
+                              <img
+                                src={`${apiRest}/cliente/${cliente.id}/imagen/documento_dorso`}
+                                width={100}
+                                alt=""
+                              ></img>
+                            </td>
+                            <td>
+                              <img
+                                src={`${apiRest}/cliente/${cliente.id}/imagen/servicio_1`}
+                                width={100}
+                                alt=""
+                              ></img>
+                            </td>
+                            <td>
+                              <img
+                                src={`${apiRest}/cliente/${cliente.id}/imagen/servicio_2`}
+                                width={100}
+                                alt=""
+                              ></img>
+                            </td>
+                            <td>
+                              <button onClick={() => handleOpenModal(cliente)}>
                                 editar
                               </button>
                               <button
-                                onClick={() => handleEliminar(cliente.id)} 
-                                disabled={userRole === "vendedor"}
+                                onClick={() => handleEliminar(cliente.id)}
                               >
                                 eliminar
                               </button>
@@ -407,7 +456,9 @@ const handleOnDragEnd = async (result) => {
       ) : (
         <div className="text-center py-5">
           <p>No se encontraron clientes con ese criterio de búsqueda.</p>
-          <p><small>Total de clientes en BD: {clientes.length}</small></p>
+          <p>
+            <small>Total de clientes en BD: {clientes.length}</small>
+          </p>
         </div>
       )}
     </div>

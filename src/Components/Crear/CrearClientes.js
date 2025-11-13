@@ -10,13 +10,19 @@ export const CrearCliente = () => {
   const [telefono1, setTelefono1] = useState("");
   const [telefono2, setTelefono2] = useState("");
   const [rubro, setRubro] = useState("");
-
-  const [listaVendedores, setListaVendedores] = useState([]); // ✅ lista de vendedores
-  const [vendedorSeleccionado, setVendedorSeleccionado] = useState(""); // ✅ id del vendedor elegido
+  
+  const [documentoFrente, setDocumentoFrente] = useState(null); 
+  const [documentoDorsal, setDocumentoDorsal] = useState(null); 
+  const [servicio1, setServicio1] = useState(null);           
+  const [servicio2, setServicio2] = useState(null);           
+  
+  const [listaVendedores, setListaVendedores] = useState([]);
+  const [vendedorSeleccionado, setVendedorSeleccionado] = useState("");
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [button, setButton] = useState(false);
+
 
   const handleRetry = () => {
     setLoading(false);
@@ -27,9 +33,9 @@ export const CrearCliente = () => {
   const MostrarAlerta = () => {
     Swal.fire({
       title: "Creación de Cliente",
-      text: "El cliente fue creado correctamente",
+      text: "El cliente fue creado correctamente.",
       icon: "success",
-      timer: 1500,
+      timer: 2000,
     }).then(() => {
       window.location.href = `${publicUrl}/clientes`;
     });
@@ -46,13 +52,33 @@ export const CrearCliente = () => {
         setError("No se pudieron cargar los vendedores.");
       }
     };
-
     obtenerVendedores();
   }, []);
+  
+  const uploadImageByType = async (clienteId, file, tipo) => {
+    if (!file) {
+      return;
+    }
 
-  const getNombreVendedorById = (id) => {
-    const vend = listaVendedores.find((v) => v.id === parseInt(id));
-    return vend ? vend.nombre : "";
+    const formData = new FormData();
+    formData.append("imagen", file); 
+
+    try {
+      const response = await fetch(`${apiRest}/cliente/${clienteId}/imagen/${tipo}`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`Error al subir ${tipo}: ${response.status} - ${errorText}`);
+      } else {
+        console.log(`Imagen de ${tipo} subida correctamente.`);
+      }
+
+    } catch (error) {
+      console.error(`Error de red al subir ${tipo}:`, error);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -60,25 +86,24 @@ export const CrearCliente = () => {
     setLoading(true);
 
     try {
-
       const userId = localStorage.getItem("user_id");
-      
+
       const response = await fetch(`${apiRest}/cliente`, {
         method: "POST",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", // Necesario para JSON
         },
         body: JSON.stringify({
           nombre,
-          'dni': Number(dni),
+          dni: Number(dni),
           direccion_local: direccionlocal,
           direccion_casa: direccioncasa,
-          'telefono1': Number(telefono1),
-          'telefono2': Number(telefono2),
+          telefono1: Number(telefono1),
+          telefono2: Number(telefono2),
           vendedor_id: Number(vendedorSeleccionado),
           creado_por: Number(userId),
-          "rubro": rubro
+          rubro: rubro,
         }),
       });
 
@@ -88,20 +113,33 @@ export const CrearCliente = () => {
       }
 
       const data = await response.json();
+      const newClienteId = data.id;
+
+      if (newClienteId) {
+        const uploadPromises = [
+          uploadImageByType(newClienteId, documentoFrente, 'documento_frente'),
+          uploadImageByType(newClienteId, documentoDorsal, 'documento_dorso'),
+          uploadImageByType(newClienteId, servicio1, 'servicio1'),
+          uploadImageByType(newClienteId, servicio2, 'servicio2'),
+        ];
+
+        await Promise.allSettled(uploadPromises);
+      }
       
-      const storedClientes = localStorage.getItem('clientes');
+      const storedClientes = localStorage.getItem("clientes");
       const clientes = storedClientes ? JSON.parse(storedClientes) : [];
       const updatedClientes = [...clientes, data];
-      localStorage.setItem('clientes', JSON.stringify(updatedClientes));
+      localStorage.setItem("clientes", JSON.stringify(updatedClientes));
 
-      console.log("Cliente creado:", data);
+      console.log("Cliente creado y subida de imágenes finalizada.");
       MostrarAlerta();
       setButton(true);
       setLoading(false);
+      
     } catch (error) {
       console.error("Error detallado:", error);
       setError(
-        `No se pudo conectar con el servidor. Verifica que el servidor esté corriendo en el puerto 3001: ${error.message}`
+        `No se pudo crear el cliente. Verifica el servidor: ${error.message}`
       );
       setLoading(false);
     }
@@ -186,7 +224,6 @@ export const CrearCliente = () => {
                 value={telefono2}
                 onChange={(e) => setTelefono2(e.target.value)}
                 type="text"
-                required
               />
             </div>
             <div className="form-group">
@@ -215,9 +252,60 @@ export const CrearCliente = () => {
                 ))}
               </select>
             </div>
+            
+            <hr />
+            
+            <div className="form-group">
+              <label htmlFor="documentoFrente">Documento de Frente:</label>
+              <input
+                className="form-control"
+                id="documentoFrente"
+                type="file"
+                accept="image/*"
+                onChange={(e) => setDocumentoFrente(e.target.files[0])}
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="documentoDorsal">Documento Dorsal:</label>
+              <input
+                className="form-control"
+                id="documentoDorsal"
+                type="file"
+                accept="image/*"
+                onChange={(e) => setDocumentoDorsal(e.target.files[0])}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="servicio1">Comprobante de Servicio 1:</label>
+              <input
+                className="form-control"
+                id="servicio1"
+                type="file"
+                accept="image/*"
+                onChange={(e) => setServicio1(e.target.files[0])}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="servicio2">Comprobante de Servicio 2:</label>
+              <input
+                className="form-control"
+                id="servicio2"
+                type="file"
+                accept="image/*"
+                onChange={(e) => setServicio2(e.target.files[0])}
+              />
+            </div>          
           </div>
+
           <div className="card-footer">
-            <button type="submit" className="btn btn-primary" disabled={loading}>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={loading}
+            >
               {loading ? "Creando..." : "Crear Cliente"}
             </button>
           </div>

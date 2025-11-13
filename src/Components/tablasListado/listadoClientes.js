@@ -1,7 +1,8 @@
-
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
 import { EditarClienteModal } from "../modals/EditarClienteModal";
+
+const PLACEHOLDER_URL = "https://placehold.co/100x100/eeeeee/333333?text=Sin+Foto";
 
 export function ListadoClientes() {
   const [allClientes, setAllClientes] = useState([]);
@@ -10,10 +11,15 @@ export function ListadoClientes() {
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCliente, setSelectedCliente] = useState(null);
-
-  // Estados para la Paginación del lado del cliente
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(20);
+
+const handleImageError = (e) => {
+    if (e.target.src !== PLACEHOLDER_URL) {
+      e.target.onerror = null;  
+      e.target.src = PLACEHOLDER_URL;
+    }
+  };
 
   const handleOpenModal = (cliente) => {
     setSelectedCliente(cliente);
@@ -37,18 +43,19 @@ export function ListadoClientes() {
       await fetch(`${apiRest}/cliente/${id}`, {
         method: "DELETE",
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
       });
       console.log(`Producto con id ${id} eliminado. `);
 
       const nuevosClientes = allClientes.filter((cliente) => cliente.id !== id);
       setAllClientes(nuevosClientes);
-
     } catch (error) {
       console.error("Error al eliminar el producto:", error);
     }
   };
+
+  const currentCliente = clientes;
 
   const fetchClientes = async () => {
     try {
@@ -57,7 +64,7 @@ export function ListadoClientes() {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
       });
 
@@ -151,34 +158,68 @@ export function ListadoClientes() {
             <th>Teléfono 2</th>
             <th>Rubro</th>
             <th>Vendedor</th>
-            <th></th>
+            <th>Documento Frente</th>
+            <th>Documento Dorso</th>
+            <th>Servicio 1</th>
+            <th>Servicio 2</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {clientes
-            .map((cliente) => (
-              <tr key={cliente.id}>
-                <td>{cliente.id_formatted}</td>
-                <td>{cliente.nombre}</td>
-                <td>{cliente.dni}</td>
-                <td>{cliente.direccion_local}</td>
-                <td>{cliente.direccion_casa}</td>
-                <td>{cliente.telefono1}</td>
-                <td>{cliente.telefono2}</td>
-                <td>{cliente.rubro}</td>
-                <td>{cliente.vendedor?.nombre || "Sin vendedor"}</td>
-                <td>
-                  <button onClick={() => handleOpenModal(cliente)}>
-                    editar
-                  </button>
-                  <button onClick={() => handleEliminar(cliente.id)}>
-                    eliminar
-                  </button>
-                </td>
-              </tr>
-            ))}
-            <tr>
-            <td colSpan="10" className="text-center">
+          {currentCliente.map((cliente) => (
+            <tr key={cliente.id}>
+              <td>{cliente.id_formatted}</td>
+              <td>{cliente.nombre}</td>
+              <td>{cliente.dni}</td>
+              <td>{cliente.direccion_local}</td>
+              <td>{cliente.direccion_casa}</td>
+              <td>{cliente.telefono1}</td>
+              <td>{cliente.telefono2}</td>
+              <td>{cliente.rubro}</td>
+              <td>{cliente.vendedor?.nombre || "Sin vendedor"}</td>
+              <td>
+                <img
+                  src={`${apiRest}/cliente/${cliente.id}/imagen/documento_frente`}
+                  width={100}
+                  alt="Documento Frente"
+                  onError={handleImageError} 
+                ></img>
+              </td>
+              <td>
+                <img
+                  src={`${apiRest}/cliente/${cliente.id}/imagen/documento_dorso`}
+                  width={100}
+                  alt="Documento Dorso"
+                  onError={handleImageError} 
+                ></img>
+              </td>
+              <td>
+                <img
+                  src={`${apiRest}/cliente/${cliente.id}/imagen/servicio1`} 
+                  width={100}
+                  alt="Servicio 1"
+                  onError={handleImageError} 
+                ></img>
+              </td>
+              <td>
+                <img
+                  // ¡Importante! Asegúrate que el backend maneje el nombre 'servicio_2' correctamente.
+                  src={`${apiRest}/cliente/${cliente.id}/imagen/servicio2`}
+                  width={100}
+                  alt="Servicio 2"
+                  onError={handleImageError} // 🎯 Maneja el error 404 del servidor
+                ></img>
+              </td>
+              <td>
+                <button onClick={() => handleOpenModal(cliente)}>editar</button>
+                <button onClick={() => handleEliminar(cliente.id)}>
+                  eliminar
+                </button>
+              </td>
+            </tr>
+          ))}
+          <tr>
+            <td colSpan="14" className="text-center">
               Total de clientes: {allClientes.length}
             </td>
           </tr>
@@ -195,37 +236,52 @@ export function ListadoClientes() {
         <nav aria-label="Paginación" className="mt-3">
           <ul className="pagination justify-content-center">
             {/* Botón Anterior */}
-            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
               <a
                 className="page-link"
                 href="#!"
-                onClick={(e) => { e.preventDefault(); setCurrentPage(currentPage - 1); }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentPage(currentPage - 1);
+                }}
               >
                 &laquo; Anterior
               </a>
             </li>
 
             {/* Números de Página */}
-            {pageNumbers.map(number => (
+            {pageNumbers.map((number) => (
               <li
                 key={number}
-                className={`page-item ${number === currentPage ? 'active' : ''}`}
+                className={`page-item ${
+                  number === currentPage ? "active" : ""
+                }`}
               >
                 <a
                   className="page-link"
                   href="#!"
-                  onClick={(e) => { e.preventDefault(); setCurrentPage(number); }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentPage(number);
+                  }}
                 >
                   {number}
                 </a>
               </li>
             ))}
 
-            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+            <li
+              className={`page-item ${
+                currentPage === totalPages ? "disabled" : ""
+              }`}
+            >
               <a
                 className="page-link"
                 href="#!"
-                onClick={(e) => { e.preventDefault(); setCurrentPage(currentPage + 1); }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentPage(currentPage + 1);
+                }}
               >
                 Siguiente &raquo;
               </a>
