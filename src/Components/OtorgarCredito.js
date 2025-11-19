@@ -6,15 +6,11 @@ import { CUOTA_TYPE_NAMES } from "../constants/cuotaTypes";
 
 
 const FormOtorgarFecha = ({ fecha, setFecha }) => {
-  let displayValue = "";
-
-  if (fecha) {
-    if (typeof fecha === "string" && fecha.includes("T")) {
-      displayValue = fecha.split("T")[0];
-    } else {
-      displayValue = fecha;
-    }
-  }
+  const handleDateChange = (e) => {
+    const selectedDate = e.target.value;
+    console.log('Fecha seleccionada:', selectedDate);
+    setFecha(selectedDate);
+  };
 
   return (
     <div className="form-group">
@@ -23,8 +19,8 @@ const FormOtorgarFecha = ({ fecha, setFecha }) => {
         type="date"
         className="form-control"
         id="fecha"
-        value={displayValue} // <--- Usamos el valor formateado
-        onChange={(e) => setFecha(e.target.value)}
+        value={fecha || ""}
+        onChange={handleDateChange}
       />
     </div>
   );
@@ -109,12 +105,17 @@ const OtorgarCredito = () => {
 
     try {
       const vendedorId = Number(localStorage.getItem("vendedor_id"));
+      
+      // Formatear la fecha para evitar problemas de zona horaria
+      const fechaFormateada = fecha + 'T12:00:00.000Z';
+      console.log('Fecha a enviar:', fechaFormateada);
+      
       const data = JSON.stringify({
           setting_cuotas_credito_id: parseInt(cuotaId),
           cliente_id: parseInt(cliente),
           vendedor_id: vendedorId,
           monto: parseFloat(monto),
-          fecha: fecha,
+          fecha: fechaFormateada,
         });
       const response = await fetch(`${apiRest}/credito`, {
         method: "POST",
@@ -144,6 +145,7 @@ const OtorgarCredito = () => {
       setMonto("");
       setCuotaId("");
       setDetallesFinanciacion(null);
+      setFecha("");
     } catch (error) {
       console.error("Error detallado:", error);
       Swal.fire(
