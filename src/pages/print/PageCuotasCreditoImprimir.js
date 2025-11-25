@@ -16,9 +16,9 @@ export default function PrintCuotasCredito() {
     const response = await fetch(`${apiRest}/credito/cuotas/${credito_id}`, {
       method: "GET",
       headers: {
-        'Accept': "application/json",
-        'Content-Type': "application/json",
-        'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
       },
     });
 
@@ -53,23 +53,35 @@ export default function PrintCuotasCredito() {
         <h1>Electrovenza</h1>
         <h2>Te: 11.6398.5857 - Instagram/Facebook: @electrovenza</h2>
         <div className="row">
-          <div className="col-md-6"><h1>Cliente: {cliente}</h1></div>
-          <div className="col-md-6"><h1>Monto otorgado: {montoOtorgado}</h1></div>  
+          <div className="col-md-6">
+            <h3>Cliente: {cliente}</h3>
+          </div>
+          <div className="col-md-6">
+            <h3>Monto otorgado: {montoOtorgado}</h3>
+          </div>
         </div>
-          
+
         <div className="row">
-          <div className="col-md-6"><h1>Vendedor: {vendedor}</h1></div>
-          
-          <div className="col-md-6"><h1>valor de cuota: {cuotas && cuotas[0] && cuotas[0].valor}</h1></div>
+          <div className="col-md-6">
+            <h3>Vendedor: {vendedor}</h3>
+          </div>
+
+          <div className="col-md-6">
+            <h3>valor de cuota: {cuotas && cuotas[0] && cuotas[0].valor}</h3>
+          </div>
         </div>
         <div>&nbsp;</div>
-
-
+        <h3>numero de Credito/venta: {credito_id}</h3>
         <div className="row cuotas">
           {cuotas.map((cuota) => (
             <div className="col-md-3">
-              <p>({cuota.numero.toString().padStart(2, "0")}) {convertIsoToDMY(cuota.fecha)} &nbsp;</p>
-              <p>{cuota.monto_cobrado > 0 ? cuota.monto_cobrado.toString().padStart(8, " ") : ". ".repeat(16)}</p>
+              <p>
+                ({cuota.numero.toString().padStart(2, "0")}){" "}
+                {convertIsoToDMY(cuota.fecha)} &nbsp;
+                {cuota.monto_cobrado > 0
+                  ? cuota.monto_cobrado.toString().padStart(8, " ")
+                  : ". ".repeat(16)}
+              </p>
             </div>
           ))}
         </div>
