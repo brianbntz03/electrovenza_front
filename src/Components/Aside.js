@@ -139,6 +139,10 @@ export default function   Aside() {
       <li
         className={`nav-item ${electroOpen ? "menu-is-opening menu-open" : ""}`}
       >
+          <NavLink to="/cuotas-por-cobrar" className="nav-link" onClick={closeMobileSidebar}>
+            <i className="nav-icon fas fa-dollar-sign" />
+            <p>CUOTAS POR COBRAR</p>
+          </NavLink>
         <a href="#" className="nav-link" onClick={toggleElectro}>
           <i className="nav-icon fas fa-bolt" />
           <p>
@@ -154,7 +158,7 @@ export default function   Aside() {
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/cuotas-por-cobrar" className="nav-link" onClick={closeMobileSidebar}>
+            <NavLink to="/cuotas-por-cobrar-electro" className="nav-link" onClick={closeMobileSidebar}>
               <i className="nav-icon fas fa-file-invoice-dollar" />
               <p>Cuotas por cobrar</p>
             </NavLink>

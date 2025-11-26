@@ -1,11 +1,11 @@
-import CuotasVencidasAll from "../Components/cuotasVencidasAll";
+import CuotasVencidas from "../Components/cuotasVencidas";
 
-const PageCuotasPorCobrar = () => {
-  const cuotasVencidas = CuotasVencidasAll();
+const PageCuotasPorCobrarElectro = () => {
+  const cuotasVencidas = CuotasVencidas();
   return (
     <div className="card">
       <div class="card-header">
-        <h3 className="card-title">Cuotas vencidas</h3>
+        <h3 className="card-title">Cuotas vencidas electro</h3>
         <div className="card-tools">
           
         </div>
@@ -17,4 +17,4 @@ const PageCuotasPorCobrar = () => {
   );
 };
 
-export default PageCuotasPorCobrar;
+export default PageCuotasPorCobrarElectro;

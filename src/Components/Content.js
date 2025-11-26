@@ -19,6 +19,7 @@ import PageSettingCuotasCreditoListado from "../pages/SettingCuotasCreditoListad
 import PageBandasPrecios from "../pages/PageBandasPrecios";
 import { CrearBandasPrecios } from "./Crear/CrearBandasPrecios";
 import PageCuotasPorCobrar from "../pages/PageCuotasPorCobrar";
+import PageCuotasPorCobrarElectro from "../pages/PageCuotasPorCobrarElectro";
 import PrintCuotas from "../pages/print/PageCuotasImprimir";
 import PrintCuotasCredito from "../pages/print/PageCuotasCreditoImprimir";
 import { CrearVendedor } from "./Crear/CrearVendedor";
@@ -92,6 +93,7 @@ export default function Content() {
                 
                 <Route path="/buscar-articulos-presupuesto" Component={PagePresupuestar}></Route>
                 <Route path="/cuotas-por-cobrar" Component={PageCuotasPorCobrar} ></Route>
+                <Route path="/cuotas-por-cobrar-electro" Component={PageCuotasPorCobrarElectro} ></Route>
                 <Route path="/ventas-listado" Component={PageListadoVentas}></Route>
                 <Route path="/ventas-comisiones-pendientes" element={<PageComisionesPorVentaPendientes />} />
                 <Route path="/creditos-comisiones-pendientes" element={<PageComisionesPorCreditoPendientes />} />
