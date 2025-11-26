@@ -9,7 +9,7 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
     nombre: "",
     dni: "",
     direccion_local: "",
-    direccion_casa: "",
+    direccion_casa: "", 
     telefono1: "",
     telefono2: "",
     rubro: "",
@@ -19,6 +19,12 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
   const [documentoDorso, setDocumentoDorso] = useState(null);
   const [servicio1, setServicio1] = useState(null);
   const [servicio2, setServicio2] = useState(null);
+  
+  // Estados para las vistas previas
+  const [previewDocumentoFrente, setPreviewDocumentoFrente] = useState(null);
+  const [previewDocumentoDorso, setPreviewDocumentoDorso] = useState(null);
+  const [previewServicio1, setPreviewServicio1] = useState(null);
+  const [previewServicio2, setPreviewServicio2] = useState(null);
   const [vendedores, setVendedores] = useState([]);
   const [error, setError] = useState(null);
   const [userRole, setUserRole] = useState(null);
@@ -59,6 +65,16 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
     }
   }, []);
 
+  // Limpiar URLs de objeto al desmontar el componente
+  useEffect(() => {
+    return () => {
+      if (previewDocumentoFrente) URL.revokeObjectURL(previewDocumentoFrente);
+      if (previewDocumentoDorso) URL.revokeObjectURL(previewDocumentoDorso);
+      if (previewServicio1) URL.revokeObjectURL(previewServicio1);
+      if (previewServicio2) URL.revokeObjectURL(previewServicio2);
+    };
+  }, [previewDocumentoFrente, previewDocumentoDorso, previewServicio1, previewServicio2]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -85,7 +101,11 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
   };
 
 
-  const handleImageUpload = async (tipo, archivo) => {
+  const handleImageUpload = async (tipo, archivo) =>  {
+
+  const formData = new FormData();
+  formData.append('imagen', 'file');
+
     if (!archivo) return;
 
     try {
@@ -93,7 +113,7 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
       // El campo del archivo DEBE llamarse 'imagen'
       formData.append("imagen", archivo); 
       
-      // 🎯 RUTA CORREGIDA: Incluye el tipo en la URL
+      //  RUTA CORREGIDA: Incluye el tipo en la URL
       const response = await fetch(`${apiRest}/cliente/${cliente.id}/imagen/${tipo}`, {
         method: "POST",
         body: formData,
@@ -103,7 +123,7 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
         throw new Error("Error al subir la imagen");
       }
       
-      // 🎯 FORZAR RECARGA DE LA IMAGEN EN LA VENTANA ACTUAL
+      // FORZAR RECARGA DE LA IMAGEN EN LA VENTANA ACTUAL
       const timestamp = new Date().getTime();
       const imgElements = document.querySelectorAll(`img[src*="cliente/${cliente.id}/imagen"]`);
       imgElements.forEach(img => {
@@ -113,6 +133,7 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
             img.src = `${currentSrc}?t=${timestamp}`
         }
       });
+
       
     } catch (error) {
       setError(error.message);
@@ -137,7 +158,6 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
         telefono2: Number(formData.telefono2),
       };
 
-      console.log("Enviando datos para actualizar cliente:", dataToSend);
       const response = await fetch(`${apiRest}/cliente/${cliente.id}`, {
         method: "PATCH",
         headers: {
@@ -251,7 +271,6 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
                 </div>
               )}
 
-              {/* === Subida de Imágenes === */}
               <h5 className="mt-4 mb-3">Imágenes del Cliente</h5>
               
               {/* Documento Frente */}
@@ -259,13 +278,13 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
                 <div className="card-header">Documento Frente</div>
                 <div className="card-body">
                   <div className="form-group">
-                    <label>Imagen Actual</label>
+                    <label>{previewDocumentoFrente ? 'Nueva Imagen Seleccionada' : 'Imagen Actual'}</label>
                     <div>
                       <img 
-                          src={`${apiRest}/cliente/${cliente.id}/imagen/documento_frente`} 
+                          src={previewDocumentoFrente || `${apiRest}/cliente/${cliente.id}/imagen/frente`} 
                           width={100} 
                           alt="Documento Frente"
-                          onError={handleImageError} // 🎯 Maneja el 404
+                          onError={handleImageError}
                       ></img>
                     </div>
                   </div>
@@ -274,11 +293,14 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
                     <input
                       type="file"
                       className="form-control"
-                      accept="image/*"
+
                       onChange={(e) => {
-                        setDocumentoFrente(e.target.files[0]);
-                        // Llama a la función de subida con el tipo correcto (documento_frente)
-                        if (e.target.files[0]) handleImageUpload('documento_frente', e.target.files[0]);
+                        const file = e.target.files[0];
+                        if (file) {
+                          setDocumentoFrente(file);
+                          setPreviewDocumentoFrente(URL.createObjectURL(file));
+                          handleImageUpload('frente', file);
+                        }
                       }}
                     />
                   </div>
@@ -290,13 +312,13 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
                 <div className="card-header">Documento Dorso</div>
                 <div className="card-body">
                   <div className="form-group">
-                    <label>Imagen Actual</label>
+                    <label>{previewDocumentoDorso ? 'Nueva Imagen Seleccionada' : 'Imagen Actual'}</label>
                     <div>
                       <img 
-                          src={`${apiRest}/cliente/${cliente.id}/imagen/documento_dorso`} 
+                          src={previewDocumentoDorso || `${apiRest}/cliente/${cliente.id}/imagen/dorso`} 
                           width={100} 
                           alt="Documento Dorso"
-                          onError={handleImageError} // 🎯 Maneja el 404
+                          onError={handleImageError}
                       ></img>
                     </div>
                   </div>
@@ -307,9 +329,12 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
                       className="form-control"
                       accept="image/*"
                       onChange={(e) => {
-                        setDocumentoDorso(e.target.files[0]);
-                        // Llama a la función de subida con el tipo correcto (documento_dorso)
-                        if (e.target.files[0]) handleImageUpload('documento_dorso', e.target.files[0]);
+                        const file = e.target.files[0];
+                        if (file) {
+                          setDocumentoDorso(file);
+                          setPreviewDocumentoDorso(URL.createObjectURL(file));
+                          handleImageUpload('dorso', file);
+                        }
                       }}
                     />
                   </div>
@@ -321,14 +346,13 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
                 <div className="card-header">Servicio 1</div>
                 <div className="card-body">
                   <div className="form-group">
-                    <label>Imagen Actual</label>
+                    <label>{previewServicio1 ? 'Nueva Imagen Seleccionada' : 'Imagen Actual'}</label>
                     <div>
                       <img 
-                          // Importante: Usamos 'servicio_1' (con guion) para la URL GET
-                          src={`${apiRest}/cliente/${cliente.id}/imagen/servicio1`} 
+                          src={previewServicio1 || `${apiRest}/cliente/${cliente.id}/imagen/servicio1`} 
                           width={100} 
                           alt="Servicio 1"
-                          onError={handleImageError} // 🎯 Maneja el 404
+                          onError={handleImageError}
                       ></img>
                     </div>
                   </div>
@@ -339,9 +363,12 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
                       className="form-control"
                       accept="image/*"
                       onChange={(e) => {
-                        setServicio1(e.target.files[0]);
-                        // Llama a la función de subida con el tipo correcto (servicio_1)
-                        if (e.target.files[0]) handleImageUpload('servicio1', e.target.files[0]);
+                        const file = e.target.files[0];
+                        if (file) {
+                          setServicio1(file);
+                          setPreviewServicio1(URL.createObjectURL(file));
+                          handleImageUpload('servicio1', file);
+                        }
                       }}
                     />
                   </div>
@@ -353,14 +380,13 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
                 <div className="card-header">Servicio 2</div>
                 <div className="card-body">
                   <div className="form-group">
-                    <label>Imagen Actual</label>
+                    <label>{previewServicio2 ? 'Nueva Imagen Seleccionada' : 'Imagen Actual'}</label>
                     <div>
                       <img 
-                          // Importante: Usamos 'servicio_2' (con guion) para la URL GET
-                          src={`${apiRest}/cliente/${cliente.id}/imagen/servicio2`} 
+                          src={previewServicio2 || `${apiRest}/cliente/${cliente.id}/imagen/servicio2`} 
                           width={100} 
                           alt="Servicio 2"
-                          onError={handleImageError} // 🎯 Maneja el 404
+                          onError={handleImageError}
                       ></img>
                     </div>
                   </div>
@@ -371,9 +397,12 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
                       className="form-control"
                       accept="image/*"
                       onChange={(e) => {
-                        setServicio2(e.target.files[0]);
-                        // Llama a la función de subida con el tipo correcto (servicio_2)
-                        if (e.target.files[0]) handleImageUpload('servicio2', e.target.files[0]);
+                        const file = e.target.files[0];
+                        if (file) {
+                          setServicio2(file);
+                          setPreviewServicio2(URL.createObjectURL(file));
+                          handleImageUpload('servicio2', file);
+                        }
                       }}
                     />
                   </div>

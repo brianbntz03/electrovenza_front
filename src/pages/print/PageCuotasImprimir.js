@@ -69,10 +69,14 @@ export default function PrintCuotas() {
             <h3>valor de cuota: {cuotas && cuotas[0] && cuotas[0].valor}</h3>
           </div>
         </div>
-        <div>&nbsp;</div>
+
         <div className="row">
-        <h3>Numero de credito/venta: {venta_id} </h3>
+          <div className="col-md-6">
+            <h3>Numero de venta: {venta_id} </h3>
+          </div>
         </div>
+        <div>&nbsp;</div>
+
         <div className="row cuotas">
           {cuotas.map((cuota) => (
             <div className="col-md-3">

@@ -55,7 +55,6 @@ export function ListadoClientesFiltradoVendedor({
       await fetch(`${apiRest}/cliente/${id}`, {
         method: "DELETE",
       });
-      console.log(`Producto con id ${id} eliminado. `);
 
       const nuevosClientes = clientes.filter((cliente) => cliente.id !== id);
       setClientes(nuevosClientes);
@@ -72,7 +71,6 @@ export function ListadoClientesFiltradoVendedor({
     setError(null);
     try {
       const apiUrl = `${apiRest}/cliente`;
-      console.log("Fetching clients from URL:", apiUrl);
 
       const response = await fetch(apiUrl, {
         method: "GET",
@@ -88,7 +86,6 @@ export function ListadoClientesFiltradoVendedor({
       }
 
       const data = await response.json();
-      console.log("API data fetched:", data);
 
       const clientsArray = Array.isArray(data) ? data : [];
       setClientes(clientsArray);
@@ -118,27 +115,10 @@ export function ListadoClientesFiltradoVendedor({
     const userRole = localStorage.getItem("user_role");
     const currentUserId = localStorage.getItem("user_id");
 
-    console.log("=== DEBUG FILTRO ===");
-    console.log("userRole:", userRole);
-    console.log("currentUserId:", currentUserId);
-    console.log(
-      "vendedor_id from localStorage:",
-      localStorage.getItem("vendedor_id")
-    );
-    console.log("Total clientes:", clientes.length);
-    console.log(
-      "Clientes data:",
-      clientes.map((c) => ({
-        id: c.id,
-        nombre: c.nombre,
-        creado_por: c.creado_por,
-        vendedor_id: c.vendedor?.id,
-        rubro: c.rubro,
-      }))
-    );
+    
+    
 
     if (userRole === "vendedor" && currentUserId) {
-      console.log("Aplicando filtro de vendedor...");
       const vendedorId = localStorage.getItem("vendedor_id");
       clientsToFilter = clientsToFilter.filter((cliente) => {
         // Primero intenta con creado_por, si no existe usa vendedor_id
@@ -146,12 +126,8 @@ export function ListadoClientesFiltradoVendedor({
         const matchVendedor = cliente.vendedor?.id === parseInt(vendedorId);
         const match =
           matchCreado || (cliente.creado_por === undefined && matchVendedor);
-        console.log(
-          `Cliente ${cliente.nombre}: creado_por=${cliente.creado_por}, vendedor_id=${cliente.vendedor?.id}, currentUserId=${currentUserId}, vendedorId=${vendedorId}, match=${match}`
-        );
         return match;
       });
-      console.log("Clientes después del filtro:", clientsToFilter.length);
     } else if (vendedorId) {
       clientsToFilter = clientsToFilter.filter(
         (cliente) => cliente.vendedor?.id === vendedorId
