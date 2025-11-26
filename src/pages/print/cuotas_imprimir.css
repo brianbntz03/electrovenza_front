@@ -22,7 +22,7 @@
   }
   
   h3{
-    font-size: 14px;
+    font-size: 30px;
   }
 
   .row{
@@ -40,6 +40,16 @@
     position: relative;
     flex: 0 0 16%;
     max-width: 16%;
+    padding-right: 7.5px;
+    padding-left: 7.5px;
+    padding-top: 35px;
+    border:1px dashed #d3d3d3;
+  }
+
+   .col-md-3{
+    position: relative;
+    flex: 0 0 25%;
+    max-width: 25%;
     padding-right: 7.5px;
     padding-left: 7.5px;
     padding-top: 35px;
