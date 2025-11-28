@@ -182,7 +182,7 @@ export function ListadoCreditos() {
             .map((object) => (
               <tr key={object.id}>
                 <td>{object.cliente.id}</td>
-                <td>{convertIsoToDMY(object.fecha)}</td>
+                <td>{object.fecha ? convertIsoToDMY(object.fecha) : 'Sin fecha'}</td>
                 <td>{object.cliente.nombre}</td>
                 <td>{object.monto}</td>
                 <td>{CUOTA_TYPE_NAMES[object.setting_cuotas_credito.tipo_cuota]}</td>

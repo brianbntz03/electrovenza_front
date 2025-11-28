@@ -52,15 +52,42 @@ export function ListadoClientesFiltradoVendedor({
 
   const handleEliminar = async (id) => {
     try {
-      await fetch(`${apiRest}/cliente/${id}`, {
+      console.log(`Intentando eliminar cliente con ID: ${id}`);
+      
+      const response = await fetch(`${apiRest}/cliente/${id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
       });
 
-      const nuevosClientes = clientes.filter((cliente) => cliente.id !== id);
-      setClientes(nuevosClientes);
-      localStorage.setItem("clientes", JSON.stringify(nuevosClientes));
+      console.log(`Respuesta del servidor: ${response.status} ${response.statusText}`);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`Error del servidor: ${errorText}`);
+        throw new Error(`Error ${response.status}: ${errorText || response.statusText}`);
+      }
+
+      // Refrescar desde el servidor para verificar eliminación
+      await fetchClientes();
+      
+      Swal.fire({
+        icon: "success",
+        title: "Eliminación procesada",
+        text: "Se procesó la eliminación. La lista se actualizó desde el servidor.",
+        timer: 2000,
+        showConfirmButton: false
+      });
     } catch (error) {
-      console.error("Error al eliminar el producto:", error);
+      console.error("Error al eliminar el cliente:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error al eliminar",
+        text: `No se pudo eliminar el cliente: ${error.message}`,
+        confirmButtonText: "Entendido"
+      });
     }
   };
 
@@ -351,13 +378,32 @@ export function ListadoClientesFiltradoVendedor({
                               ></img>
                             </td>
                             <td>
-                              <button onClick={() => handleOpenModal(cliente)}>
-                                editar
-                              </button>
-                              <button
-                                onClick={() => handleEliminar(cliente.id)}
+                              <button 
+                                className="btn btn-primary btn-sm me-2"
+                                onClick={() => handleOpenModal(cliente)}
                               >
-                                eliminar
+                                Editar
+                              </button>
+                             <button 
+                                className="btn btn-danger btn-sm"
+                                onClick={() => {
+                                  Swal.fire({
+                                    title: '¿Estás seguro?',
+                                    text: `¿Deseas eliminar al cliente ${cliente.nombre}?`,
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#d33',
+                                    cancelButtonColor: '#3085d6',
+                                    confirmButtonText: 'Sí, eliminar',
+                                    cancelButtonText: 'Cancelar'
+                                  }).then((result) => {
+                                    if (result.isConfirmed) {
+                                      handleEliminar(cliente.id);
+                                    }
+                                  });
+                                }}
+                              >
+                                Eliminar
                               </button>
                             </td>
                           </tr>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { apiRest } from "../service/apiRest";
-import { convertIsoToDMY } from "../miscellaneus/aux"
+import { convertIsoToDMY } from "../miscellaneus/aux";
 export default function CreditoCuotaVencida(cuota) {
   const [montoParcial, setMontoParcial] = useState("");
 
@@ -43,13 +43,16 @@ export default function CreditoCuotaVencida(cuota) {
       );
       if (!confirmacion) return;
 
-      const response = await fetch(`${apiRest}/cuota_credito/registrar-pago/${cuota.id}`, {
-        method: "PATCH",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${apiRest}/cuota_credito/registrar-pago/${cuota.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok)
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -65,24 +68,36 @@ export default function CreditoCuotaVencida(cuota) {
   return (
     <>
       <div className="col-md-3 col-sm-6 col-12">
-        <div className={cuota.estado===1 ? 'info-box bg-warning' : 'info-box bg-gradient-info'}>
+        <div
+          className={
+            cuota.estado === 1
+              ? "info-box bg-warning"
+              : "info-box bg-gradient-info"
+          }
+        >
           <span className="info-box-icon">
             <i className="far fa-calendar-alt"></i>
           </span>
           <div className="info-box-content">
-            <span className="info-box-text">
-              Fecha cuota: {cuota.fecha}
-            </span>
-            <span className="info-box-text">
-              Cuota número: {cuota.numero}
-            </span>
+            <span className="info-box-text">Fecha cuota: {cuota.fecha}</span>
+            <span className="info-box-text">Cuota número: {cuota.numero}</span>
             <span className="info-box-number">valor: ${cuota.valor}</span>
-            <span className="info-box-number">Pendiente: ${cuota.valor-cuota.montoCobrado}</span>
+            <span className="info-box-number">
+              Pendiente: ${cuota.valor - cuota.montoCobrado}
+            </span>
             <hr></hr>
-            <span className="info-box-number">Credito Nro: {cuota.credito_numero}</span>
-            <span className="info-box-number">monto otorgado: ${cuota.credito_monto}</span>
-            <span className="info-box-number">fecha otorgamiento: {convertIsoToDMY(cuota.credito_fecha)}</span>
-            <span className="progress-description">Vendedor: {cuota.vendedor}</span>
+            <span className="info-box-number">
+              Credito Nro: {cuota.credito_numero}
+            </span>
+            <span className="info-box-number">
+              monto otorgado: ${cuota.credito_monto}
+            </span>
+            <span className="info-box-number">
+              fecha otorgamiento: {convertIsoToDMY(cuota.credito_fecha)}
+            </span>
+            <span className="progress-description">
+              Vendedor: {cuota.vendedor}
+            </span>
             <div className="row">
               <div className="col-6">
                 <button
@@ -139,7 +154,7 @@ export default function CreditoCuotaVencida(cuota) {
                 className="form-control"
                 value={montoParcial}
                 onChange={(e) => setMontoParcial(e.target.value)}
-                placeholder={`Ej: ${cuota.valor-cuota.montoCobrado}`}
+                placeholder={`Ej: ${cuota.valor - cuota.montoCobrado}`}
               />
             </div>
             <div className="modal-footer justify-content-between">
@@ -158,7 +173,6 @@ export default function CreditoCuotaVencida(cuota) {
               >
                 registrar
               </button>
-              
             </div>
           </div>
         </div>

@@ -83,7 +83,7 @@ export function ComponentListadoVentas() {
           <tbody>
             {ventas.map((venta) => (
               <tr key={venta.id}>
-                <td>{convertIsoToDMY(venta.fecha)}</td>
+                <td>{venta.fecha ? convertIsoToDMY(venta.fecha) : 'Sin fecha'}</td>
                 <td>{venta.articulo.nombre}</td>
                 <td>{venta.precio}</td>
                 <td>{venta.cliente.nombre}</td>

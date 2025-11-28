@@ -6,6 +6,8 @@ export const ArticuloPresupuesto = () => {
   const [articulosFiltrados, setArticulosFiltrados] = useState([]);
   const [vendedoresFiltrados, setVendedoresFiltrados] = useState([]);
   const [clientesFiltrados, setClientesFiltrados] = useState([]);
+  const [clientesCompletos, setClientesCompletos] = useState([]);
+  const [terminoBusquedaCliente, setTerminoBusquedaCliente] = useState("");
   const [cuotasFiltrados, setCuotasFiltrados] = useState([]);
   const [error, setError] = useState(null);
   const [articulosLoading, setArticulosLoading] = useState(false);
@@ -14,13 +16,15 @@ export const ArticuloPresupuesto = () => {
   const [idinteres, setIdInteres] = useState("");
   const [nombreVendedor, setNombreVendedor] = useState("");
   const [selectedVendedorId, setSelectedVendedorId] = useState("");
+  const [busqueda, setBusqueda] = useState("");
+  const [fechaSeleccionada, setFechaSeleccionada] = useState(new Date().toISOString().split('T')[0]);
   // Inicializamos el rol por defecto.
   const [userRole, setUserRole] = useState("vendedor");
 
   // Cargar vendedores, clientes y cuotas al inicio
   useEffect(() => {
     const storedUserRole = localStorage.getItem("user_role");
-    
+
     if (storedUserRole) {
       setUserRole(storedUserRole);
     }
@@ -31,21 +35,23 @@ export const ArticuloPresupuesto = () => {
   }, []);
 
   // Ajusta el nombre del vendedor y su ID después de que la lista de vendedores se haya cargado
-  useEffect( () => {
-
+  useEffect(() => {
     async function fetchVendedor() {
       const role = localStorage.getItem("user_role");
-      if(role === 'admin'){
+      if (role === "admin") {
         return;
       }
 
       const storedUserId = localStorage.getItem("user_id");
-      const response = await fetch(`${apiRest}/vendedor/user_id/${storedUserId}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${apiRest}/vendedor/user_id/${storedUserId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Error al obtener el vendedor: ${response.status}`);
@@ -55,12 +61,9 @@ export const ArticuloPresupuesto = () => {
       if (vendedor) {
         setNombreVendedor(vendedor.nombre);
         setSelectedVendedorId(vendedor.id);
-      } 
-
+      }
     }
     fetchVendedor();
-
-    
   }, []);
 
   const [presupuesto, setPresupuesto] = useState(() => {
@@ -69,12 +72,14 @@ export const ArticuloPresupuesto = () => {
   });
 
   const registrarVenta = async () => {
-    
     try {
+      console.log('Fecha seleccionada para la venta:', fechaSeleccionada);
+      
       const ventaData = {
         nro_cuotas_id: parseInt(idinteres),
         cliente_id: parseInt(idCliente),
         vendedor_id: parseInt(selectedVendedorId),
+        fecha: fechaSeleccionada,
         articulos: presupuesto.map((item) => ({
           id: item.id,
           cantidad: item.cantidad,
@@ -84,6 +89,8 @@ export const ArticuloPresupuesto = () => {
         })),
         total: calcularTotal(),
       };
+      
+      console.log('Datos de venta a enviar:', ventaData);
 
       const response = await fetch(`${apiRest}/ventas`, {
         method: "POST",
@@ -97,13 +104,21 @@ export const ArticuloPresupuesto = () => {
         throw new Error(`Error al registrar la venta: ${response.status}`);
       }
 
-      FlashMessage("Registro de venta", "La venta se registro con exito", 2000, "success", "cuotas-por-cobrar"  )
-
+      FlashMessage(
+        "Registro de venta",
+        "La venta se registro con exito",
+        2000,
+        "success",
+        "cuotas-por-cobrar-electro"
+      );
     } catch (error) {
       console.error("Error al registrar la venta:", error);
-      FlashMessage("Registro de venta", "La venta se registro con exito", 2000, "error")
-      
-
+      FlashMessage(
+        "Registro de venta",
+        "La venta se registro con exito",
+        2000,
+        "error"
+      );
     }
   };
 
@@ -132,8 +147,10 @@ export const ArticuloPresupuesto = () => {
   };
 
   const calcularTotal = () => {
-    return presupuesto
-      .reduce((acc, item) => acc + parseFloat(item.precio) * item.cantidad, 0)
+    return presupuesto.reduce(
+      (acc, item) => acc + parseFloat(item.precio) * item.cantidad,
+      0
+    );
   };
 
   const calcularTotalConInteres = () => {
@@ -160,10 +177,10 @@ export const ArticuloPresupuesto = () => {
       (c) => c.id === parseInt(idinteres, 10)
     );
 
-    const total = totalConInteres / cuotaSeleccionada.numero
-    
+    const total = totalConInteres / cuotaSeleccionada.numero;
+
     return total;
-  }
+  };
 
   const calcularPrecioConInteres = (precio, idCuotaSeleccionada) => {
     const cuotaSeleccionada = cuotasFiltrados.find(
@@ -171,10 +188,12 @@ export const ArticuloPresupuesto = () => {
     );
     if (!cuotaSeleccionada) return precio;
     const interes = cuotaSeleccionada.interes / 100;
-    const precionConInteres = precio * (1 + interes); 
-    const total = Math.ceil(precionConInteres / cuotaSeleccionada.numero / 100 ) * cuotaSeleccionada.numero * 100
+    const precionConInteres = precio * (1 + interes);
+    const total =
+      Math.ceil(precionConInteres / cuotaSeleccionada.numero / 100) *
+      cuotaSeleccionada.numero *
+      100;
     return total;
-
   };
 
   const handleRetry = () => {
@@ -182,19 +201,18 @@ export const ArticuloPresupuesto = () => {
   };
 
   function FormArticulos() {
-    const [busqueda, setBusqueda] = useState("");
     return (
       <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSearch(busqueda);
-          }}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
-      <div className="row">
-         <div className="col-md-2">
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSearch(busqueda);
+        }}
+        style={{
+          marginBottom: "10px",
+        }}
+      >
+        <div className="row">
+          <div className="col-md-2">
             <label style={{ marginRight: "5px" }}>Buscar artículo</label>
           </div>
           <div className="col-md-3 input-group">
@@ -202,22 +220,43 @@ export const ArticuloPresupuesto = () => {
               type="text"
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
-              className="form-control" 
-            /> 
+              className="form-control"
+            />
             <span className="input-group-append">
               <button type="submit" className="btn btn-sm btn-info">
                 Buscar
               </button>
             </span>
-            
           </div>
-          
-
-        
-      </div>
+        </div>
       </form>
     );
   }
+
+  const FormularioFecha = ({ fecha, setFecha }) => {
+    const handleDataChange = (e) => {
+      const selectedDate = e.target.value;
+      console.log("Fecha seleccionada:", selectedDate);
+      setFecha(selectedDate);
+    };
+
+    return (
+      <div className="row">
+        <div className="col-md-2">
+          <label style={{ marginRight: "5px" }}>fecha</label>
+        </div>
+        <div className="col-md-3 input-group">
+          <input
+            type="date"
+            className="form-control"
+            id="fecha"
+            value={fecha || ""}
+            onChange={handleDataChange}
+          />
+        </div>
+      </div>
+    );
+  };
 
   const FormVendedor = () => {
     return (
@@ -236,11 +275,12 @@ export const ArticuloPresupuesto = () => {
               onChange={(e) => setSelectedVendedorId(e.target.value)}
             >
               <option value="">-- Seleccionar Vendedor --</option>
-              {vendedoresFiltrados && vendedoresFiltrados.map((vendedor) => (
-                <option key={vendedor.id} value={vendedor.id}>
-                  {vendedor.nombre}
-                </option>
-              ))}
+              {vendedoresFiltrados &&
+                vendedoresFiltrados.map((vendedor) => (
+                  <option key={vendedor.id} value={vendedor.id}>
+                    {vendedor.nombre}
+                  </option>
+                ))}
             </select>
           )}
         </div>
@@ -248,8 +288,13 @@ export const ArticuloPresupuesto = () => {
     );
   };
 
-
   const FormCliente = () => {
+    console.log("FormCliente - clientesFiltrados:", clientesFiltrados);
+    console.log(
+      "FormCliente - cantidad de clientes:",
+      clientesFiltrados.length
+    );
+
     return (
       <div className="row">
         <div className="col-md-2">
@@ -259,13 +304,13 @@ export const ArticuloPresupuesto = () => {
           <select
             className="form-control"
             value={idCliente}
-            name="idCliente"
+            name="cliente_id"
             onChange={(e) => setIdCliente(e.target.value)}
           >
             <option value="">-- Seleccionar Cliente --</option>
             {clientesFiltrados.map((cliente) => (
               <option key={cliente.id} value={cliente.id}>
-              {cliente.id_formatted} - {cliente.nombre} 
+                {cliente.id_formatted} - {cliente.nombre}
               </option>
             ))}
           </select>
@@ -282,18 +327,18 @@ export const ArticuloPresupuesto = () => {
         </div>
         <div className="col-md-3">
           <select
-          className="form-control"
-          value={idinteres}
-          name="idinteres"
-          onChange={(e) => setIdInteres(e.target.value)}
-        >
-          <option value="">-- Seleccionar numero de cuotas --</option>
-          {cuotasFiltrados.map((interes) => (
-            <option key={interes.id} value={interes.id}>
-              {interes.descripcion} ({interes.interes} %)
-            </option>
-          ))}
-        </select>
+            className="form-control"
+            value={idinteres}
+            name="idinteres"
+            onChange={(e) => setIdInteres(e.target.value)}
+          >
+            <option value="">-- Seleccionar numero de cuotas --</option>
+            {cuotasFiltrados.map((interes) => (
+              <option key={interes.id} value={interes.id}>
+                {interes.descripcion} ({interes.interes} %)
+              </option>
+            ))}
+          </select>
         </div>
       </div>
     );
@@ -325,10 +370,8 @@ export const ArticuloPresupuesto = () => {
       if (!response.ok)
         throw new Error(`Error en la solicitud: ${response.status}`);
       const { data: listadoArticulos } = await response.json();
-            
-      const articulosConCategoria = listadoArticulos.map((articulo) => {
-      
 
+      const articulosConCategoria = listadoArticulos.map((articulo) => {
         if (!articulo.categoria) {
           return { ...articulo, categoria: { nombre: "Sin categoría" } };
         } else if (typeof articulo.categoria === "string") {
@@ -368,7 +411,7 @@ export const ArticuloPresupuesto = () => {
       const response = await fetch(`${apiRest}/vendedor?page=1&limit=200`);
       if (response.ok) {
         const data = await response.json();
-        console.log(data)
+        console.log(data);
         setVendedoresFiltrados(data.data);
       }
     } catch (error) {
@@ -378,23 +421,57 @@ export const ArticuloPresupuesto = () => {
 
   const cargarClientes = async () => {
     try {
-      const response = await fetch(
-        `${apiRest}/cliente/ordered`,{
-        method: 'GET',
+      console.log("Cargando clientes...");
+      const token = localStorage.getItem("jwt_token");
+      console.log("Token JWT:", token ? "Presente" : "No encontrado");
+
+      const response = await fetch(`${apiRest}/cliente`, {
+        method: "GET",
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
+
+      console.log("Respuesta del servidor:", response.status);
+
       if (response.ok) {
         const data = await response.json();
+        console.log("Datos de clientes recibidos:", data);
+        console.log("Cantidad de clientes:", data.length);
+        setClientesCompletos(data);
         setClientesFiltrados(data);
+      } else if (response.status === 401) {
+        console.error("Token expirado o inválido. Redirigiendo al login...");
+        localStorage.removeItem("jwt_token");
+        localStorage.removeItem("user_role");
+        localStorage.removeItem("user_id");
+        window.location.href = "/login";
+      } else {
+        console.error(
+          "Error en la respuesta:",
+          response.status,
+          response.statusText
+        );
       }
     } catch (error) {
       console.error("Error cargando clientes:", error);
     }
   };
+
+  // NUEVA FUNCIÓN: Lógica de filtrado
+  useEffect(() => {
+    if (terminoBusquedaCliente.length >= 2 || terminoBusquedaCliente === "") {
+      const busquedaLower = terminoBusquedaCliente.toLowerCase();
+      const resultados = clientesCompletos.filter(
+        (cliente) =>
+          cliente.nombre.toLowerCase().includes(busquedaLower) ||
+          cliente.id_formatted.toLowerCase().includes(busquedaLower)
+      );
+      setClientesFiltrados(resultados);
+    }
+  }, [terminoBusquedaCliente, clientesCompletos]);
 
   const cargarCuotas = async () => {
     try {
@@ -421,11 +498,13 @@ export const ArticuloPresupuesto = () => {
   return (
     <div className="container-fluid">
       <FormVendedor />
+      <FormularioFecha
+        fecha={fechaSeleccionada}
+        setFecha={setFechaSeleccionada}
+      />
       <FormCliente />
       <FormNumeroCuotas />
-
       <FormArticulos />
-
       {searchPerformed && (
         <>
           <h3>Lista de artículos</h3>
@@ -453,11 +532,13 @@ export const ArticuloPresupuesto = () => {
                     <td>
                       {articulo.categoria?.nombre?.trim() || "Sin categoría"}
                     </td>
+                    <td>{articulo.precio.toLocaleString()}</td>
                     <td>
-                      {articulo.precio.toLocaleString()}
-                    </td>
-                    <td>
-                      <img src={`${apiRest}/articulos/${articulo.id}/imagen`} width={100} alt=""></img>
+                      <img
+                        src={`${apiRest}/articulos/${articulo.id}/imagen`}
+                        width={100}
+                        alt=""
+                      ></img>
                     </td>
                     <td>
                       <button
@@ -479,9 +560,6 @@ export const ArticuloPresupuesto = () => {
           )}
         </>
       )}
-
-      
-
       <h3>Presupuesto</h3>
       {presupuesto.length === 0 ? (
         <p>No hay artículos en el presupuesto.</p>
@@ -551,11 +629,13 @@ export const ArticuloPresupuesto = () => {
                   <strong>
                     {idinteres
                       ? `${
-                          cuotasFiltrados.find((c) => c.id === parseInt(idinteres, 10))
-                            ?.interes || 0
+                          cuotasFiltrados.find(
+                            (c) => c.id === parseInt(idinteres, 10)
+                          )?.interes || 0
                         }% (${
-                          cuotasFiltrados.find((c) => c.id === parseInt(idinteres, 10))
-                            ?.numero || 0
+                          cuotasFiltrados.find(
+                            (c) => c.id === parseInt(idinteres, 10)
+                          )?.numero || 0
                         } cuotas)`
                       : "No seleccionado"}
                   </strong>
@@ -567,11 +647,13 @@ export const ArticuloPresupuesto = () => {
                 </td>
                 <td colSpan="2">
                   <strong>
-                    ${idinteres ? calcularTotalConInteres().toLocaleString() : calcularTotal().toLocaleString()}
+                    $
+                    {idinteres
+                      ? calcularTotalConInteres().toLocaleString()
+                      : calcularTotal().toLocaleString()}
                   </strong>
                 </td>
               </tr>
-
               <tr>
                 <td colSpan="7" style={{ textAlign: "right" }}>
                   <button
@@ -583,12 +665,10 @@ export const ArticuloPresupuesto = () => {
                   >
                     Registrar Venta
                   </button>
-
-                  </td>
+                </td>
               </tr>
             </tfoot>
           </table>
-
           {idinteres && (
             <>
               <h4 style={{ marginTop: "20px" }}>Detalle de financiación</h4>
@@ -601,20 +681,21 @@ export const ArticuloPresupuesto = () => {
                     <th>Cuotas</th>
                     <th>Valor por cuota</th>
                     <th>Total con interés</th>
-                    
                   </tr>
                 </thead>
                 <tbody>
                   {presupuesto.map((item) => {
                     const subtotal = parseFloat(item.precio) * item.cantidad;
                     const numeroCuotas =
-                      cuotasFiltrados.find((c) => c.id === parseInt(idinteres, 10))?.numero ||
-                      1;
+                      cuotasFiltrados.find(
+                        (c) => c.id === parseInt(idinteres, 10)
+                      )?.numero || 1;
                     const conInteres = calcularPrecioConInteres(
                       subtotal,
                       idinteres
                     );
-                    const valorPorCuota = Math.ceil(conInteres / numeroCuotas / 100) * 100;
+                    const valorPorCuota =
+                      Math.ceil(conInteres / numeroCuotas / 100) * 100;
 
                     return (
                       <tr key={`financiacion-${item.id}`}>
@@ -624,7 +705,6 @@ export const ArticuloPresupuesto = () => {
                         <td>{numeroCuotas}</td>
                         <td>${valorPorCuota.toLocaleString()}</td>
                         <td>${conInteres.toLocaleString()}</td>
-                        
                       </tr>
                     );
                   })}
@@ -635,25 +715,23 @@ export const ArticuloPresupuesto = () => {
                       TOTAL
                     </td>
                     <td>${calcularTotal().toLocaleString()}</td>
-                    
+
                     <td>No aplica</td>
-                    <td>
-                      {sumarCuotas().toLocaleString()}
-                    </td>
+                    <td>{sumarCuotas().toLocaleString()}</td>
                     <td>${calcularTotalConInteres().toLocaleString()}</td>
                   </tr>
                 </tbody>
               </table>
-              <div style={{ textAlign: "right" }} >
-                  <button
+              <div style={{ textAlign: "right" }}>
+                <button
                   type="button"
                   className="btn btn-primary"
                   data-toggle="modal"
                   data-target="#exampleModal"
                   onClick={() => registrarVenta()}
-                  >
+                >
                   Registrar Venta
-                  </button>
+                </button>
               </div>
             </>
           )}

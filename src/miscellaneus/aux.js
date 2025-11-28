@@ -1,6 +1,13 @@
 
 export function convertIsoToDMY(isoDate){
+  if (!isoDate) return 'No disponible';
+  
   const date = new Date(isoDate);
+  
+  // Verificar si la fecha es válida
+  if (isNaN(date.getTime())) {
+    return 'Fecha inválida';
+  }
 
   const day = String(date.getUTCDate()).padStart(2, '0');
   const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // ¡Mes empieza en 0!
