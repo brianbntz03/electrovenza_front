@@ -116,7 +116,7 @@ const OtorgarCredito = () => {
   const [detallesFinanciacion, setDetallesFinanciacion] = useState(null);
   const [clientesList, setClientesList] = useState([]);
   const [cuotasList, setCuotasList] = useState([]);
-  const [fecha, setFecha] = useState("");
+  const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -190,7 +190,7 @@ const OtorgarCredito = () => {
 
   // Traer clientes y cuotas
   useEffect(() => {
-    fetch(`${apiRest}/cliente`, {
+    fetch(`${apiRest}/cliente/ordered`, {
       method: "GET",
       headers: {
         Accept: "application/json",

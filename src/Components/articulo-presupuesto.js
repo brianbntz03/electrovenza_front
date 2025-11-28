@@ -379,7 +379,7 @@ export const ArticuloPresupuesto = () => {
   const cargarClientes = async () => {
     try {
       const response = await fetch(
-        `${apiRest}/cliente`,{
+        `${apiRest}/cliente/ordered`,{
         method: 'GET',
         headers: {
             'Accept': 'application/json',
