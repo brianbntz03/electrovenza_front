@@ -14,68 +14,98 @@ const FormOtorgarFecha = ({ fecha, setFecha }) => {
 
   return (
     <div className="form-group">
-      <label htmlFor="fecha_otorgamiento">Fecha de Otorgamiento</label>
-      <input
-        type="date"
-        className="form-control"
-        id="fecha"
-        value={fecha || ""}
-        onChange={handleDateChange}
-      />
+      <div className="row">
+        <div className="col-md-2">
+          <label htmlFor="fecha_otorgamiento">Fecha de Otorgamiento</label>
+          </div>
+        <div  className="col-md-3 input-group">
+          <input
+            type="date"
+            className="form-control"
+            id="fecha"
+            value={fecha || ""}
+            onChange={handleDateChange}
+          />
+        </div>
+      </div>
+      
+      
     </div>
   );
 };
 
 const FormClienteCard = ({ cliente, setCliente, clientesList }) => (
   <div className="form-group">
-    <label htmlFor="cliente">Cliente</label>
-    <select
-      className="form-control"
-      id="cliente_id"
-      value={cliente}
-      onChange={(e) => setCliente(e.target.value)}
-    >
-      <option value="">Seleccione un cliente</option>
-      {clientesList.map((c) => (
-        <option key={c.id} value={c.id}>
-          {c.id_formatted} - {c.nombre}
-        </option>
-      ))}
-    </select>
+    <div className="row">
+        <div className="col-md-2">
+          <label htmlFor="cliente">Cliente</label>    
+        </div>
+        <div  className="col-md-3 input-group">
+          <select
+            className="form-control"
+            id="cliente_id"
+            value={cliente}
+            onChange={(e) => setCliente(e.target.value)}
+          >
+            <option value="">Seleccione un cliente</option>
+            {clientesList.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.id_formatted} - {c.nombre}
+              </option>
+            ))}
+          </select>      
+        </div>
+    </div>
   </div>
 );
 
 const FormMontoaOtorgar = ({ monto, setMonto }) => (
   <div className="form-group">
-    <label htmlFor="monto">Monto a Otorgar</label>
-    <input
-      id="monto"
-      type="text"
-      className="form-control"
-      value={monto}
-      onChange={(e) => setMonto(e.target.value)}
-      placeholder="Ingrese el monto"
-    />
+    <div className="row">
+        <div className="col-md-2">
+          <label htmlFor="monto">Monto a Otorgar</label>
+        </div>
+        <div  className="col-md-3 input-group">
+          <input
+            id="monto"
+            type="text"
+            className="form-control"
+            value={monto}
+            onChange={(e) => setMonto(e.target.value)}
+            placeholder="Ingrese el monto"
+          />      
+        </div>
+    </div>
+    
+    
   </div>
 );
 
 const FormCantidadCuota = ({ cuotaId, setCuotaId, cuotasList }) => (
   <div className="form-group">
-    <label htmlFor="cuotas">Cantidad de Cuotas</label>
-    <select
-      className="form-control"
-      id="setting_cuotas_credito_id"
-      value={cuotaId}
-      onChange={(e) => setCuotaId(Number(e.target.value))}
-    >
-      <option value="">Seleccione cuotas</option>
-      {cuotasList.map((c) => (
-        <option key={c.id} value={c.id}>
-          {CUOTA_TYPE_NAMES[c.tipo_cuota]}: {c.descripcion}  ({c.interes}%)
-          {[c.tipo_cuota]}: {c.descripcion} ({c.interes}%)
-        </option>
-      ))}
-    </select>
+    <div className="row">
+        <div className="col-md-2">
+          <label htmlFor="cuotas">Cantidad de Cuotas</label>
+        </div>
+        <div  className="col-md-3 input-group">
+          <select
+            className="form-control"
+            id="setting_cuotas_credito_id"
+            value={cuotaId}
+            onChange={(e) => setCuotaId(Number(e.target.value))}
+          >
+            <option value="">Seleccione cuotas</option>
+            {cuotasList.map((c) => (
+              <option key={c.id} value={c.id}>
+                {CUOTA_TYPE_NAMES[c.tipo_cuota]}: {c.descripcion}  ({c.interes}%)
+                {[c.tipo_cuota]}: {c.descripcion} ({c.interes}%)
+              </option>
+            ))}
+          </select>      
+        </div>
+    </div>
+    
+    
   </div>
 );
 
