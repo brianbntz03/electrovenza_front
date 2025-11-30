@@ -91,8 +91,6 @@ export function ListadoClientesFiltradoVendedor({
     }
   };
 
-  const currentCliente = clientes;
-
   const fetchClientes = async () => {
     setLoading(true);
     setError(null);
