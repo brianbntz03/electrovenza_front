@@ -4,11 +4,10 @@ import Swal from "sweetalert2";
 import FlashMessage from "./tiny/FlashMessage";
 import { CUOTA_TYPE_NAMES } from "../constants/cuotaTypes";
 
-
 const FormOtorgarFecha = ({ fecha, setFecha }) => {
   const handleDateChange = (e) => {
     const selectedDate = e.target.value;
-    console.log('Fecha seleccionada:', selectedDate);
+    console.log("Fecha seleccionada:", selectedDate);
     setFecha(selectedDate);
   };
 
@@ -17,8 +16,8 @@ const FormOtorgarFecha = ({ fecha, setFecha }) => {
       <div className="row">
         <div className="col-md-2">
           <label htmlFor="fecha_otorgamiento">Fecha de Otorgamiento</label>
-          </div>
-        <div  className="col-md-3 input-group">
+        </div>
+        <div className="col-md-3 input-group">
           <input
             type="date"
             className="form-control"
@@ -28,8 +27,6 @@ const FormOtorgarFecha = ({ fecha, setFecha }) => {
           />
         </div>
       </div>
-      
-      
     </div>
   );
 };
@@ -37,24 +34,24 @@ const FormOtorgarFecha = ({ fecha, setFecha }) => {
 const FormClienteCard = ({ cliente, setCliente, clientesList }) => (
   <div className="form-group">
     <div className="row">
-        <div className="col-md-2">
-          <label htmlFor="cliente">Cliente</label>    
-        </div>
-        <div  className="col-md-3 input-group">
-          <select
-            className="form-control"
-            id="cliente_id"
-            value={cliente}
-            onChange={(e) => setCliente(e.target.value)}
-          >
-            <option value="">Seleccione un cliente</option>
-            {clientesList.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.id_formatted} - {c.nombre}
-              </option>
-            ))}
-          </select>      
-        </div>
+      <div className="col-md-2">
+        <label htmlFor="cliente">Cliente</label>
+      </div>
+      <div className="col-md-3 input-group">
+        <select
+          className="form-control"
+          id="cliente_id"
+          value={cliente}
+          onChange={(e) => setCliente(e.target.value)}
+        >
+          <option value="">Seleccione un cliente</option>
+          {clientesList.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.id_formatted} - {c.nombre}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   </div>
 );
@@ -62,50 +59,46 @@ const FormClienteCard = ({ cliente, setCliente, clientesList }) => (
 const FormMontoaOtorgar = ({ monto, setMonto }) => (
   <div className="form-group">
     <div className="row">
-        <div className="col-md-2">
-          <label htmlFor="monto">Monto a Otorgar</label>
-        </div>
-        <div  className="col-md-3 input-group">
-          <input
-            id="monto"
-            type="text"
-            className="form-control"
-            value={monto}
-            onChange={(e) => setMonto(e.target.value)}
-            placeholder="Ingrese el monto"
-          />      
-        </div>
+      <div className="col-md-2">
+        <label htmlFor="monto">Monto a Otorgar</label>
+      </div>
+      <div className="col-md-3 input-group">
+        <input
+          id="monto"
+          type="text"
+          className="form-control"
+          value={monto}
+          onChange={(e) => setMonto(e.target.value)}
+          placeholder="Ingrese el monto"
+        />
+      </div>
     </div>
-    
-    
   </div>
 );
 
 const FormCantidadCuota = ({ cuotaId, setCuotaId, cuotasList }) => (
   <div className="form-group">
     <div className="row">
-        <div className="col-md-2">
-          <label htmlFor="cuotas">Cantidad de Cuotas</label>
-        </div>
-        <div  className="col-md-3 input-group">
-          <select
-            className="form-control"
-            id="setting_cuotas_credito_id"
-            value={cuotaId}
-            onChange={(e) => setCuotaId(Number(e.target.value))}
-          >
-            <option value="">Seleccione cuotas</option>
-            {cuotasList.map((c) => (
-              <option key={c.id} value={c.id}>
-                {CUOTA_TYPE_NAMES[c.tipo_cuota]}: {c.descripcion}  ({c.interes}%)
-                {[c.tipo_cuota]}: {c.descripcion} ({c.interes}%)
-              </option>
-            ))}
-          </select>      
-        </div>
+      <div className="col-md-2">
+        <label htmlFor="cuotas">Cantidad de Cuotas</label>
+      </div>
+      <div className="col-md-3 input-group">
+        <select
+          className="form-control"
+          id="setting_cuotas_credito_id"
+          value={cuotaId}
+          onChange={(e) => setCuotaId(Number(e.target.value))}
+        >
+          <option value="">Seleccione cuotas</option>
+          {cuotasList.map((c) => (
+            <option key={c.id} value={c.id}>
+              {CUOTA_TYPE_NAMES[c.tipo_cuota]}: {c.descripcion} ({c.interes}%)
+              {[c.tipo_cuota]}: {c.descripcion} ({c.interes}%)
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
-    
-    
   </div>
 );
 
@@ -116,7 +109,7 @@ const OtorgarCredito = () => {
   const [detallesFinanciacion, setDetallesFinanciacion] = useState(null);
   const [clientesList, setClientesList] = useState([]);
   const [cuotasList, setCuotasList] = useState([]);
-  const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]);
+  const [fecha, setFecha] = useState(new Date().toISOString().split("T")[0]);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -135,18 +128,18 @@ const OtorgarCredito = () => {
 
     try {
       const vendedorId = Number(localStorage.getItem("vendedor_id"));
-      
+
       // Formatear la fecha para evitar problemas de zona horaria
-      const fechaFormateada = fecha + 'T12:00:00.000Z';
-      console.log('Fecha a enviar:', fechaFormateada);
-      
+      const fechaFormateada = fecha + "T12:00:00.000Z";
+      console.log("Fecha a enviar:", fechaFormateada);
+
       const data = JSON.stringify({
-          setting_cuotas_credito_id: parseInt(cuotaId),
-          cliente_id: parseInt(cliente),
-          vendedor_id: vendedorId,
-          monto: parseFloat(monto),
-          fecha: fechaFormateada,
-        });
+        setting_cuotas_credito_id: parseInt(cuotaId),
+        cliente_id: parseInt(cliente),
+        vendedor_id: vendedorId,
+        monto: parseFloat(monto),
+        fecha: fechaFormateada,
+      });
       const response = await fetch(`${apiRest}/credito`, {
         method: "POST",
         headers: {
@@ -190,7 +183,7 @@ const OtorgarCredito = () => {
 
   // Traer clientes y cuotas
   useEffect(() => {
-    fetch(`${apiRest}/cliente/ordered`, {
+    fetch(`${apiRest}/cliente`, {
       method: "GET",
       headers: {
         Accept: "application/json",

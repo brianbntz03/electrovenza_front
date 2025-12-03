@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { apiRest } from "../../service/apiRest";
 import { convertIsoToDMY } from "../../miscellaneus/aux";
 import { BotonImprimirCuotas } from "../tiny/BotonImprimirCuotas"
+import { BotonAnularCredito } from "../tiny/BotonAnularCredito";
+import { BotonCuotasPendientes } from "../tiny/BotonCuotasPendientes";
 
 
 export function ComponentListadoVentas() {
@@ -96,7 +98,9 @@ export function ComponentListadoVentas() {
                 <td>{venta.precio}</td>
                 <td>{venta.cliente.nombre}</td>
                 <td>{venta.vendedor.nombre}</td>
-                <td><BotonImprimirCuotas id={venta.id} /></td>
+                <td><BotonImprimirCuotas id={venta.id} /> &nbsp;
+                <BotonCuotasPendientes id={venta.id}/> &nbsp;
+                <BotonAnularCredito id={venta.id} /></td> 
               </tr>
             ))}
           </tbody>

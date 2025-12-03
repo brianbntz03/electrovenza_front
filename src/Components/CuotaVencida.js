@@ -85,9 +85,6 @@ export default function CuotaVencida(cuota) {
             <span className="info-box-number">
               Pendiente: ${cuota.valor - cuota.montoCobrado}
             </span>           
-            <span className="info-box-number">
-              fecha otorgamiento: {convertIsoToDMY(cuota.credito_fecha)}
-            </span>
             <span className="progress-description">
               Vendedor: {cuota.vendedor}
             </span>

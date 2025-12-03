@@ -17,7 +17,9 @@ export const ArticuloPresupuesto = () => {
   const [nombreVendedor, setNombreVendedor] = useState("");
   const [selectedVendedorId, setSelectedVendedorId] = useState("");
   const [busqueda, setBusqueda] = useState("");
-  const [fechaSeleccionada, setFechaSeleccionada] = useState(new Date().toISOString().split('T')[0]);
+  const [fechaSeleccionada, setFechaSeleccionada] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   // Inicializamos el rol por defecto.
   const [userRole, setUserRole] = useState("vendedor");
 
@@ -73,8 +75,8 @@ export const ArticuloPresupuesto = () => {
 
   const registrarVenta = async () => {
     try {
-      console.log('Fecha seleccionada para la venta:', fechaSeleccionada);
-      
+      console.log("Fecha seleccionada para la venta:", fechaSeleccionada);
+
       const ventaData = {
         nro_cuotas_id: parseInt(idinteres),
         cliente_id: parseInt(idCliente),
@@ -89,8 +91,8 @@ export const ArticuloPresupuesto = () => {
         })),
         total: calcularTotal(),
       };
-      
-      console.log('Datos de venta a enviar:', ventaData);
+
+      console.log("Datos de venta a enviar:", ventaData);
 
       const response = await fetch(`${apiRest}/ventas`, {
         method: "POST",
@@ -200,7 +202,7 @@ export const ArticuloPresupuesto = () => {
     setError(null);
   };
 
-  function FormArticulos() {
+  const FormArticulos = ({ busqueda, setBusqueda }) => {
     return (
       <form
         onSubmit={(e) => {
@@ -231,7 +233,7 @@ export const ArticuloPresupuesto = () => {
         </div>
       </form>
     );
-  }
+  };
 
   const FormularioFecha = ({ fecha, setFecha }) => {
     const handleDataChange = (e) => {
@@ -258,7 +260,11 @@ export const ArticuloPresupuesto = () => {
     );
   };
 
-  const FormVendedor = () => {
+  const FormVendedor = (
+    selectedVendedorId,
+    setSelectedVendedorId,
+    vendedoresFiltrados
+  ) => {
     return (
       <div className="row">
         <div className="col-md-2">
@@ -288,7 +294,7 @@ export const ArticuloPresupuesto = () => {
     );
   };
 
-  const FormCliente = () => {
+  const FormCliente = ({ idCliente, setIdCliente, clientesFiltrados }) => {
     console.log("FormCliente - clientesFiltrados:", clientesFiltrados);
     console.log(
       "FormCliente - cantidad de clientes:",
@@ -319,7 +325,7 @@ export const ArticuloPresupuesto = () => {
     );
   };
 
-  const FormNumeroCuotas = () => {
+  const FormNumeroCuotas = ({ idinteres, setIdInteres, cuotasFiltrados }) => {
     return (
       <div className="row">
         <div className="col-md-2">
@@ -497,14 +503,26 @@ export const ArticuloPresupuesto = () => {
 
   return (
     <div className="container-fluid">
-      <FormVendedor />
+      <FormVendedor
+        selectedVendedorId={selectedVendedorId}
+        setSelectedVendedorId={setSelectedVendedorId}
+        vendedoresFiltrados={vendedoresFiltrados}
+      />
       <FormularioFecha
         fecha={fechaSeleccionada}
         setFecha={setFechaSeleccionada}
       />
-      <FormCliente />
-      <FormNumeroCuotas />
-      <FormArticulos />
+      <FormCliente
+        idCliente={idCliente}
+        setIdCliente={setIdCliente}
+        clientesFiltrados={clientesFiltrados}
+      />
+      <FormNumeroCuotas
+        idinteres={idinteres}
+        setIdInteres={setIdInteres}
+        cuotasFiltrados={cuotasFiltrados}
+      />
+      <FormArticulos busqueda={busqueda} setBusqueda={setBusqueda} />
       {searchPerformed && (
         <>
           <h3>Lista de artículos</h3>
@@ -541,15 +559,17 @@ export const ArticuloPresupuesto = () => {
                       ></img>
                     </td>
                     <td>
-                      <button
-                        className="btn btn-success"
-                        onClick={() => agregarAlPresupuesto(articulo)}
-                        disabled={presupuesto.some(
-                          (item) => item.id === articulo.id
-                        )}
-                      >
-                        +
-                      </button>
+                      <a href="#presupuesto-financiacion">
+                        <button
+                          className="btn btn-success"
+                          onClick={() => agregarAlPresupuesto(articulo)}
+                          disabled={presupuesto.some(
+                            (item) => item.id === articulo.id
+                          )}
+                        >
+                          +
+                        </button>
+                      </a>
                     </td>
                   </tr>
                 ))}
@@ -560,6 +580,7 @@ export const ArticuloPresupuesto = () => {
           )}
         </>
       )}
+      <a name="presupuesto-financiacion">
       <h3>Presupuesto</h3>
       {presupuesto.length === 0 ? (
         <p>No hay artículos en el presupuesto.</p>
@@ -737,6 +758,7 @@ export const ArticuloPresupuesto = () => {
           )}
         </>
       )}
+    </a>
     </div>
   );
 };
