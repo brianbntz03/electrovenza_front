@@ -79,7 +79,6 @@ export default function CreditoCuotaVencida(cuota) {
             <i className="far fa-calendar-alt"></i>
           </span>
           <div className="info-box-content">
-            <span className="info-box-text">Fecha cuota: {convertIsoToDMY(cuota.fecha)}</span>
             <span className="info-box-text">Cuota número: {cuota.numero}</span>
             <span className="info-box-number">valor: ${cuota.valor?.toLocaleString()}</span>
             <span className="info-box-number">

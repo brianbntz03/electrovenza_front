@@ -295,11 +295,8 @@ export const ArticuloPresupuesto = () => {
   };
 
   const FormCliente = ({ idCliente, setIdCliente, clientesFiltrados }) => {
-    console.log("FormCliente - clientesFiltrados:", clientesFiltrados);
-    console.log(
-      "FormCliente - cantidad de clientes:",
-      clientesFiltrados.length
-    );
+    const clienteSeleccionado = clientesFiltrados.find(c => c.id == idCliente);
+    const displayValue = clienteSeleccionado ? `${clienteSeleccionado.id_formatted} - ${clienteSeleccionado.nombre}` : terminoBusquedaCliente;
 
     return (
       <div className="row">
@@ -307,19 +304,26 @@ export const ArticuloPresupuesto = () => {
           <label style={{ marginRight: "5px" }}>Buscar Cliente:</label>
         </div>
         <div className="col-md-3 input-group">
-          <select
+          <input
+            type="text"
             className="form-control"
-            value={idCliente}
-            name="cliente_id"
-            onChange={(e) => setIdCliente(e.target.value)}
-          >
-            <option value="">-- Seleccionar Cliente --</option>
+            placeholder="Escribir nombre o ID..."
+            value={displayValue}
+            onChange={(e) => {
+              setTerminoBusquedaCliente(e.target.value);
+              setIdCliente("");
+            }}
+            list="clientes-list"
+          />
+          <datalist id="clientes-list">
             {clientesFiltrados.map((cliente) => (
-              <option key={cliente.id} value={cliente.id}>
-                {cliente.id_formatted} - {cliente.nombre}
-              </option>
+              <option 
+                key={cliente.id} 
+                value={`${cliente.id_formatted} - ${cliente.nombre}`}
+                onClick={() => setIdCliente(cliente.id)}
+              />
             ))}
-          </select>
+          </datalist>
         </div>
       </div>
     );
@@ -466,7 +470,7 @@ export const ArticuloPresupuesto = () => {
     }
   };
 
-  // NUEVA FUNCIÓN: Lógica de filtrado
+  // Lógica de filtrado
   useEffect(() => {
     if (terminoBusquedaCliente.length >= 2 || terminoBusquedaCliente === "") {
       const busquedaLower = terminoBusquedaCliente.toLowerCase();
@@ -476,6 +480,16 @@ export const ArticuloPresupuesto = () => {
           cliente.id_formatted.toLowerCase().includes(busquedaLower)
       );
       setClientesFiltrados(resultados);
+    }
+  }, [terminoBusquedaCliente, clientesCompletos]);
+
+  // Detectar selección del datalist
+  useEffect(() => {
+    const cliente = clientesCompletos.find(c => 
+      `${c.id_formatted} - ${c.nombre}` === terminoBusquedaCliente
+    );
+    if (cliente) {
+      setIdCliente(cliente.id);
     }
   }, [terminoBusquedaCliente, clientesCompletos]);
 
@@ -502,7 +516,7 @@ export const ArticuloPresupuesto = () => {
   }
 
   return (
-    <div className="container-fluid">
+    <div className="">
       <FormVendedor
         selectedVendedorId={selectedVendedorId}
         setSelectedVendedorId={setSelectedVendedorId}

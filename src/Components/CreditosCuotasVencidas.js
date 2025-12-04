@@ -14,14 +14,17 @@ export function CreditosCuotasVencidas() {
 
   const fetchCuotas = async () => {
     try {
-      const response = await fetch(`${apiRest}/cuota_credito/get-cuotas-vencidas`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
-        },
-      });
+      const response = await fetch(
+        `${apiRest}/cuota_credito/get-cuotas-vencidas`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -51,7 +54,9 @@ export function CreditosCuotasVencidas() {
 
   const handleBorrarCuota = (cliente, idCuota) => {
     const nuevaLista = { ...cuotas };
-    nuevaLista[cliente] = nuevaLista[cliente].filter((cuota) => cuota.id !== idCuota);
+    nuevaLista[cliente] = nuevaLista[cliente].filter(
+      (cuota) => cuota.id !== idCuota
+    );
     setCuotas(nuevaLista);
   };
 
@@ -81,28 +86,44 @@ export function CreditosCuotasVencidas() {
 
   return (
     <div className="card-body">
-          { Object.entries(cuotas).map(([cliente, ListadoDeCuotas]) => (
-            <>
-            <div className='card card-widget'>
-              <div className='card-header'>
-                <div className="user-block">
-                  <img className="img-circle" src="../dist/img/user1-128x128.jpg" alt="face" />
-                  <span className="username">Cliente: {cliente}</span>
-                </div>
+      {Object.entries(cuotas).map(([cliente, ListadoDeCuotas]) => (
+        <>
+          <div className="card card-widget">
+            <div className="card-header">
+              <div className="user-block">
+                <img
+                  className="img-circle"
+                  src="../dist/img/user1-128x128.jpg"
+                  alt="face"
+                />
+                <span className="username">Cliente: {cliente}</span>
               </div>
-
-              <div class="card-footer p-0">
-                <div class="row">
-                  {ListadoDeCuotas.map(cuota => (
-                    <CreditoCuotaVencida id={cuota.id} numero={cuota.numero} fecha={cuota.fecha} articulo={cuota.articulo} valor={cuota.valor} montoCobrado={cuota.monto_cobrado} vendedor={cuota.vendedor} estado={cuota.estado} credito_fecha={cuota.credito_fecha} credito_monto={cuota.credito_monto} credito_numero={cuota.credito_numero} incrementarContador={incrementarContador} />
-                  ))}
-                </div>
-              </div>
-
-              <hr />
             </div>
-            
-              </>
+
+            <div class="card-footer p-0">
+              <div class="row">
+                {ListadoDeCuotas.map((cuota) => (
+                  <CreditoCuotaVencida
+                    id={cuota.id}
+                    numero={cuota.numero}
+                    fecha={cuota.fecha}
+                    articulo={cuota.articulo}
+                    valor={cuota.valor}
+                    montoCobrado={cuota.monto_cobrado}
+                    vendedor={cuota.vendedor}
+                    estado={cuota.estado}
+                    credito_fecha={cuota.credito_fecha}
+                    credito_monto={cuota.credito_monto}
+                    credito_numero={cuota.credito_numero}
+                    incrementarContador={incrementarContador}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <hr />
+          </div>
+        </>
       ))}
     </div>
   );

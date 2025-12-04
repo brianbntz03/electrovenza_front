@@ -96,14 +96,18 @@ export function CreditoCuotasPendientes() {
           <div className="row">
             {cuotas.map(cuota => (
               <CreditoCuotaVencida 
-                key={cuota.id}
+               key={cuota.id}
                 id={cuota.id} 
                 numero={cuota.numero} 
                 fecha={cuota.fecha} 
-                valor={cuota.valor} 
-                montoCobrado={cuota.monto_cobrado} 
+                valor={parseFloat(cuota.valor)} 
+                montoCobrado={parseFloat(cuota.monto_cobrado)} 
+                credito_numero={cuota.credito.id} 
+                credito_monto={parseFloat(cuota.credito.monto)} 
+                credito_fecha={cuota.credito.fecha} 
+                vendedor={cuota.credito.vendedor?.nombre || 'N/A'} 
                 estado={cuota.estado} 
-                incrementarContador={incrementarContador} 
+                incrementarContador={incrementarContador}
               />
             ))}
           </div>
