@@ -81,9 +81,9 @@ export default function CuotaVencida(cuota) {
               {cuota.fecha} ({cuota.numero})
             </span>
             <span className="progress-description">{cuota.articulo}</span>
-            <span className="info-box-number">valor: ${cuota.valor}</span>
+            <span className="info-box-number">valor: ${Number(cuota.valor).toLocaleString()}</span>
             <span className="info-box-number">
-              Pendiente: ${cuota.valor - cuota.montoCobrado}
+              Pendiente: ${(cuota.valor - cuota.montoCobrado).toLocaleString()}
             </span>           
             <span className="progress-description">
               Vendedor: {cuota.vendedor}

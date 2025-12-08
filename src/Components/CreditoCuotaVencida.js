@@ -79,8 +79,8 @@ export default function CreditoCuotaVencida(cuota) {
             <i className="far fa-calendar-alt"></i>
           </span>
           <div className="info-box-content">
-            <span className="info-box-text">Cuota número: {cuota.numero}</span>
-            <span className="info-box-number">valor: ${cuota.valor?.toLocaleString()}</span>
+            <span className="info-box-text">{cuota.fecha} ({cuota.numero})</span>
+            <span className="info-box-number">valor: ${(Number(cuota.valor))?.toLocaleString()}</span>
             <span className="info-box-number">
               Pendiente: ${(cuota.valor - cuota.montoCobrado)?.toLocaleString()}
             </span>
@@ -89,7 +89,7 @@ export default function CreditoCuotaVencida(cuota) {
               Credito Nro: {cuota.credito_numero}
             </span>
             <span className="info-box-number">
-              monto otorgado: ${cuota.credito_monto?.toLocaleString()}
+              monto otorgado: ${Number(cuota.credito_monto)?.toLocaleString()}
             </span>
             <span className="info-box-number">
               fecha otorgamiento: {convertIsoToDMY(cuota.credito_fecha)}
