@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "https://electrovenza.com/gestion/static/css/main.d95fc99e.css",
-    "main.js": "https://electrovenza.com/gestion/static/js/main.6f7e854e.js",
-    "static/js/488.4be9b44e.chunk.js": "https://electrovenza.com/gestion/static/js/488.4be9b44e.chunk.js",
-    "index.html": "https://electrovenza.com/gestion/index.html",
-    "main.d95fc99e.css.map": "https://electrovenza.com/gestion/static/css/main.d95fc99e.css.map",
-    "main.6f7e854e.js.map": "https://electrovenza.com/gestion/static/js/main.6f7e854e.js.map",
-    "488.4be9b44e.chunk.js.map": "https://electrovenza.com/gestion/static/js/488.4be9b44e.chunk.js.map"
+    "main.css": "http://localhost:3000/gestion/static/css/main.d95fc99e.css",
+    "main.js": "http://localhost:3000/gestion/static/js/main.d20f2004.js",
+    "static/js/488.4be9b44e.chunk.js": "http://localhost:3000/gestion/static/js/488.4be9b44e.chunk.js",
+    "index.html": "http://localhost:3000/gestion/index.html",
+    "main.d95fc99e.css.map": "http://localhost:3000/gestion/static/css/main.d95fc99e.css.map",
+    "main.d20f2004.js.map": "http://localhost:3000/gestion/static/js/main.d20f2004.js.map",
+    "488.4be9b44e.chunk.js.map": "http://localhost:3000/gestion/static/js/488.4be9b44e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d95fc99e.css",
-    "static/js/main.6f7e854e.js"
+    "static/js/main.d20f2004.js"
   ]
 }
