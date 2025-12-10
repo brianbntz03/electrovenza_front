@@ -86,7 +86,7 @@ export default function PrintCuotasCredito() {
                 {convertIsoToDMY(cuota.fecha)} &nbsp;
                 {cuota.monto_cobrado > 0
                   ? cuota.monto_cobrado.toString().padStart(8, " ")
-                  : ". ".repeat(16)}
+                  : ". ".repeat(6)}
               </p>
             </div>
           ))}

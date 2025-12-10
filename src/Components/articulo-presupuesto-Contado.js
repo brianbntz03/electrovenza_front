@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { apiRest } from "../service/apiRest";
 import FlashMessage from "./tiny/FlashMessage";
 
-export const ArticuloPresupuesto = () => {
+export const ArticuloPresupuestoContado = () => {
   const [articulosFiltrados, setArticulosFiltrados] = useState([]);
   const [vendedoresFiltrados, setVendedoresFiltrados] = useState([]);
   const [clientesFiltrados, setClientesFiltrados] = useState([]);
@@ -13,8 +13,9 @@ export const ArticuloPresupuesto = () => {
   const [articulosLoading, setArticulosLoading] = useState(false);
   const [searchPerformed, setSearchPerformed] = useState(false);
   const [idCliente, setIdCliente] = useState("");
-  const [idinteres, setIdInteres] = useState("");
+  const [idinteres, setIdInteres] = useState(""); // Se establecerá dinámicamente para venta al contado
   const [nombreVendedor, setNombreVendedor] = useState("");
+  const [numeroCuotas, setNumeroCuotas] = useState("");
   const [selectedVendedorId, setSelectedVendedorId] = useState("");
   const [busqueda, setBusqueda] = useState("");
   const [fechaSeleccionada, setFechaSeleccionada] = useState(
@@ -34,6 +35,15 @@ export const ArticuloPresupuesto = () => {
     cargarVendedores();
     cargarClientes();
     cargarCuotas();
+    
+    // Detectar si es venta al contado desde URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const esVentaContado = urlParams.get('venta_contado') === 'true';
+    
+    if (esVentaContado) {
+      // Buscar el ID de cuota para venta al contado
+      buscarCuotaContado();
+    }
   }, []);
 
   // Ajusta el nombre del vendedor y su ID después de que la lista de vendedores se haya cargado
@@ -77,8 +87,26 @@ export const ArticuloPresupuesto = () => {
     try {
       console.log("Fecha seleccionada para la venta:", fechaSeleccionada);
 
+      // Detectar si es venta al contado desde URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const esVentaContado = urlParams.get('venta_contado') === 'true';
+      
+      // Si es venta al contado, buscar el ID de cuota de contado
+      let cuotaId = parseInt(idinteres);
+      if (esVentaContado) {
+        const cuotaContado = cuotasFiltrados.find(cuota => 
+          cuota.descripcion.toLowerCase().includes('contado') || 
+          (cuota.numero === 1 && cuota.interes === 0)
+        );
+        if (cuotaContado) {
+          cuotaId = cuotaContado.id;
+        } else {
+          console.warn('No se encontró cuota de contado, usando cuota seleccionada');
+        }
+      }
+
       const ventaData = {
-        nro_cuotas_id: parseInt(idinteres),
+        nro_cuotas_id: cuotaId,
         cliente_id: parseInt(idCliente),
         vendedor_id: parseInt(selectedVendedorId),
         fecha: fechaSeleccionada,
@@ -158,7 +186,7 @@ export const ArticuloPresupuesto = () => {
   };
 
   const calcularTotalConInteres = () => {
-    if (!idinteres) {
+     if (!idinteres) {
       return calcularTotal();
     }
 
@@ -308,8 +336,12 @@ export const ArticuloPresupuesto = () => {
   };
 
   const FormCliente = ({ idCliente, setIdCliente, clientesFiltrados }) => {
-    const clienteSeleccionado = clientesFiltrados.find(c => c.id == idCliente);
-    const displayValue = clienteSeleccionado ? `${clienteSeleccionado.id_formatted} - ${clienteSeleccionado.nombre}` : terminoBusquedaCliente;
+    const clienteSeleccionado = clientesFiltrados.find(
+      (c) => c.id == idCliente
+    );
+    const displayValue = clienteSeleccionado
+      ? `${clienteSeleccionado.id_formatted} - ${clienteSeleccionado.nombre}`
+      : terminoBusquedaCliente;
 
     return (
       <div className="row">
@@ -330,8 +362,8 @@ export const ArticuloPresupuesto = () => {
           />
           <datalist id="clientes-list">
             {clientesFiltrados.map((cliente) => (
-              <option 
-                key={cliente.id} 
+              <option
+                key={cliente.id}
                 value={`${cliente.id_formatted} - ${cliente.nombre}`}
                 onClick={() => setIdCliente(cliente.id)}
               />
@@ -342,30 +374,33 @@ export const ArticuloPresupuesto = () => {
     );
   };
 
-  const FormNumeroCuotas = ({ idinteres, setIdInteres, cuotasFiltrados }) => {
-    return (
-      <div className="row">
-        <div className="col-md-2">
-          <label style={{ marginRight: "5px" }}>N° de cuotas</label>
-        </div>
-        <div className="col-md-3">
-          <select
-            className="form-control"
-            value={idinteres}
-            name="idinteres"
-            onChange={(e) => setIdInteres(e.target.value)}
-          >
-            <option value="">-- Seleccionar numero de cuotas --</option>
-            {cuotasFiltrados.map((interes) => (
-              <option key={interes.id} value={interes.id}>
-                {interes.descripcion} ({interes.interes} %)
-              </option>
-            ))}
-          </select>
-        </div>
+  const FormNumeroCuotas = ({
+  idinteres,
+  setIdInteres,
+  cuotasFiltrados,
+  userRole,
+}) => {
+  // Detectar si es venta al contado desde URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const esVentaContado = urlParams.get('venta_contado') === 'true';
+  
+  const nombreCuota = esVentaContado 
+    ? "Venta al contado"
+    : cuotasFiltrados.find((c) => c.id === Number(idinteres))?.descripcion || "Venta al Contado";
+
+  return (
+    <div className="row">
+      <div className="col-md-2">
+        <label style={{ marginRight: "5px" }}>N° de cuotas:</label>
       </div>
-    );
-  };
+
+      <div className="col-md-3 input-group">
+        <p className="form-control-plaintext">{nombreCuota}</p>
+      </div>
+    </div>
+  );
+};
+
 
   const handleSearch = async (busqueda) => {
     setSearchPerformed(true);
@@ -498,8 +533,8 @@ export const ArticuloPresupuesto = () => {
 
   // Detectar selección del datalist
   useEffect(() => {
-    const cliente = clientesCompletos.find(c => 
-      `${c.id_formatted} - ${c.nombre}` === terminoBusquedaCliente
+    const cliente = clientesCompletos.find(
+      (c) => `${c.id_formatted} - ${c.nombre}` === terminoBusquedaCliente
     );
     if (cliente) {
       setIdCliente(cliente.id);
@@ -511,35 +546,31 @@ export const ArticuloPresupuesto = () => {
       const response = await fetch(`${apiRest}/settings/cuotas`);
       if (response.ok) {
         const data = await response.json();
-        
-        // Definir el orden deseado
-        const ordenCuotas = ['diario', 'semanal', 'mensual', 'quincenal'];
-        
-        // Ordenar las cuotas según el orden definido
-        const cuotasOrdenadas = data.sort((a, b) => {
-          const tipoA = a.descripcion.toLowerCase();
-          const tipoB = b.descripcion.toLowerCase();
-          
-          const indexA = ordenCuotas.findIndex(tipo => tipoA.includes(tipo));
-          const indexB = ordenCuotas.findIndex(tipo => tipoB.includes(tipo));
-          
-          // Si ambos tipos están en el orden definido, ordenar por índice
-          if (indexA !== -1 && indexB !== -1) {
-            return indexA - indexB;
-          }
-          
-          // Si solo uno está en el orden definido, ese va primero
-          if (indexA !== -1) return -1;
-          if (indexB !== -1) return 1;
-          
-          // Si ninguno está en el orden definido, mantener orden original
-          return 0;
-        });
-        
-        setCuotasFiltrados(cuotasOrdenadas);
+        setCuotasFiltrados(data);
       }
     } catch (error) {
       console.error("Error cargando cuotas:", error);
+    }
+  };
+
+  const buscarCuotaContado = async () => {
+    try {
+      const response = await fetch(`${apiRest}/settings/cuotas`);
+      if (response.ok) {
+        const data = await response.json();
+        // Buscar cuota de contado con criterios múltiples
+        const cuotaContado = data.find(cuota => 
+          cuota.descripcion.toLowerCase().includes('contado') || 
+          (cuota.numero === 1 && cuota.interes === 0)
+        );
+        if (cuotaContado) {
+          setIdInteres(cuotaContado.id);
+        } else {
+          console.warn('No se encontró cuota de contado en la configuración');
+        }
+      }
+    } catch (error) {
+      console.error("Error buscando cuota contado:", error);
     }
   };
 
@@ -573,7 +604,10 @@ export const ArticuloPresupuesto = () => {
         idinteres={idinteres}
         setIdInteres={setIdInteres}
         cuotasFiltrados={cuotasFiltrados}
+        userRole={userRole}
+        nombreCuota
       />
+
       <FormArticulos busqueda={busqueda} setBusqueda={setBusqueda} />
       {searchPerformed && (
         <>
@@ -633,102 +667,175 @@ export const ArticuloPresupuesto = () => {
         </>
       )}
       <a name="presupuesto-financiacion">
-      <h3>Presupuesto</h3>
-      {presupuesto.length === 0 ? (
-        <p>No hay artículos en el presupuesto.</p>
-      ) : (
-        <>
-          <table className="table table-bordered">
-            <thead>
-              <tr>
-                <th>Código</th>
-                <th>Articulo</th>
-                <th>Categoría</th>
-                <th>Precio</th>
-                <th>Cantidad</th>
-                <th>Subtotal</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {presupuesto.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.nombre || item.descripcion}</td>
-                  <td>{item.categoria?.nombre}</td>
-                  <td>${item.precio}</td>
-                  <td>
-                    <input
-                      type="number"
-                      min="1"
-                      value={item.cantidad}
-                      onChange={(e) => {
-                        const nuevaCantidad = parseInt(e.target.value, 10);
-                        if (nuevaCantidad >= 1) {
-                          const nuevoPresupuesto = presupuesto.map((i) =>
-                            i.id === item.id
-                              ? { ...i, cantidad: nuevaCantidad }
-                              : i
-                          );
-                          setPresupuesto(nuevoPresupuesto);
-                          localStorage.setItem(
-                            "presupuesto",
-                            JSON.stringify(nuevoPresupuesto)
-                          );
-                        }
-                      }}
-                    />
+        <h3>Presupuesto</h3>
+        {presupuesto.length === 0 ? (
+          <p>No hay artículos en el presupuesto.</p>
+        ) : (
+          <>
+            <table className="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Articulo</th>
+                  <th>Categoría</th>
+                  <th>Precio</th>
+                  <th>Cantidad</th>
+                  <th>Subtotal</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {presupuesto.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.id}</td>
+                    <td>{item.nombre || item.descripcion}</td>
+                    <td>{item.categoria?.nombre}</td>
+                    <td>${item.precio}</td>
+                    <td>
+                      <input
+                        type="number"
+                        min="1"
+                        value={item.cantidad}
+                        onChange={(e) => {
+                          const nuevaCantidad = parseInt(e.target.value, 10);
+                          if (nuevaCantidad >= 1) {
+                            const nuevoPresupuesto = presupuesto.map((i) =>
+                              i.id === item.id
+                                ? { ...i, cantidad: nuevaCantidad }
+                                : i
+                            );
+                            setPresupuesto(nuevoPresupuesto);
+                            localStorage.setItem(
+                              "presupuesto",
+                              JSON.stringify(nuevoPresupuesto)
+                            );
+                          }
+                        }}
+                      />
+                    </td>
+                    <td>
+                      {`$${(parseFloat(item.precio) * item.cantidad).toFixed(
+                        2
+                      )}`}
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-sm btn-info float-right"
+                        onClick={() => eliminarProducto(item.id)}
+                      >
+                        Eliminar
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colSpan="5" style={{ textAlign: "right" }}>
+                    <strong>Interés:</strong>
                   </td>
-                  <td>
-                    {`$${(parseFloat(item.precio) * item.cantidad).toFixed(2)}`}
+                  <td colSpan="2">
+                    <strong>
+                      {idinteres
+                        ? `${
+                            cuotasFiltrados.find(
+                              (c) => c.id === parseInt(idinteres, 10)
+                            )?.interes || 0
+                          }% (${
+                            cuotasFiltrados.find(
+                              (c) => c.id === parseInt(idinteres, 10)
+                            )?.numero || 0
+                          } cuotas)`
+                        : "No seleccionado"}
+                    </strong>
                   </td>
-                  <td>
+                </tr>
+                <tr>
+                  <td colSpan="5" style={{ textAlign: "right" }}>
+                    <strong>Total:</strong>
+                  </td>
+                  <td colSpan="2">
+                    <strong>
+                      $
+                      {idinteres
+                        ? calcularTotalConInteres().toLocaleString()
+                        : calcularTotal().toLocaleString()}
+                    </strong>
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan="7" style={{ textAlign: "right" }}>
                     <button
-                      className="btn btn-sm btn-info float-right"
-                      onClick={() => eliminarProducto(item.id)}
+                      type="button"
+                      className="btn btn-primary"
+                      data-toggle="modal"
+                      data-target="#exampleModal"
+                      onClick={() => registrarVenta()}
                     >
-                      Eliminar
+                      Registrar Venta
                     </button>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colSpan="5" style={{ textAlign: "right" }}>
-                  <strong>Interés:</strong>
-                </td>
-                <td colSpan="2">
-                  <strong>
-                    {idinteres
-                      ? `${
-                          cuotasFiltrados.find(
-                            (c) => c.id === parseInt(idinteres, 10)
-                          )?.interes || 0
-                        }% (${
-                          cuotasFiltrados.find(
-                            (c) => c.id === parseInt(idinteres, 10)
-                          )?.numero || 0
-                        } cuotas)`
-                      : "No seleccionado"}
-                  </strong>
-                </td>
-              </tr>
-              <tr>
-                <td colSpan="5" style={{ textAlign: "right" }}>
-                  <strong>Total:</strong>
-                </td>
-                <td colSpan="2">
-                  <strong>
-                    $
-                    {idinteres
-                      ? calcularTotalConInteres().toLocaleString()
-                      : calcularTotal().toLocaleString()}
-                  </strong>
-                </td>
-              </tr>
-              <tr>
-                <td colSpan="7" style={{ textAlign: "right" }}>
+              </tfoot>
+            </table>
+            {idinteres && (
+              <>
+                <h4 style={{ marginTop: "20px" }}>Detalle de financiación</h4>
+                <table className="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <th>Cantidad</th>
+                      <th>Precio Contado</th>
+                      <th>Cuotas</th>
+                      <th>Valor por cuota</th>
+                      <th>Total con interés</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {presupuesto.map((item) => {
+                      const subtotal = parseFloat(item.precio) * item.cantidad;
+                      const numeroCuotas =
+                        cuotasFiltrados.find(
+                          (c) => c.id === parseInt(idinteres, 10)
+                        )?.numero || 1;
+                      const conInteres = calcularPrecioConInteres(
+                        subtotal,
+                        idinteres
+                      );
+                      const valorPorCuota =
+                        Math.ceil(conInteres / numeroCuotas / 100) * 100;
+
+                      return (
+                        <tr key={`financiacion-${item.id}`}>
+                          <td>{item.nombre || item.descripcion}</td>
+                          <td>{item.cantidad}</td>
+                          <td>${subtotal.toLocaleString()}</td>
+                          <td>{numeroCuotas}</td>
+                          <td>${valorPorCuota.toLocaleString()}</td>
+                          <td>${conInteres.toLocaleString()}</td>
+                        </tr>
+                      );
+                    })}
+                    <tr
+                      style={{ backgroundColor: "#f8f9fa", fontWeight: "bold" }}
+                    >
+                      <td td colSpan="2" style={{ textAlign: "center" }}>
+                        TOTAL
+                      </td>
+                      <td>${calcularTotal().toLocaleString()}</td>
+
+                      <td>
+                        {cuotasFiltrados.find(
+                          (c) => c.id === parseInt(idinteres, 10)
+                        )?.descripcion || "No seleccionado"}
+                      </td>
+                      <td>{sumarCuotas().toLocaleString()}</td>
+                      <td>${calcularTotalConInteres().toLocaleString()}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div style={{ textAlign: "right" }}>
                   <button
                     type="button"
                     className="btn btn-primary"
@@ -738,79 +845,12 @@ export const ArticuloPresupuesto = () => {
                   >
                     Registrar Venta
                   </button>
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-          {idinteres && (
-            <>
-              <h4 style={{ marginTop: "20px" }}>Detalle de financiación</h4>
-              <table className="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                    <th>Precio Contado</th>
-                    <th>Cuotas</th>
-                    <th>Valor por cuota</th>
-                    <th>Total con interés</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {presupuesto.map((item) => {
-                    const subtotal = parseFloat(item.precio) * item.cantidad;
-                    const numeroCuotas =
-                      cuotasFiltrados.find(
-                        (c) => c.id === parseInt(idinteres, 10)
-                      )?.numero || 1;
-                    const conInteres = calcularPrecioConInteres(
-                      subtotal,
-                      idinteres
-                    );
-                    const valorPorCuota =
-                      Math.ceil(conInteres / numeroCuotas / 100) * 100;
-
-                    return (
-                      <tr key={`financiacion-${item.id}`}>
-                        <td>{item.nombre || item.descripcion}</td>
-                        <td>{item.cantidad}</td>
-                        <td>${subtotal.toLocaleString()}</td>
-                        <td>{numeroCuotas}</td>
-                        <td>${valorPorCuota.toLocaleString()}</td>
-                        <td>${conInteres.toLocaleString()}</td>
-                      </tr>
-                    );
-                  })}
-                  <tr
-                    style={{ backgroundColor: "#f8f9fa", fontWeight: "bold" }}
-                  >
-                    <td td colSpan="2" style={{ textAlign: "center" }}>
-                      TOTAL
-                    </td>
-                    <td>${calcularTotal().toLocaleString()}</td>
-
-                    <td>No aplica</td>
-                    <td>{sumarCuotas().toLocaleString()}</td>
-                    <td>${calcularTotalConInteres().toLocaleString()}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <div style={{ textAlign: "right" }}>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  data-toggle="modal"
-                  data-target="#exampleModal"
-                  onClick={() => registrarVenta()}
-                >
-                  Registrar Venta
-                </button>
-              </div>
-            </>
-          )}
-        </>
-      )}
-    </a>
+                </div>
+              </>
+            )}
+          </>
+        )}
+      </a>
     </div>
   );
 };

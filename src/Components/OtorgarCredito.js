@@ -202,22 +202,39 @@ const OtorgarCredito = () => {
   }, []);
 
   useEffect(() => {
-    if (monto > 0 && cuotaId) {
+    const montoNumerico = parseFloat(monto);
+    
+    if (montoNumerico > 0 && cuotaId && cuotasList.length > 0) {
       const cuotaSeleccionada = cuotasList.find((c) => c.id === cuotaId);
+      
       if (cuotaSeleccionada) {
-        const cuotas = cuotaSeleccionada.numero;
-        const interesDecimal = cuotaSeleccionada.interes;
-        const total = monto * (1 + interesDecimal / 100);
+        const cuotas = parseInt(cuotaSeleccionada.numero) || 1;
+        const interesDecimal = parseFloat(cuotaSeleccionada.interes) || 0;
+        
+        // Evitar división por cero
+        if (cuotas <= 0) {
+          setDetallesFinanciacion(null);
+          return;
+        }
+        
+        const total = montoNumerico * (1 + interesDecimal / 100);
         const valorCuota = Math.round(total / cuotas);
-
         const totalPagar = valorCuota * cuotas;
 
-        setDetallesFinanciacion({
-          cuotas,
-          interes: `${cuotaSeleccionada.interes}%`,
-          valorCuota: valorCuota,
-          totalPagar: totalPagar,
-        });
+        // Solo verificar que no sean NaN o Infinity
+        if (!isNaN(total) && !isNaN(valorCuota) && !isNaN(totalPagar) && 
+            isFinite(total) && isFinite(valorCuota) && isFinite(totalPagar)) {
+          setDetallesFinanciacion({
+            cuotas,
+            interes: `${cuotaSeleccionada.interes}%`,
+            valorCuota: valorCuota,
+            totalPagar: totalPagar,
+          });
+        } else {
+          setDetallesFinanciacion(null);
+        }
+      } else {
+        setDetallesFinanciacion(null);
       }
     } else {
       setDetallesFinanciacion(null);
@@ -256,8 +273,8 @@ const OtorgarCredito = () => {
                 <tr>
                   <td>{detallesFinanciacion.cuotas}</td>
                   <td>{detallesFinanciacion.interes}</td>
-                  <td>${detallesFinanciacion.valorCuota}</td>
-                  <td>${detallesFinanciacion.totalPagar}</td>
+                  <td>${detallesFinanciacion.valorCuota.toLocaleString()}</td>
+                  <td>${detallesFinanciacion.totalPagar.toLocaleString()}</td>
                 </tr>
               </tbody>
             </table>

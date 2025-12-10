@@ -44,7 +44,7 @@ import PageReporteCobranza from "../pages/pageReporteCobranza";
 import PageReporteGanancia from "../pages/pageReporteGanancias";
 import PageArticulosListado from "../pages/articulosListados";
 import PageActualizacionMasiva from "../pages/PageActualizacionMasiva";
-
+import PagePresupuestarAlContado from "../Presupuestos/presupuestossssAlContado";
 
 export default function Content() {
   return (
@@ -92,6 +92,7 @@ export default function Content() {
                 
                 
                 <Route path="/buscar-articulos-presupuesto" Component={PagePresupuestar}></Route>
+                <Route path="/buscar-articulos-presupuesto-contado" Component={PagePresupuestarAlContado}></Route>
                 <Route path="/cuotas-por-cobrar" Component={PageCuotasPorCobrar} ></Route>
                 <Route path="/cuotas-por-cobrar-electro" Component={PageCuotasPorCobrarElectro} ></Route>
                 <Route path="/ventas-listado" Component={PageListadoVentas}></Route>
