@@ -3,7 +3,7 @@ import { apiRest } from "../../service/apiRest";
 import { ModalEditarCreditos } from "../modals/ModalEditarCreditos";
 import { convertIsoToDMY } from "../../miscellaneus/aux";
 import { BotonImprimirCuotasCredito } from "../tiny/BotonImprimirCuotasCredito";
-import { BotonCuotasPendientes } from "../tiny/BotonCuotasPendientes";
+import { BotonCreditosCuotasPendientes } from "../tiny/BotonCreditosCuotasPendientes";
 import { BotonAnularCredito } from "../tiny/BotonAnularCredito";
 import { CUOTA_TYPE_NAMES } from "../../constants/cuotaTypes";
 import { EstadosCredito } from "../../constants/creditos"
@@ -191,7 +191,7 @@ export function ListadoCreditos() {
                 <td>{EstadosCredito[object.estado_credito]}</td>
                 <td>
                   <BotonImprimirCuotasCredito id={object.id} /> &nbsp;
-                  <BotonCuotasPendientes id={object.id} /> &nbsp;
+                  <BotonCreditosCuotasPendientes id={object.id} /> &nbsp;
                   <BotonAnularCredito id={object.id} />
 
                 </td>

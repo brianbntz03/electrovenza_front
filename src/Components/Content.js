@@ -39,7 +39,7 @@ import { CrearCompras } from "./Crear/CrearCompras";
 import PageCreditos from "../pages/PageCreditos"; 
 import Clientes_filtrado_vendedor from "./Clientes-Filtrado-vendedor";
 import { CrearClienteFiltrado } from "./Crear/CrearClientesFiltrado";
-import PageCuotasVencidas from "../pages/pageCuotasVencidas";
+import PageVentasCuotasPendientes from "../pages/PageVentaCuotasPendientes";
 import PageReporteCobranza from "../pages/pageReporteCobranza";
 import PageReporteGanancia from "../pages/pageReporteGanancias";
 import PageArticulosListado from "../pages/articulosListados";
@@ -97,6 +97,7 @@ export default function Content() {
                 <Route path="/ventas-listado" Component={PageListadoVentas}></Route>
                 <Route path="/ventas-comisiones-pendientes" element={<PageComisionesPorVentaPendientes />} />
                 <Route path="/creditos-comisiones-pendientes" element={<PageComisionesPorCreditoPendientes />} />
+                <Route path="/ventas-cuotas-pendientes/:venta_id" Component={PageVentasCuotasPendientes} ></Route>
                 <Route path="/print/cuotas/:venta_id" element={<PrintCuotas />} />
                 <Route path="/print/cuotas-credito/:credito_id" element={<PrintCuotasCredito />} />
                 

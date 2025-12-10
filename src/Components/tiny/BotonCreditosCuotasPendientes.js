@@ -2,9 +2,9 @@ import { NavLink } from "react-router-dom";
 
 import { publicUrl } from "../../service/apiRest";
 
-export function BotonCuotasPendientes(venta){
+export function BotonCreditosCuotasPendientes(credito){
   return (
-    <NavLink to={`/ventas-cuotas-pendientes/${venta.id}`} className="btn btn-info">
+    <NavLink to={`/credito-cuotas-pendientes/${credito.id}`} className="btn btn-info">
       Impagas
     </NavLink>
   );
