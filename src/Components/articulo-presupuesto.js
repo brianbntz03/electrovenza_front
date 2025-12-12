@@ -22,6 +22,8 @@ export const ArticuloPresupuesto = () => {
   );
   // Inicializamos el rol por defecto.
   const [userRole, setUserRole] = useState("vendedor");
+  const urlParams = new URLSearchParams(window.location.search);
+  const esVentaContado = urlParams.get("venta_contado") === "true";
 
   // Cargar vendedores, clientes y cuotas al inicio
   useEffect(() => {
@@ -251,7 +253,6 @@ export const ArticuloPresupuesto = () => {
   const FormularioFecha = ({ fecha, setFecha }) => {
     const handleDataChange = (e) => {
       const selectedDate = e.target.value;
-      console.log("Fecha seleccionada:", selectedDate);
       setFecha(selectedDate);
     };
 
@@ -308,7 +309,7 @@ export const ArticuloPresupuesto = () => {
   };
 
   const FormCliente = ({ idCliente, setIdCliente, clientesFiltrados }) => {
-    const clienteSeleccionado = clientesFiltrados.find(c => c.id == idCliente);
+    const clienteSeleccionado = clientesFiltrados.find(c => c.id === idCliente);
     const displayValue = clienteSeleccionado ? `${clienteSeleccionado.id_formatted} - ${clienteSeleccionado.nombre}` : terminoBusquedaCliente;
 
     return (
@@ -342,7 +343,17 @@ export const ArticuloPresupuesto = () => {
     );
   };
 
-  const FormNumeroCuotas = ({ idinteres, setIdInteres, cuotasFiltrados }) => {
+  const FormNumeroCuotas = ({ idinteres, setIdInteres, cuotasFiltrados, esVentaContado }) => {
+    if (esVentaContado) {
+      return (
+        <div className="row">
+          <div className="col-md-2">
+          <label style={{ marginRight: "5px" }}>N° de cuotas</label>
+        </div>
+        <div className="col-md-3"> Venta al contado </div>
+        </div>
+      )
+    }
     return (
       <div className="row">
         <div className="col-md-2">
@@ -511,32 +522,38 @@ export const ArticuloPresupuesto = () => {
       const response = await fetch(`${apiRest}/settings/cuotas`);
       if (response.ok) {
         const data = await response.json();
+
+        if(esVentaContado) {
+          const contado = data.find(cuota => cuota.descripcion.toLowerCase().includes('contado'));
+          setIdInteres(contado.id);
+        } else {
         
-        // Definir el orden deseado
-        const ordenCuotas = ['diario', 'semanal', 'mensual', 'quincenal'];
-        
-        // Ordenar las cuotas según el orden definido
-        const cuotasOrdenadas = data.sort((a, b) => {
-          const tipoA = a.descripcion.toLowerCase();
-          const tipoB = b.descripcion.toLowerCase();
+          // Definir el orden deseado
+          const ordenCuotas = ['diario', 'semanal', 'mensual', 'quincenal'];
           
-          const indexA = ordenCuotas.findIndex(tipo => tipoA.includes(tipo));
-          const indexB = ordenCuotas.findIndex(tipo => tipoB.includes(tipo));
+          // Ordenar las cuotas según el orden definido
+          const cuotasOrdenadas = data.sort((a, b) => {
+            const tipoA = a.descripcion.toLowerCase();
+            const tipoB = b.descripcion.toLowerCase();
+            
+            const indexA = ordenCuotas.findIndex(tipo => tipoA.includes(tipo));
+            const indexB = ordenCuotas.findIndex(tipo => tipoB.includes(tipo));
+            
+            // Si ambos tipos están en el orden definido, ordenar por índice
+            if (indexA !== -1 && indexB !== -1) {
+              return indexA - indexB;
+            }
+            
+            // Si solo uno está en el orden definido, ese va primero
+            if (indexA !== -1) return -1;
+            if (indexB !== -1) return 1;
+            
+            // Si ninguno está en el orden definido, mantener orden original
+            return 0;
+          });
           
-          // Si ambos tipos están en el orden definido, ordenar por índice
-          if (indexA !== -1 && indexB !== -1) {
-            return indexA - indexB;
-          }
-          
-          // Si solo uno está en el orden definido, ese va primero
-          if (indexA !== -1) return -1;
-          if (indexB !== -1) return 1;
-          
-          // Si ninguno está en el orden definido, mantener orden original
-          return 0;
-        });
-        
-        setCuotasFiltrados(cuotasOrdenadas);
+          setCuotasFiltrados(cuotasOrdenadas);
+        }
       }
     } catch (error) {
       console.error("Error cargando cuotas:", error);
@@ -573,7 +590,9 @@ export const ArticuloPresupuesto = () => {
         idinteres={idinteres}
         setIdInteres={setIdInteres}
         cuotasFiltrados={cuotasFiltrados}
+        esVentaContado={esVentaContado}
       />
+      
       <FormArticulos busqueda={busqueda} setBusqueda={setBusqueda} />
       {searchPerformed && (
         <>

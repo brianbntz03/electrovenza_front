@@ -65,7 +65,7 @@ export function ComponentListadoVentas() {
 
 
   return (
-    <div class="card-body">
+    <div className="card-body">
       {loading && <p>Cargando ventas...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
       {!loading && !error && (

@@ -92,7 +92,7 @@ export default function Content() {
                 
                 
                 <Route path="/buscar-articulos-presupuesto" Component={PagePresupuestar}></Route>
-                <Route path="/buscar-articulos-presupuesto-contado" Component={PagePresupuestarAlContado}></Route>
+                <Route path="/venta-al-contado" Component={PagePresupuestar}></Route>
                 <Route path="/cuotas-por-cobrar" Component={PageCuotasPorCobrar} ></Route>
                 <Route path="/cuotas-por-cobrar-electro" Component={PageCuotasPorCobrarElectro} ></Route>
                 <Route path="/ventas-listado" Component={PageListadoVentas}></Route>
@@ -107,8 +107,6 @@ export default function Content() {
                 <Route path="/creditos-cuotas-por-cobrar" Component={PageCreditosCuotasPorCobrar} ></Route>
                 <Route path="/credito-cuotas-pendientes/:credito_id" Component={PageCreditoCuotasPendientes} ></Route>
                 <Route path="/creditos-listado" Component={PageCreditos} ></Route>
-                
-
 
                 <Route path="/crearProducto" Component={CrearProducto}></Route>
                 <Route path="/vendedores" Component={ListadoVendedores}></Route>

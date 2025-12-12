@@ -73,7 +73,7 @@ export function ComponentListadoVentas() {
 
 
   return (
-    <div class="card-body">
+    <div className="card-body">
       {loading && <p>Cargando ventas...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
       {!loading && !error && (
@@ -95,7 +95,7 @@ export function ComponentListadoVentas() {
                 <td>{venta.id}</td>
                 <td>{convertIsoToDMY(venta.fecha)}</td>
                 <td>{venta.articulo.nombre}</td>
-                <td>{venta.precio}</td>
+                <td>${(parseFloat(venta.precio) || 0).toLocaleString()}</td>
                 <td>{venta.cliente.nombre}</td>
                 <td>{venta.vendedor.nombre}</td>
                 <td><BotonImprimirCuotas id={venta.id} /> &nbsp;

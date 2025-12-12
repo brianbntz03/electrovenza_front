@@ -15,7 +15,6 @@ export default function   Aside() {
 
   const electroPaths = [
     "/buscar-articulos-presupuesto",
-    "/buscar-articulos-presupuesto?venta_contado=true",
     "/cuotas-por-cobrar",
     "/ventas-listado",
   ];
@@ -158,8 +157,8 @@ export default function   Aside() {
               <p>Vender</p>
             </NavLink>
           </li>
-          <li className="nav-item">
-            <NavLink to="/buscar-articulos-presupuesto-contado?venta_contado=true" className="nav-link" onClick={closeMobileSidebar}>
+        <li className="nav-item">
+            <NavLink to="/venta-al-contado?venta_contado=true" className="nav-link" onClick={closeMobileSidebar}>
               <i className="nav-icon fas fa-dollar-sign" />
               <p>Venta Al Contado</p>
             </NavLink>
