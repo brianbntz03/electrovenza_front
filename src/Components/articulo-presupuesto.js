@@ -457,7 +457,6 @@ export const ArticuloPresupuesto = () => {
     try {
       console.log("Cargando clientes...");
       const token = localStorage.getItem("jwt_token");
-      console.log("Token JWT:", token ? "Presente" : "No encontrado");
 
       const response = await fetch(`${apiRest}/cliente`, {
         method: "GET",
@@ -468,12 +467,9 @@ export const ArticuloPresupuesto = () => {
         },
       });
 
-      console.log("Respuesta del servidor:", response.status);
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Datos de clientes recibidos:", data);
-        console.log("Cantidad de clientes:", data.length);
         setClientesCompletos(data);
         setClientesFiltrados(data);
       } else if (response.status === 401) {
