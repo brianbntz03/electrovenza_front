@@ -47,7 +47,7 @@ const FormClienteCard = ({ cliente, setCliente, clientesList }) => (
           <option value="">Seleccione un cliente</option>
           {clientesList.map((c) => (
             <option key={c.id} value={c.id}>
-              {c.id_formatted} - {c.nombre}
+              {c.nombre} ({c.id_formatted})
             </option>
           ))}
         </select>
@@ -183,7 +183,7 @@ const OtorgarCredito = () => {
 
   // Traer clientes y cuotas
   useEffect(() => {
-    fetch(`${apiRest}/cliente`, {
+    fetch(`${apiRest}/cliente/ordered`, {
       method: "GET",
       headers: {
         Accept: "application/json",

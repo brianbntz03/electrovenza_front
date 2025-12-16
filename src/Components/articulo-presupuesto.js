@@ -309,35 +309,25 @@ export const ArticuloPresupuesto = () => {
   };
 
   const FormCliente = ({ idCliente, setIdCliente, clientesFiltrados }) => {
-    const clienteSeleccionado = clientesFiltrados.find(c => c.id === idCliente);
-    const displayValue = clienteSeleccionado ? `${clienteSeleccionado.id_formatted} - ${clienteSeleccionado.nombre}` : terminoBusquedaCliente;
-
     return (
       <div className="row">
         <div className="col-md-2">
           <label style={{ marginRight: "5px" }}>Buscar Cliente:</label>
         </div>
         <div className="col-md-3 input-group">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Escribir nombre o ID..."
-            value={displayValue}
-            onChange={(e) => {
-              setTerminoBusquedaCliente(e.target.value);
-              setIdCliente("");
-            }}
-            list="clientes-list"
-          />
-          <datalist id="clientes-list">
-            {clientesFiltrados.map((cliente) => (
-              <option 
-                key={cliente.id} 
-                value={`${cliente.id_formatted} - ${cliente.nombre}`}
-                onClick={() => setIdCliente(cliente.id)}
-              />
+          <select
+          className="form-control"
+          id="cliente_id"
+          value={idCliente}
+          onChange={(e) => setIdCliente(e.target.value)}
+          >
+              <option value="">seleccione un cliente</option>
+              {clientesFiltrados.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.nombre} ({c.id_formatted})
+              </option >
             ))}
-          </datalist>
+          </select>
         </div>
       </div>
     );
@@ -458,7 +448,7 @@ export const ArticuloPresupuesto = () => {
       console.log("Cargando clientes...");
       const token = localStorage.getItem("jwt_token");
 
-      const response = await fetch(`${apiRest}/cliente`, {
+      const response = await fetch(`${apiRest}/cliente/ordered`, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -623,6 +613,10 @@ export const ArticuloPresupuesto = () => {
                         src={`${apiRest}/articulos/${articulo.id}/imagen`}
                         width={100}
                         alt=""
+                        onClick={() => window.open(
+                          `${apiRest}/articulos/${articulo.id}/imagen/`,
+                          "_blank"
+                        )}
                       ></img>
                     </td>
                     <td>

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
 import { EditarClienteModal } from "../modals/EditarClienteModal";
 
-const PLACEHOLDER_URL = "https://placehold.co/100x100/eeeeee/333333?text=Sin+Foto";
+const PLACEHOLDER_URL =
+  "https://placehold.co/100x100/eeeeee/333333?text=Sin+Foto";
 
 export function ListadoClientes() {
   const [allClientes, setAllClientes] = useState([]);
@@ -14,9 +15,9 @@ export function ListadoClientes() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(20);
 
-const handleImageError = (e) => {
+  const handleImageError = (e) => {
     if (e.target.src !== PLACEHOLDER_URL) {
-      e.target.onerror = null;  
+      e.target.onerror = null;
       e.target.src = PLACEHOLDER_URL;
     }
   };
@@ -182,7 +183,13 @@ const handleImageError = (e) => {
                   src={`${apiRest}/cliente/${cliente.id}/imagen/documento_frente`}
                   width={100}
                   alt="Documento Frente"
-                  onError={handleImageError} 
+                  onError={handleImageError}
+                  onClick={() =>
+                    window.open(
+                      `${apiRest}/cliente/${cliente.id}/imagen/documento_frente`,
+                      "_blank"
+                    )
+                  }
                 ></img>
               </td>
               <td>
@@ -190,24 +197,41 @@ const handleImageError = (e) => {
                   src={`${apiRest}/cliente/${cliente.id}/imagen/documento_dorso`}
                   width={100}
                   alt="Documento Dorso"
-                  onError={handleImageError} 
+                  onError={handleImageError}
+                  onClick={() =>
+                    window.open(
+                      `${apiRest}/cliente/${cliente.id}/imagen/documento_dorso`,
+                      "_blank"
+                    )
+                  }
                 ></img>
               </td>
               <td>
                 <img
-                  src={`${apiRest}/cliente/${cliente.id}/imagen/servicio1`} 
+                  src={`${apiRest}/cliente/${cliente.id}/imagen/servicio1`}
                   width={100}
                   alt="Servicio 1"
-                  onError={handleImageError} 
+                  onError={handleImageError}
+                  onClick={() =>
+                    window.open(
+                      `${apiRest}/cliente/${cliente.id}/imagen/servicio1`,
+                      "_blank"
+                    )
+                  }
                 ></img>
               </td>
               <td>
                 <img
-                  // ¡Importante! Asegúrate que el backend maneje el nombre 'servicio_2' correctamente.
                   src={`${apiRest}/cliente/${cliente.id}/imagen/servicio2`}
                   width={100}
                   alt="Servicio 2"
-                  onError={handleImageError} // 🎯 Maneja el error 404 del servidor
+                  onError={handleImageError} 
+                  onClick={() =>
+                    window.open(
+                      `${apiRest}/cliente/${cliente.id}/imagen/servicio2`,
+                      "_blank"
+                    )
+                  }
                 ></img>
               </td>
               <td>
