@@ -186,8 +186,8 @@ const handleSubmit = async (e) => {
 
         if (newClienteId) {
           const uploadPromises = [
-            uploadImageByType(newClienteId, documentoFrente, 'documento_frente'),
-            uploadImageByType(newClienteId, documentoDorso, 'documento_dorso'),
+            uploadImageByType(newClienteId, documentoFrente, 'frente'),
+            uploadImageByType(newClienteId, documentoDorso, 'dorso'),
             uploadImageByType(newClienteId, servicio1, 'servicio1'),
             uploadImageByType(newClienteId, servicio2, 'servicio2'),
           ];

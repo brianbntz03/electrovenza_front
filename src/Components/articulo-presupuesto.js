@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../service/apiRest";
 import FlashMessage from "./tiny/FlashMessage";
+import { CUOTA_TYPE_NAMES } from "../constants/cuotaTypes";
+
 
 export const ArticuloPresupuesto = () => {
   const [articulosFiltrados, setArticulosFiltrados] = useState([]);
@@ -357,9 +359,9 @@ export const ArticuloPresupuesto = () => {
             onChange={(e) => setIdInteres(e.target.value)}
           >
             <option value="">-- Seleccionar numero de cuotas --</option>
-            {cuotasFiltrados.map((interes) => (
-              <option key={interes.id} value={interes.id}>
-                {interes.descripcion} ({interes.interes} %)
+            {cuotasFiltrados.map((cuota) => (
+              <option key={cuota.id} value={cuota.id}>
+                {CUOTA_TYPE_NAMES[cuota.tipo_cuota]}: {cuota.descripcion} ({cuota.interes} %)
               </option>
             ))}
           </select>
