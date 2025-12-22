@@ -14,23 +14,28 @@ export function CreditosCuotasVencidas() {
 
   const fetchCuotas = async () => {
     try {
+      console.log("Fetching cuotas de crédito...");
       const response = await fetch(
         `${apiRest}/cuota_credito/get-cuotas-vencidas`,
         {
           method: "GET",
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+            "Content-Type": "application/json",
           },
         }
       );
 
+      console.log("Token enviado:", localStorage.getItem("jwt_token"));
+
+      console.log("Response status:", response.status);
+      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log("Datos recibidos de cuotas de crédito:", data);
       setCuotas(data);
       setLoading(false);
     } catch (error) {
@@ -100,8 +105,8 @@ export function CreditosCuotasVencidas() {
               </div>
             </div>
 
-            <div class="card-footer p-0">
-              <div class="row">
+            <div className="card-footer p-0">
+              <div className="row">
                 {ListadoDeCuotas.map((cuota) => (
                   <CreditoCuotaVencida
                     id={cuota.id}
