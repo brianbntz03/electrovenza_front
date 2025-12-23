@@ -20,15 +20,12 @@ export function CreditosCuotasVencidas() {
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+            Accept: "application/json",
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
           },
         }
       );
-
-      console.log("Token enviado:", localStorage.getItem("jwt_token"));
-
-      console.log("Response status:", response.status);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
