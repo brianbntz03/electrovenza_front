@@ -63,7 +63,7 @@ export function RegistrarMovimieto() {
     }
 
     try {
-      const response = await fetch(`${apiRest}/cuenta-corriente-movimiento`, { // Asumo que este es el endpoint para crear movimientos
+      const response = await fetch(`${apiRest}/cuenta-corriente-movimiento`, { 
         method: "POST",
         headers: {
           "Content-Type": "application/json",

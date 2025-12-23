@@ -33,6 +33,7 @@ export default function   Aside() {
     "/settingCuotasElectoListado",
     "/SettingCuotasCreditoListado",
     "/SettingBandasPreciosListado",
+    "/tipo-movimiento-cc",
   ];
   
   const cuentaCorrientePaths = [
@@ -395,6 +396,12 @@ export default function   Aside() {
             <NavLink to="/SettingBandasPreciosListado" className="nav-link">
               <i className="nav-icon fas fa-percent" />
               <p>Bandas Margen Precio</p>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/tipo-movimiento-cc" className="nav-link">
+              <i className="nav-icon fas fa-exchange-alt" />
+              <p>Tipo Mov CC</p>
             </NavLink>
           </li>
         </ul>

@@ -13,6 +13,8 @@ export const ComisionesPorVentaPendientes = () => {
   const [error, setError] = useState(null);
   const [idVendedor, setIdVendedor] = useState(0);
   const [totalComisionesPorVenta, setTotalComisionesPorVenta] = useState(0);
+  const [totalCobradoPorVenta, setTotalCobradoPorVenta] = useState(0);
+  const [saldoCuentaCorriente, setSaldoCuentaCorriente] = useState(0);
   const [totalComisionesPorCredito, setTotalComisionesPorCredito] = useState(0);
 
   useEffect(() => {
@@ -121,8 +123,11 @@ export const ComisionesPorVentaPendientes = () => {
       if (response.ok) {
         const comisionesVentas = await response.json();
         setTotalComisionesPorVenta(0);
-        const total = comisionesVentas.reduce((sum, comision) => sum + Number(comision.monto), 0);
-        setTotalComisionesPorVenta(total);
+        const totalComisionesVentas = comisionesVentas.reduce((sum, comision) => sum + Number(comision.monto), 0);
+        setTotalComisionesPorVenta(totalComisionesVentas);
+
+        const totalCobradoVentas = comisionesVentas.reduce((sum, comision) => sum + Number(comision.cuota_venta.monto_cobrado), 0);
+        setTotalCobradoPorVenta(totalCobradoVentas);
         setComisionesVentas(comisionesVentas);
       }
     } catch (error) {
@@ -141,6 +146,18 @@ export const ComisionesPorVentaPendientes = () => {
     } catch (error) {
       console.error("Error cargando listado de comisiones por credito pendientes:", error);
     }
+
+    //Saldo cuenta corriente
+    try {
+      const response = await fetch(`${apiRest}/cuenta-corriente/get-by-vendedor/${vededorId}`);
+      if (response.ok) {
+        const { saldo } = await response.json();
+        setSaldoCuentaCorriente(saldo);
+      }
+    } catch (error) {
+      console.error("Error cargando saldo de la cuenta corriente:", error);
+    }
+
   }
   useEffect(() => {
     ComisionesPorVendedor(idVendedor);
@@ -185,26 +202,29 @@ export const ComisionesPorVentaPendientes = () => {
                   <th>Cliente</th>
                   <th>Articulo</th>
                   <th>Comision</th>
+                  <th>monto cobrado</th>
                 </tr>
                 {comisionesVentas.map((comision, index) => (
                   <tr key={index}>
                     <td>{convertIsoToDMY( comision.fecha)}</td>
                     <td>{comision.cuota_venta.venta.cliente.nombre}</td>
                     <td>{comision.cuota_venta.venta.articulo.nombre}</td>
-                    <td>{comision.cuota_venta.monto}</td>
                     <td>{comision.monto}</td>
+                    <td>{comision.cuota_venta.monto_cobrado}</td>
+                    
                   </tr>
                 ))}
                 
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td>Total:</td>
-                    <td colSpan={3}>{totalComisionesPorVenta.toLocaleString()}</td>
+                    <td colSpan={3}>Total:</td>
+                    <td>{totalComisionesPorVenta.toLocaleString()}</td>
+                    <td>{totalCobradoPorVenta.toLocaleString()}</td>
                     
                   </tr>
                   <tr>
-                    <td colSpan={4} className="text-right">
+                    <td colSpan={5} className="text-right">
                       <button
                     type="button"
                     className="btn btn-primary"
@@ -261,6 +281,12 @@ export const ComisionesPorVentaPendientes = () => {
                   </tr>
                 </tfoot>
             </table>
+            <h1>Saldo actual de la cuenta corriente:</h1>
+            <h2>{saldoCuentaCorriente.toLocaleString()}</h2>
+
+            <h1>Ultimos 10 movimientos:</h1>
+            
+            <a href="">ver más</a>
             </>
       
     </div>

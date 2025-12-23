@@ -45,6 +45,7 @@ import PageReporteGanancia from "../pages/pageReporteGanancias";
 import PageArticulosListado from "../pages/articulosListados";
 import PageActualizacionMasiva from "../pages/PageActualizacionMasiva";
 import PagePresupuestarAlContado from "../Presupuestos/presupuestossssAlContado";
+import PageTipoMovimientoCC from "../pages/PageTipoMovimientoCC";
 
 export default function Content() {
   return (
@@ -135,6 +136,7 @@ export default function Content() {
                 <Route path="/clientes-filtrado-vendedor" Component={Clientes_filtrado_vendedor}> </Route>
                 <Route path="reporte-cobranza" Component={PageReporteCobranza}></Route>
                 <Route path="reporte-ganancia" Component={PageReporteGanancia}></Route>
+                <Route path="/tipo-movimiento-cc" Component={PageTipoMovimientoCC}></Route>
               </Routes>
               <button id="back-to-top" type="button" className="btn btn-primary back-to-top" aria-label="Scroll to top">
                 <i className="fas fa-chevron-up"></i>
