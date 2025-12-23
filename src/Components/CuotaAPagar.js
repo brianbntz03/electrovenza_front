@@ -28,6 +28,8 @@ export default function CuotaAPagar(cuota) {
       const data = await response.json();
       cuota.incrementarContador();
       setMontoParcial("");
+      // Disparar evento para actualizar el listado de ventas
+      window.dispatchEvent(new CustomEvent('ventaActualizada'));
       // Ocultar modal manualmente si no estás usando jQuery
       document.getElementById(`cerrar-modal-${cuota.id}`).click();
       return data;
@@ -55,7 +57,11 @@ export default function CuotaAPagar(cuota) {
         throw new Error(`HTTP error! status: ${response.status}`);
 
       const data = await response.json();
+      console.log('Pago registrado:', data);
+      console.log('URL usada:', `${apiRest}/cuota_venta/${cuota.id}`);
       cuota.incrementarContador();
+      // Disparar evento para actualizar el listado de ventas
+      window.dispatchEvent(new CustomEvent('ventaActualizada'));
       return data;
     } catch (error) {
       console.error("Error detallado:", error);

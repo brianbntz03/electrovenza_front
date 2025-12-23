@@ -14,6 +14,7 @@ export function CreditosCuotasVencidas() {
 
   const fetchCuotas = async () => {
     try {
+      console.log("Fetching cuotas de crédito...");
       const response = await fetch(
         `${apiRest}/cuota_credito/get-cuotas-vencidas`,
         {
@@ -25,12 +26,13 @@ export function CreditosCuotasVencidas() {
           },
         }
       );
-
+      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log("Datos recibidos de cuotas de crédito:", data);
       setCuotas(data);
       setLoading(false);
     } catch (error) {
@@ -100,8 +102,8 @@ export function CreditosCuotasVencidas() {
               </div>
             </div>
 
-            <div class="card-footer p-0">
-              <div class="row">
+            <div className="card-footer p-0">
+              <div className="row">
                 {ListadoDeCuotas.map((cuota) => (
                   <CreditoCuotaVencida
                     id={cuota.id}
