@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { apiRest } from "../service/apiRest";
+import { apiRest, publicUrl } from "../service/apiRest";
 import { convertIsoToDMY } from "../miscellaneus/aux";
 
 export default function CuotaVencida(cuota) {
@@ -27,10 +27,13 @@ export default function CuotaVencida(cuota) {
       if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
 
       const data = await response.json();
-      cuota.incrementarContador();
+      window.location.href = `${publicUrl}/cuotas-por-cobrar`;
+      //cuota.incrementarContador();
       setMontoParcial("");
       // Ocultar modal manualmente si no estás usando jQuery
       document.getElementById(`cerrar-modal-${cuota.id}`).click();
+      
+      
       return data;
     } catch (error) {
       console.error("Error al registrar pago parcial:", error);
@@ -56,7 +59,9 @@ export default function CuotaVencida(cuota) {
         throw new Error(`HTTP error! status: ${response.status}`);
 
       const data = await response.json();
-      cuota.incrementarContador();
+      //cuota.incrementarContador();
+      window.location.href = `${publicUrl}/cuotas-por-cobrar`;
+
       return data;
     } catch (error) {
       console.error("Error detallado:", error);
