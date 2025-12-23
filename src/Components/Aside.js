@@ -15,8 +15,8 @@ export default function   Aside() {
 
   const electroPaths = [
     "/buscar-articulos-presupuesto",
-    "/cuotas-por-cobrar",
     "/ventas-listado",
+    "/cuotas-por-cobrar-electro",
   ];
   const creditosPaths = [
     "/otorgar-credito",
@@ -136,13 +136,15 @@ export default function   Aside() {
  const renderVendedorMenu = () => (
     <>
       <li className="nav-header"><i>VISTA VENDEDOR</i></li>
+      <li className="nav-item">
+        <NavLink to="/cuotas-por-cobrar" className={({ isActive }) => `nav-link ${isActive ? "active-custom-style" : ""}`} onClick={closeMobileSidebar} >
+          <i className="nav-icon fas fa-dollar-sign" />
+          <p>CUOTAS POR COBRAR</p>
+        </NavLink>
+      </li>
       <li
         className={`nav-item ${electroOpen ? "menu-is-opening menu-open" : ""}`}
       >
-          <NavLink to="/cuotas-por-cobrar" className="nav-link" onClick={closeMobileSidebar}>
-            <i className="nav-icon fas fa-dollar-sign" />
-            <p>CUOTAS POR COBRAR</p>
-          </NavLink>
         <a href="#" className="nav-link" onClick={toggleElectro}>
           <i className="nav-icon fas fa-bolt" />
           <p>
