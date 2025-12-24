@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { apiRest, publicUrl } from "../service/apiRest";
-import { convertIsoToDMY } from "../miscellaneus/aux";
+import { apiRest } from "../service/apiRest";
 
 export default function CuotaVencida(cuota) {
   const [montoParcial, setMontoParcial] = useState("");
@@ -27,7 +26,9 @@ export default function CuotaVencida(cuota) {
       if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
 
       const data = await response.json();
-      window.location.href = `${publicUrl}/cuotas-por-cobrar`;
+
+      window.location.href = window.location.pathname;
+
       //cuota.incrementarContador();
       setMontoParcial("");
       // Ocultar modal manualmente si no estás usando jQuery
@@ -41,6 +42,7 @@ export default function CuotaVencida(cuota) {
   };
 
   const registrarPago = async () => {
+
     try {
       const confirmacion = window.confirm(
         "¿Esta seguro de que quiere marcar como pagada la cuota?"
@@ -60,7 +62,8 @@ export default function CuotaVencida(cuota) {
 
       const data = await response.json();
       //cuota.incrementarContador();
-      window.location.href = `${publicUrl}/cuotas-por-cobrar`;
+      window.location.href = window.location.pathname;
+
 
       return data;
     } catch (error) {

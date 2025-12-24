@@ -16,6 +16,7 @@ export const ComisionesPorVentaPendientes = () => {
   const [totalCobradoPorVenta, setTotalCobradoPorVenta] = useState(0);
   const [saldoCuentaCorriente, setSaldoCuentaCorriente] = useState(0);
   const [totalComisionesPorCredito, setTotalComisionesPorCredito] = useState(0);
+  const [lastMovements, setLastMovements] = useState([]);
 
   useEffect(() => {
     cargarVendedores();
@@ -115,6 +116,7 @@ export const ComisionesPorVentaPendientes = () => {
   };
 
   const ComisionesPorVendedor = async(vededorId) =>{
+    console.log("Vendedor ID seleccionado:", vededorId);
     setIdVendedor(Number(vededorId));
     
     //Comisiones por ventas
@@ -153,6 +155,17 @@ export const ComisionesPorVentaPendientes = () => {
       if (response.ok) {
         const { saldo } = await response.json();
         setSaldoCuentaCorriente(saldo);
+      }
+    } catch (error) {
+      console.error("Error cargando saldo de la cuenta corriente:", error);
+    }
+
+    //Ultimos movimientos cuenta corriente
+    try {
+      const response = await fetch(`${apiRest}/cuenta-corriente/last-ten-movements-by-vendedor/${vededorId}`);
+      if (response.ok) {
+        const last_ten_movements = await response.json();
+        setLastMovements(last_ten_movements);
       }
     } catch (error) {
       console.error("Error cargando saldo de la cuenta corriente:", error);
@@ -207,8 +220,8 @@ export const ComisionesPorVentaPendientes = () => {
                 {comisionesVentas.map((comision, index) => (
                   <tr key={index}>
                     <td>{convertIsoToDMY( comision.fecha)}</td>
-                    <td>{comision.cuota_venta.venta.cliente.nombre}</td>
-                    <td>{comision.cuota_venta.venta.articulo.nombre}</td>
+                    <td>{comision.cuota_venta.venta.cliente?.nombre}</td>
+                    <td>{comision.cuota_venta.venta.articulo?.nombre}</td>
                     <td>{comision.monto}</td>
                     <td>{comision.cuota_venta.monto_cobrado}</td>
                     
@@ -238,7 +251,9 @@ export const ComisionesPorVentaPendientes = () => {
                   </tr>
                 </tfoot>
             </table>
-
+            
+            <br/>
+            <br/>
             <h1>Comisiones pendientes por creditos</h1>
             <table className="table table-striped table-valign-middle table-bordered">
               <tbody>
@@ -252,7 +267,7 @@ export const ComisionesPorVentaPendientes = () => {
                 {comisionesCreditos.map((comision, index) => (
                   <tr key={index}>
                     <td>{convertIsoToDMY( comision.fecha)}</td>
-                    <td>{comision.cuota_credito.credito.cliente.nombre}</td>
+                    <td>{comision.cuota_credito.credito.cliente?.nombre}</td>
                     <td>{comision.cuota_credito.numero}</td>
                     <td>{comision.cuota_credito.monto_cobrado}</td>
                     <td>{comision.monto}</td>
@@ -281,11 +296,35 @@ export const ComisionesPorVentaPendientes = () => {
                   </tr>
                 </tfoot>
             </table>
+            
+            <br/>
+            <br/>
             <h1>Saldo actual de la cuenta corriente:</h1>
             <h2>{saldoCuentaCorriente.toLocaleString()}</h2>
 
+
+            <br/>
+            <br/>
+
             <h1>Ultimos 10 movimientos:</h1>
-            
+            <table className="table table-striped table-valign-middle table-bordered">
+              <tbody>
+                <tr>
+                  <th>Fecha</th>
+                  <th>tipo</th>
+                  <th>monto</th>
+                  <th>signo</th>
+                </tr>
+                {lastMovements.map((movimiento, index) => (
+                  <tr key={index}>
+                    <td>{convertIsoToDMY( movimiento.fecha)}</td>
+                    <td>{movimiento.tipoMovimiento?.nombre}</td>
+                    <td>{movimiento.monto}</td>
+                    <td>{movimiento.tipoMovimiento?.signo}</td>
+                  </tr>
+                ))}
+                </tbody>
+            </table>
             <a href="">ver más</a>
             </>
       

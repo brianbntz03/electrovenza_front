@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { apiRest, publicUrl } from "../service/apiRest";
+import { apiRest } from "../service/apiRest";
 import { convertIsoToDMY } from "../miscellaneus/aux";
+
+
 export default function CreditoCuotaVencida(cuota) {
   const [montoParcial, setMontoParcial] = useState("");
 
@@ -26,7 +28,7 @@ export default function CreditoCuotaVencida(cuota) {
       if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
 
       const data = await response.json();
-      window.location.href = `${publicUrl}/cuotas-por-cobrar`;
+      window.location.href = window.location.pathname;
       
       setMontoParcial("");
       // Ocultar modal manualmente si no estás usando jQuery
@@ -59,7 +61,9 @@ export default function CreditoCuotaVencida(cuota) {
         throw new Error(`HTTP error! status: ${response.status}`);
 
       const data = await response.json();
-      window.location.href = `${publicUrl}/cuotas-por-cobrar`;
+      window.location.href = window.location.pathname;
+
+
       
       return data;
     } catch (error) {
