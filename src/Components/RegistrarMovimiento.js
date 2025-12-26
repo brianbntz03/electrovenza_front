@@ -67,6 +67,7 @@ export function RegistrarMovimieto() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
         },
         body: JSON.stringify({
           vendedorId: parseInt(vendedorId),
@@ -161,7 +162,7 @@ export function RegistrarMovimieto() {
               <option value="">Seleccionar un tipo de movimiento</option>
               {tiposMovimiento.map((tm) => (
                 <option key={tm.id} value={tm.id}>
-                  {tm.nombre}
+                  {tm.nombre} ({tm.signo})
                 </option>
               ))}
             </select>

@@ -37,7 +37,7 @@ export default function   Aside() {
   ];
   
   const cuentaCorrientePaths = [
-    "/registrar-movimento",
+    "/registrar-movimiento",
     "/ventas-comisiones-pendientes",
   ]
 
@@ -273,7 +273,7 @@ export default function   Aside() {
         </a>
         <ul className="nav nav-treeview">
           <li className="nav-item">
-          <NavLink to="/registrar-movimento" className="nav-link">
+          <NavLink to="/registrar-movimiento" className="nav-link">
             <i className="nav-icon fas fa-plus-circle"/>
             <p> Registrar movimento </p>
           </NavLink>

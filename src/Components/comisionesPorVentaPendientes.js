@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Swal from "sweetalert2";
 import { apiRest } from "../service/apiRest";
 import FlashMessage from "./tiny/FlashMessage";
 import { convertIsoToDMY } from "../miscellaneus/aux";
@@ -26,6 +25,18 @@ export const ComisionesPorVentaPendientes = () => {
   const handleRetry = () => {
     setError(null);
   };
+
+  const updateCuentaCorriente = async (vededorId) => {
+      try {
+      const response = await fetch(`${apiRest}/cuenta-corriente/get-by-vendedor/${vededorId}`);
+      if (response.ok) {
+        const { saldo } = await response.json();
+        setSaldoCuentaCorriente(saldo);
+      }
+    } catch (error) {
+      console.error("Error cargando saldo de la cuenta corriente:", error);
+    }
+  }
 
 
   const liquidarComisionesVentas = async () => {
@@ -83,6 +94,39 @@ export const ComisionesPorVentaPendientes = () => {
 
     } catch (error) {
       console.error("Error al registrar las comisiones por creditos:", error);
+    }
+  };
+
+  const registrarLiquidacionCobranza = async () => {
+    try {
+      if (!idVendedor) {
+        FlashMessage("Registrar Liquidacion de Cobranza", "Debe seleccionar un vendedor", 2000, "warning");
+        return;
+      }
+
+      const registroLiquidacionCobranza = await fetch(`${apiRest}/cuenta-corriente-movimiento/liquidar-cobranza`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
+        },
+        body: JSON.stringify({
+          vendedorId: parseInt(idVendedor),
+        }),
+      });
+
+      if (!registroLiquidacionCobranza.ok) {
+        throw new Error(`Error al registrar la liquidación de cobranza: ${registroLiquidacionCobranza.status}`);
+      }
+
+
+      await registroLiquidacionCobranza.text();
+      updateCuentaCorriente(idVendedor);
+      FlashMessage("Registro de liquidación de cobranza", "La liquidación fue registrada", 2000, "success", );
+
+
+    } catch (error) {
+      console.error("Error al registrar la liquidación de cobranza:", error);
     }
   };
 
@@ -150,15 +194,7 @@ export const ComisionesPorVentaPendientes = () => {
     }
 
     //Saldo cuenta corriente
-    try {
-      const response = await fetch(`${apiRest}/cuenta-corriente/get-by-vendedor/${vededorId}`);
-      if (response.ok) {
-        const { saldo } = await response.json();
-        setSaldoCuentaCorriente(saldo);
-      }
-    } catch (error) {
-      console.error("Error cargando saldo de la cuenta corriente:", error);
-    }
+    updateCuentaCorriente(vededorId);
 
     //Ultimos movimientos cuenta corriente
     try {
@@ -301,6 +337,28 @@ export const ComisionesPorVentaPendientes = () => {
             <br/>
             <h1>Saldo actual de la cuenta corriente:</h1>
             <h2>{saldoCuentaCorriente.toLocaleString()}</h2>
+            <div className="row">
+              <div className="col-md-4">
+              
+              <table className="table table-striped table-valign-middle table-bordered">
+                <tr>
+                  <td>
+                    <label>Registrar liquidacion de cobranza: </label> 
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        data-toggle="modal"
+                        data-target="#exampleModal"
+                        onClick={() => registrarLiquidacionCobranza()}
+                      >
+                        Crear movimiento por el total
+                      </button>
+                  </td>
+                </tr>
+            </table>
+            <a href="">ver más</a>
+              </div>
+            </div>
 
 
             <br/>

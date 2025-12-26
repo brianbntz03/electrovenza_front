@@ -123,7 +123,7 @@ export default function Content() {
                 <Route path="/crearcliente" Component={CrearCliente}></Route>    
                 <Route path="/crearclientefiltrado" Component={CrearClienteFiltrado}></Route>             
                 <Route
-                path="/registrar-movimento" Component={RegistroMovimientoCuenta}>
+                path="/registrar-movimiento" Component={RegistroMovimientoCuenta}>
                 </Route>
                 <Route path="/credito-por-cobrar" Component={PageCreditosPorCobrar}></Route>
                 <Route path="/crearcuotaelectro" Component={CrearCuotaElectro}></Route>
