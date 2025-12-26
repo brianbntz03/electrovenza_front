@@ -28,13 +28,13 @@ export default function CuotaVencida(cuota) {
 
       const data = await response.json();
 
-      //cuota.incrementarContador();
+      cuota.incrementarContador();
       setMontoParcial("");
       // Ocultar modal manualmente si no estás usando jQuery
       document.getElementById(`cerrar-modal-${cuota.id}`).click();
 
       // Ocultar el componente
-      setVisible(false);
+      //setVisible(false);
 
       return data;
     } catch (error) {

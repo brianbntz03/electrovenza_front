@@ -31,11 +31,8 @@ export default function CreditoCuotaVencida(cuota) {
       const data = await response.json();
 
       setMontoParcial("");
-      // Ocultar modal manualmente si no estás usando jQuery
+      cuota.incrementarContador();
       document.getElementById(`cerrar-modal-${cuota.id}`).click();
-
-      // Ocultar el componente
-      setVisible(false);
 
       return data;
     } catch (error) {
