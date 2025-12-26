@@ -3,6 +3,7 @@ import { apiRest } from "../service/apiRest";
 
 export default function CuotaVencida(cuota) {
   const [montoParcial, setMontoParcial] = useState("");
+  const [visible, setVisible] = useState(true);
 
   const registrarPagoParcial = async () => {
     if (!montoParcial || isNaN(montoParcial) || Number(montoParcial) <= 0) {
@@ -27,14 +28,14 @@ export default function CuotaVencida(cuota) {
 
       const data = await response.json();
 
-      window.location.href = window.location.pathname;
-
       //cuota.incrementarContador();
       setMontoParcial("");
       // Ocultar modal manualmente si no estás usando jQuery
       document.getElementById(`cerrar-modal-${cuota.id}`).click();
-      
-      
+
+      // Ocultar el componente
+      setVisible(false);
+
       return data;
     } catch (error) {
       console.error("Error al registrar pago parcial:", error);
@@ -62,14 +63,17 @@ export default function CuotaVencida(cuota) {
 
       const data = await response.json();
       //cuota.incrementarContador();
-      window.location.href = window.location.pathname;
 
+      // Ocultar el componente
+      setVisible(false);
 
       return data;
     } catch (error) {
       console.error("Error detallado:", error);
     }
   };
+
+  if (!visible) return null;
 
   return (
     <>
