@@ -12,6 +12,7 @@ export default function   Aside() {
   const [electroConfigOpen, setElectroConfigOpen] = useState(false);
   const [reporteOpen, setReporte] = useState(false)
   const [Clientes_filtrado_vendedor_Open, setClientes_filtrado_vendedor_Open] = useState(false);
+  const [Cuenta_corrente_de_vendedor_Open, setCuenta_corrente_de_vendedor_Open] = useState(false)
 
   const electroPaths = [
     "/buscar-articulos-presupuesto",
@@ -98,7 +99,11 @@ export default function   Aside() {
     e.preventDefault();
     setClientes_filtrado_vendedor_Open(!Clientes_filtrado_vendedor_Open);
   };
-
+  
+  const Toggle_cuenta_corriente_vendedor = (e) => {
+    e.preventDefault();
+    setCuenta_corrente_de_vendedor_Open(!Cuenta_corrente_de_vendedor_Open);
+  };
   const toggleCreditos = (e) => {
     e.preventDefault();
     setCreditosOpen(!creditosOpen);
@@ -237,6 +242,27 @@ export default function   Aside() {
                 <NavLink to="/clientes-filtrado-vendedor" className="nav-link" onClick={closeMobileSidebar}>
                 <i className="nav-icon fas fa-users"></i>
                 <p>Listado de Clientes</p>
+                </NavLink>
+            </li>
+        </ul>
+      </li>
+      <li
+        className={`nav-item ${
+          Cuenta_corrente_de_vendedor_Open ? "menu-is-opening menu-open" : ""
+        }`}
+      >
+        <a href="#" className="nav-link" onClick={Toggle_cuenta_corriente_vendedor}>
+          <i className="nav-icon fas fa-user-friends" />
+          <p>
+            Cuenta Corriente
+            <i className="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul className="nav nav-treeview">
+            <li className="nav-item">
+                <NavLink to="/ventas-comisiones-pendientes-vendedor" className="nav-link" onClick={closeMobileSidebar}>
+                <i className="nav-icon fas fa-users"></i>
+                <p>Comisiones </p>
                 </NavLink>
             </li>
         </ul>

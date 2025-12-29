@@ -44,8 +44,8 @@ import PageReporteCobranza from "../pages/pageReporteCobranza";
 import PageReporteGanancia from "../pages/pageReporteGanancias";
 import PageArticulosListado from "../pages/articulosListados";
 import PageActualizacionMasiva from "../pages/PageActualizacionMasiva";
-import PagePresupuestarAlContado from "../Presupuestos/presupuestossssAlContado";
 import PageTipoMovimientoCC from "../pages/PageTipoMovimientoCC";
+import PageComisionesPorVentaPendientesVendedor from "../pages/PageComisionesPorVentaPendientesVendedor";
 
 export default function Content() {
   return (
@@ -98,6 +98,8 @@ export default function Content() {
                 <Route path="/cuotas-por-cobrar-electro" Component={PageCuotasPorCobrarElectro} ></Route>
                 <Route path="/ventas-listado" Component={PageListadoVentas}></Route>
                 <Route path="/ventas-comisiones-pendientes" element={<PageComisionesPorVentaPendientes />} />
+                <Route path="/ventas-comisiones-pendientes-vendedor" element={<PageComisionesPorVentaPendientesVendedor />} />
+
                 <Route path="/creditos-comisiones-pendientes" element={<PageComisionesPorCreditoPendientes />} />
                 <Route path="/ventas-cuotas-pendientes/:venta_id" Component={PageVentasCuotasPendientes} ></Route>
                 <Route path="/print/cuotas/:venta_id" element={<PrintCuotas />} />
