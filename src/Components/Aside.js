@@ -252,7 +252,7 @@ export default function   Aside() {
         }`}
       >
         <a href="#" className="nav-link" onClick={Toggle_cuenta_corriente_vendedor}>
-          <i className="nav-icon fas fa-user-friends" />
+          <i className="nav-icon fas fa-user-tag" /> 
           <p>
             Cuenta Corriente
             <i className="fas fa-angle-left right"></i>
@@ -261,7 +261,7 @@ export default function   Aside() {
         <ul className="nav nav-treeview">
             <li className="nav-item">
                 <NavLink to="/ventas-comisiones-pendientes-vendedor" className="nav-link" onClick={closeMobileSidebar}>
-                <i className="nav-icon fas fa-users"></i>
+              <i className="nav-icon fas fa-paperclip"></i>
                 <p>Comisiones </p>
                 </NavLink>
             </li>
