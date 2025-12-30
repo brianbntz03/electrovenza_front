@@ -36,7 +36,7 @@ import { CrearCuotaElectro } from "./Crear/CrearCuota";
 import { CrearCuotaCredito } from "./Crear/CrearCuotaCredito";
 import PageCompras from "../pages/PageCompras";
 import { CrearCompras } from "./Crear/CrearCompras";
-import PageCreditos from "../pages/PageCreditos"; 
+import PageCreditos from "../pages/PageCreditos";
 import Clientes_filtrado_vendedor from "./Clientes-Filtrado-vendedor";
 import { CrearClienteFiltrado } from "./Crear/CrearClientesFiltrado";
 import PageVentasCuotasPendientes from "../pages/PageVentaCuotasPendientes";
@@ -46,6 +46,12 @@ import PageArticulosListado from "../pages/articulosListados";
 import PageActualizacionMasiva from "../pages/PageActualizacionMasiva";
 import PagePresupuestarAlContado from "../Presupuestos/presupuestossssAlContado";
 import PageTipoMovimientoCC from "../pages/PageTipoMovimientoCC";
+import UnauthorizedPage from "../pages/UnauthorizedPage";
+import CuentaCorrienteMayorista from "../pages/CuentaCorrienteMayorista";
+import VentaMayorista from "../pages/VentaMayorista/VentaMayorista";
+import ClientesMayorista from "../pages/ClientesMayorista/ClientesMayorista";
+import { RequireRole } from "../utils/roleGuards";
+import { ROLES } from "../constants/roles";
 
 export default function Content() {
   return (
@@ -137,6 +143,35 @@ export default function Content() {
                 <Route path="reporte-cobranza" Component={PageReporteCobranza}></Route>
                 <Route path="reporte-ganancia" Component={PageReporteGanancia}></Route>
                 <Route path="/tipo-movimiento-cc" Component={PageTipoMovimientoCC}></Route>
+
+                {/* Wholesale Seller Routes */}
+                <Route
+                  path="/venta-mayorista"
+                  element={
+                    <RequireRole allowedRoles={[ROLES.WHOLESALE_SELLER, ROLES.ADMIN]}>
+                      <VentaMayorista />
+                    </RequireRole>
+                  }
+                />
+                <Route
+                  path="/clientes-mayorista"
+                  element={
+                    <RequireRole allowedRoles={[ROLES.WHOLESALE_SELLER, ROLES.ADMIN]}>
+                      <ClientesMayorista />
+                    </RequireRole>
+                  }
+                />
+                <Route
+                  path="/cuenta-corriente-mayorista"
+                  element={
+                    <RequireRole allowedRoles={[ROLES.WHOLESALE_SELLER, ROLES.ADMIN]}>
+                      <CuentaCorrienteMayorista />
+                    </RequireRole>
+                  }
+                />
+
+                {/* Unauthorized access page */}
+                <Route path="/unauthorized" Component={UnauthorizedPage}></Route>
               </Routes>
               <button id="back-to-top" type="button" className="btn btn-primary back-to-top" aria-label="Scroll to top">
                 <i className="fas fa-chevron-up"></i>

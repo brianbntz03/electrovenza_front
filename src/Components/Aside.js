@@ -244,6 +244,48 @@ export default function   Aside() {
     </>
   );
 
+  const renderVendedorMayoristaMenu = () => (
+    <>
+      <li className="nav-header"><i>VISTA VENDEDOR MAYORISTA</i></li>
+
+      {/* Ventas Mayorista */}
+      <li className="nav-item">
+        <NavLink
+          to="/venta-mayorista"
+          className={({ isActive }) => `nav-link ${isActive ? "active-custom-style" : ""}`}
+          onClick={closeMobileSidebar}
+        >
+          <i className="nav-icon fas fa-shopping-cart" />
+          <p>VENTAS MAYORISTA</p>
+        </NavLink>
+      </li>
+
+      {/* Clientes Mayorista */}
+      <li className="nav-item">
+        <NavLink
+          to="/clientes-mayorista"
+          className={({ isActive }) => `nav-link ${isActive ? "active-custom-style" : ""}`}
+          onClick={closeMobileSidebar}
+        >
+          <i className="nav-icon fas fa-users" />
+          <p>CLIENTES</p>
+        </NavLink>
+      </li>
+
+      {/* Cuenta Corriente (Placeholder) */}
+      <li className="nav-item">
+        <NavLink
+          to="/cuenta-corriente-mayorista"
+          className={({ isActive }) => `nav-link ${isActive ? "active-custom-style" : ""}`}
+          onClick={closeMobileSidebar}
+        >
+          <i className="nav-icon fas fa-file-invoice-dollar" />
+          <p>CUENTA CORRIENTE</p>
+        </NavLink>
+      </li>
+    </>
+  );
+
   const renderAdminMenu = () => (
     <>
       {renderVendedorMenu()}
@@ -436,7 +478,9 @@ export default function   Aside() {
                   <p>Inicio</p>
                 </NavLink>
               </li>
-              {userRole === "admin" ? renderAdminMenu() : renderVendedorMenu()}
+              {userRole === "admin" && renderAdminMenu()}
+              {userRole === "vendedor_minorista" && renderVendedorMenu()}
+              {userRole === "vendedor_mayorista" && renderVendedorMayoristaMenu()}
             </ul>
           </nav>
         </div>

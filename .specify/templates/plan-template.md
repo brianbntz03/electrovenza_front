@@ -31,7 +31,15 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+Verify compliance with [.specify/memory/constitution.md]:
+
+- [ ] **Role-Based Authorization**: Does this feature respect the three-role hierarchy (Administrador/Vendedor Minorista/Vendedor Mayorista)?
+- [ ] **Dual Pricing**: If applicable, does this feature properly handle retail vs wholesale pricing?
+- [ ] **Client Portfolio Isolation**: If applicable, does this feature maintain proper customer-seller relationships?
+- [ ] **Credit vs Cash Flow**: If applicable, does this feature properly separate credit and cash transactions?
+- [ ] **Stock Integrity**: If applicable, does this feature maintain accurate inventory levels?
+- [ ] **Testing**: Are role-based access controls and critical business logic tested?
+- [ ] **Simplicity**: Have we chosen the simplest solution that works?
 
 ## Project Structure
 

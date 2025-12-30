@@ -1,0 +1,368 @@
+# API Contract: Customer Management Endpoints
+# Feature: Vendedor Mayorista Role
+# Purpose: Define customer CRUD operations with wholesale customer support
+
+openapi: 3.0.0
+info:
+  title: ElectroVenza Customer API
+  version: 1.0.0
+  description: Customer management endpoints with wholesale/retail separation
+
+paths:
+  /clientes:
+    get:
+      summary: List customers
+      description: Get customer list filtered by type and seller assignment
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: tipo
+          in: query
+          description: Filter by customer type
+          required: false
+          schema:
+            type: string
+            enum:
+              - minorista
+              - mayorista
+        - name: vendedor_id
+          in: query
+          description: Filter by assigned seller (required for non-admin roles)
+          required: false
+          schema:
+            type: integer
+        - name: activo
+          in: query
+          description: Filter by active status
+          required: false
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: List of customers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Forbidden - attempting to access customers from other sellers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "No tiene permiso para acceder a estos clientes"
+
+    post:
+      summary: Create new customer
+      description: Create a new customer (auto-assigns to current seller if not admin)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - nombre
+                - tipo_cliente
+              properties:
+                nombre:
+                  type: string
+                  maxLength: 200
+                  example: "Comercial San Martín"
+                dni_cuit:
+                  type: string
+                  maxLength: 20
+                  example: "20-12345678-9"
+                telefono:
+                  type: string
+                  maxLength: 50
+                  example: "+54 9 11 1234-5678"
+                direccion:
+                  type: string
+                  maxLength: 300
+                  example: "Av. San Martín 1234, CABA"
+                email:
+                  type: string
+                  format: email
+                  example: "contacto@comercialsanmartin.com"
+                tipo_cliente:
+                  type: string
+                  enum:
+                    - minorista
+                    - mayorista
+                  description: Customer type (auto-set based on seller role if not admin)
+                vendedor_asignado_id:
+                  type: integer
+                  description: Seller assignment (auto-set to current user if not admin)
+                notas:
+                  type: string
+                  example: "Cliente preferencial, descuento adicional"
+      responses:
+        '201':
+          description: Customer created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "El nombre es requerido"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Conflict (duplicate DNI/CUIT)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Ya existe un cliente con ese DNI/CUIT"
+
+  /clientes/{id}:
+    get:
+      summary: Get customer by ID
+      description: Retrieve a specific customer's details
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Customer details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Cliente no encontrado"
+        '403':
+          description: Forbidden - customer belongs to another seller
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "No tiene permiso para acceder a este cliente"
+
+    put:
+      summary: Update customer
+      description: Update customer information (only own customers for sellers)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  maxLength: 200
+                dni_cuit:
+                  type: string
+                  maxLength: 20
+                telefono:
+                  type: string
+                  maxLength: 50
+                direccion:
+                  type: string
+                  maxLength: 300
+                email:
+                  type: string
+                  format: email
+                notas:
+                  type: string
+                activo:
+                  type: boolean
+                # Note: tipo_cliente and vendedor_asignado_id are immutable (admin override only)
+      responses:
+        '200':
+          description: Customer updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      summary: Delete customer (soft delete)
+      description: Deactivate a customer (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Customer deactivated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cliente desactivado exitosamente"
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 123
+        nombre:
+          type: string
+          example: "Comercial San Martín"
+        dni_cuit:
+          type: string
+          nullable: true
+          example: "20-12345678-9"
+        telefono:
+          type: string
+          nullable: true
+          example: "+54 9 11 1234-5678"
+        direccion:
+          type: string
+          nullable: true
+          example: "Av. San Martín 1234, CABA"
+        email:
+          type: string
+          nullable: true
+          example: "contacto@comercialsanmartin.com"
+        tipo_cliente:
+          type: string
+          enum:
+            - minorista
+            - mayorista
+          example: "mayorista"
+        vendedor_asignado_id:
+          type: integer
+          example: 42
+        vendedor_nombre:
+          type: string
+          description: Name of assigned seller (for display)
+          example: "Juan Pérez"
+        activo:
+          type: boolean
+          example: true
+        fecha_creacion:
+          type: string
+          format: date-time
+          example: "2025-12-29T10:30:00Z"
+        notas:
+          type: string
+          nullable: true
+          example: "Cliente preferencial"
+
+  responses:
+    Unauthorized:
+      description: Unauthorized - invalid or missing token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Token inválido o expirado"
+
+    Forbidden:
+      description: Forbidden - insufficient permissions
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "No tiene permiso para realizar esta acción"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Recurso no encontrado"
+
+    BadRequest:
+      description: Bad request - validation error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Datos inválidos"
+
+# Frontend Implementation Notes:
+# 1. Wholesale sellers call: GET /clientes?tipo=mayorista&vendedor_id={currentUserId}
+# 2. Retail sellers call: GET /clientes?tipo=minorista&vendedor_id={currentUserId}
+# 3. Admins can call without filters to see all customers
+# 4. When creating customer, frontend auto-sets tipo_cliente based on logged-in role
+# 5. vendedor_asignado_id is auto-set to current user (backend enforces)
+# 6. tipo_cliente and vendedor_asignado_id cannot be changed after creation (frontend should disable)
