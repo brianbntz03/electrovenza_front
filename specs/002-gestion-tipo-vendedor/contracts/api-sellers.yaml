@@ -1,0 +1,364 @@
+openapi: 3.0.3
+info:
+  title: Seller Management API
+  description: API endpoints for managing seller accounts and seller types (minorista/mayorista)
+  version: 1.0.0
+
+servers:
+  - url: https://api.electrovenza.com
+    description: Production server
+  - url: http://localhost:3000/api
+    description: Development server
+
+paths:
+  /users:
+    get:
+      summary: List all users (sellers)
+      description: Returns a list of user accounts. Can be filtered by role to show only sellers.
+      operationId: listUsers
+      tags:
+        - Sellers
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: role_in
+          in: query
+          description: Filter by role (comma-separated list)
+          required: false
+          schema:
+            type: string
+            example: "vendedor_minorista,vendedor_mayorista"
+      responses:
+        '200':
+          description: Successfully retrieved user list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+              examples:
+                sellersOnly:
+                  summary: List of sellers
+                  value:
+                    - id: 1
+                      nombre: "Juan Pérez"
+                      email: "juan@example.com"
+                      role: "vendedor_minorista"
+                      activo: true
+                      fecha_creacion: "2024-01-15T10:30:00Z"
+                    - id: 2
+                      nombre: "María González"
+                      email: "maria@example.com"
+                      role: "vendedor_mayorista"
+                      activo: true
+                      fecha_creacion: "2024-02-20T14:45:00Z"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+    post:
+      summary: Create new user (seller)
+      description: Creates a new user account with specified role. Only administrators can create users.
+      operationId: createUser
+      tags:
+        - Sellers
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+            examples:
+              createRetailSeller:
+                summary: Create retail seller
+                value:
+                  nombre: "Juan Pérez"
+                  email: "juan@example.com"
+                  password: "securepassword123"
+                  role: "vendedor_minorista"
+              createWholesaleSeller:
+                summary: Create wholesale seller
+                value:
+                  nombre: "María González"
+                  email: "maria@example.com"
+                  password: "securepassword456"
+                  role: "vendedor_mayorista"
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              example:
+                id: 3
+                nombre: "Juan Pérez"
+                email: "juan@example.com"
+                role: "vendedor_minorista"
+                activo: true
+                fecha_creacion: "2025-12-30T16:00:00Z"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Conflict - Email already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Email already in use"
+                code: "EMAIL_CONFLICT"
+
+  /users/{userId}:
+    get:
+      summary: Get user by ID
+      description: Returns details of a specific user
+      operationId: getUserById
+      tags:
+        - Sellers
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Successfully retrieved user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      summary: Update user (including seller type)
+      description: Updates user information including role. Only administrators can change user roles.
+      operationId: updateUser
+      tags:
+        - Sellers
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+            examples:
+              changeToWholesale:
+                summary: Change seller to wholesale
+                value:
+                  nombre: "Juan Pérez"
+                  email: "juan@example.com"
+                  role: "vendedor_mayorista"
+              changeToRetail:
+                summary: Change seller to retail
+                value:
+                  nombre: "María González"
+                  email: "maria@example.com"
+                  role: "vendedor_minorista"
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from login endpoint
+
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      required: true
+      description: Unique identifier of the user
+      schema:
+        type: integer
+        example: 1
+
+  schemas:
+    User:
+      type: object
+      required:
+        - id
+        - nombre
+        - email
+        - role
+        - activo
+        - fecha_creacion
+      properties:
+        id:
+          type: integer
+          description: Unique user identifier
+          example: 1
+        nombre:
+          type: string
+          description: User's full name
+          maxLength: 200
+          example: "Juan Pérez"
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: "juan@example.com"
+        role:
+          type: string
+          enum:
+            - administrador
+            - vendedor_minorista
+            - vendedor_mayorista
+          description: User's role in the system
+          example: "vendedor_minorista"
+        activo:
+          type: boolean
+          description: Whether the user account is active
+          example: true
+        fecha_creacion:
+          type: string
+          format: date-time
+          description: Account creation timestamp
+          example: "2024-01-15T10:30:00Z"
+
+    CreateUserRequest:
+      type: object
+      required:
+        - nombre
+        - email
+        - password
+      properties:
+        nombre:
+          type: string
+          description: User's full name
+          maxLength: 200
+          example: "Juan Pérez"
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: "juan@example.com"
+        password:
+          type: string
+          format: password
+          description: User's password (will be hashed)
+          minLength: 8
+          example: "securepassword123"
+        role:
+          type: string
+          enum:
+            - vendedor_minorista
+            - vendedor_mayorista
+          default: vendedor_minorista
+          description: Seller type (defaults to retail seller if not specified)
+          example: "vendedor_minorista"
+
+    UpdateUserRequest:
+      type: object
+      properties:
+        nombre:
+          type: string
+          description: User's full name
+          maxLength: 200
+          example: "Juan Pérez"
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: "juan@example.com"
+        role:
+          type: string
+          enum:
+            - vendedor_minorista
+            - vendedor_mayorista
+          description: User's role (seller type)
+          example: "vendedor_mayorista"
+        activo:
+          type: boolean
+          description: Whether the user account is active
+          example: true
+
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: "Invalid role value"
+        code:
+          type: string
+          description: Error code for programmatic handling
+          example: "INVALID_ROLE"
+        details:
+          type: object
+          description: Additional error details
+          additionalProperties: true
+
+  responses:
+    BadRequest:
+      description: Bad request - Invalid input data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Invalid role value. Must be vendedor_minorista or vendedor_mayorista"
+            code: "INVALID_ROLE"
+
+    Unauthorized:
+      description: Unauthorized - Invalid or missing authentication token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Authentication required"
+            code: "UNAUTHORIZED"
+
+    Forbidden:
+      description: Forbidden - User does not have permission to perform this action
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Only administrators can modify user roles"
+            code: "FORBIDDEN"
+
+    NotFound:
+      description: Not found - User does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "User not found"
+            code: "NOT_FOUND"
+
+security:
+  - BearerAuth: []

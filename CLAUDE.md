@@ -22,6 +22,7 @@ npm test && npm run lint
 JavaScript ES6+ (React 19.1.0): Follow standard conventions
 
 ## Recent Changes
+- 002-gestion-tipo-vendedor: Added [if applicable, e.g., PostgreSQL, CoreData, files or N/A]
 
 - 001-vendedor-mayorista: Implemented wholesale seller role with role-based menu system, wholesale cash sales functionality, and customer portfolio management
 

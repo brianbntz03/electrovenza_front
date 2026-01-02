@@ -13,7 +13,8 @@ export const EditarVendedorModal = ({
     username:  "",
     email:  "",
     password: "", 
-    activo: true
+    activo: true,
+    tipo: 1,
   });
   const [error, setError] = useState(null);
 
@@ -25,6 +26,7 @@ export const EditarVendedorModal = ({
         telefono: vendedor.telefono || 0,
         username: vendedor.user?.username || "",
         email: vendedor.user?.email || "",
+        tipo: vendedor.tipo || 1,
         password: "", 
       });
     }
@@ -118,6 +120,11 @@ export const EditarVendedorModal = ({
             value={formData.telefono}
             onChange={handleChange}
           />
+          </div>
+          <div className="form-group">
+            <label>Tipo</label><br/>
+            <input type="radio" name="tipo" value="1" checked={formData.tipo === 1} onChange={handleChange} /> Minorista &nbsp;
+            <input type="radio" name="tipo" value="2" checked={formData.tipo === 2} onChange={handleChange} /> Mayorista
           </div>
           <div className="form-group">
             <label>Usuario</label>

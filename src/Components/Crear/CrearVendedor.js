@@ -9,6 +9,7 @@ export const CrearVendedor = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState(""); 
   const [contraseña, setContraseña] = useState("");
+  const [tipo, setTipo] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -22,7 +23,7 @@ export const CrearVendedor = () => {
         setTelefono(telefono || "");
         setEmail(email || "");
         setUsername(username || ""); 
-        setContraseña(contraseña || "");
+        setTipo(tipo || 1); 
       } catch (e) {
         console.error("Failed to parse localStorage data", e);
       }
@@ -65,6 +66,7 @@ export const CrearVendedor = () => {
       username: username.trim(), 
       password: contraseña.trim(),
       role: "vendedor",
+      tipo: Number(tipo),
     };
 
     try {
@@ -146,6 +148,12 @@ export const CrearVendedor = () => {
             required
           />
         </div>
+
+        <div className="form-group">
+            <label>Tipo</label><br/>
+            <input type="radio" name="tipo" value="1" checked={tipo === 1} onChange={(e) => setTipo(Number(e.target.value))} /> Minorista &nbsp;
+            <input type="radio" name="tipo" value="2" checked={tipo === 2} onChange={(e) => setTipo(Number(e.target.value))} /> Mayorista
+          </div>
 
         <div className="form-group">
           <label>Email:</label>
