@@ -51,6 +51,7 @@ export const ComisionesPorVentaPendientes = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
         body: JSON.stringify({ vendedor_id: Number(idVendedor) }),
       });
@@ -80,6 +81,7 @@ export const ComisionesPorVentaPendientes = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
         body: JSON.stringify({ vendedor_id: Number(idVendedor) }),
       });
@@ -124,7 +126,8 @@ export const ComisionesPorVentaPendientes = () => {
 
       await registroLiquidacionCobranza.text();
       updateCuentaCorriente(idVendedor);
-      FlashMessage("Registro de liquidación de cobranza", "La liquidación fue registrada", 2000, "success", );
+      FlashMessage("Registro de liquidación de cobranza", "La liquidación fue registrada", 2000, "success","ventas-comisiones-pendientes" );
+
 
 
     } catch (error) {

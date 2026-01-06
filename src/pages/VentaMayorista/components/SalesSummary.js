@@ -105,6 +105,7 @@ export default function SalesSummary({ items, onRemoveItem, onUpdateQuantity }) 
               <strong>Total de productos:</strong> {items.length} |
               <strong className="ml-2">Total de unidades:</strong> {items.reduce((sum, item) => sum + item.cantidad, 0)}
             </div>
+            
           </>
         )}
       </div>

@@ -45,16 +45,13 @@ import PageReporteGanancia from "../pages/pageReporteGanancias";
 import PageArticulosListado from "../pages/articulosListados";
 import PageActualizacionMasiva from "../pages/PageActualizacionMasiva";
 import PageTipoMovimientoCC from "../pages/PageTipoMovimientoCC";
-<<<<<<< HEAD
 import UnauthorizedPage from "../pages/UnauthorizedPage";
 import CuentaCorrienteMayorista from "../pages/CuentaCorrienteMayorista";
 import VentaMayorista from "../pages/VentaMayorista/VentaMayorista";
 import ClientesMayorista from "../pages/ClientesMayorista/ClientesMayorista";
 import { RequireRole } from "../utils/roleGuards";
 import { ROLES } from "../constants/roles";
-=======
 import PageComisionesPorVentaPendientesVendedor from "../pages/PageComisionesPorVentaPendientesVendedor";
->>>>>>> master
 
 export default function Content() {
   return (
