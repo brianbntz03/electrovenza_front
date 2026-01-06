@@ -22,6 +22,7 @@ export const ComisionesPorVentaPendientes = () => {
     cargarVendedores();
   }, []);
   
+  
  
   const handleRetry = () => {
     setError(null);
