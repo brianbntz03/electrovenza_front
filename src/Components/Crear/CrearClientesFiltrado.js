@@ -118,7 +118,7 @@ const handleSubmit = async (e) => {
             return;
         }
         vendedorId = Number(vendedorSeleccionado);
-    } else if (userRole === "vendedor") {
+    } else if (userRole === "vendedor" || userRole === "Vendedor Mayorista") {
         vendedorId = localStorage.getItem("vendedor_id");
     } else {
         setLoading(false);

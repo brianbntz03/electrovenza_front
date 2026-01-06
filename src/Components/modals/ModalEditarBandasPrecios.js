@@ -23,6 +23,7 @@ export function ModalEditarBandasPrecios({ object, onClose, onObjectActualizado 
         porcentaje_minorista: Number(object.porcentaje_minorista) || 0,
         porcentaje_mayorista: Number(object.porcentaje_mayorista) || 0,
         porcentaje_comision_vendedor: Number(object.porcentaje_comision_vendedor) || 0,
+        porcentaje_comision_mayorista: Number(object.porcentaje_comision_mayorista) || 0,
       });
     }
   }, [object]);
@@ -62,7 +63,7 @@ const handleChangeNumber = (e) => {
   
 const handleChange = (e) => {
   const { name, value } = e.target;
-  let numbers = ["banda_superior", "porcentaje_minorista", "porcentaje_mayorista", "porcentaje_comision_vendedor"]
+  let numbers = ["banda_superior", "porcentaje_minorista", "porcentaje_mayorista", "porcentaje_comision_vendedor", "porcentaje_comision_mayorista"];
   let isNumber = numbers.includes(name);
   if(isNumber){
     console.log("number", name)

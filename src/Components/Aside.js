@@ -263,7 +263,7 @@ export default function   Aside() {
       {/* Clientes Mayorista */}
       <li className="nav-item">
         <NavLink
-          to="/clientes-mayorista"
+          to="/clientes-filtrado-vendedor"
           className={({ isActive }) => `nav-link ${isActive ? "active-custom-style" : ""}`}
           onClick={closeMobileSidebar}
         >
@@ -288,7 +288,8 @@ export default function   Aside() {
 
   const renderAdminMenu = () => (
     <>
-      {renderVendedorMenu()}
+      {//renderVendedorMenu()}
+      }
       <li className="nav-header"><hr></hr></li>
       <li className="nav-header"><i>VISTA ADMINISTRADOR</i></li>
 
@@ -479,8 +480,8 @@ export default function   Aside() {
                 </NavLink>
               </li>
               {userRole === "admin" && renderAdminMenu()}
-              {userRole === "vendedor_minorista" && renderVendedorMenu()}
-              {userRole === "vendedor_mayorista" && renderVendedorMayoristaMenu()}
+              {userRole === "vendedor" && renderVendedorMenu()}
+              {userRole === "Vendedor Mayorista" && renderVendedorMayoristaMenu()}
             </ul>
           </nav>
         </div>

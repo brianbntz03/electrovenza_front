@@ -21,11 +21,9 @@ export default function ProductSelector({ onAddProduct }) {
       setLoading(true);
       setError(null);
       const data = await getArticulosMayorista();
-      // Filter out products without wholesale price
-      const productosConPrecioMayorista = data.filter(
-        p => p.precio_mayorista && p.precio_mayorista > 0
-      );
-      setProductos(productosConPrecioMayorista);
+      
+      setProductos(data);
+
     } catch (error) {
       console.error('Error cargando productos:', error);
       setError('Error al cargar productos. Por favor intente nuevamente.');
@@ -89,8 +87,8 @@ export default function ProductSelector({ onAddProduct }) {
                   <tr key={producto.id}>
                     <td>{producto.nombre}</td>
                     <td className="text-center">
-                      <span className={`badge ${producto.stock_disponible > 0 ? 'badge-success' : 'badge-danger'}`}>
-                        {producto.stock_disponible}
+                      <span className={`badge ${producto.stock > 0 ? 'badge-success' : 'badge-danger'}`}>
+                        {producto.stock}
                       </span>
                     </td>
                     <td className="text-right">
@@ -100,8 +98,8 @@ export default function ProductSelector({ onAddProduct }) {
                       <button
                         className="btn btn-sm btn-primary"
                         onClick={() => onAddProduct(producto)}
-                        disabled={producto.stock_disponible === 0}
-                        title={producto.stock_disponible === 0 ? 'Sin stock disponible' : 'Agregar al carrito'}
+                        disabled={producto.stock === 0}
+                        title={producto.stock === 0 ? 'Sin stock disponible' : 'Agregar al carrito'}
                       >
                         <i className="fas fa-plus mr-1"></i>
                         Agregar

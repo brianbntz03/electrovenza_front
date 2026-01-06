@@ -126,7 +126,8 @@ export function ListadoBandasPrecios() {
             <th>Banda superior</th>
             <th>Porcentaje Minorista</th>
             <th>Porcentaje Mayorista</th>
-            <th>% Comision Vendedor</th>
+            <th>% Comision Minorista</th>
+            <th>% Comision Mayorista</th>
             <th></th>
           </tr>
         </thead>
@@ -139,6 +140,7 @@ export function ListadoBandasPrecios() {
                 <td>{object.porcentaje_minorista}</td>
                 <td>{object.porcentaje_mayorista}</td>
                 <td>{object.porcentaje_comision_vendedor}</td>
+                <td>{object.porcentaje_comision_mayorista}</td>
                 <td>
                   <button onClick={() => handleOpenModal(object)}>
                     editar

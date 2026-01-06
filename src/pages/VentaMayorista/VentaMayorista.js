@@ -153,11 +153,9 @@ export default function VentaMayorista() {
 
       const saleData = {
         cliente_id: selectedCustomer.id,
-        metodo_pago: metodoPago,
-        items: cartItems.map(item => ({
-          articulo_id: item.id,
+        articulos: cartItems.map(item => ({
+          id: item.id,
           cantidad: item.cantidad,
-          precio_unitario: item.precio_mayorista
         }))
       };
 
@@ -166,7 +164,7 @@ export default function VentaMayorista() {
       Swal.fire({
         icon: 'success',
         title: '¡Venta completada!',
-        text: `La venta fue registrada exitosamente. ID: ${response.id || 'N/A'}`,
+        text: `La venta fue registrada exitosamente.`,
         confirmButtonText: 'Aceptar'
       });
 

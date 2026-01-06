@@ -11,15 +11,16 @@ import { apiRest } from './apiRest';
  */
 export const getWholesaleCustomers = async (vendedorId) => {
   try {
-    const token = localStorage.getItem('auth_token');
-    const response = await fetch(
-      `${apiRest}/clientes?tipo=mayorista&vendedor_id=${vendedorId}`,
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }
-    );
+    const apiUrl = `${apiRest}/cliente`;
+    
+          const response = await fetch(apiUrl, {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+            },
+          });
 
     if (!response.ok) {
       throw new Error('Error al obtener clientes mayoristas');
@@ -48,7 +49,7 @@ export const createWholesaleCustomer = async (customerData) => {
     const token = localStorage.getItem('auth_token');
     const vendedor_id = localStorage.getItem('user_id');
 
-    const response = await fetch(`${apiRest}/clientes`, {
+    const response = await fetch(`${apiRest}/cliente`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -83,7 +84,7 @@ export const updateCustomer = async (customerId, customerData) => {
   try {
     const token = localStorage.getItem('auth_token');
 
-    const response = await fetch(`${apiRest}/clientes/${customerId}`, {
+    const response = await fetch(`${apiRest}/cliente/${customerId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -111,7 +112,7 @@ export const updateCustomer = async (customerId, customerData) => {
 export const getAllCustomers = async () => {
   try {
     const token = localStorage.getItem('auth_token');
-    const response = await fetch(`${apiRest}/clientes`, {
+    const response = await fetch(`${apiRest}/cliente`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }

@@ -166,7 +166,17 @@ export const ComisionesPorVentaPendientes = () => {
     
     //Comisiones por ventas
     try {
-      const response = await fetch(`${apiRest}/ventas/comisiones/get-comisiones-pendientes/${vededorId}`);
+      const response = await fetch(
+        `${apiRest}/ventas/comisiones/get-comisiones-pendientes/${vededorId}`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        }
+      );
       if (response.ok) {
         const comisionesVentas = await response.json();
         setTotalComisionesPorVenta(0);
@@ -183,7 +193,18 @@ export const ComisionesPorVentaPendientes = () => {
 
     //Comisiones por creditos
     try {
-      const response = await fetch(`${apiRest}/credito/comisiones/get-comisiones-pendientes/${vededorId}`);
+      const token = localStorage.getItem('jwt_token');
+      const response = await fetch(
+        `${apiRest}/credito/comisiones/get-comisiones-pendientes/${vededorId}`,
+        {
+          method: 'GET',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        }
+      );
       if (response.ok) {
         const comisionesCreditos = await response.json();
         const total = comisionesCreditos.reduce((sum, comision) => sum + Number(comision.monto), 0);

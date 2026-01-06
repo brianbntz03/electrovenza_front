@@ -2,7 +2,7 @@
 export const ROLES = {
   ADMIN: 'administrador',
   RETAIL_SELLER: 'vendedor_minorista',
-  WHOLESALE_SELLER: 'vendedor_mayorista'
+  WHOLESALE_SELLER: 'Vendedor Mayorista'
 };
 
 /**

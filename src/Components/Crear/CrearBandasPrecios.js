@@ -15,6 +15,7 @@ export const CrearBandasPrecios = () => {
   const [porcentajeMinorista, setPorcentajeMinorista] = useState(0);
   const [porcentajeMayorista, setPorcentajeMayorista] = useState(0);
   const [porcentajeComisionVendedor, setPorcentajeComisionVendedor] = useState(0);
+  const [porcentajeComisionMayorista, setPorcentajeComisionMayorista] = useState(0);
   
   
   const [error, setError] = useState(null);
@@ -56,6 +57,7 @@ export const CrearBandasPrecios = () => {
             'porcentaje_minorista': Number(porcentajeMinorista),
             'porcentaje_mayorista': Number(porcentajeMayorista),
             'porcentaje_comision_vendedor': Number(porcentajeComisionVendedor),
+            'porcentaje_comision_mayorista': Number(porcentajeComisionMayorista),
            }),
       });
 
@@ -175,6 +177,21 @@ export const CrearBandasPrecios = () => {
                   name="porcentajeComisionVendedor"
                   required
                   placeholder="10"
+                />
+            </div>
+
+            <div className="form-group">
+              <label for="porcentajeMayorista">
+                Porcentaje Comision Mayorista :
+                </label>
+                <input 
+                  class="form-control"
+                  value={porcentajeComisionMayorista}
+                  onChange={(e) => setPorcentajeComisionMayorista(e.target.value)}
+                  type="text"
+                  name="porcentajeComisionMayorista"
+                  required
+                  placeholder="5"
                 />
             </div>
 

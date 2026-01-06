@@ -17,6 +17,7 @@ export function EditaProductoModal({
     idCategoria: "",
     activo: true,
     porcentajeComisionVendedor: 0,
+    porcentajeComisionMayorista: 0,
   });
   const [imagen, setImagen] = useState(null);
   const [error, setError] = useState(null);
@@ -33,6 +34,7 @@ export function EditaProductoModal({
         precio_compra: Number(producto.precio_compra) || 0,
         idCategoria: producto.categoria ? Number(producto.categoria.id) : 0,
         porcentajeComisionVendedor: Number(producto.porcentaje_comision_vendedor) || 0,
+        porcentajeComisionMayorista: Number(producto.porcentaje_comision_mayorista) || 0,
         activo: producto.activo || true,
       });
     }
@@ -250,12 +252,23 @@ export function EditaProductoModal({
               </div>
 
               <div className="form-group">
-                <label>% Comision Vendedor</label>
+                <label>% Comision Minorista</label>
                 <input
                   type="number"
                   className="form-control"
                   name="porcentajeComisionVendedor"
                   value={formData.porcentajeComisionVendedor}
+                  onChange={handleChangeNumber}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>% Comision Mayorista</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="porcentajeComisionMayorista"
+                  value={formData.porcentajeComisionMayorista}
                   onChange={handleChangeNumber}
                 />
               </div>

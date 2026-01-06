@@ -13,11 +13,13 @@ export default function ClientesMayorista() {
   const [editingCustomer, setEditingCustomer] = useState(null);
   const [formData, setFormData] = useState({
     nombre: '',
-    dni_cuit: '',
-    telefono: '',
-    direccion: '',
-    email: '',
-    notas: ''
+    dni: '',
+    direccion_local: '',
+    direccion_casa: '',
+    telefono1: '',
+    telefono2: '',
+    vendedor_id: '',
+    rubro: '',
   });
   const [submitting, setSubmitting] = useState(false);
 
@@ -28,7 +30,7 @@ export default function ClientesMayorista() {
   const fetchCustomers = async () => {
     try {
       setLoading(true);
-      const vendedorId = localStorage.getItem('user_id');
+      const vendedorId = localStorage.getItem('vendedor_id');
       const data = await getWholesaleCustomers(vendedorId);
       setCustomers(data);
     } catch (error) {
@@ -54,11 +56,13 @@ export default function ClientesMayorista() {
   const resetForm = () => {
     setFormData({
       nombre: '',
-      dni_cuit: '',
-      telefono: '',
-      direccion: '',
-      email: '',
-      notas: ''
+      dni: '',
+      direccion_local: '',
+      direccion_casa: '',
+      telefono1: '',
+      telefono2: '',
+      vendedor_id: '',
+      rubro: '',
     });
     setEditingCustomer(null);
     setShowForm(false);
@@ -72,11 +76,13 @@ export default function ClientesMayorista() {
   const handleEdit = (customer) => {
     setFormData({
       nombre: customer.nombre || '',
-      dni_cuit: customer.dni_cuit || '',
-      telefono: customer.telefono || '',
-      direccion: customer.direccion || '',
-      email: customer.email || '',
-      notas: customer.notas || ''
+      dni: customer.dni || '',
+      direccion_local: customer.direccion_local || '',
+      direccion_casa: customer.direccion_casa || '',
+      telefono1: customer.telefono1 || '',
+      telefono2: customer.telefono2 || '',
+      vendedor_id: customer.vendedor_id || '',
+      rubro: customer.rubro || ''
     });
     setEditingCustomer(customer);
     setShowForm(true);
@@ -95,14 +101,33 @@ export default function ClientesMayorista() {
       return;
     }
 
-    if (formData.email && !isValidEmail(formData.email)) {
+    if (!formData.dni.trim()) {
       Swal.fire({
         icon: 'error',
         title: 'Error de validación',
-        text: 'El formato del email no es válido'
+        text: 'El DNI del cliente es requerido'
       });
       return;
     }
+
+    if (!formData.telefono1.trim()) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de validación',
+        text: 'El teléfono 1 del cliente es requerido'
+      });
+      return;
+    }
+
+    if (!formData.rubro.trim()) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de validación',
+        text: 'El rubro del cliente es requerido'
+      });
+      return;
+    }
+
 
     try {
       setSubmitting(true);
@@ -143,9 +168,7 @@ export default function ClientesMayorista() {
     }
   };
 
-  const isValidEmail = (email) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
+  
 
   return (
     <div className="content-wrapper">
@@ -202,9 +225,9 @@ export default function ClientesMayorista() {
                         <label>DNI / CUIT</label>
                         <input
                           type="text"
-                          name="dni_cuit"
+                          name="dni"
                           className="form-control"
-                          value={formData.dni_cuit}
+                          value={formData.dni}
                           onChange={handleInputChange}
                           placeholder="DNI o CUIT"
                         />
@@ -334,7 +357,7 @@ export default function ClientesMayorista() {
                         {customers.map(customer => (
                           <tr key={customer.id}>
                             <td><strong>{customer.nombre}</strong></td>
-                            <td>{customer.dni_cuit || '-'}</td>
+                            <td>{customer.dni || '-'}</td>
                             <td>{customer.telefono || '-'}</td>
                             <td>{customer.email || '-'}</td>
                             <td>{customer.direccion || '-'}</td>

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { apiRest } from "../../service/apiRest";
 import { EditarVendedorModal } from "../modals/EditarVendedorModal";
+import { TipoVendedor } from "../../constants/tipoVendedor";
+
 
 export function ListadoVendedores() {
   const [vendedores, setVendedores] = useState([]);
@@ -11,7 +13,7 @@ export function ListadoVendedores() {
   
   // Estados para la Paginación del lado del Servidor
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(4); 
+  const [itemsPerPage] = useState(100); 
   const [apiTotalItems, setApiTotalItems] = useState(0); 
   
   // --- LÓGICA DE MANEJO DE VENDEDORES ---
@@ -148,10 +150,7 @@ export function ListadoVendedores() {
             <th>Telefono</th>
             <th>Direccion</th>
             <th>Saldo CC</th>
-            <th>foto documento de frente</th>
-            <th>foto documento de reverso</th>
-            <th>servicio n°1</th>
-            <th>servicio n°2</th>
+            <th>Tipo</th>
             <th></th>
           </tr>
         </thead>
@@ -164,10 +163,7 @@ export function ListadoVendedores() {
               <td>{vendedor.telefono}</td>
               <td>{vendedor.direccion}</td>
               <td>{vendedor.cuentaCorriente?.saldo ?? 0}</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>{TipoVendedor[vendedor.tipo] }</td>
               <td>
                 <button
                   className="link-button"

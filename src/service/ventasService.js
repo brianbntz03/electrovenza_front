@@ -8,16 +8,14 @@ import { apiRest } from './apiRest';
  * Create a new wholesale sale
  * @param {Object} saleData - Sale data
  * @param {number} saleData.cliente_id - Customer ID
- * @param {string} saleData.metodo_pago - Payment method (efectivo, transferencia, cheque)
- * @param {Array} saleData.items - Array of sale items
- * @param {number} saleData.items[].articulo_id - Product ID
- * @param {number} saleData.items[].cantidad - Quantity
- * @param {number} saleData.items[].precio_unitario - Unit price (wholesale price)
+ * @param {Array} saleData.articulos - Array of sale items
+ * @param {number} saleData.articulos[].id - Product ID
+ * @param {number} saleData.articulos[].cantidad - Quantity
  * @returns {Promise} API response with created sale
  */
 export const createVentaMayorista = async (saleData) => {
   try {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem('jwt_token');
     const vendedor_id = localStorage.getItem('user_id');
 
     const response = await fetch(`${apiRest}/ventas-mayorista`, {
@@ -29,7 +27,7 @@ export const createVentaMayorista = async (saleData) => {
       body: JSON.stringify({
         ...saleData,
         vendedor_id: parseInt(vendedor_id),
-        tipo_venta: 'mayorista'
+        fecha: new Date().toISOString(),
       })
     });
 
@@ -38,7 +36,7 @@ export const createVentaMayorista = async (saleData) => {
       throw new Error(error.message || 'Error al crear la venta mayorista');
     }
 
-    return await response.json();
+    return await response.text();
   } catch (error) {
     console.error('Error en createVentaMayorista:', error);
     throw error;

@@ -10,9 +10,12 @@ import { apiRest } from './apiRest';
  * @param {boolean} filters.precio_mayorista_required - Only products with wholesale price
  * @returns {Promise} API response with product list
  */
-export const getArticulos = async (filters = {}) => {
+export const getArticulos = async (filters = {
+  page: 1,
+  limit: 10000000000000,
+}) => {
   try {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem('jwt_token');
     const queryParams = new URLSearchParams(filters).toString();
     const url = `${apiRest}/articulos${queryParams ? `?${queryParams}` : ''}`;
 
@@ -21,12 +24,13 @@ export const getArticulos = async (filters = {}) => {
         'Authorization': `Bearer ${token}`
       }
     });
+    //console.log(await response.json());
 
     if (!response.ok) {
       throw new Error('Error al obtener artículos');
     }
 
-    return await response.json();
+    return (await response.json()).data;
   } catch (error) {
     console.error('Error en getArticulos:', error);
     throw error;
@@ -38,5 +42,5 @@ export const getArticulos = async (filters = {}) => {
  * @returns {Promise} API response with product list
  */
 export const getArticulosMayorista = async () => {
-  return getArticulos({ precio_mayorista_required: true });
+  return getArticulos();
 };
