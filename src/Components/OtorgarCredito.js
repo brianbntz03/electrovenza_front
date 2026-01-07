@@ -144,6 +144,7 @@ const OtorgarCredito = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
         },
         body: data,
       });
