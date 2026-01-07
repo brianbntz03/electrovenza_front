@@ -196,7 +196,14 @@ const OtorgarCredito = () => {
       .then((data) => setClientesList(Array.isArray(data) ? data : []))
       .catch((error) => console.error("Error fetching clientes:", error));
 
-    fetch(`${apiRest}/settings/cuotas-credito`)
+    fetch(`${apiRest}/settings/cuotas-credito`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => setCuotasList(Array.isArray(data) ? data : []))
       .catch(() => setCuotasList([]));
