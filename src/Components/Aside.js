@@ -314,8 +314,7 @@ export default function   Aside() {
 
   const renderAdminMenu = () => (
     <>
-      {//renderVendedorMenu()}
-      }
+      {renderVendedorMenu()}
       <li className="nav-header"><hr></hr></li>
       <li className="nav-header"><i>VISTA ADMINISTRADOR</i></li>
 
@@ -505,7 +504,7 @@ export default function   Aside() {
                   <p>Inicio</p>
                 </NavLink>
               </li>
-              {userRole === "admin" && renderAdminMenu()}
+              {userRole === "admin" && renderAdminMenu()  }
               {userRole === "vendedor" && renderVendedorMenu()}
               {userRole === "Vendedor Mayorista" && renderVendedorMayoristaMenu()}
             </ul>
