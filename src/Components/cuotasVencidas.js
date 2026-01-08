@@ -15,7 +15,7 @@ export default function CuotasVencidas() {
   const fetchCuotas = async () => {
     try {
       const response = await fetch(
-        `${apiRest}/cuota_venta/get-all-cuotas-vencidas`,
+        `${apiRest}/cuota_venta/get-cuotas-vencidas`,
         {
           method: "GET",
           headers: {
