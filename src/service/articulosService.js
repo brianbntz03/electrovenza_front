@@ -44,3 +44,41 @@ export const getArticulos = async (filters = {
 export const getArticulosMayorista = async () => {
   return getArticulos();
 };
+
+/**
+ * Get articles by category ID
+ * @param {number|string} categoryId - The category ID
+ * @returns {Promise<Array>} List of articles in the category
+ * @throws {Error} If the request fails
+ */
+export const getArticulosByCategoria = async (categoryId) => {
+  const token = localStorage.getItem('jwt_token');
+  const response = await fetch(
+    `${apiRest}/articulos/by-category-id/${categoryId}`,
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  );
+
+  if (response.status === 404) {
+    throw new Error('Categoría no encontrada');
+  }
+
+  if (!response.ok) {
+    throw new Error('Error al obtener artículos');
+  }
+
+  return response.json();
+};
+
+/**
+ * Get only active articles by category
+ * @param {number|string} categoryId - The category ID
+ * @returns {Promise<Array>} List of active articles
+ */
+export const getArticulosActivosByCategoria = async (categoryId) => {
+  const articulos = await getArticulosByCategoria(categoryId);
+  return articulos.filter(art => art.activo === true);
+};

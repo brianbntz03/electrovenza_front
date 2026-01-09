@@ -52,6 +52,8 @@ import ClientesMayorista from "../pages/ClientesMayorista/ClientesMayorista";
 import { RequireRole } from "../utils/roleGuards";
 import { ROLES } from "../constants/roles";
 import PageComisionesPorVentaPendientesVendedor from "../pages/PageComisionesPorVentaPendientesVendedor";
+import CatalogoCategorias from "../pages/CatalogoCategorias/CatalogoCategorias";
+import ArticulosCategoria from "../pages/ArticulosCategoria/ArticulosCategoria";
 
 export default function Content() {
   return (
@@ -171,6 +173,10 @@ export default function Content() {
                     </RequireRole>
                   }
                 />
+
+                {/* Catalog Routes - Categories and Articles */}
+                <Route path="/catalogo-categorias" element={<CatalogoCategorias />} />
+                <Route path="/categoria/:categoriaId/articulos" element={<ArticulosCategoria />} />
 
                 {/* Unauthorized access page */}
                 <Route path="/unauthorized" Component={UnauthorizedPage}></Route>

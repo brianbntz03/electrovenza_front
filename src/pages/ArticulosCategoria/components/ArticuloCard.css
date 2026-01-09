@@ -1,0 +1,161 @@
+.articulo-card {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.articulo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Image Container */
+.articulo-image {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.articulo-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.articulo-card:hover .articulo-image img {
+  transform: scale(1.05);
+}
+
+/* Stock Badge */
+.stock-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stock-available {
+  background: #28a745;
+  color: white;
+}
+
+.stock-low {
+  background: #ffc107;
+  color: #333;
+}
+
+.stock-none {
+  background: #dc3545;
+  color: white;
+}
+
+/* Info Container */
+.articulo-info {
+  padding: 16px;
+}
+
+.articulo-nombre {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 42px;
+}
+
+.articulo-descripcion {
+  margin: 0 0 12px 0;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 55px;
+}
+
+/* Precio Container */
+.articulo-precio-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.articulo-precio {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #007bff;
+}
+
+.precio-label {
+  font-size: 11px;
+  color: #28a745;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive - Tablet */
+@media (max-width: 992px) {
+  .articulo-image {
+    height: 180px;
+  }
+
+  .articulo-nombre {
+    font-size: 15px;
+    min-height: 39px;
+  }
+
+  .articulo-precio {
+    font-size: 20px;
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .articulo-image {
+    height: 160px;
+  }
+
+  .articulo-info {
+    padding: 12px;
+  }
+
+  .articulo-nombre {
+    font-size: 14px;
+    min-height: 36px;
+  }
+
+  .articulo-descripcion {
+    font-size: 12px;
+    -webkit-line-clamp: 2;
+    min-height: 34px;
+  }
+
+  .articulo-precio {
+    font-size: 18px;
+  }
+
+  .stock-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+}

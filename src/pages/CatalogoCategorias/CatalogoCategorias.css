@@ -1,0 +1,135 @@
+.catalogo-categorias {
+  padding: 20px;
+  min-height: 400px;
+}
+
+/* Header */
+.catalogo-header {
+  margin-bottom: 24px;
+}
+
+.catalogo-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+.catalogo-subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Grid Layout */
+.categorias-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* Loading State */
+.catalogo-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: #666;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error State */
+.catalogo-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  text-align: center;
+  color: #666;
+}
+
+.catalogo-error i {
+  font-size: 48px;
+  color: #dc3545;
+  margin-bottom: 16px;
+}
+
+.catalogo-error p {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+}
+
+.catalogo-error button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Empty State */
+.catalogo-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  text-align: center;
+  color: #999;
+}
+
+.catalogo-empty i {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.catalogo-empty p {
+  margin: 0;
+  font-size: 18px;
+}
+
+/* Responsive - Tablet */
+@media (max-width: 992px) {
+  .categorias-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .catalogo-categorias {
+    padding: 16px;
+  }
+
+  .catalogo-header h2 {
+    font-size: 20px;
+  }
+
+  .categorias-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+}
+
+/* Responsive - Small Mobile */
+@media (max-width: 480px) {
+  .categorias-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
