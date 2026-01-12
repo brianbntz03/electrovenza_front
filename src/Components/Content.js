@@ -52,6 +52,7 @@ import ClientesMayorista from "../pages/ClientesMayorista/ClientesMayorista";
 import { RequireRole } from "../utils/roleGuards";
 import { ROLES } from "../constants/roles";
 import PageComisionesPorVentaPendientesVendedor from "../pages/PageComisionesPorVentaPendientesVendedor";
+import PageListadoVentasMayorista from "../pages/PageListadoVentasMayorista";
 
 export default function Content() {
   return (
