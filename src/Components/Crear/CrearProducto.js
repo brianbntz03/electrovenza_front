@@ -10,6 +10,7 @@ export const CrearProducto = () => {
   const [stock, setStock] = useState(0);
   const [idCategoria, setIdCategoria] = useState(0);
   const [porcentajeComisionVendedor, setPorcentajeComisionVendedor] = useState(0);
+  const [porcentajeComisionMayorista, setPorcentajeComisionMayorista] = useState(0);
   const [precioCompra, setPrecioCompra] = useState(0);
   const [imagen, setImagen] = useState(null);
   const [categorias, setCategorias] = useState([]);
@@ -71,7 +72,8 @@ export const CrearProducto = () => {
           precio_compra: precioCompra, 
           stock, 
           idCategoria, 
-          porcentaje_comision_vendedor: porcentajeComisionVendedor 
+          porcentaje_comision_vendedor: porcentajeComisionVendedor,
+          porcentaje_comision_mayorista: porcentajeComisionMayorista,
         }),
       });
 
@@ -209,6 +211,18 @@ export const CrearProducto = () => {
                 onChange={(e) => setPorcentajeComisionVendedor(Number(e.target.value))}
                 type="text"
                 name="porcentaje_comision_Vendedor"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputDescription">% Comision vendedor mayorista</label>
+              <input
+                class="form-control"
+                value={porcentajeComisionMayorista}
+                onChange={(e) => setPorcentajeComisionMayorista(Number(e.target.value))}
+                type="text"
+                name="porcentaje_comision_Mayorista"
                 required
               />
             </div>
