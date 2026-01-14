@@ -62,10 +62,7 @@ export default function ArticuloCard({ articulo, showWholesalePrice }) {
         <img
           src={imageUrl}
           alt={articulo.nombre}
-          onError={(e) => {
-            e.target.onerror = null;
-            e.target.src = '/placeholder-articulo.png';
-          }}
+          
         />
         <span className={`stock-badge ${stockInfo.className}`}>
           {stockInfo.text}
