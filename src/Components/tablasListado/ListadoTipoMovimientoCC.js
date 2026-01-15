@@ -10,7 +10,14 @@ const ListadoTipoMovimientoCC = ({ refresh }) => {
   const fetchTiposMovimiento = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${apiRest}/tipo-movimiento`);
+      const response = await fetch(`${apiRest}/tipo-movimiento`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
+      });
       const data = await response.json();
       setTiposMovimiento(data);
     } catch (error) {
@@ -28,7 +35,12 @@ const ListadoTipoMovimientoCC = ({ refresh }) => {
     if (window.confirm('¿Está seguro de eliminar este tipo de movimiento?')) {
       try {
         const response = await fetch(`${apiRest}/tipo-movimiento/${id}`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
         });
         if (response.ok) {
           fetchTiposMovimiento();

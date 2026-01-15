@@ -51,7 +51,14 @@ export const CrearClienteFiltrado = () => {
     // Test de conectividad
     const testBackend = async () => {
       try {
-        const response = await fetch(`${apiRest}/vendedor`);
+        const response = await fetch(`${apiRest}/vendedor`,{
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },  
+        });
         console.log("Backend status:", response.status);
         if (response.ok) {
           console.log("✅ Backend conectado correctamente");
@@ -88,6 +95,11 @@ export const CrearClienteFiltrado = () => {
       const response = await fetch(`${apiRest}/cliente/${clienteId}/imagen/${tipo}`, {
         method: "POST",
         body: formData,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
       });
 
       if (!response.ok) {

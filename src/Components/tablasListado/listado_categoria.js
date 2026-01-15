@@ -35,6 +35,11 @@ export function ListadoCategoria() {
     try {
       await fetch(`${apiRest}/categoria/${id}`, {
         method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
       });
       console.log(`Producto con id ${id} eliminado. `);
       const nuevasCategorias = categorias.filter(
@@ -49,7 +54,13 @@ export function ListadoCategoria() {
 
   const fetchCategorias = async () => {
     try {
-      const response = await fetch(`${apiRest}/categoria`);
+      const response = await fetch(`${apiRest}/categoria`, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
+      });
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }

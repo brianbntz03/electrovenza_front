@@ -231,7 +231,16 @@ export const ComisionesPorVentaPendientes = () => {
 
     //Ultimos movimientos cuenta corriente
     try {
-      const response = await fetch(`${apiRest}/cuenta-corriente/last-ten-movements-by-vendedor/${vededorId}`);
+      const response = await fetch(`${apiRest}/cuenta-corriente/last-ten-movements-by-vendedor/${vededorId}`, 
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        }
+      );
       if (response.ok) {
         const last_ten_movements = await response.json();
         setLastMovements(last_ten_movements);

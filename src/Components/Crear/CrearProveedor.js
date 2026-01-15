@@ -41,6 +41,7 @@ export const CrearProveedor = () => {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
         body: JSON.stringify({ nombre, direccion, telefono }),
       });

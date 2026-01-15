@@ -60,6 +60,7 @@ export const ArticuloPresupuestoContado = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
           },
         }
       );
@@ -126,6 +127,7 @@ export const ArticuloPresupuestoContado = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
         body: JSON.stringify(ventaData),
       });
@@ -463,7 +465,16 @@ export const ArticuloPresupuestoContado = () => {
 
   const cargarVendedores = async () => {
     try {
-      const response = await fetch(`${apiRest}/vendedor?page=1&limit=200`);
+      const response = await fetch(`${apiRest}/vendedor?page=1&limit=200`
+        , {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        }
+      );
       if (response.ok) {
         const data = await response.json();
         setVendedoresFiltrados(data.data);

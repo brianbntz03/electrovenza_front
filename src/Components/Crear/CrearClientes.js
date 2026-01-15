@@ -44,7 +44,14 @@ export const CrearCliente = () => {
   useEffect(() => {
     const obtenerVendedores = async () => {
       try {
-        const response = await fetch(`${apiRest}/vendedor`);
+        const response = await fetch(`${apiRest}/vendedor`, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        });
         const data = await response.json();
         setListaVendedores(data.data || data.vendedores || []);
       } catch (error) {
@@ -93,6 +100,7 @@ export const CrearCliente = () => {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json", // Necesario para JSON
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
         body: JSON.stringify({
           nombre,

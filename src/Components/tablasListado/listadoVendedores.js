@@ -57,7 +57,14 @@ export function ListadoVendedores() {
       const apiUrl = `${apiRest}/vendedor?page=${currentPage}&limit=${itemsPerPage}`;
       console.log("Fetching vendors from URL:", apiUrl);
 
-      const response = await fetch(apiUrl);
+      const response = await fetch(apiUrl,{
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
+      });
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }

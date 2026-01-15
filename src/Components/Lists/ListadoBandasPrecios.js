@@ -46,6 +46,11 @@ export function ListadoBandasPrecios() {
     try {
       await fetch(`${urlObject}/${id}`, {
         method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
       });
       console.log(`${titleSingular} con id ${id} eliminado. `);
 

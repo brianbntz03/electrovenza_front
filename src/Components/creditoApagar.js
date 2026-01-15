@@ -18,6 +18,7 @@ export default function CreditaPagar({ id, fecha, articulo, valor, montoCobrado,
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
           },
           body: JSON.stringify({ monto_cobrado: montoParcial }),
         }
@@ -48,6 +49,7 @@ export default function CreditaPagar({ id, fecha, articulo, valor, montoCobrado,
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
       });
 

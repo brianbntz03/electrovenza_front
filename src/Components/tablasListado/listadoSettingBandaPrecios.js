@@ -36,6 +36,11 @@ export function ListadoSettingBandaPrecios() {
         
          await fetch(`${apiRest}/setting-escala-precios/${id}`, {
              method: 'DELETE',
+             headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+              },
          });
 
         // Elimina la configuracion para la banda de precios

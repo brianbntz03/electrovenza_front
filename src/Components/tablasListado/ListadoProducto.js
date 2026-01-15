@@ -36,6 +36,11 @@ export function ListadoProducto() {
     try {
       await fetch(`${apiRest}/articulos/${id}`, {
         method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
       });
       console.log(`Producto con id ${id} eliminado. `);
 

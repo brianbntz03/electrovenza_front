@@ -21,6 +21,7 @@ export function ListadoArticulosVendedor() {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
       });
 
@@ -48,6 +49,11 @@ export function ListadoArticulosVendedor() {
     try {
       await fetch(`${apiRest}/articulos/${id}`, {
         method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
       });
 
       const nuevosProductos = productos.filter(

@@ -11,7 +11,14 @@ export default function ButtonSearch() {
   const handleSearch = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${apiRest}/articulos/find`);
+      const response = await fetch(`${apiRest}/articulos/find`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
+      });
       if (!response.ok) {
         throw new Error(`Error en la solicitud: ${response.status}`);
       }
