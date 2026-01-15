@@ -51,7 +51,7 @@ export default function ArticuloCard({ articulo, showWholesalePrice }) {
     : '/placeholder-articulo.png';
 
   const precio = showWholesalePrice
-    ? articulo.precio_mayorista
+    ? articulo.precio_mayorista * 1.20
     : articulo.precio;
 
   const stockInfo = getStockIndicator(articulo.stock);
