@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 /**
  * Component for displaying sale summary and cart
@@ -7,8 +7,15 @@ import React from 'react';
  * @param {Function} props.onRemoveItem - Callback to remove item
  * @param {Function} props.onUpdateQuantity - Callback to update quantity
  */
-export default function SalesSummary({ items, onRemoveItem, onUpdateQuantity }) {
-  const total = items.reduce((sum, item) => sum + (item.cantidad * item.precio_mayorista), 0);
+export default function SalesSummary({
+  items,
+  onRemoveItem,
+  onUpdateQuantity,
+}) {
+  const total = items.reduce(
+    (sum, item) => sum + (Number(item.cantidad) || 0) * item.precio_mayorista,
+    0
+  );
 
   return (
     <div className="card">
@@ -32,14 +39,16 @@ export default function SalesSummary({ items, onRemoveItem, onUpdateQuantity }) 
                 <thead>
                   <tr>
                     <th>Producto</th>
-                    <th className="text-center" style={{ width: '120px' }}>Cantidad</th>
+                    <th className="text-center" style={{ width: "120px" }}>
+                      Cantidad
+                    </th>
                     <th className="text-right">Precio Unit.</th>
                     <th className="text-right">Subtotal</th>
-                    <th className="text-center" style={{ width: '60px' }}></th>
+                    <th className="text-center" style={{ width: "60px" }}></th>
                   </tr>
                 </thead>
                 <tbody>
-                  {items.map(item => (
+                  {items.map((item) => (
                     <tr key={item.id}>
                       <td>
                         <small>{item.nombre}</small>
@@ -49,16 +58,16 @@ export default function SalesSummary({ items, onRemoveItem, onUpdateQuantity }) 
                           type="number"
                           className="form-control form-control-sm"
                           min="1"
-                          max={item.stock_disponible}
                           value={item.cantidad}
                           onChange={(e) => {
-                            const newQty = parseInt(e.target.value);
-                            if (newQty > 0 && newQty <= item.stock_disponible) {
-                              onUpdateQuantity(item.id, newQty);
+                            const value = parseInt(e.target.value, 10);
+                            if (value >= 1) {
+                              onUpdateQuantity(item.id, value);
                             }
                           }}
-                          style={{ width: '80px', display: 'inline-block' }}
+                          style={{ width: "80px", display: "inline-block" }}
                         />
+
                         <br />
                         <small className="text-muted">
                           Stock: {item.stock_disponible}
@@ -66,12 +75,22 @@ export default function SalesSummary({ items, onRemoveItem, onUpdateQuantity }) 
                       </td>
                       <td className="text-right">
                         <small>
-                          ${item.precio_mayorista.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          $
+                          {item.precio_mayorista.toLocaleString("es-AR", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
                         </small>
                       </td>
                       <td className="text-right">
                         <strong>
-                          ${(item.cantidad * item.precio_mayorista).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          $
+                          {(
+                            item.cantidad * item.precio_mayorista
+                          ).toLocaleString("es-AR", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
                         </strong>
                       </td>
                       <td className="text-center">
@@ -88,10 +107,16 @@ export default function SalesSummary({ items, onRemoveItem, onUpdateQuantity }) 
                 </tbody>
                 <tfoot>
                   <tr className="table-active">
-                    <th colSpan="3" className="text-right">TOTAL:</th>
+                    <th colSpan="3" className="text-right">
+                      TOTAL:
+                    </th>
                     <th className="text-right">
                       <h5 className="mb-0">
-                        ${total.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        $
+                        {total.toLocaleString("es-AR", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
                       </h5>
                     </th>
                     <th></th>
@@ -103,9 +128,9 @@ export default function SalesSummary({ items, onRemoveItem, onUpdateQuantity }) 
             <div className="mt-3 alert alert-info">
               <i className="fas fa-info-circle mr-2"></i>
               <strong>Total de productos:</strong> {items.length} |
-              <strong className="ml-2">Total de unidades:</strong> {items.reduce((sum, item) => sum + item.cantidad, 0)}
+              <strong className="ml-2">Total de unidades:</strong>{" "}
+              {items.reduce((sum, item) => sum + item.cantidad, 0)}
             </div>
-            
           </>
         )}
       </div>

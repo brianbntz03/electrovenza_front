@@ -16,7 +16,7 @@ import { apiRest } from './apiRest';
 export const createVentaMayorista = async (saleData) => {
   try {
     const token = localStorage.getItem('jwt_token');
-    const vendedor_id = localStorage.getItem('user_id');
+    const vendedor_id = localStorage.getItem('vendedor_id');
 
     const response = await fetch(`${apiRest}/ventas-mayorista`, {
       method: 'POST',
