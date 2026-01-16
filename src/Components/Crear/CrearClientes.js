@@ -71,10 +71,16 @@ export const CrearCliente = () => {
     formData.append("imagen", file); 
 
     try {
-      const response = await fetch(`${apiRest}/cliente/${clienteId}/imagen/${tipo}`, {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(`${apiRest}/cliente/${clienteId}/imagen/${tipo}`, ,
+        {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        });
 
       if (!response.ok) {
         const errorText = await response.text();

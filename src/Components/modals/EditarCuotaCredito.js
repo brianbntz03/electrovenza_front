@@ -46,7 +46,9 @@ export function EditarCuotaCredito({ cuotaCredito, onClose, onCuotaCreditoActual
       const response = await fetch(`${apiRest}/settings/cuotas-credito/${cuotaCredito.id}`, {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json",
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
         body: JSON.stringify(dataToSend),
       });

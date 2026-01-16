@@ -24,7 +24,15 @@ export function ModalEditarCompras({ object, onClose, onObjectActualizado }) {
   useEffect(() => {
     const fetchColectivo = async () => {
       try {
-        const response = await fetch(`${urlObject}`);
+        const response = await fetch(`${urlObject}`, ,
+        {
+          method: 'GET',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        });
         if (!response.ok) {
           throw new Error(`No se pudo actualizar los datos del ${titleSingular}`);
         }
@@ -58,13 +66,16 @@ const handleChangeNumber = (e) => {
     e.preventDefault();
     try {
       console.log(`Enviando datos para actualizar ${titleSingular}:`, formData);
-      const response = await fetch(`${urlObject}/${object.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(`${urlObject}/${object.id}`, ,
+        {
+          method: 'GET',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+          body: JSON.stringify(formData),
+        });
 
      if (!response.ok) {
         const errorText = await response.text();

@@ -51,7 +51,15 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
     if (role === "admin") {
       const fetchVendedores = async () => {
         try {
-          const response = await fetch(`${apiRest}/vendedor?limit=1000`);
+          const response = await fetch(`${apiRest}/vendedor?limit=1000`,
+        {
+          method: 'GET',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        });
           if (!response.ok) {
             throw new Error("No se pudo cargar los vendedores");
           }
@@ -116,6 +124,11 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
       //  RUTA CORREGIDA: Incluye el tipo en la URL
       const response = await fetch(`${apiRest}/cliente/${cliente.id}/imagen/${tipo}`, {
         method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
         body: formData,
       });
 
@@ -161,7 +174,9 @@ export function EditarClienteModal({ cliente, onClose, onClienteActualizado }) {
       const response = await fetch(`${apiRest}/cliente/${cliente.id}`, {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json",
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
         body: JSON.stringify(dataToSend),
       });
