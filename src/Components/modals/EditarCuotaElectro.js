@@ -45,7 +45,7 @@ export function EditarCuotaElectro({ cuotaElectro, onClose, onCuotaActualizada }
 
       const response = await fetch(`${apiRest}/settings/cuotas/${cuotaElectro.id}`, ,
         {
-          method: 'GET',
+          method: 'PATCH',
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",

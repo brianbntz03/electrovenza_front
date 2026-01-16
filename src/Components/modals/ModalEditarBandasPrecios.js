@@ -35,7 +35,7 @@ export function ModalEditarBandasPrecios({ object, onClose, onObjectActualizado 
         {
           method: 'GET',
           headers: {
-            Accept: "application/json",
+            Accept: "application/json", 
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
           },

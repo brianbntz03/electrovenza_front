@@ -13,7 +13,7 @@ const EditarTipoMovimientoCCModal = ({ item, onClose, onSuccess }) => {
     try {
       const response = await fetch(`${apiRest}/tipo-movimiento/${item.id}`, ,
         {
-          method: 'GET',
+          method: 'PATCH',
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",

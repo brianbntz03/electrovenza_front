@@ -33,6 +33,7 @@ export function FormularioLogin({ onLoginSuccess }) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
           },
+          body: JSON.stringify({username, password}),
         });
 
       const data = await response.json();

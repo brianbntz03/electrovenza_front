@@ -74,6 +74,7 @@ export const CrearCliente = () => {
       const response = await fetch(`${apiRest}/cliente/${clienteId}/imagen/${tipo}`, ,
         {
           method: 'POST',
+          body: formData,
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
