@@ -24,7 +24,7 @@ export function ModalEditarCreditos({ object, onClose, onObjectActualizado }) {
   useEffect(() => {
     const fetchColectivo = async () => {
       try {
-        const response = await fetch(`${urlObject}`, ,
+        const response = await fetch(`${urlObject}`, 
         {
           method: 'GET',
           headers: {

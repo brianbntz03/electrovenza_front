@@ -24,7 +24,7 @@ export function ModalEditarCompras({ object, onClose, onObjectActualizado }) {
   useEffect(() => {
     const fetchColectivo = async () => {
       try {
-        const response = await fetch(`${urlObject}`, ,
+        const response = await fetch(`${urlObject}`, 
         {
           method: 'GET',
           headers: {
@@ -66,7 +66,7 @@ const handleChangeNumber = (e) => {
     e.preventDefault();
     try {
       console.log(`Enviando datos para actualizar ${titleSingular}:`, formData);
-      const response = await fetch(`${urlObject}/${object.id}`, ,
+      const response = await fetch(`${urlObject}/${object.id}`, 
         {
           method: 'GET',
           headers: {

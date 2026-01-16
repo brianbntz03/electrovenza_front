@@ -22,7 +22,7 @@ export const CrearCompras = () => {
 
   const fetchProveedores = async () => {
     try {
-      const response = await fetch(`${apiRest}/proveedor`, ,
+      const response = await fetch(`${apiRest}/proveedor`, 
         {
           method: 'GET',
           headers: {

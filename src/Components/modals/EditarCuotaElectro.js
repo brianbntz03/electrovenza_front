@@ -43,7 +43,7 @@ export function EditarCuotaElectro({ cuotaElectro, onClose, onCuotaActualizada }
 
       console.log("Enviando datos para actualizar cuota:", dataToSend);
 
-      const response = await fetch(`${apiRest}/settings/cuotas/${cuotaElectro.id}`, ,
+      const response = await fetch(`${apiRest}/settings/cuotas/${cuotaElectro.id}`, 
         {
           method: 'PATCH',
           headers: {

@@ -11,7 +11,7 @@ const EditarTipoMovimientoCCModal = ({ item, onClose, onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${apiRest}/tipo-movimiento/${item.id}`, ,
+      const response = await fetch(`${apiRest}/tipo-movimiento/${item.id}`,
         {
           method: 'PATCH',
           headers: {
