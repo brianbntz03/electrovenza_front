@@ -180,6 +180,8 @@ export function EditaProductoModal({
                   name="nombre"
                   value={formData.nombre}
                   onChange={handleChange}
+                  required
+                  min={4}
                 />
               </div>
               <div className="form-group">
@@ -190,6 +192,8 @@ export function EditaProductoModal({
                   name="descripcion"
                   value={formData.descripcion}
                   onChange={handleChange}
+                  required
+                  min={4}
                 />
               </div>
               <div className="form-group">
@@ -216,6 +220,9 @@ export function EditaProductoModal({
                   name="precio"
                   value={formData.precio}
                   onChange={handleChangeNumber}
+                  min={1}
+                  step="any"
+                  required
                 />
               </div>
               <div className="form-group">
@@ -226,6 +233,9 @@ export function EditaProductoModal({
                   name="precio_mayorista"
                   value={formData.precio_mayorista}
                   onChange={handleChangeNumber}
+                  min={1}
+                  step="any"
+                  required
                 />
               </div>
 
@@ -237,6 +247,9 @@ export function EditaProductoModal({
                   name="precio_compra"
                   value={formData.precio_compra}
                   onChange={handleChangeNumber}
+                  min={1}
+                  step="any"
+                  required
                 />
               </div>
               
@@ -248,6 +261,7 @@ export function EditaProductoModal({
                   name="stock"
                   value={formData.stock}
                   onChange={handleChangeNumber}
+                  required
                 />
               </div>
 
@@ -259,6 +273,9 @@ export function EditaProductoModal({
                   name="porcentajeComisionVendedor"
                   value={formData.porcentajeComisionVendedor}
                   onChange={handleChangeNumber}
+                  min={0.1}
+                  step="any"
+                  required
                 />
               </div>
 
@@ -270,6 +287,9 @@ export function EditaProductoModal({
                   name="porcentajeComisionMayorista"
                   value={formData.porcentajeComisionMayorista}
                   onChange={handleChangeNumber}
+                  min={0.1}
+                  step="any"
+                  required
                 />
               </div>
 

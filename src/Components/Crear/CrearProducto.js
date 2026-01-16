@@ -172,6 +172,8 @@ export const CrearProducto = () => {
                 type="text"
                 name="precio"
                 required
+                min={1}
+                step="any"
               />
             </div>
 
@@ -184,6 +186,8 @@ export const CrearProducto = () => {
                 type="text"
                 name="precioMayorista"
                 required
+                min={1}
+                step="any"
               />
             </div>
 
@@ -196,6 +200,8 @@ export const CrearProducto = () => {
                 type="text"
                 name="precio_compra"
                 required
+                min={1}
+                step="any"
               />
             </div>
 
@@ -220,6 +226,7 @@ export const CrearProducto = () => {
                 type="text"
                 name="porcentaje_comision_Vendedor"
                 required
+                min={0.1}
               />
             </div>
 
@@ -232,6 +239,7 @@ export const CrearProducto = () => {
                 type="text"
                 name="porcentaje_comision_Mayorista"
                 required
+                min={0.1}
               />
             </div>
 
