@@ -71,7 +71,7 @@ export const CrearCliente = () => {
     formData.append("imagen", file); 
 
     try {
-      const response = await fetch(`${apiRest}/cliente/${clienteId}/imagen/${tipo}`, ,
+      const response = await fetch(`${apiRest}/cliente/${clienteId}/imagen/${tipo}`, 
         {
           method: 'POST',
           body: formData,
