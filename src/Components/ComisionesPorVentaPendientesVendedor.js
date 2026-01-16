@@ -84,7 +84,14 @@ export const ComisionesPorVentaPendientesVendedor = () => {
     try {
       // Probar diferentes endpoints para comisiones por ventas
       let url = `${apiRest}/ventas/comisiones/get-comisiones-pendientes/${vededorId}`;
-      let response = await fetch(url);
+      let response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
+      });
       
       if (response.ok) {
         const comisionesVentas = await response.json();
