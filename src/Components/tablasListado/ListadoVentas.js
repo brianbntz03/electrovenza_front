@@ -33,7 +33,7 @@ export function ComponentListadoVentas() {
   
   const fetchVentas = async () => {
     try {
-      const response = await fetch(`${apiRest}/ventas/last-ten`, {
+      const response = await fetch(`${apiRest}/ventas`, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -46,7 +46,7 @@ export function ComponentListadoVentas() {
       }
 
       const data = await response.json();
-      console.log('URL del servidor:', `${apiRest}/ventas/last-ten`); // Ver qué servidor está usando
+      console.log('URL del servidor:', `${apiRest}/ventas`); // Ver qué servidor está usando
       console.log('Datos de ventas:', data); // Para debuggear
       console.log('Primera venta:', data[0] || data[Object.keys(data)[0]]?.[0]); // Ver estructura
       // Si los datos vienen agrupados por vendedor, los aplanamos

@@ -99,7 +99,7 @@ export const ArticuloPresupuesto = () => {
 
       console.log("Datos de venta a enviar:", ventaData);
 
-      const response = await fetch(`${apiRest}/ventas`, {
+      const response = await fetch(`${apiRest}/ventas/venta-al-contado`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
