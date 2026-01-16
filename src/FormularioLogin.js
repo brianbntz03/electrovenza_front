@@ -27,12 +27,13 @@ export function FormularioLogin({ onLoginSuccess }) {
     try {
      
       const response = await fetch(`${apiRest}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+          method: 'POST',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        });
 
       const data = await response.json();
 

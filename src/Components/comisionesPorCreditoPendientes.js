@@ -32,7 +32,9 @@ export const ComisionesPorCreditoPendientes = () => {
       const response = await fetch(`${apiRest}/credito/comisiones/marcar-comisiones-como-pagadas/`, {
         method: "POST",
         headers: {
+          Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
         body: JSON.stringify({ vendedor_id: Number(idVendedor) }),
       });
@@ -83,7 +85,14 @@ export const ComisionesPorCreditoPendientes = () => {
   const ComisionesPorVendedor = async(vededorId) =>{
     setIdVendedor(Number(vededorId));
     try {
-      const response = await fetch(`${apiRest}/credito/comisiones/get-comisiones-pendientes/${vededorId}`);
+      const response = await fetch(`${apiRest}/credito/comisiones/get-comisiones-pendientes/${vededorId}`, {
+          method: 'GET',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        });
       if (response.ok) {
         const data = await response.json();
         setTotalComisiones(0);
@@ -102,7 +111,14 @@ export const ComisionesPorCreditoPendientes = () => {
 
   const cargarVendedores = async () => {
     try {
-      const response = await fetch(`${apiRest}/vendedor`);
+      const response = await fetch(`${apiRest}/vendedor`, {
+          method: 'GET',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        });
       if (response.ok) {
         const data = await response.json();
         setVendedoresFiltrados(data);

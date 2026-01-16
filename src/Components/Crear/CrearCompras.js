@@ -22,13 +22,15 @@ export const CrearCompras = () => {
 
   const fetchProveedores = async () => {
     try {
-      const response = await fetch(`${apiRest}/proveedor`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(`${apiRest}/proveedor`, ,
+        {
+          method: 'GET',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        });
       const data = await response.json();
       setProveedores(data);
     } catch (error) {
@@ -89,6 +91,9 @@ export const CrearCompras = () => {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+
+          
         },
         body: JSON.stringify(compraData),
       });

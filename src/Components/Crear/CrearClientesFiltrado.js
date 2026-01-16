@@ -73,7 +73,15 @@ export const CrearClienteFiltrado = () => {
     if (role === "admin") {
       const obtenerVendedores = async () => {
         try {
-          const response = await fetch(`${apiRest}/vendedor`);
+          const response = await fetch(`${apiRest}/vendedor`,
+        {
+          method: 'GET',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        });
           const data = await response.json();
           setListaVendedores(data);
         } catch (error) {
@@ -177,7 +185,9 @@ const handleSubmit = async (e) => {
         const response = await fetch(`${apiRest}/cliente`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
             },
             body: JSON.stringify(clienteData),
         });

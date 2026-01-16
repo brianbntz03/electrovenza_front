@@ -59,7 +59,8 @@ export function ListadoSettingBandaPrecios() {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
                 },
             });
 

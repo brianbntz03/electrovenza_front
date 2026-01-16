@@ -60,6 +60,7 @@ export function ListadoProducto() {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
       });
 

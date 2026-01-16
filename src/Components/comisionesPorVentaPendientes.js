@@ -30,7 +30,13 @@ export const ComisionesPorVentaPendientes = () => {
 
   const updateCuentaCorriente = async (vededorId) => {
       try {
-      const response = await fetch(`${apiRest}/cuenta-corriente/get-by-vendedor/${vededorId}`);
+      const response = await fetch(`${apiRest}/cuenta-corriente/get-by-vendedor/${vededorId}`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        }});
       if (response.ok) {
         const { saldo } = await response.json();
         setSaldoCuentaCorriente(saldo);
@@ -50,6 +56,7 @@ export const ComisionesPorVentaPendientes = () => {
       const responseVentas = await fetch(`${apiRest}/ventas/comisiones/marcar-comisiones-como-pagadas/`, {
         method: "POST",
         headers: {
+          Accept: "application/json",
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
@@ -257,7 +264,15 @@ export const ComisionesPorVentaPendientes = () => {
 
   const cargarVendedores = async () => {
     try {
-      const response = await fetch(`${apiRest}/vendedor`);
+      const response = await fetch(`${apiRest}/vendedor`,
+        {
+          method: 'GET',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        });
       if (response.ok) {
         const { data } = await response.json();
         setVendedoresFiltrados(data);

@@ -48,7 +48,9 @@ export function EditarBandaPreciosModal({
       const response = await fetch(`${apiRest}/setting-escala-precios/${banda.id}`, {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json",
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
         body: JSON.stringify(formData),
       });

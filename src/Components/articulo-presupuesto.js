@@ -393,7 +393,8 @@ export const ArticuloPresupuesto = () => {
         options.body = JSON.stringify({ patron: busqueda });
       }
 
-      const response = await fetch(url, options);
+      const response = await fetch(url, options)
+      ;
 
       if (!response.ok)
         throw new Error(`Error en la solicitud: ${response.status}`);

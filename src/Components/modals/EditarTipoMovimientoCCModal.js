@@ -11,11 +11,14 @@ const EditarTipoMovimientoCCModal = ({ item, onClose, onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${apiRest}/tipo-movimiento/${item.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const response = await fetch(`${apiRest}/tipo-movimiento/${item.id}`, ,
+        {
+          method: 'GET',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
         body: JSON.stringify(formData)
       });
       

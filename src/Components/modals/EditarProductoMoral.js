@@ -43,7 +43,14 @@ export function EditaProductoModal({
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await fetch(`${apiRest}/categoria`);
+        const response = await fetch(`${apiRest}/categoria`, {
+          method: 'GET',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        });
         if (!response.ok) {
           throw new Error("No se pudo obtener informacion del producto");
         }
@@ -85,8 +92,13 @@ export function EditaProductoModal({
       const formData = new FormData();
       formData.append('imagen', imagen);
       
-      const response = await fetch(`${apiRest}/articulos/${producto.id}/imagen`, {
-        method: "POST",
+      const response = await fetch(`${apiRest}/articulos/${producto.id}/imagen`,{
+          method: 'GET',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
         body: formData,
       });
       
@@ -106,8 +118,10 @@ export function EditaProductoModal({
       const response = await fetch(`${apiRest}/articulos/${producto.id}`, {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json",
-        },
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
         body: JSON.stringify(toSnakeCase(formData)),
       });
 
