@@ -99,6 +99,11 @@ export const CrearProducto = () => {
         await fetch(`${apiRest}/articulos/${data.id}/imagen`, {
           method: "POST",
           body: formData,
+           headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
         });
       }
       

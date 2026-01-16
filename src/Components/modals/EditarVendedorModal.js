@@ -44,7 +44,9 @@ export const EditarVendedorModal = ({
       const response = await fetch(`${apiRest}/vendedor/${vendedor.id}`, {
         method: "PATCH",
         headers: {
+          Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
         body: JSON.stringify(formData),
       });

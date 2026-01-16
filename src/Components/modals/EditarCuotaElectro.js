@@ -43,11 +43,14 @@ export function EditarCuotaElectro({ cuotaElectro, onClose, onCuotaActualizada }
 
       console.log("Enviando datos para actualizar cuota:", dataToSend);
 
-      const response = await fetch(`${apiRest}/settings/cuotas/${cuotaElectro.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response = await fetch(`${apiRest}/settings/cuotas/${cuotaElectro.id}`, ,
+        {
+          method: 'PATCH',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
         body: JSON.stringify(dataToSend), // Use the new object here
       });
 

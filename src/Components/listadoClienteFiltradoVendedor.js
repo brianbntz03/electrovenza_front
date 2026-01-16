@@ -226,7 +226,9 @@ export function ListadoClientesFiltradoVendedor({
         const response = await fetch(`${apiRest}/cliente/ordenar`, {
           method: "POST",
           headers: {
+            Accept: "application/json",
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
           },
           body: JSON.stringify(payload),
         });

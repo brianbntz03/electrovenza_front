@@ -544,7 +544,14 @@ export const ArticuloPresupuestoContado = () => {
 
   const cargarCuotas = async () => {
     try {
-      const response = await fetch(`${apiRest}/settings/cuotas`);
+      const response = await fetch(`${apiRest}/settings/cuotas`, {
+          method: 'GET',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        });
       if (response.ok) {
         const data = await response.json();
         setCuotasFiltrados(data);
@@ -556,7 +563,14 @@ export const ArticuloPresupuestoContado = () => {
 
   const buscarCuotaContado = async () => {
     try {
-      const response = await fetch(`${apiRest}/settings/cuotas`);
+      const response = await fetch(`${apiRest}/settings/cuotas`, {
+          method: 'GET',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        });
       if (response.ok) {
         const data = await response.json();
         // Buscar cuota de contado con criterios múltiples
