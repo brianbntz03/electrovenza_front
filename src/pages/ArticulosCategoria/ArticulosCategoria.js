@@ -4,6 +4,7 @@ import { getArticulosActivosByCategoria } from '../../service/articulosService';
 import { isWholesaleSeller } from '../../constants/roles';
 import ArticuloCard from './components/ArticuloCard';
 import './ArticulosCategoria.css';
+import { CATALOGO_MAYORISTA } from '../../constants/catalogo';
 
 /**
  * ArticulosCategoria page component
@@ -16,8 +17,9 @@ export default function ArticulosCategoria() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const userRole = localStorage.getItem('user_role');
-  const showWholesalePrice = isWholesaleSeller(userRole);
+  //const userRole = localStorage.getItem('user_role');
+  //const mostrarPrecioMayorista = isWholesaleSeller(userRole);
+  const mostrarPrecio = CATALOGO_MAYORISTA; // SOLO SI LA opcion={CATALOGO_MAYORISTA}
 
   const fetchArticulos = useCallback(async () => {
     setIsLoading(true);
@@ -105,7 +107,7 @@ export default function ArticulosCategoria() {
           <ArticuloCard
             key={articulo.id}
             articulo={articulo}
-            showWholesalePrice={showWholesalePrice}
+            mostrarPrecio={mostrarPrecio}
           />
         ))}
       </div>

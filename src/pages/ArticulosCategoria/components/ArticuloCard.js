@@ -43,14 +43,14 @@ const getStockIndicator = (stock) => {
  * ArticuloCard component displays a single product as a card
  * @param {Object} props
  * @param {Object} props.articulo - Product data object
- * @param {boolean} props.showWholesalePrice - Whether to show wholesale price
+ * @param {Number} props.mostrarPrecio - Whether to show wholesale price
  */
-export default function ArticuloCard({ articulo, showWholesalePrice }) {
+export default function ArticuloCard({ articulo, mostrarPrecio }) {
   const imageUrl = articulo.imagen
     ? `${apiRest}/articulos/${articulo.id}/imagen`
     : '/placeholder-articulo.png';
 
-  const precio = showWholesalePrice
+  const precio = mostrarPrecio
     ? articulo.precio_mayorista
     : articulo.precio;
 
@@ -75,7 +75,7 @@ export default function ArticuloCard({ articulo, showWholesalePrice }) {
         </p>
         <div className="articulo-precio-container">
           <p className="articulo-precio">{formatPrecio(precio)}</p>
-          {showWholesalePrice && (
+          {mostrarPrecio && (
             <span className="precio-label">Precio Mayorista</span>
           )}
         </div>

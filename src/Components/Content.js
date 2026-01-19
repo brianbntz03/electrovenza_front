@@ -54,6 +54,7 @@ import { ROLES } from "../constants/roles";
 import PageComisionesPorVentaPendientesVendedor from "../pages/PageComisionesPorVentaPendientesVendedor";
 import CatalogoCategorias from "../pages/CatalogoCategorias/CatalogoCategorias";
 import ArticulosCategoria from "../pages/ArticulosCategoria/ArticulosCategoria";
+import { CATALOGO_MAYORISTA, CATALOGO_MINORISTA, CATALOGO_VENDEDOR_MAYORISTA } from "../constants/catalogo";
 
 export default function Content() {
   return (
@@ -175,7 +176,9 @@ export default function Content() {
                 />
 
                 {/* Catalog Routes - Categories and Articles */}
-                <Route path="/catalogo-categorias" element={<CatalogoCategorias />} />
+                <Route path="/catalogo-categorias" element={<CatalogoCategorias opcion={CATALOGO_MAYORISTA} />} /> 
+                <Route path="/catalogo-categorias" element={<CatalogoCategorias opcion={CATALOGO_MINORISTA} />} /> 
+                <Route path="/catalogo-categorias" element={<CatalogoCategorias opcion={CATALOGO_VENDEDOR_MAYORISTA} />} /> 
                 <Route path="/categoria/:categoriaId/articulos" element={<ArticulosCategoria />} />
 
                 {/* Unauthorized access page */}
