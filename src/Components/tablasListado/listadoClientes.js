@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
 import { EditarClienteModal } from "../modals/EditarClienteModal";
+import FlashMessageConfirm from "../tiny/ConfirmMessage";
 
 const PLACEHOLDER_URL =
   "https://placehold.co/100x100/eeeeee/333333?text=Sin+Foto";
@@ -40,6 +41,11 @@ export function ListadoClientes() {
   };
 
   const handleEliminar = async (id) => {
+    const response = await FlashMessageConfirm("Desea eliminar este cliente?", "Desea eliminar este cliente? Esta acción no se puede deshacer.");
+        if(!response){
+          return ; 
+        }
+
     try {
       await fetch(`${apiRest}/cliente/${id}`, {
         method: "DELETE",

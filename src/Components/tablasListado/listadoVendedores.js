@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { apiRest } from "../../service/apiRest";
 import { EditarVendedorModal } from "../modals/EditarVendedorModal";
 import { TipoVendedor } from "../../constants/tipoVendedor";
+import FlashMessageConfirm from "../tiny/ConfirmMessage";
 
 
 export function ListadoVendedores() {
@@ -38,6 +39,12 @@ export function ListadoVendedores() {
   };
 
   const handleEliminar = async (id) => {
+
+    const response = await FlashMessageConfirm("Desea eliminar este vendedor?", "Desea eliminar este vendedor? Esta acción no se puede deshacer.");
+    if(!response){
+      return ; 
+    }
+
     try {
       await fetch(`${apiRest}/vendedor/${id}`, {
         method: "DELETE",
