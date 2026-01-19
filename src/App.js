@@ -5,8 +5,20 @@ import Header from "./Components/Header";
 import Content from "./Components/Content";
 import Footer from "./Components/Footer";
 import Aside from "./Components/Aside";
+import { useLocation } from "react-router-dom";
 
 export default function App() {
+  const location = useLocation();
+
+   const hideLayoutRoutes = [
+    "/catalogo-categorias",
+    "/categoria/"
+   ];
+
+  const hideLayout = hideLayoutRoutes.some(route => 
+  location.pathname.startsWith(route)
+  );
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
@@ -68,18 +80,22 @@ export default function App() {
     }
   }, [isAuthenticated]);
 
-  return (
-    <div>
-      {isAuthenticated ? (
+return (
+  <div>
+    {isAuthenticated ? (
+      hideLayout ? (
+        <Content />
+      ) : (
         <>
           <Header onLogout={handleLogout} />
-          <Aside  />
+          <Aside />
           <Content />
           <Footer />
         </>
-      ) : (
-        <FormularioLogin onLoginSuccess={handleLoginSuccess} />
-      )}
-    </div>
-  );
+      )
+    ) : (
+      <FormularioLogin onLoginSuccess={handleLoginSuccess} />
+    )}
+  </div>
+);
 }

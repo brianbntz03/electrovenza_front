@@ -50,8 +50,9 @@ export default function ArticuloCard({ articulo, mostrarPrecio }) {
     ? `${apiRest}/articulos/${articulo.id}/imagen`
     : '/placeholder-articulo.png';
 
-  const precio = mostrarPrecio
-    ? articulo.precio_mayorista
+
+  const precio = showWholesalePrice
+    ? articulo.precio_mayorista * 1.20
     : articulo.precio;
 
   const stockInfo = getStockIndicator(articulo.stock);

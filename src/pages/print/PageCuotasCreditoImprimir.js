@@ -8,9 +8,9 @@ import "../../pages/print/cuotas_imprimir.css";
 export default function PrintCuotasCredito() {
   const { credito_id } = useParams();
   const [cuotas, setCuotas] = useState([]);
-  const [cliente, setCliente] = useState([""]);
-  const [vendedor, setVendedor] = useState([""]);
-  const [montoOtorgado, setMontoOtorgado] = useState([0]);
+  const [cliente, setCliente] = useState("");
+  const [vendedor, setVendedor] = useState("");
+  const [montoOtorgado, setMontoOtorgado] = useState(0);
 
   const fetchCuotas = async () => {
     const response = await fetch(`${apiRest}/credito/cuotas/${credito_id}`, {
@@ -23,7 +23,7 @@ export default function PrintCuotasCredito() {
     });
 
     const data = await response.json();
-    setCuotas(data);
+    setCuotas(Array.isArray(data) ? data : []);
   };
 
   const fetchCredito = async () => {
@@ -37,9 +37,9 @@ export default function PrintCuotasCredito() {
 
     const data = await response.json();
     console.log(data);
-    setCliente(data.cliente.nombre);
-    setVendedor(data.vendedor.nombre);
-    setMontoOtorgado(data.monto);
+    setCliente(data?.cliente?.nombre || "");
+    setVendedor(data?.vendedor?.nombre || "");
+    setMontoOtorgado(data?.monto || 0);
   };
 
   useEffect(() => {
@@ -79,8 +79,8 @@ export default function PrintCuotasCredito() {
         
         <div>&nbsp;</div>
         <div className="row cuotas">
-          {cuotas.map((cuota) => (
-            <div className="col-md-3">
+          {cuotas.map((cuota, index) => (
+            <div key={index} className="col-md-3">
               <p>
                 ({cuota.numero.toString().padStart(2, "0")}){" "}
                 {convertIsoToDMY(cuota.fecha)} &nbsp;

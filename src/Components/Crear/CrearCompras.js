@@ -91,7 +91,7 @@ export const CrearCompras = () => {
       }
 
       await response.json();
-      FlashMessage("", "Compra creada exitosamente", 2000, "success", `${publicUrl}/compra`);
+      FlashMessage("", "Compra creada exitosamente", 2000, "success", "compras-listado");
       setLoading(false);
     } catch (error) {
       console.error("Error detallado:", error);
@@ -208,6 +208,8 @@ export const CrearCompras = () => {
           <button
             type="submit"
             className="btn btn-primary"
+            data-toggle="modal"
+            data-target="#exampleModal"
             disabled={loading}
           >
             {loading ? "Creando..." : "Crear Compra"}

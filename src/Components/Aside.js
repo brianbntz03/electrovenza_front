@@ -286,6 +286,13 @@ export default function   Aside() {
         </NavLink>
       </li>
 
+      <li className="nav-item">
+            <NavLink to="/ventas-listado" className="nav-link" onClick={closeMobileSidebar}>
+              <i className="nav-icon fas fa-list-alt" />
+              <p>LISTADO VENTAS MAYORISTA </p>
+            </NavLink>
+       </li>
+
       {/* Clientes Mayorista */}
       <li className="nav-item">
         <NavLink
