@@ -176,9 +176,9 @@ export default function Content() {
                 />
 
                 {/* Catalog Routes - Categories and Articles */}
-                <Route path="/catalogo-categorias" element={<CatalogoCategorias opcion={CATALOGO_MAYORISTA} />} /> 
-                <Route path="/catalogo-categorias" element={<CatalogoCategorias opcion={CATALOGO_MINORISTA} />} /> 
-                <Route path="/catalogo-categorias" element={<CatalogoCategorias opcion={CATALOGO_VENDEDOR_MAYORISTA} />} /> 
+                <Route path="/catalogo-mayorista" element={<CatalogoCategorias opcion={CATALOGO_MAYORISTA} />} /> 
+                <Route path="/catalogo-minorista" element={<CatalogoCategorias opcion={CATALOGO_MINORISTA} />} /> 
+                <Route path="/catalogo-vendedor-mayorista" element={<CatalogoCategorias opcion={CATALOGO_VENDEDOR_MAYORISTA} />} /> 
                 <Route path="/categoria/:categoriaId/articulos" element={<ArticulosCategoria />} />
 
                 {/* Unauthorized access page */}
