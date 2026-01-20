@@ -1,5 +1,6 @@
 import React from 'react';
 import { apiRest } from '../../../service/apiRest';
+import { CATALOGO_MAYORISTA, CATALOGO_MINORISTA, CATALOGO_VENDEDOR_MAYORISTA } from '../../../constants/catalogo';
 import './ArticuloCard.css';
 
 /**
@@ -43,18 +44,36 @@ const getStockIndicator = (stock) => {
  * ArticuloCard component displays a single product as a card
  * @param {Object} props
  * @param {Object} props.articulo - Product data object
- * @param {Number} props.mostrarPrecio - Whether to show wholesale price
+ * @param {Boolean} props.mostrarPrecio - Whether to show wholesale price (deprecated)
+ * @param {String} props.tipoCatalogo - Type of catalog (MAYORISTA, MINORISTA, VENDEDOR_MAYORISTA)
  */
-export default function ArticuloCard({ articulo, mostrarPrecio }) {
+export default function ArticuloCard({ articulo, mostrarPrecio, tipoCatalogo }) {
   const imageUrl = articulo.imagen
     ? `${apiRest}/articulos/${articulo.id}/imagen`
     : '/placeholder-articulo.png';
 
+  const getPrecioYLabel = () => {
+    switch (tipoCatalogo) {
+      case CATALOGO_MAYORISTA:
+        return {
+          precio: articulo.precio_mayorista || articulo.precio,
+          label: 'Precio Mayorista'
+        };
+      case CATALOGO_VENDEDOR_MAYORISTA:
+        return {
+          precio: (articulo.precio_mayorista || articulo.precio) * 1.20,
+          label: 'Precio Vendedor Mayorista'
+        };
+      case CATALOGO_MINORISTA:
+      default:
+        return {
+          precio: articulo.precio,
+          label: 'Precio Minorista'
+        };
+    }
+  };
 
-  const precio = showWholesalePrice
-    ? articulo.precio_mayorista * 1.20
-    : articulo.precio;
-
+  const { precio, label } = getPrecioYLabel();
   const stockInfo = getStockIndicator(articulo.stock);
 
   return (
@@ -76,9 +95,7 @@ export default function ArticuloCard({ articulo, mostrarPrecio }) {
         </p>
         <div className="articulo-precio-container">
           <p className="articulo-precio">{formatPrecio(precio)}</p>
-          {mostrarPrecio && (
-            <span className="precio-label">Precio Mayorista</span>
-          )}
+          <span className="precio-label">{label}</span>
         </div>
       </div>
     </div>

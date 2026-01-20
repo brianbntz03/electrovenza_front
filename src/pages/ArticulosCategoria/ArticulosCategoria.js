@@ -1,39 +1,74 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { getArticulosActivosByCategoria } from '../../service/articulosService';
-import { isWholesaleSeller } from '../../constants/roles';
 import ArticuloCard from './components/ArticuloCard';
 import './ArticulosCategoria.css';
-import { CATALOGO_MAYORISTA } from '../../constants/catalogo';
+import { CATALOGO_MAYORISTA, CATALOGO_MINORISTA, CATALOGO_VENDEDOR_MAYORISTA } from '../../constants/catalogo';
 
 /**
  * ArticulosCategoria page component
  * Displays all active articles from a specific category as cards in a responsive grid
  */
-export default function ArticulosCategoria() {
+export default function ArticulosCategoria({ tipoCatalogo }) {
   const { categoriaId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();  
   const [articulos, setArticulos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  //const userRole = localStorage.getItem('user_role');
-  //const mostrarPrecioMayorista = isWholesaleSeller(userRole);
-  const mostrarPrecio = CATALOGO_MAYORISTA; // SOLO SI LA opcion={CATALOGO_MAYORISTA}
+  // Determinar el tipo de catálogo desde la URL si no se pasa como prop
+  const getTipoCatalogoFromUrl = () => {
+    return CATALOGO_MINORISTA; // default
+  };
+ 
+  const catalogoActual = tipoCatalogo || getTipoCatalogoFromUrl();  
+  const mostrarPrecio = catalogoActual === CATALOGO_MAYORISTA;
+
+  const getCatalogoTitle = () => {
+    switch (catalogoActual) {
+      case CATALOGO_MAYORISTA:
+        return 'Catálogo Mayorista';
+      case CATALOGO_MINORISTA:
+        return 'Catálogo Minorista';
+      case CATALOGO_VENDEDOR_MAYORISTA:
+        return 'Catálogo Vendedor Mayorista';
+      default:
+        return 'Catálogo';
+    }
+  };
 
   const fetchArticulos = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
       const data = await getArticulosActivosByCategoria(categoriaId);
-      setArticulos(data);
+      setArticulos(Array.isArray(data) ? data : []);
     } catch (err) {
-      setError(err.message || 'Error al cargar los artículos');
       console.error('Error fetching articles:', err);
+      setError(err.message || 'Error al cargar los artículos');
     } finally {
       setIsLoading(false);
     }
   }, [categoriaId]);
+
+  useEffect(() => {
+    // Ocultar el menú lateral
+    document.body.classList.add('sidebar-mini', 'sidebar-collapse');
+    const sidebar = document.querySelector('.main-sidebar');
+    if (sidebar) {
+      sidebar.style.display = 'none';
+    }
+    
+    // Limpiar al desmontar el componente
+    return () => {
+      document.body.classList.remove('sidebar-mini', 'sidebar-collapse');
+      const sidebar = document.querySelector('.main-sidebar');
+      if (sidebar) {
+        sidebar.style.display = '';
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (categoriaId) {
@@ -42,7 +77,7 @@ export default function ArticulosCategoria() {
   }, [categoriaId, fetchArticulos]);
 
   const handleBackClick = () => {
-    navigate('/catalogo-categorias');
+    navigate(-1);
   };
 
   if (isLoading) {
@@ -96,7 +131,7 @@ export default function ArticulosCategoria() {
           <i className="fas fa-arrow-left"></i> Volver a Categorías
         </button>
         <div className="header-info">
-          <h2>Artículos de la Categoría</h2>
+          <h2>{getCatalogoTitle()} - Artículos de la Categoría</h2>
           <p className="articulos-count">
             {articulos.length} {articulos.length === 1 ? 'artículo encontrado' : 'artículos encontrados'}
           </p>
@@ -108,6 +143,7 @@ export default function ArticulosCategoria() {
             key={articulo.id}
             articulo={articulo}
             mostrarPrecio={mostrarPrecio}
+            tipoCatalogo={catalogoActual}
           />
         ))}
       </div>

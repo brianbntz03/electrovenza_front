@@ -1,18 +1,65 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getCategoriasActivas } from '../../service/categoriasService';
 import CategoryCard from './components/CategoryCard';
 import './CatalogoCategorias.css';
+import { CATALOGO_MAYORISTA, CATALOGO_MINORISTA, CATALOGO_VENDEDOR_MAYORISTA } from '../../constants/catalogo';
 
 /**
  * CatalogoCategorias page component
  * Displays all active categories as clickable cards in a responsive grid
  */
-export default function CatalogoCategorias() {
+export default function CatalogoCategorias({ opcion }) {
   const [categorias, setCategorias] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const getCatalogoFromUrl = () => {
+    const path = location.pathname;
+
+    if (path.includes('catalogo-vendedor-mayorista')) {
+      return CATALOGO_VENDEDOR_MAYORISTA;
+    }
+    if (path.includes('catalogo-mayorista')) {
+      return CATALOGO_MAYORISTA;
+    }
+    if (path.includes('catalogo-minorista')) {
+      return CATALOGO_MINORISTA;
+    }
+
+    return CATALOGO_MINORISTA; // fallback seguro
+  };
+
+  const catalogoActual = getCatalogoFromUrl();
+  
+  const getCatalogoPath = () => {
+    switch (catalogoActual) {
+      case CATALOGO_MAYORISTA:
+        return '/catalogo-mayorista';
+      case CATALOGO_MINORISTA:
+        return '/catalogo-minorista';
+      case CATALOGO_VENDEDOR_MAYORISTA:
+        return '/catalogo-vendedor-mayorista';
+      default:
+        return '/catalogo-minorista';
+    }
+  };
+
+
+  const getCatalogoTitle = () => {
+    switch (catalogoActual) {
+      case CATALOGO_MAYORISTA:
+        return 'Catálogo Mayorista';
+      case CATALOGO_MINORISTA:
+        return 'Catálogo Minorista';
+      case CATALOGO_VENDEDOR_MAYORISTA:
+        return 'Catálogo Vendedor Mayorista';
+      default:
+        return 'Catálogo de Productos';
+    }
+  };
 
   const fetchCategorias = async () => {
     setIsLoading(true);
@@ -29,15 +76,34 @@ export default function CatalogoCategorias() {
   };
 
   useEffect(() => {
+    // Ocultar el menú lateral
+    document.body.classList.add('sidebar-mini', 'sidebar-collapse');
+    const sidebar = document.querySelector('.main-sidebar');
+    if (sidebar) {
+      sidebar.style.display = 'none';
+    }
+    
+    // Limpiar al desmontar el componente
+    return () => {
+      document.body.classList.remove('sidebar-mini', 'sidebar-collapse');
+      const sidebar = document.querySelector('.main-sidebar');
+      if (sidebar) {
+        sidebar.style.display = '';
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     fetchCategorias();
   }, []);
 
   const handleCategoryClick = (categoriaId) => {
-    navigate(`/categoria/${categoriaId}/articulos`);
+    const basePath = getCatalogoPath();
+    navigate(`${basePath}/categoria/${categoriaId}/articulos`);
   };
 
   if (isLoading) {
-    return (
+  return (
       <div className="catalogo-categorias">
         <div className="catalogo-loading">
           <div className="spinner"></div>
@@ -75,7 +141,7 @@ export default function CatalogoCategorias() {
   return (
     <div className="catalogo-categorias">
       <div className="catalogo-header">
-        <h2>Categorías de Productos</h2>
+        <h2>{getCatalogoTitle()}</h2>
         <p className="catalogo-subtitle">
           Seleccione una categoría para ver los artículos disponibles
         </p>

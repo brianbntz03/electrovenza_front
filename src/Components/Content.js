@@ -179,7 +179,9 @@ export default function Content() {
                 <Route path="/catalogo-mayorista" element={<CatalogoCategorias opcion={CATALOGO_MAYORISTA} />} /> 
                 <Route path="/catalogo-minorista" element={<CatalogoCategorias opcion={CATALOGO_MINORISTA} />} /> 
                 <Route path="/catalogo-vendedor-mayorista" element={<CatalogoCategorias opcion={CATALOGO_VENDEDOR_MAYORISTA} />} /> 
-                <Route path="/categoria/:categoriaId/articulos" element={<ArticulosCategoria />} />
+                <Route path="/catalogo-mayorista/categoria/:categoriaId/articulos" element={<ArticulosCategoria tipoCatalogo={CATALOGO_MAYORISTA} />} />
+                <Route path="/catalogo-minorista/categoria/:categoriaId/articulos" element={<ArticulosCategoria tipoCatalogo={CATALOGO_MINORISTA} />} />
+                <Route path="/catalogo-vendedor-mayorista/categoria/:categoriaId/articulos" element={<ArticulosCategoria tipoCatalogo={CATALOGO_VENDEDOR_MAYORISTA} />} />
 
                 {/* Unauthorized access page */}
                 <Route path="/unauthorized" Component={UnauthorizedPage}></Route>
