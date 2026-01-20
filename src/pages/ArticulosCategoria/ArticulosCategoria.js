@@ -120,7 +120,7 @@ export default function ArticulosCategoria({ tipoCatalogo }) {
           <i className="fas fa-arrow-left"></i> Volver a Categorías
         </button>
         <div className="header-info">
-          <h2>Artículos de la Categoría</h2>
+          <label>catalogo del revendedor</label>
           <p className="articulos-count">
             {articulos.length} {articulos.length === 1 ? 'artículo encontrado' : 'artículos encontrados'}
           </p>
