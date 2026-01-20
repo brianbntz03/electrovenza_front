@@ -25,18 +25,7 @@ export default function ArticulosCategoria({ tipoCatalogo }) {
   const catalogoActual = tipoCatalogo || getTipoCatalogoFromUrl();  
   const mostrarPrecio = catalogoActual === CATALOGO_MAYORISTA;
 
-  const getCatalogoTitle = () => {
-    switch (catalogoActual) {
-      case CATALOGO_MAYORISTA:
-        return 'Catálogo Mayorista';
-      case CATALOGO_MINORISTA:
-        return 'Catálogo Minorista';
-      case CATALOGO_VENDEDOR_MAYORISTA:
-        return 'Catálogo Vendedor Mayorista';
-      default:
-        return 'Catálogo';
-    }
-  };
+ 
 
   const fetchArticulos = useCallback(async () => {
     setIsLoading(true);
@@ -131,7 +120,7 @@ export default function ArticulosCategoria({ tipoCatalogo }) {
           <i className="fas fa-arrow-left"></i> Volver a Categorías
         </button>
         <div className="header-info">
-          <h2>{getCatalogoTitle()} - Artículos de la Categoría</h2>
+          <h2>Artículos de la Categoría</h2>
           <p className="articulos-count">
             {articulos.length} {articulos.length === 1 ? 'artículo encontrado' : 'artículos encontrados'}
           </p>
