@@ -29,6 +29,12 @@ export const getCategorias = async () => {
  * @returns {Promise<Array>} List of active categories
  */
 export const getCategoriasActivas = async () => {
-  const categorias = await getCategorias();
+  const response = await fetch(`${apiRest}/categoria`);
+
+  if (!response.ok) {
+    throw new Error('Error al obtener categorías');
+  }
+
+  const categorias = await response.json();
   return categorias.filter(cat => cat.activo === true);
 };

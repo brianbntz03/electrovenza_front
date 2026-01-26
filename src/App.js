@@ -11,15 +11,17 @@ export default function App() {
   const location = useLocation();
 
    const hideLayoutRoutes = [
-    "/catalogo-categorias",
-    "/categoria/"
+    "/catalogo-mayorista",
+    "/catalogo-minorista",
+    "/catalogo-vendedor-mayorista"
    ];
 
   const hideLayout = hideLayoutRoutes.some(route => 
-  location.pathname.startsWith(route)
+    location.pathname.startsWith(route)
   );
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
   const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
 
@@ -45,6 +47,8 @@ export default function App() {
       setIsAuthenticated(true);
       setUserRole(role);
     }
+
+    setCheckingAuth(false);
   }, []);
 
   useEffect(() => {
@@ -80,19 +84,21 @@ export default function App() {
     }
   }, [isAuthenticated]);
 
+  if (checkingAuth) {
+    return <div>Cargando...</div>
+  }
+
 return (
   <div>
-    {isAuthenticated ? (
-      hideLayout ? (
+    {hideLayout ? (
+      <Content />
+    ) : isAuthenticated ? (
+      <>
+        <Header onLogout={handleLogout} />
+        <Aside />
         <Content />
-      ) : (
-        <>
-          <Header onLogout={handleLogout} />
-          <Aside />
-          <Content />
-          <Footer />
-        </>
-      )
+        <Footer />
+      </>
     ) : (
       <FormularioLogin onLoginSuccess={handleLoginSuccess} />
     )}

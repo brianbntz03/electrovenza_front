@@ -6,114 +6,116 @@ const Dashboard = () => {
           <div className="card-header border-0">
             
 
-            <div class="row">
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-info">
-              <div class="inner">
+            <div className="row">
+          <div className="col-lg-3 col-6">
+            <div className="small-box bg-info">
+              <div className="inner">
                 <h3>150</h3>
 
                 <p>Ventas de esta semana</p>
               </div>
-              <div class="icon">
-                <i class="ion ion-bag"></i>
+              <div className="icon">
+                <i className="ion ion-bag"></i>
               </div>
-              <a href="#" class="small-box-footer">M&aacute;s info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" className="small-box-footer">M&aacute;s info <i className="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-success">
-              <div class="inner">
+          <div className="col-lg-3 col-6">
+            <div className="small-box bg-success">
+              <div className="inner">
                 <h3>53<sup >%</sup></h3>
 
                 <p>Clientes que volvieron a comprar</p>
               </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
+              <div className="icon">
+                <i className="ion ion-stats-bars"></i>
               </div>
-              <a href="#" class="small-box-footer">M&aacute;s info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" className="small-box-footer">M&aacute;s info <i className="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-warning">
-              <div class="inner">
+          <div className="col-lg-3 col-6">
+            <div className="small-box bg-warning">
+              <div className="inner">
                 <h3>44</h3>
 
                 <p>Nuevos Clientes</p>
               </div>
-              <div class="icon">
-                <i class="ion ion-person-add"></i>
+              <div className="icon">
+                <i className="ion ion-person-add"></i>
               </div>
-              <a href="#" class="small-box-footer">M&aacute;s info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" className="small-box-footer">M&aacute;s info <i className="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
-          <div class="col-lg-3 col-6">
-            <div class="small-box bg-danger">
-              <div class="inner">
+          <div className="col-lg-3 col-6">
+            <div className="small-box bg-danger">
+              <div className="inner">
                 <h3>20</h3>
 
                 <p>Clientes retrasados</p>
               </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
+              <div className="icon">
+                <i className="ion ion-pie-graph"></i>
               </div>
-              <a href="#" class="small-box-footer">M&aacute;s info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" className="small-box-footer">M&aacute;s info <i className="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
         </div>
             
-            <div class="row">
-          <div class="col-lg-6">
-            <div class="card">
-              <div class="card-header border-0">
-                <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Online Store Visitors</h3>
+            <div className="row">
+          <div className="col-lg-6">
+            <div className="card">
+              <div className="card-header border-0">
+                <div className="d-flex justify-content-between">
+                  <h3 className="card-title">Online Store Visitors</h3>
                   <a href="#" >View Report</a>
                 </div>
               </div>
-              <div class="card-body">
-                <div class="d-flex">
-                  <p class="d-flex flex-column">
-                    <span class="text-bold text-lg">820</span>
+              <div className="card-body">
+                <div className="d-flex">
+                  <p className="d-flex flex-column">
+                    <span className="text-bold text-lg">820</span>
                     <span>Visitors Over Time</span>
                   </p>
-                  <p class="ml-auto d-flex flex-column text-right">
-                    <span class="text-success">
-                      <i class="fas fa-arrow-up"></i> 12.5%
+                  <p className="ml-auto d-flex flex-column text-right">
+                    <span className="text-success">
+                      <i className="fas fa-arrow-up"></i> 12.5%
                     </span>
-                    <span class="text-muted">Since last week</span>
+                    <span className="text-muted">Since last week</span>
                   </p>
                 </div>
 
-                <div class="position-relative mb-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                  <canvas id="visitors-chart" height="200" width="904"  class="chartjs-render-monitor"></canvas>
+                <div className="position-relative mb-4">
+                  <div className="chart-placeholder" style={{height: '200px', backgroundColor: '#f4f4f4', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                    <span className="text-muted">Gráfico de visitantes</span>
+                  </div>
                 </div>
 
-                <div class="d-flex flex-row justify-content-end">
-                  <span class="mr-2">
-                    <i class="fas fa-square text-primary"></i> This Week
+                <div className="d-flex flex-row justify-content-end">
+                  <span className="mr-2">
+                    <i className="fas fa-square text-primary"></i> This Week
                   </span>
 
                   <span>
-                    <i class="fas fa-square text-gray"></i> Last Week
+                    <i className="fas fa-square text-gray"></i> Last Week
                   </span>
                 </div>
               </div>
             </div>
 
-            <div class="card">
-              <div class="card-header border-0">
-                <h3 class="card-title">Products</h3>
-                <div class="card-tools">
-                  <a href="#" class="btn btn-tool btn-sm">
-                    <i class="fas fa-download"></i>
+            <div className="card">
+              <div className="card-header border-0">
+                <h3 className="card-title">Products</h3>
+                <div className="card-tools">
+                  <a href="#" className="btn btn-tool btn-sm">
+                    <i className="fas fa-download"></i>
                   </a>
-                  <a href="#" class="btn btn-tool btn-sm">
-                    <i class="fas fa-bars"></i>
+                  <a href="#" className="btn btn-tool btn-sm">
+                    <i className="fas fa-bars"></i>
                   </a>
                 </div>
               </div>
-              <div class="card-body table-responsive p-0">
-                <table class="table table-striped table-valign-middle">
+              <div className="card-body table-responsive p-0">
+                <table className="table table-striped table-valign-middle">
                   <thead>
                   <tr>
                     <th>Product</th>
@@ -125,78 +127,78 @@ const Dashboard = () => {
                   <tbody>
                   <tr>
                     <td>
-                      <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2" />
+                      <img src="/img/logo_electrovenza.png" alt="Product 1" className="img-circle img-size-32 mr-2" />
                       Some Product
                     </td>
                     <td>$13 USD</td>
                     <td>
-                      <small class="text-success mr-1">
-                        <i class="fas fa-arrow-up"></i>
+                      <small className="text-success mr-1">
+                        <i className="fas fa-arrow-up"></i>
                         12%
                       </small>
                       12,000 Sold
                     </td>
                     <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
+                      <a href="#" className="text-muted">
+                        <i className="fas fa-search"></i>
                       </a>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2" />
+                      <img src="/img/logo_electrovenza.png" alt="Product 1" className="img-circle img-size-32 mr-2" />
                       Another Product
                     </td>
                     <td>$29 USD</td>
                     <td>
-                      <small class="text-warning mr-1">
-                        <i class="fas fa-arrow-down"></i>
+                      <small className="text-warning mr-1">
+                        <i className="fas fa-arrow-down"></i>
                         0.5%
                       </small>
                       123,234 Sold
                     </td>
                     <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
+                      <a href="#" className="text-muted">
+                        <i className="fas fa-search"></i>
                       </a>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2" />
+                      <img src="/img/logo_electrovenza.png" alt="Product 1" className="img-circle img-size-32 mr-2" />
                       Amazing Product
                     </td>
                     <td>$1,230 USD</td>
                     <td>
-                      <small class="text-danger mr-1">
-                        <i class="fas fa-arrow-down"></i>
+                      <small className="text-danger mr-1">
+                        <i className="fas fa-arrow-down"></i>
                         3%
                       </small>
                       198 Sold
                     </td>
                     <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
+                      <a href="#" className="text-muted">
+                        <i className="fas fa-search"></i>
                       </a>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2" />
+                      <img src="/img/logo_electrovenza.png" alt="Product 1" className="img-circle img-size-32 mr-2" />
                       Perfect Item
-                      <span class="badge bg-danger">NEW</span>
+                      <span className="badge bg-danger">NEW</span>
                     </td>
                     <td>$199 USD</td>
                     <td>
-                      <small class="text-success mr-1">
-                        <i class="fas fa-arrow-up"></i>
+                      <small className="text-success mr-1">
+                        <i className="fas fa-arrow-up"></i>
                         63%
                       </small>
                       87 Sold
                     </td>
                     <td>
-                      <a href="#" class="text-muted">
-                        <i class="fas fa-search"></i>
+                      <a href="#" className="text-muted">
+                        <i className="fas fa-search"></i>
                       </a>
                     </td>
                   </tr>
@@ -205,88 +207,90 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          <div class="col-lg-6">
-            <div class="card">
-              <div class="card-header border-0">
-                <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Sales</h3>
+          <div className="col-lg-6">
+            <div className="card">
+              <div className="card-header border-0">
+                <div className="d-flex justify-content-between">
+                  <h3 className="card-title">Sales</h3>
                   <a href="javascript:void(0);">View Report</a>
                 </div>
               </div>
-              <div class="card-body">
-                <div class="d-flex">
-                  <p class="d-flex flex-column">
-                    <span class="text-bold text-lg">$18,230.00</span>
+              <div className="card-body">
+                <div className="d-flex">
+                  <p className="d-flex flex-column">
+                    <span className="text-bold text-lg">$18,230.00</span>
                     <span>Sales Over Time</span>
                   </p>
-                  <p class="ml-auto d-flex flex-column text-right">
-                    <span class="text-success">
-                      <i class="fas fa-arrow-up"></i> 33.1%
+                  <p className="ml-auto d-flex flex-column text-right">
+                    <span className="text-success">
+                      <i className="fas fa-arrow-up"></i> 33.1%
                     </span>
-                    <span class="text-muted">Since last month</span>
+                    <span className="text-muted">Since last month</span>
                   </p>
                 </div>
 
-                <div class="position-relative mb-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                  <canvas id="sales-chart" height="200" width="904" class="chartjs-render-monitor"></canvas>
+                <div className="position-relative mb-4">
+                  <div className="chart-placeholder" style={{height: '200px', backgroundColor: '#f4f4f4', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                    <span className="text-muted">Gráfico de ventas</span>
+                  </div>
                 </div>
 
-                <div class="d-flex flex-row justify-content-end">
-                  <span class="mr-2">
-                    <i class="fas fa-square text-primary"></i> This year
+                <div className="d-flex flex-row justify-content-end">
+                  <span className="mr-2">
+                    <i className="fas fa-square text-primary"></i> This year
                   </span>
 
                   <span>
-                    <i class="fas fa-square text-gray"></i> Last year
+                    <i className="fas fa-square text-gray"></i> Last year
                   </span>
                 </div>
               </div>
             </div>
 
-            <div class="card">
-              <div class="card-header border-0">
-                <h3 class="card-title">Online Store Overview</h3>
-                <div class="card-tools">
-                  <a href="#" class="btn btn-sm btn-tool">
-                    <i class="fas fa-download"></i>
+            <div className="card">
+              <div className="card-header border-0">
+                <h3 className="card-title">Online Store Overview</h3>
+                <div className="card-tools">
+                  <a href="#" className="btn btn-sm btn-tool">
+                    <i className="fas fa-download"></i>
                   </a>
-                  <a href="#" class="btn btn-sm btn-tool">
-                    <i class="fas fa-bars"></i>
+                  <a href="#" className="btn btn-sm btn-tool">
+                    <i className="fas fa-bars"></i>
                   </a>
                 </div>
               </div>
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-                  <p class="text-success text-xl">
-                    <i class="ion ion-ios-refresh-empty"></i>
+              <div className="card-body">
+                <div className="d-flex justify-content-between align-items-center border-bottom mb-3">
+                  <p className="text-success text-xl">
+                    <i className="ion ion-ios-refresh-empty"></i>
                   </p>
-                  <p class="d-flex flex-column text-right">
-                    <span class="font-weight-bold">
-                      <i class="ion ion-android-arrow-up text-success"></i> 12%
+                  <p className="d-flex flex-column text-right">
+                    <span className="font-weight-bold">
+                      <i className="ion ion-android-arrow-up text-success"></i> 12%
                     </span>
-                    <span class="text-muted">CONVERSION RATE</span>
+                    <span className="text-muted">CONVERSION RATE</span>
                   </p>
                 </div>
-                <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-                  <p class="text-warning text-xl">
-                    <i class="ion ion-ios-cart-outline"></i>
+                <div className="d-flex justify-content-between align-items-center border-bottom mb-3">
+                  <p className="text-warning text-xl">
+                    <i className="ion ion-ios-cart-outline"></i>
                   </p>
-                  <p class="d-flex flex-column text-right">
-                    <span class="font-weight-bold">
-                      <i class="ion ion-android-arrow-up text-warning"></i> 0.8%
+                  <p className="d-flex flex-column text-right">
+                    <span className="font-weight-bold">
+                      <i className="ion ion-android-arrow-up text-warning"></i> 0.8%
                     </span>
-                    <span class="text-muted">SALES RATE</span>
+                    <span className="text-muted">SALES RATE</span>
                   </p>
                 </div>
-                <div class="d-flex justify-content-between align-items-center mb-0">
-                  <p class="text-danger text-xl">
-                    <i class="ion ion-ios-people-outline"></i>
+                <div className="d-flex justify-content-between align-items-center mb-0">
+                  <p className="text-danger text-xl">
+                    <i className="ion ion-ios-people-outline"></i>
                   </p>
-                  <p class="d-flex flex-column text-right">
-                    <span class="font-weight-bold">
-                      <i class="ion ion-android-arrow-down text-danger"></i> 1%
+                  <p className="d-flex flex-column text-right">
+                    <span className="font-weight-bold">
+                      <i className="ion ion-android-arrow-down text-danger"></i> 1%
                     </span>
-                    <span class="text-muted">REGISTRATION RATE</span>
+                    <span className="text-muted">REGISTRATION RATE</span>
                   </p>
                 </div>
               </div>

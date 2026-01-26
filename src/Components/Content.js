@@ -54,7 +54,11 @@ import { ROLES } from "../constants/roles";
 import PageComisionesPorVentaPendientesVendedor from "../pages/PageComisionesPorVentaPendientesVendedor";
 import CatalogoCategorias from "../pages/CatalogoCategorias/CatalogoCategorias";
 import ArticulosCategoria from "../pages/ArticulosCategoria/ArticulosCategoria";
-import { CATALOGO_MAYORISTA, CATALOGO_MINORISTA, CATALOGO_VENDEDOR_MAYORISTA } from "../constants/catalogo";
+import {
+  CATALOGO_MAYORISTA,
+  CATALOGO_MINORISTA,
+  CATALOGO_VENDEDOR_MAYORISTA,
+} from "../constants/catalogo";
 
 export default function Content() {
   return (
@@ -64,7 +68,13 @@ export default function Content() {
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-12">
-              <h1 className="m-0">ElectroVenza</h1>
+              <img
+                 src={process.env.PUBLIC_URL + "/img/logo_electrovenza.png"}
+                alt="logo"
+                style={{
+                  width: "14%",
+                }}
+              />
             </div>
 
             {/* /.col */}
@@ -85,75 +95,178 @@ export default function Content() {
                 <Route path="/" element={<Navigate to="/index" replace />} />
                 <Route path="/index" Component={Dashboard}></Route>
                 <Route path="/categoriasListado" Component={Categorias}></Route>
-                <Route path="/productosListado" Component={PageProductosListado}></Route>
+                <Route
+                  path="/productosListado"
+                  Component={PageProductosListado}
+                ></Route>
                 <Route path="/crear" Component={CrearPresupuesto}></Route>
                 <Route
                   path="/historial"
                   Component={HistorialPresupuesto}
                 ></Route>
                 <Route path="/lista" Component={ListaPresupuesto}></Route>
-                
+
                 {/* Categorias y productos */}
                 <Route
                   path="/crearcategorias"
                   Component={CreacionCategorias}
                 ></Route>
                 <Route path="/articulos" Component={Articulos}></Route>
-                
-                
-                <Route path="/buscar-articulos-presupuesto" Component={PagePresupuestar}></Route>
-                <Route path="/venta-al-contado" Component={PagePresupuestar}></Route>
-                <Route path="/cuotas-por-cobrar" Component={PageCuotasPorCobrar} ></Route>
-                <Route path="/cuotas-por-cobrar-electro" Component={PageCuotasPorCobrarElectro} ></Route>
-                <Route path="/ventas-listado" Component={PageListadoVentas}></Route>
-                <Route path="/ventas-comisiones-pendientes" element={<PageComisionesPorVentaPendientes />} />
-                <Route path="/ventas-comisiones-pendientes-vendedor" element={<PageComisionesPorVentaPendientesVendedor />} />
 
-                <Route path="/creditos-comisiones-pendientes" element={<PageComisionesPorCreditoPendientes />} />
-                <Route path="/ventas-cuotas-pendientes/:venta_id" Component={PageVentasCuotasPendientes} ></Route>
-                <Route path="/print/cuotas/:venta_id" element={<PrintCuotas />} />
-                <Route path="/print/cuotas-credito/:credito_id" element={<PrintCuotasCredito />} />
-                
+                <Route
+                  path="/buscar-articulos-presupuesto"
+                  Component={PagePresupuestar}
+                ></Route>
+                <Route
+                  path="/venta-al-contado"
+                  Component={PagePresupuestar}
+                ></Route>
+                <Route
+                  path="/cuotas-por-cobrar"
+                  Component={PageCuotasPorCobrar}
+                ></Route>
+                <Route
+                  path="/cuotas-por-cobrar-electro"
+                  Component={PageCuotasPorCobrarElectro}
+                ></Route>
+                <Route
+                  path="/ventas-listado"
+                  Component={PageListadoVentas}
+                ></Route>
+                <Route
+                  path="/ventas-comisiones-pendientes"
+                  element={<PageComisionesPorVentaPendientes />}
+                />
+                <Route
+                  path="/ventas-comisiones-pendientes-vendedor"
+                  element={<PageComisionesPorVentaPendientesVendedor />}
+                />
+
+                <Route
+                  path="/creditos-comisiones-pendientes"
+                  element={<PageComisionesPorCreditoPendientes />}
+                />
+                <Route
+                  path="/ventas-cuotas-pendientes/:venta_id"
+                  Component={PageVentasCuotasPendientes}
+                ></Route>
+                <Route
+                  path="/print/cuotas/:venta_id"
+                  element={<PrintCuotas />}
+                />
+                <Route
+                  path="/print/cuotas-credito/:credito_id"
+                  element={<PrintCuotasCredito />}
+                />
+
                 {/* Relacionados con vendedor: creditos */}
-                <Route path="/otorgar-credito" Component={PageOtorgarCredito}></Route>
-                <Route path="/creditos-cuotas-por-cobrar" Component={PageCreditosCuotasPorCobrar} ></Route>
-                <Route path="/credito-cuotas-pendientes/:credito_id" Component={PageCreditoCuotasPendientes} ></Route>
-                <Route path="/creditos-listado" Component={PageCreditos} ></Route>
+                <Route
+                  path="/otorgar-credito"
+                  Component={PageOtorgarCredito}
+                ></Route>
+                <Route
+                  path="/creditos-cuotas-por-cobrar"
+                  Component={PageCreditosCuotasPorCobrar}
+                ></Route>
+                <Route
+                  path="/credito-cuotas-pendientes/:credito_id"
+                  Component={PageCreditoCuotasPendientes}
+                ></Route>
+                <Route
+                  path="/creditos-listado"
+                  Component={PageCreditos}
+                ></Route>
 
                 <Route path="/crearProducto" Component={CrearProducto}></Route>
                 <Route path="/vendedores" Component={ListadoVendedores}></Route>
-                <Route path="/crearvendedores" Component={CrearVendedor}></Route>
+                <Route
+                  path="/crearvendedores"
+                  Component={CrearVendedor}
+                ></Route>
                 <Route path="/clientes" Component={Clientes}></Route>
                 <Route path="/proveedores" Component={Proveedores}></Route>
-                <Route path="/crearproveedor" Component={CrearProveedor}></Route>
-                
-                <Route path="/settingCuotasElectoListado" Component={PageListadoSettingCuotasElectro}></Route>
-                <Route path="/SettingCuotasCreditoListado" Component={PageSettingCuotasCreditoListado}></Route>
-                <Route path="/SettingBandasPreciosListado" Component={PageBandasPrecios}></Route>
-                <Route path="/crear-setting-bandas-precios" Component={CrearBandasPrecios}></Route>
-                <Route path="/crearcliente" Component={CrearCliente}></Route>    
-                <Route path="/crearclientefiltrado" Component={CrearClienteFiltrado}></Route>             
                 <Route
-                path="/registrar-movimiento" Component={RegistroMovimientoCuenta}>
-                </Route>
-                <Route path="/credito-por-cobrar" Component={PageCreditosPorCobrar}></Route>
-                <Route path="/crearcuotaelectro" Component={CrearCuotaElectro}></Route>
-                <Route path="/crear-cuota-credito" Component={CrearCuotaCredito}></Route>
-                <Route path="/articulos-listado" Component={PageArticulosListado}></Route>
-                <Route path="/actualizacion-masiva" Component={PageActualizacionMasiva}></Route>
+                  path="/crearproveedor"
+                  Component={CrearProveedor}
+                ></Route>
+
+                <Route
+                  path="/settingCuotasElectoListado"
+                  Component={PageListadoSettingCuotasElectro}
+                ></Route>
+                <Route
+                  path="/SettingCuotasCreditoListado"
+                  Component={PageSettingCuotasCreditoListado}
+                ></Route>
+                <Route
+                  path="/SettingBandasPreciosListado"
+                  Component={PageBandasPrecios}
+                ></Route>
+                <Route
+                  path="/crear-setting-bandas-precios"
+                  Component={CrearBandasPrecios}
+                ></Route>
+                <Route path="/crearcliente" Component={CrearCliente}></Route>
+                <Route
+                  path="/crearclientefiltrado"
+                  Component={CrearClienteFiltrado}
+                ></Route>
+                <Route
+                  path="/registrar-movimiento"
+                  Component={RegistroMovimientoCuenta}
+                ></Route>
+                <Route
+                  path="/credito-por-cobrar"
+                  Component={PageCreditosPorCobrar}
+                ></Route>
+                <Route
+                  path="/crearcuotaelectro"
+                  Component={CrearCuotaElectro}
+                ></Route>
+                <Route
+                  path="/crear-cuota-credito"
+                  Component={CrearCuotaCredito}
+                ></Route>
+                <Route
+                  path="/articulos-listado"
+                  Component={PageArticulosListado}
+                ></Route>
+                <Route
+                  path="/actualizacion-masiva"
+                  Component={PageActualizacionMasiva}
+                ></Route>
                 {/* COMPRAS */}
                 <Route path="/compras-listado" Component={PageCompras}></Route>
-                <Route path="/compras-registrar" Component={CrearCompras}></Route>
-                <Route path="/clientes-filtrado-vendedor" Component={Clientes_filtrado_vendedor}> </Route>
-                <Route path="reporte-cobranza" Component={PageReporteCobranza}></Route>
-                <Route path="reporte-ganancia" Component={PageReporteGanancia}></Route>
-                <Route path="/tipo-movimiento-cc" Component={PageTipoMovimientoCC}></Route>
+                <Route
+                  path="/compras-registrar"
+                  Component={CrearCompras}
+                ></Route>
+                <Route
+                  path="/clientes-filtrado-vendedor"
+                  Component={Clientes_filtrado_vendedor}
+                >
+                  {" "}
+                </Route>
+                <Route
+                  path="reporte-cobranza"
+                  Component={PageReporteCobranza}
+                ></Route>
+                <Route
+                  path="reporte-ganancia"
+                  Component={PageReporteGanancia}
+                ></Route>
+                <Route
+                  path="/tipo-movimiento-cc"
+                  Component={PageTipoMovimientoCC}
+                ></Route>
 
                 {/* Wholesale Seller Routes */}
                 <Route
                   path="/venta-mayorista"
                   element={
-                    <RequireRole allowedRoles={[ROLES.WHOLESALE_SELLER, ROLES.ADMIN]}>
+                    <RequireRole
+                      allowedRoles={[ROLES.WHOLESALE_SELLER, ROLES.ADMIN]}
+                    >
                       <VentaMayorista />
                     </RequireRole>
                   }
@@ -161,7 +274,9 @@ export default function Content() {
                 <Route
                   path="/clientes-mayorista"
                   element={
-                    <RequireRole allowedRoles={[ROLES.WHOLESALE_SELLER, ROLES.ADMIN]}>
+                    <RequireRole
+                      allowedRoles={[ROLES.WHOLESALE_SELLER, ROLES.ADMIN]}
+                    >
                       <ClientesMayorista />
                     </RequireRole>
                   }
@@ -169,24 +284,55 @@ export default function Content() {
                 <Route
                   path="/cuenta-corriente-mayorista"
                   element={
-                    <RequireRole allowedRoles={[ROLES.WHOLESALE_SELLER, ROLES.ADMIN]}>
+                    <RequireRole
+                      allowedRoles={[ROLES.WHOLESALE_SELLER, ROLES.ADMIN]}
+                    >
                       <CuentaCorrienteMayorista />
                     </RequireRole>
                   }
                 />
 
-                {/* Catalog Routes - Categories and Articles */}
-                <Route path="/catalogo-mayorista" element={<CatalogoCategorias opcion={CATALOGO_MAYORISTA} />} /> 
-                <Route path="/catalogo-minorista" element={<CatalogoCategorias opcion={CATALOGO_MINORISTA} />} /> 
-                <Route path="/catalogo-vendedor-mayorista" element={<CatalogoCategorias opcion={CATALOGO_VENDEDOR_MAYORISTA} />} /> 
-                <Route path="/catalogo-mayorista/categoria/:categoriaId/articulos" element={<ArticulosCategoria tipoCatalogo={CATALOGO_MAYORISTA} />} />
-                <Route path="/catalogo-minorista/categoria/:categoriaId/articulos" element={<ArticulosCategoria tipoCatalogo={CATALOGO_MINORISTA} />} />
-                <Route path="/catalogo-vendedor-mayorista/categoria/:categoriaId/articulos" element={<ArticulosCategoria tipoCatalogo={CATALOGO_VENDEDOR_MAYORISTA} />} />
+                <Route
+                  path="/catalogo-mayorista"
+                  element={<CatalogoCategorias opcion={CATALOGO_MAYORISTA} />}
+                />
+
+                <Route
+                  path="/catalogo-minorista"
+                  element={<CatalogoCategorias opcion={CATALOGO_MINORISTA} />}
+                />
+
+                <Route
+                  path="/catalogo-vendedor-mayorista"
+                  element={<CatalogoCategorias opcion={CATALOGO_VENDEDOR_MAYORISTA} />}
+                />
+                <Route
+                  path="/catalogo-mayorista/categoria/:categoriaId/articulos"
+                  element={<ArticulosCategoria tipoCatalogo={CATALOGO_MAYORISTA} />}
+                />
+
+                <Route
+                  path="/catalogo-minorista/categoria/:categoriaId/articulos"
+                  element={<ArticulosCategoria tipoCatalogo={CATALOGO_MINORISTA} />}
+                />
+
+                <Route
+                  path="/catalogo-vendedor-mayorista/categoria/:categoriaId/articulos"
+                  element={<ArticulosCategoria tipoCatalogo={CATALOGO_VENDEDOR_MAYORISTA} />}
+                />
 
                 {/* Unauthorized access page */}
-                <Route path="/unauthorized" Component={UnauthorizedPage}></Route>
+                <Route
+                  path="/unauthorized"
+                  Component={UnauthorizedPage}
+                ></Route>
               </Routes>
-              <button id="back-to-top" type="button" className="btn btn-primary back-to-top" aria-label="Scroll to top">
+              <button
+                id="back-to-top"
+                type="button"
+                className="btn btn-primary back-to-top"
+                aria-label="Scroll to top"
+              >
                 <i className="fas fa-chevron-up"></i>
               </button>
             </div>
@@ -200,4 +346,4 @@ export default function Content() {
   );
 }
 
-<Route path="/crearcuotaelectro" Component={CrearCuotaElectro}></Route>
+

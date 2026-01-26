@@ -3,7 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { getArticulosActivosByCategoria } from '../../service/articulosService';
 import ArticuloCard from './components/ArticuloCard';
 import './ArticulosCategoria.css';
-import { CATALOGO_MAYORISTA, CATALOGO_MINORISTA, CATALOGO_VENDEDOR_MAYORISTA } from '../../constants/catalogo';
+import { CATALOGO_MAYORISTA, CATALOGO_MINORISTA } from '../../constants/catalogo';
 
 /**
  * ArticulosCategoria page component

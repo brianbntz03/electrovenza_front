@@ -52,14 +52,8 @@ export const getArticulosMayorista = async () => {
  * @throws {Error} If the request fails
  */
 export const getArticulosByCategoria = async (categoryId) => {
-  const token = localStorage.getItem('jwt_token');
   const response = await fetch(
-    `${apiRest}/articulos/by-category-id/${categoryId}`,
-    {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    }
+    `${apiRest}/articulos/by-category-id/${categoryId}`
   );
 
   if (response.status === 404) {
