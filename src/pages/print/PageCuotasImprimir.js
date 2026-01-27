@@ -17,6 +17,11 @@ export default function PrintCuotas() {
   const fetchCuotas = async () => {
     const response = await authenticatedFetch(`${apiRest}/ventas/cuotas/${venta_id}`, {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
     });
 
     if(!response.ok) {
@@ -31,6 +36,11 @@ export default function PrintCuotas() {
   const fetchVenta = async () => {
     const response = await authenticatedFetch(`${apiRest}/ventas/${venta_id}`, {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept : "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      }
     });
 
     if (!response.ok) {
@@ -39,7 +49,6 @@ export default function PrintCuotas() {
   }
   
     const data = await response.json();
-    console.log(data);
     setCliente(data?.cliente?.nombre || "");
     setVendedor(data?.vendedor?.nombre || "");
     setArticulo(data?.articulo?.nombre || "");
@@ -82,8 +91,8 @@ export default function PrintCuotas() {
         <div>&nbsp;</div>
 
         <div className="row cuotas">
-          {cuotas.map((cuota, index) => (
-            <div key={index} className="col-md-3">
+          {cuotas.map((cuota, ) => (
+            <div key={cuota} className="col-md-3">
               <p>
                 ({cuota.numero.toString().padStart(2, "0")}){" "}
                 {convertIsoToDMY(cuota.fecha)} &nbsp;
