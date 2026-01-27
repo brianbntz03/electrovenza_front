@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 import { CUOTA_TYPE_NAMES } from "../../constants/cuotaTypes";
 
 export function EditarCuotaElectro({ cuotaElectro, onClose, onCuotaActualizada }) { // Cambiado a onCuotaActualizada
@@ -43,14 +44,9 @@ export function EditarCuotaElectro({ cuotaElectro, onClose, onCuotaActualizada }
 
       console.log("Enviando datos para actualizar cuota:", dataToSend);
 
-      const response = await fetch(`${apiRest}/settings/cuotas/${cuotaElectro.id}`, 
+      const response = await authenticatedFetch(`${apiRest}/settings/cuotas/${cuotaElectro.id}`,
         {
           method: 'PATCH',
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-          },
         body: JSON.stringify(dataToSend), // Use the new object here
       });
 

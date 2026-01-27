@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { apiRest } from "../service/apiRest";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 import FlashMessage from "./tiny/FlashMessage";
 import { convertIsoToDMY } from "../miscellaneus/aux";
 
@@ -29,13 +30,8 @@ export const ComisionesPorCreditoPendientes = () => {
         FlashMessage("Liquidar Comisiones", "Debe seleccionar un vendedor", 2000, "warning");
         return;
       }
-      const response = await fetch(`${apiRest}/credito/comisiones/marcar-comisiones-como-pagadas/`, {
+      const response = await authenticatedFetch(`${apiRest}/credito/comisiones/marcar-comisiones-como-pagadas/`, {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
         body: JSON.stringify({ vendedor_id: Number(idVendedor) }),
       });
 
@@ -85,14 +81,7 @@ export const ComisionesPorCreditoPendientes = () => {
   const ComisionesPorVendedor = async(vededorId) =>{
     setIdVendedor(Number(vededorId));
     try {
-      const response = await fetch(`${apiRest}/credito/comisiones/get-comisiones-pendientes/${vededorId}`, {
-          method: 'GET',
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-          },
-        });
+      const response = await authenticatedFetch(`${apiRest}/credito/comisiones/get-comisiones-pendientes/${vededorId}`);
       if (response.ok) {
         const data = await response.json();
         setTotalComisiones(0);
@@ -111,14 +100,7 @@ export const ComisionesPorCreditoPendientes = () => {
 
   const cargarVendedores = async () => {
     try {
-      const response = await fetch(`${apiRest}/vendedor`, {
-          method: 'GET',
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-          },
-        });
+      const response = await authenticatedFetch(`${apiRest}/vendedor`);
       if (response.ok) {
         const data = await response.json();
         setVendedoresFiltrados(data);

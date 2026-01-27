@@ -1,4 +1,5 @@
 import { apiRest } from './apiRest';
+import { authenticatedFetch } from '../utils/authenticatedFetch';
 
 /**
  * Service for product operations
@@ -15,20 +16,10 @@ export const getArticulos = async (filters = {
   limit: 10000000000000,
 }) => {
   try {
-    const token = localStorage.getItem('jwt_token');
     const queryParams = new URLSearchParams(filters).toString();
     const url = `${apiRest}/articulos${queryParams ? `?${queryParams}` : ''}`;
 
-    const response = await fetch(url, {
-      headers: {
-          method: 'GET',
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-          },
-        }});
-    //console.log(await response.json());
+    const response = await authenticatedFetch(url);
 
     if (!response.ok) {
       throw new Error('Error al obtener artículos');

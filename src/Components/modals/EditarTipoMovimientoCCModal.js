@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { apiRest } from '../../service/apiRest';
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 
 const EditarTipoMovimientoCCModal = ({ item, onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -11,14 +12,9 @@ const EditarTipoMovimientoCCModal = ({ item, onClose, onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${apiRest}/tipo-movimiento/${item.id}`,
+      const response = await authenticatedFetch(`${apiRest}/tipo-movimiento/${item.id}`,
         {
           method: 'PATCH',
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-          },
         body: JSON.stringify(formData)
       });
       

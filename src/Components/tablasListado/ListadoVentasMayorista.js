@@ -5,6 +5,7 @@ import { BotonImprimirCuotas } from "../tiny/BotonImprimirCuotas";
 import { BotonAnularCredito } from "../tiny/BotonAnularCredito";
 import { BotonCuotasPendientes } from "../tiny/BotonCuotasPendientes";
 import { EstadosVentas } from "../../constants/ventas";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 
 export function ComponentListadoVentasMayorista() {
   const storageObjectName = "ventas";
@@ -33,14 +34,7 @@ export function ComponentListadoVentasMayorista() {
   
   const fetchVentas = async () => {
     try {
-      const response = await fetch(`${apiRest}/ventas`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
-      });
+      const response = await authenticatedFetch(`${apiRest}/ventas`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

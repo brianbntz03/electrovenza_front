@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { apiRest } from "../service/apiRest";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 
 export default function CreditaPagar({ id, fecha, articulo, valor, montoCobrado, vendedor, estado, incrementarContador }) {
   const [montoParcial, setMontoParcial] = useState("");
@@ -11,15 +12,10 @@ export default function CreditaPagar({ id, fecha, articulo, valor, montoCobrado,
     }
 
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         `${apiRest}/cuota_venta/monto-cobrado/${id}`,
         {
           method: "PATCH",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-          },
           body: JSON.stringify({ monto_cobrado: montoParcial }),
         }
       );
@@ -44,13 +40,8 @@ export default function CreditaPagar({ id, fecha, articulo, valor, montoCobrado,
       );
       if (!confirmacion) return;
 
-      const response = await fetch(`${apiRest}/cuota_venta/${id}`, {
+      const response = await authenticatedFetch(`${apiRest}/cuota_venta/${id}`, {
         method: "PATCH",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
       });
 
       if (!response.ok)

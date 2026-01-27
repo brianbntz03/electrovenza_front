@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../service/apiRest";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 import FlashMessage from "./tiny/FlashMessage";
 import { CUOTA_TYPE_NAMES } from "../constants/cuotaTypes";
 
@@ -83,14 +84,10 @@ export const ArticuloPresupuesto = () => {
       }
 
       const storedUserId = localStorage.getItem("user_id");
-      const response = await fetch(
+      const response = await authenticatedFetch(
         `${apiRest}/vendedor/user_id/${storedUserId}`,
         {
           method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
-          },
         }
       );
 
@@ -134,12 +131,8 @@ export const ArticuloPresupuesto = () => {
       console.log("Datos de venta a enviar:", ventaData);
       const url = esVentaContado ? `${apiRest}/ventas/venta-al-contado` : `${apiRest}/ventas`;
 
-      const response = await fetch(url, {
+      const response = await authenticatedFetch(url, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
-        },
         body: JSON.stringify(ventaData),
       });
 
@@ -266,18 +259,13 @@ export const ArticuloPresupuesto = () => {
       const method = busqueda ? "POST" : "GET";
       const options = {
         method: method,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
       };
 
       if (busqueda) {
         options.body = JSON.stringify({ patron: busqueda });
       }
 
-      const response = await fetch(url, options);
+      const response = await authenticatedFetch(url, options);
 
       if (!response.ok)
         throw new Error(`Error en la solicitud: ${response.status}`);
@@ -320,13 +308,8 @@ export const ArticuloPresupuesto = () => {
 
   const cargarVendedores = async () => {
     try {
-      const response = await fetch(`${apiRest}/vendedor?page=1&limit=200`, {
+      const response = await authenticatedFetch(`${apiRest}/vendedor?page=1&limit=200`, {
         method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
       });
 
       if (response.ok) {
@@ -342,27 +325,15 @@ export const ArticuloPresupuesto = () => {
   const cargarClientes = async () => {
     try {
       console.log("Cargando clientes...");
-      const token = localStorage.getItem("jwt_token");
 
-      const response = await fetch(`${apiRest}/cliente/ordered`, {
+      const response = await authenticatedFetch(`${apiRest}/cliente/ordered`, {
         method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
       });
 
       if (response.ok) {
         const data = await response.json();
         setClientesCompletos(data);
         setClientesFiltrados(data);
-      } else if (response.status === 401) {
-        console.error("Token expirado o inválido. Redirigiendo al login...");
-        localStorage.removeItem("jwt_token");
-        localStorage.removeItem("user_role");
-        localStorage.removeItem("user_id");
-        window.location.href = "/login";
       } else {
         console.error(
           "Error en la respuesta:",
@@ -522,13 +493,8 @@ export const ArticuloPresupuesto = () => {
 
   const cargarCuotas = async () => {
     try {
-      const response = await fetch(`${apiRest}/settings/cuotas`, {
+      const response = await authenticatedFetch(`${apiRest}/settings/cuotas`, {
         method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
       });
       if (response.ok) {
         const data = await response.json();

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { apiRest } from "../../service/apiRest";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 
 export function EditarBandaPreciosModal({
   banda,

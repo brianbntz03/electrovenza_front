@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 import { CUOTA_TYPE_NAMES } from "../../constants/cuotaTypes";
 
 export function EditarCuotaCredito({ cuotaCredito, onClose, onCuotaCreditoActualizada }) {
@@ -43,13 +44,8 @@ export function EditarCuotaCredito({ cuotaCredito, onClose, onCuotaCreditoActual
         comision_vendedor: Number(formData.comision_vendedor),
       };
 
-      const response = await fetch(`${apiRest}/settings/cuotas-credito/${cuotaCredito.id}`, {
+      const response = await authenticatedFetch(`${apiRest}/settings/cuotas-credito/${cuotaCredito.id}`, {
         method: "PATCH",
-        headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
         body: JSON.stringify(dataToSend),
       });
 

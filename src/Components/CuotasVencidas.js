@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../service/apiRest";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 import Swal from "sweetalert2";
 import FlashMessage from "./tiny/FlashMessage";
 
@@ -76,12 +77,8 @@ const CuotasVencidas = () => {
 
     try {
       const vendedorId = Number(localStorage.getItem("vendedor_id"));
-      const response = await fetch(`${apiRest}/credito`, {
+      const response = await authenticatedFetch(`${apiRest}/credito`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
-        },
         body: JSON.stringify({
           setting_cuotas_credito_id: parseInt(cuotaId),
           cliente_id: parseInt(cliente),
@@ -114,12 +111,12 @@ const CuotasVencidas = () => {
 
   // Traer clientes y cuotas
   useEffect(() => {
-    fetch(`${apiRest}/cliente`)
+    authenticatedFetch(`${apiRest}/cliente`)
       .then((res) => res.json())
       .then((data) => setClientesList(Array.isArray(data) ? data : []))
       .catch((error) => console.error("Error fetching clientes:", error));
 
-    fetch(`${apiRest}/settings/cuotas-credito`)
+    authenticatedFetch(`${apiRest}/settings/cuotas-credito`)
       .then((res) => res.json())
       .then((data) => setCuotasList(Array.isArray(data) ? data : []))
       .catch(() => setCuotasList([]));

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { apiRest, publicUrl } from "../../service/apiRest";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 
 export const CrearCliente = () => {
   const [nombre, setNombre] = useState("");
@@ -44,13 +45,8 @@ export const CrearCliente = () => {
   useEffect(() => {
     const obtenerVendedores = async () => {
       try {
-        const response = await fetch(`${apiRest}/vendedor`, {
+        const response = await authenticatedFetch(`${apiRest}/vendedor`, {
           method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-          },
         });
         const data = await response.json();
         setListaVendedores(data.data || data.vendedores || []);
@@ -71,15 +67,10 @@ export const CrearCliente = () => {
     formData.append("imagen", file); 
 
     try {
-      const response = await fetch(`${apiRest}/cliente/${clienteId}/imagen/${tipo}`, 
+      const response = await authenticatedFetch(`${apiRest}/cliente/${clienteId}/imagen/${tipo}`,
         {
           method: 'POST',
           body: formData,
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-          },
         });
 
       if (!response.ok) {
@@ -101,13 +92,8 @@ export const CrearCliente = () => {
     try {
       const userId = localStorage.getItem("user_id");
 
-      const response = await fetch(`${apiRest}/cliente`, {
+      const response = await authenticatedFetch(`${apiRest}/cliente`, {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json", // Necesario para JSON
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
         body: JSON.stringify({
           nombre,
           dni: Number(dni),

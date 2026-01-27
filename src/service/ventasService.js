@@ -1,4 +1,5 @@
 import { apiRest } from './apiRest';
+import { authenticatedFetch } from '../utils/authenticatedFetch';
 
 /**
  * Service for wholesale sales operations
@@ -15,15 +16,10 @@ import { apiRest } from './apiRest';
  */
 export const createVentaMayorista = async (saleData) => {
   try {
-    const token = localStorage.getItem('jwt_token');
     const vendedor_id = localStorage.getItem('vendedor_id');
 
-    const response = await fetch(`${apiRest}/ventas-mayorista`, {
+    const response = await authenticatedFetch(`${apiRest}/ventas-mayorista`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
       body: JSON.stringify({
         ...saleData,
         vendedor_id: parseInt(vendedor_id),
@@ -53,14 +49,7 @@ export const getVentasMayorista = async (filters = {}) => {
     const queryParams = new URLSearchParams(filters).toString();
     const url = `${apiRest}/ventas-mayorista${queryParams ? `?${queryParams}` : ''}`;
 
-    const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-          },
-        });
+    const response = await authenticatedFetch(url);
 
     if (!response.ok) {
       throw new Error('Error al obtener ventas mayoristas');

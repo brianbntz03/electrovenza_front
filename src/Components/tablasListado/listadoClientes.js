@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
 import { EditarClienteModal } from "../modals/EditarClienteModal";
 import FlashMessageConfirm from "../tiny/ConfirmMessage";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 
 const PLACEHOLDER_URL =
   "https://placehold.co/100x100/eeeeee/333333?text=Sin+Foto";
@@ -47,13 +48,8 @@ export function ListadoClientes() {
         }
 
     try {
-      await fetch(`${apiRest}/cliente/${id}`, {
+      await authenticatedFetch(`${apiRest}/cliente/${id}`, {
         method: "DELETE",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
       });
       console.log(`Producto con id ${id} eliminado. `);
 
@@ -68,14 +64,7 @@ export function ListadoClientes() {
 
   const fetchClientes = async () => {
     try {
-      const response = await fetch(`${apiRest}/cliente`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
-      });
+      const response = await authenticatedFetch(`${apiRest}/cliente`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

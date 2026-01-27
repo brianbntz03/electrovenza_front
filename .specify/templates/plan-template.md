@@ -38,6 +38,7 @@ Verify compliance with [.specify/memory/constitution.md]:
 - [ ] **Client Portfolio Isolation**: If applicable, does this feature maintain proper customer-seller relationships?
 - [ ] **Credit vs Cash Flow**: If applicable, does this feature properly separate credit and cash transactions?
 - [ ] **Stock Integrity**: If applicable, does this feature maintain accurate inventory levels?
+- [ ] **API 401 Redirect**: Does this feature use centralized fetch with 401 interception that redirects to login?
 - [ ] **Testing**: Are role-based access controls and critical business logic tested?
 - [ ] **Simplicity**: Have we chosen the simplest solution that works?
 

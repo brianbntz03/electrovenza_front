@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import { apiRest, publicUrl } from "../../service/apiRest";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 import { useEffect, useState } from "react";
 
 export const CrearClienteFiltrado = () => {
@@ -51,13 +52,8 @@ export const CrearClienteFiltrado = () => {
     // Test de conectividad
     const testBackend = async () => {
       try {
-        const response = await fetch(`${apiRest}/vendedor`,{
+        const response = await authenticatedFetch(`${apiRest}/vendedor`,{
           method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-          },  
         });
         console.log("Backend status:", response.status);
         if (response.ok) {
@@ -73,14 +69,9 @@ export const CrearClienteFiltrado = () => {
     if (role === "admin") {
       const obtenerVendedores = async () => {
         try {
-          const response = await fetch(`${apiRest}/vendedor`,
+          const response = await authenticatedFetch(`${apiRest}/vendedor`,
         {
           method: 'GET',
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-          },
         });
           const data = await response.json();
           setListaVendedores(data);
@@ -100,14 +91,9 @@ export const CrearClienteFiltrado = () => {
     formData.append("imagen", file);
 
     try {
-      const response = await fetch(`${apiRest}/cliente/${clienteId}/imagen/${tipo}`, {
+      const response = await authenticatedFetch(`${apiRest}/cliente/${clienteId}/imagen/${tipo}`, {
         method: "POST",
         body: formData,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
       });
 
       if (!response.ok) {
@@ -182,13 +168,8 @@ const handleSubmit = async (e) => {
     console.log("Vendedor ID:", vendedorId, "Tipo:", typeof vendedorId); 
 
     try {
-        const response = await fetch(`${apiRest}/cliente`, {
+        const response = await authenticatedFetch(`${apiRest}/cliente`, {
             method: "POST",
-            headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-            },
             body: JSON.stringify(clienteData),
         });
 

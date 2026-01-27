@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { apiRest } from '../../service/apiRest';
 import EditarTipoMovimientoCCModal from '../modals/EditarTipoMovimientoCCModal';
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 
 const ListadoTipoMovimientoCC = ({ refresh }) => {
   const [tiposMovimiento, setTiposMovimiento] = useState([]);
@@ -10,14 +11,7 @@ const ListadoTipoMovimientoCC = ({ refresh }) => {
   const fetchTiposMovimiento = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${apiRest}/tipo-movimiento`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
-      });
+      const response = await authenticatedFetch(`${apiRest}/tipo-movimiento`);
       const data = await response.json();
       setTiposMovimiento(data);
     } catch (error) {
@@ -34,13 +28,8 @@ const ListadoTipoMovimientoCC = ({ refresh }) => {
   const handleDelete = async (id) => {
     if (window.confirm('¿Está seguro de eliminar este tipo de movimiento?')) {
       try {
-        const response = await fetch(`${apiRest}/tipo-movimiento/${id}`, {
+        const response = await authenticatedFetch(`${apiRest}/tipo-movimiento/${id}`, {
           method: 'DELETE',
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-          },
         });
         if (response.ok) {
           fetchTiposMovimiento();

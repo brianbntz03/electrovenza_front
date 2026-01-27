@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { apiRest } from "../../service/apiRest";
 import { useEffect, useState } from "react";
 import { convertIsoToDMY } from "../../miscellaneus/aux";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 import BottonImprimirPaginaActual from "./BotonImprimir";
 import "../../pages/print/cuotas_imprimir.css";
 
@@ -13,13 +14,8 @@ export default function PrintCuotasCredito() {
   const [montoOtorgado, setMontoOtorgado] = useState(0);
 
   const fetchCuotas = async () => {
-    const response = await fetch(`${apiRest}/credito/cuotas/${credito_id}`, {
+    const response = await authenticatedFetch(`${apiRest}/credito/cuotas/${credito_id}`, {
       method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-      },
     });
 
     const data = await response.json();
@@ -27,13 +23,8 @@ export default function PrintCuotasCredito() {
   };
 
   const fetchCredito = async () => {
-    const response = await fetch(`${apiRest}/credito/${credito_id}`, {
+    const response = await authenticatedFetch(`${apiRest}/credito/${credito_id}`, {
       method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-      },
     });
 
     const data = await response.json();

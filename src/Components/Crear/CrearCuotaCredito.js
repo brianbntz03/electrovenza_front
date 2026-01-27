@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { apiRest, publicUrl } from "../../service/apiRest";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 import { CUOTA_TYPE_NAMES } from "../../constants/cuotaTypes";
 
 export const CrearCuotaCredito = () => {
@@ -37,13 +38,8 @@ export const CrearCuotaCredito = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${apiRest}/settings/cuotas_credito`, {
+      const response = await authenticatedFetch(`${apiRest}/settings/cuotas_credito`, {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
         body: JSON.stringify({
           numero: Number(numero),
           descripcion,

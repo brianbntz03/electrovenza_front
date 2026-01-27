@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { apiRest } from "../../service/apiRest";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 
 export const EditarVendedorModal = ({
   vendedor,
@@ -41,13 +42,8 @@ export const EditarVendedorModal = ({
     e.preventDefault();
     setError(null);
     try {
-      const response = await fetch(`${apiRest}/vendedor/${vendedor.id}`, {
+      const response = await authenticatedFetch(`${apiRest}/vendedor/${vendedor.id}`, {
         method: "PATCH",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
         body: JSON.stringify(formData),
       });
 

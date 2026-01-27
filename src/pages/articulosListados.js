@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
-import { apiRest } from "../service/apiRest"; 
+import { apiRest } from "../service/apiRest";
 import { ListadoArticulosVendedor } from "../Components/tablasListado/ListadoArticuloVendedor";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 
 
 
@@ -9,13 +10,8 @@ const PageArticulosListado = () => {
 
   const handleExport = async () => {
     try {
-      const response = await fetch(`${apiRest}/articulos/export`, {
+      const response = await authenticatedFetch(`${apiRest}/articulos/export`, {
           method: 'GET',
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-          },
         });
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
