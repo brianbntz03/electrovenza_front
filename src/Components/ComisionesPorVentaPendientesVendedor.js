@@ -60,7 +60,14 @@ export const ComisionesPorVentaPendientesVendedor = () => {
   
   const updateCuentaCorriente = async (vededorId) => {
       try {
-      const response = await fetch(`${apiRest}/cuenta-corriente/get-by-vendedor/${vededorId}`);
+      const response = await fetch(`${apiRest}/cuenta-corriente/get-by-vendedor/${vededorId}`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
+      });
       if (response.ok) {
         const { saldo } = await response.json();
         setSaldoCuentaCorriente(saldo);
@@ -77,7 +84,14 @@ export const ComisionesPorVentaPendientesVendedor = () => {
     try {
       // Probar diferentes endpoints para comisiones por ventas
       let url = `${apiRest}/ventas/comisiones/get-comisiones-pendientes/${vededorId}`;
-      let response = await fetch(url);
+      let response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
+      });
       
       if (response.ok) {
         const comisionesVentas = await response.json();
@@ -105,7 +119,14 @@ export const ComisionesPorVentaPendientesVendedor = () => {
     //Comisiones por creditos
     try {
       const url = `${apiRest}/credito/comisiones/get-comisiones-pendientes/${vededorId}`;
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
+      });
       
       if (response.ok) {
         const comisionesCreditos = await response.json();

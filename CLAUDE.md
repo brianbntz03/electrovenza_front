@@ -3,6 +3,8 @@
 Auto-generated from all feature plans. Last updated: 2025-12-29
 
 ## Active Technologies
+- JavaScript ES6+ (React 19.1.0) + React 19.1.0, React Router DOM 7.0.2, native fetch API (003-redirect-login-401)
+- localStorage (browser) for auth state; no backend storage changes (003-redirect-login-401)
 
 - JavaScript ES6+ (React 19.1.0) + React 19.1.0, React Router DOM 7.0.2, jwt-decode 4.0.0, SweetAlert2 11.6.13, FontAwesome 7.0.1, date-fns 4.1.0 (001-vendedor-mayorista)
 
@@ -22,6 +24,7 @@ npm test && npm run lint
 JavaScript ES6+ (React 19.1.0): Follow standard conventions
 
 ## Recent Changes
+- 003-redirect-login-401: Added JavaScript ES6+ (React 19.1.0) + React 19.1.0, React Router DOM 7.0.2, native fetch API
 - 002-gestion-tipo-vendedor: Added [if applicable, e.g., PostgreSQL, CoreData, files or N/A]
 
 - 001-vendedor-mayorista: Implemented wholesale seller role with role-based menu system, wholesale cash sales functionality, and customer portfolio management

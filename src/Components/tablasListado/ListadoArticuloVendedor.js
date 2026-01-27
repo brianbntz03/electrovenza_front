@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import { apiRest } from "../../service/apiRest";
 import React, { useEffect, useState } from "react";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 
 export function ListadoArticulosVendedor() {
   const [productos, setProductos] = useState([]);
@@ -16,13 +17,7 @@ export function ListadoArticulosVendedor() {
   const fetchProductos = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${apiRest}/articulos?page=1&limit=100000`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await authenticatedFetch(`${apiRest}/articulos?page=1&limit=100000`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -46,7 +41,7 @@ export function ListadoArticulosVendedor() {
 
   const eliminarProducto = async (id) => {
     try {
-      await fetch(`${apiRest}/articulos/${id}`, {
+      await authenticatedFetch(`${apiRest}/articulos/${id}`, {
         method: "DELETE",
       });
 
@@ -104,15 +99,10 @@ export function ListadoArticulosVendedor() {
       const url = `${apiRest}/articulos/find`;
       const options = {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
         body: JSON.stringify({ patron: busqueda }),
       };
 
-      const response = await fetch(url, options);
+      const response = await authenticatedFetch(url, options);
 
       if (!response.ok)
         throw new Error(`Error en la solicitud: ${response.status}`);

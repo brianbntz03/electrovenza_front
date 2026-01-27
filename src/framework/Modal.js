@@ -24,7 +24,15 @@ export function ModalEditarTEMPLATE_LISTADO_NAME({ object, onClose, onObjectActu
   useEffect(() => {
     const fetchColectivo = async () => {
       try {
-        const response = await fetch(`${urlObject}`);
+        const response = await fetch(`${urlObject}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
+            },
+          }
+        );
         if (!response.ok) {
           throw new Error(`No se pudo actualizar los datos del ${titleSingular}`);
         }
@@ -62,6 +70,7 @@ const handleChangeNumber = (e) => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
         },
         body: JSON.stringify(formData),
       });

@@ -21,6 +21,7 @@ export default function CreditoCuotaVencida(cuota) {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
           },
           body: JSON.stringify({ monto_cobrado: Number(montoParcial) }),
         }
@@ -54,6 +55,7 @@ export default function CreditoCuotaVencida(cuota) {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
           },
         }
       );

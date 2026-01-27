@@ -10,6 +10,11 @@ export function Listadoproveedores() {
     try {
       await fetch(`${apiRest}/proveedor/${id}`, {
         method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
       });
       console.log(`Proveedor con ${id} eliminado.`);
 
@@ -25,7 +30,14 @@ export function Listadoproveedores() {
 
   const fetchProveedores = async () => {
     try {
-      const response = await fetch(`${apiRest}/proveedor`);
+      const response = await fetch(`${apiRest}/proveedor`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
+      });
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }

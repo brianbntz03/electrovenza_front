@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { apiRest, publicUrl } from "../../service/apiRest";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 
 
 export const CrearProveedor = () => {
@@ -36,12 +37,8 @@ export const CrearProveedor = () => {
 
     try {
       // Corregido el endpoint - asegúrate de que esta URL sea correcta para tu API
-      const response = await fetch(`${apiRest}/proveedor`, {
+      const response = await authenticatedFetch(`${apiRest}/proveedor`, {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({ nombre, direccion, telefono }),
       });
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import CuotaVencida from "./CuotaVencida";
 import CreditoCuotaVencida from "./CreditoCuotaVencida";
 import { apiRest } from "../service/apiRest";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 
 export default function CuotasVencidasAll() {
   const [cuotas, setCuotas] = useState([]);
@@ -15,13 +16,8 @@ export default function CuotasVencidasAll() {
 
   const fetchCuotas = async () => {
     try {
-      const response = await fetch(`${apiRest}/cuota_venta/get-all-cuotas-vencidas`, {
+      const response = await authenticatedFetch(`${apiRest}/cuota_venta/get-all-cuotas-vencidas`, {
         method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
-        },
       });
 
       if (!response.ok) {

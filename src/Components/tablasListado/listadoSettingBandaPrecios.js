@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { apiRest } from '../../service/apiRest';
 import { EditarBandaPreciosModal } from '../modals/EditarBandaPreciosModal';
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 
 
 
@@ -34,7 +35,7 @@ export function ListadoSettingBandaPrecios() {
         
     try {
         
-         await fetch(`${apiRest}/setting-escala-precios/${id}`, {
+         await authenticatedFetch(`${apiRest}/setting-escala-precios/${id}`, {
              method: 'DELETE',
          });
 
@@ -50,13 +51,7 @@ export function ListadoSettingBandaPrecios() {
 
     const fetchSettingBandaPrecios = async () => {
         try {
-            const response = await fetch(`${apiRest}/setting-escala-precios`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-            });
+            const response = await authenticatedFetch(`${apiRest}/setting-escala-precios`);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

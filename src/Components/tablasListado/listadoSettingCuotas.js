@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CUOTA_TYPE_NAMES } from "../../constants/cuotaTypes";
 import { apiRest } from "../../service/apiRest";
 import { EditarCuotaElectro } from "../modals/EditarCuotaElectro";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 
 export function ListadoSettingCuotas() {
   const [settingCuotas, setSettigCuotas] = useState([]);
@@ -12,13 +13,7 @@ export function ListadoSettingCuotas() {
 
   const fetchSettingCuotas = async () => {
     try {
-      const response = await fetch(`${apiRest}/settings/cuotas`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await authenticatedFetch(`${apiRest}/settings/cuotas`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

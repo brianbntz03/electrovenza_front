@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { publicUrl, apiRest } from "../../service/apiRest";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 import FlashMessage from "../tiny/FlashMessage";
 
 export const CrearCompras = () => {
@@ -22,13 +23,10 @@ export const CrearCompras = () => {
 
   const fetchProveedores = async () => {
     try {
-      const response = await fetch(`${apiRest}/proveedor`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await authenticatedFetch(`${apiRest}/proveedor`,
+        {
+          method: 'GET',
+        });
       const data = await response.json();
       setProveedores(data);
     } catch (error) {
@@ -38,7 +36,9 @@ export const CrearCompras = () => {
 
   const fetchArticulos = async () => {
     try {
-      const response = await fetch(`${apiRest}/articulos?page=1&limit=10000000`);
+      const response = await authenticatedFetch(`${apiRest}/articulos?page=1&limit=10000000`, {
+        method: "GET",
+      });
       const { data } = await response.json();
       setArticulosDisponibles(data);
     } catch (error) {
@@ -77,12 +77,8 @@ export const CrearCompras = () => {
     };
 
     try {
-      const response = await fetch(`${apiRest}/compra`, {
+      const response = await authenticatedFetch(`${apiRest}/compra`, {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(compraData),
       });
 

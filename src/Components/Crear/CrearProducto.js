@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { apiRest, publicUrl } from "../../service/apiRest";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 
 export const CrearProducto = () => {
   const [nombre, setNombre] = useState("");
@@ -40,7 +41,9 @@ export const CrearProducto = () => {
   useEffect(() => {
     const obtenerCategorias = async () => {
       try {
-        const response = await fetch(`${apiRest}/categoria`);
+        const response = await authenticatedFetch(`${apiRest}/categoria`, {
+          method: "GET",
+        });
         const data = await response.json();
         setCategorias(data);
       } catch (error) {
@@ -58,20 +61,16 @@ export const CrearProducto = () => {
 
     try {
       // Crear producto con JSON
-      const response = await fetch(`${apiRest}/articulos`, {
+      const response = await authenticatedFetch(`${apiRest}/articulos`, {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ 
-          nombre, 
-          descripcion, 
-          precio, 
-          precio_mayorista: precioMayorista, 
-          precio_compra: precioCompra, 
-          stock, 
-          idCategoria, 
+        body: JSON.stringify({
+          nombre,
+          descripcion,
+          precio,
+          precio_mayorista: precioMayorista,
+          precio_compra: precioCompra,
+          stock,
+          idCategoria,
           porcentaje_comision_vendedor: porcentajeComisionVendedor,
           porcentaje_comision_mayorista: porcentajeComisionMayorista,
         }),
@@ -88,7 +87,7 @@ export const CrearProducto = () => {
         const formData = new FormData();
         formData.append('imagen', imagen);
         
-        await fetch(`${apiRest}/articulos/${data.id}/imagen`, {
+        await authenticatedFetch(`${apiRest}/articulos/${data.id}/imagen`, {
           method: "POST",
           body: formData,
         });
@@ -164,6 +163,8 @@ export const CrearProducto = () => {
                 type="text"
                 name="precio"
                 required
+                min={1}
+                step="any"
               />
             </div>
 
@@ -176,6 +177,8 @@ export const CrearProducto = () => {
                 type="text"
                 name="precioMayorista"
                 required
+                min={1}
+                step="any"
               />
             </div>
 
@@ -188,6 +191,8 @@ export const CrearProducto = () => {
                 type="text"
                 name="precio_compra"
                 required
+                min={1}
+                step="any"
               />
             </div>
 
@@ -212,6 +217,7 @@ export const CrearProducto = () => {
                 type="text"
                 name="porcentaje_comision_Vendedor"
                 required
+                min={0.1}
               />
             </div>
 
@@ -224,6 +230,7 @@ export const CrearProducto = () => {
                 type="text"
                 name="porcentaje_comision_Mayorista"
                 required
+                min={0.1}
               />
             </div>
 

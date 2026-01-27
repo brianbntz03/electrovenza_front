@@ -1,4 +1,5 @@
 import { apiRest } from './apiRest';
+import { authenticatedFetch } from '../utils/authenticatedFetch';
 
 /**
  * Service for customer management operations
@@ -12,15 +13,8 @@ import { apiRest } from './apiRest';
 export const getWholesaleCustomers = async (vendedorId) => {
   try {
     const apiUrl = `${apiRest}/cliente`;
-    
-          const response = await fetch(apiUrl, {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-            },
-          });
+
+    const response = await authenticatedFetch(apiUrl);
 
     if (!response.ok) {
       throw new Error('Error al obtener clientes mayoristas');
@@ -46,15 +40,10 @@ export const getWholesaleCustomers = async (vendedorId) => {
  */
 export const createWholesaleCustomer = async (customerData) => {
   try {
-    const token = localStorage.getItem('auth_token');
     const vendedor_id = localStorage.getItem('user_id');
 
-    const response = await fetch(`${apiRest}/cliente`, {
+    const response = await authenticatedFetch(`${apiRest}/cliente`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
       body: JSON.stringify({
         ...customerData,
         tipo_cliente: 'mayorista',
@@ -82,14 +71,8 @@ export const createWholesaleCustomer = async (customerData) => {
  */
 export const updateCustomer = async (customerId, customerData) => {
   try {
-    const token = localStorage.getItem('auth_token');
-
-    const response = await fetch(`${apiRest}/cliente/${customerId}`, {
+    const response = await authenticatedFetch(`${apiRest}/cliente/${customerId}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
       body: JSON.stringify(customerData)
     });
 
@@ -111,12 +94,7 @@ export const updateCustomer = async (customerId, customerData) => {
  */
 export const getAllCustomers = async () => {
   try {
-    const token = localStorage.getItem('auth_token');
-    const response = await fetch(`${apiRest}/cliente`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
+    const response = await authenticatedFetch(`${apiRest}/cliente`);
 
     if (!response.ok) {
       throw new Error('Error al obtener clientes');

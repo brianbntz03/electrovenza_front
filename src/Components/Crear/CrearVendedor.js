@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { apiRest, publicUrl } from "../../service/apiRest";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 
 export const CrearVendedor = () => {
   const [nombre, setNombre] = useState("");
@@ -70,11 +71,8 @@ export const CrearVendedor = () => {
     };
 
     try {
-      const response = await fetch(`${apiRest}/vendedor`, {
+      const response = await authenticatedFetch(`${apiRest}/vendedor`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(payload),
       });
 

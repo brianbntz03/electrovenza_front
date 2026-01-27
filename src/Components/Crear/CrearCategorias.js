@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { apiRest, publicUrl } from "../../service/apiRest";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 
 export const CrearCategorias = () => {
   const [nombre, setNombre] = useState("");
@@ -30,7 +31,11 @@ export const CrearCategorias = () => {
   };
 
   const ActualizarListadoEnLocalStorage = async() => {
-    const response = await fetch(`${apiRest}/categoria`);
+    const response = await authenticatedFetch(`${apiRest}/categoria`,
+        {
+          method: 'GET',
+        });
+    
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -44,12 +49,8 @@ export const CrearCategorias = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${apiRest}/categoria`, {
+      const response = await authenticatedFetch(`${apiRest}/categoria`, {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({ nombre, descripcion, activo: true }),
       });
 

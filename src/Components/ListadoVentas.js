@@ -10,7 +10,7 @@ export function ComponentListadoVentas() {
 
  const fetchVentas = async () => {
        try {
-                 const response = await fetch(`${apiRest}/ventas/last-ten`, {
+                 const response = await fetch(`${apiRest}/ventas`, {
                      method: 'GET',
                      headers: {
                          'Accept': 'application/json',

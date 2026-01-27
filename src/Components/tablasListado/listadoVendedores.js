@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { apiRest } from "../../service/apiRest";
 import { EditarVendedorModal } from "../modals/EditarVendedorModal";
 import { TipoVendedor } from "../../constants/tipoVendedor";
+import FlashMessageConfirm from "../tiny/ConfirmMessage";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 
 
 export function ListadoVendedores() {
@@ -38,8 +40,14 @@ export function ListadoVendedores() {
   };
 
   const handleEliminar = async (id) => {
+
+    const response = await FlashMessageConfirm("Desea eliminar este vendedor?", "Desea eliminar este vendedor? Esta acción no se puede deshacer.");
+    if(!response){
+      return ; 
+    }
+
     try {
-      await fetch(`${apiRest}/vendedor/${id}`, {
+      await authenticatedFetch(`${apiRest}/vendedor/${id}`, {
         method: "DELETE",
       });
       console.log(`Vendedor con ${id} eliminado.`);
@@ -57,7 +65,7 @@ export function ListadoVendedores() {
       const apiUrl = `${apiRest}/vendedor?page=${currentPage}&limit=${itemsPerPage}`;
       console.log("Fetching vendors from URL:", apiUrl);
 
-      const response = await fetch(apiUrl);
+      const response = await authenticatedFetch(apiUrl);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }

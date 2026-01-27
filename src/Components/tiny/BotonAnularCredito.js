@@ -18,7 +18,14 @@ export function BotonAnularCredito(credito){
     }
 
     try {
-      const response = await fetch(`${apiRest}/credito/${credito.id}`, { method: "DELETE" });
+      const response = await fetch(`${apiRest}/credito/${credito.id}`, 
+        { method: "DELETE", 
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+         });
       if (!response.ok){
         FlashMessage("error", "Error al anular el credito, contiene cuotas pagadas", 3000, "error");
         throw new Error("Error al anular el crédito, verifique que no tenga cuotas pagadas");

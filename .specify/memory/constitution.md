@@ -1,17 +1,16 @@
 <!--
 Sync Impact Report:
-- Version change: Initial constitution → v1.0.0
-- Modified principles: N/A (initial version)
+- Version change: v1.0.0 → v1.1.0
+- Modified principles: None renamed
 - Added sections:
-  * Core Principles (5 principles defined)
-  * Role-Based Access Control
-  * Development Workflow
-  * Governance
-- Removed sections: N/A
+  * Principle VI: API 401 Unauthorized Redirect
+- Removed sections: None
 - Templates requiring updates:
-  ✅ .specify/templates/spec-template.md (reviewed, aligned with principles)
-  ✅ .specify/templates/plan-template.md (reviewed, aligned with principles)
-  ✅ .specify/templates/tasks-template.md (reviewed, aligned with principles)
+  ✅ .specify/templates/plan-template.md (Constitution Check updated
+     with new 401 redirect principle)
+  ✅ .specify/templates/spec-template.md (reviewed, no changes needed)
+  ✅ .specify/templates/tasks-template.md (reviewed, no changes needed)
+  ✅ .specify/templates/checklist-template.md (reviewed, no changes needed)
   ⚠ Commands templates not present (will be created when needed)
 - Follow-up TODOs: None
 -->
@@ -88,6 +87,19 @@ Product inventory MUST be accurate and consistent:
 - Out-of-stock products MUST prevent new sales (or warn explicitly)
 
 **Rationale**: Business operations fail if inventory is inaccurate; customer trust depends on product availability accuracy.
+
+### VI. API 401 Unauthorized Redirect
+
+When any frontend API call receives an HTTP 401 (Unauthorized) response, the application MUST redirect the user to the login screen:
+
+**Non-negotiable rules**:
+- Every `fetch` call to `${apiRest}` endpoints MUST handle 401 status codes
+- On receiving a 401 response, the frontend MUST clear all authentication state from localStorage (`jwt_token`, `user_role`, `user_id`, and related keys)
+- After clearing auth state, the frontend MUST redirect the user to the login view
+- 401 handling MUST be centralized (e.g., a shared fetch wrapper or interceptor) rather than duplicated in each component or service file
+- No API call is exempt from 401 handling; partial implementations scattered across individual components are non-compliant
+
+**Rationale**: Expired or invalidated JWT tokens leave the user in a broken state where API calls silently fail. Centralized 401 interception ensures consistent session expiry behavior, prevents data loss from unhandled auth failures, and provides a clear UX path back to authentication.
 
 ## Role-Based Access Control
 
@@ -181,4 +193,4 @@ Product inventory MUST be accurate and consistent:
 
 All dates in ISO 8601 format (YYYY-MM-DD).
 
-**Version**: 1.0.0 | **Ratified**: 2025-12-29 | **Last Amended**: 2025-12-29
+**Version**: 1.1.0 | **Ratified**: 2025-12-29 | **Last Amended**: 2026-01-26

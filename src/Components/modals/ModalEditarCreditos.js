@@ -24,7 +24,15 @@ export function ModalEditarCreditos({ object, onClose, onObjectActualizado }) {
   useEffect(() => {
     const fetchColectivo = async () => {
       try {
-        const response = await fetch(`${urlObject}`);
+        const response = await fetch(`${urlObject}`, 
+        {
+          method: 'GET',
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        });
         if (!response.ok) {
           throw new Error(`No se pudo actualizar los datos del ${titleSingular}`);
         }
@@ -61,7 +69,9 @@ const handleChangeNumber = (e) => {
       const response = await fetch(`${urlObject}/${object.id}`, {
         method: "PATCH",
         headers: {
+          Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
         body: JSON.stringify(formData),
       });

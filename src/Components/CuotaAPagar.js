@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { apiRest } from "../service/apiRest";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 
 export default function CuotaAPagar(cuota) {
   const [montoParcial, setMontoParcial] = useState("");
@@ -11,14 +12,10 @@ export default function CuotaAPagar(cuota) {
     }
 
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         `${apiRest}/cuota_venta/monto-cobrado/${cuota.id}`,
         {
           method: "PATCH",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
           body: JSON.stringify({ monto_cobrado: Number(montoParcial) }),
         }
       );
@@ -45,12 +42,8 @@ export default function CuotaAPagar(cuota) {
       );
       if (!confirmacion) return;
 
-      const response = await fetch(`${apiRest}/cuota_venta/${cuota.id}`, {
+      const response = await authenticatedFetch(`${apiRest}/cuota_venta/${cuota.id}`, {
         method: "PATCH",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
       });
 
       if (!response.ok)

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../service/apiRest";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 import CreditaPagar from "./creditoApagar";
 
 export function CreditosVencidos() {
@@ -14,12 +15,8 @@ export function CreditosVencidos() {
 
   const fetchCuotas = async () => {
     try {
-      const response = await fetch(`${apiRest}/credito/cuotas_vencidas`, {
+      const response = await authenticatedFetch(`${apiRest}/credito/cuotas_vencidas`, {
         method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
       });
 
       if (!response.ok) {

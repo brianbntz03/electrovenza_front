@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import { apiRest, publicUrl } from "../../service/apiRest";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 import { useEffect, useState } from "react";
 
 export const CrearClienteFiltrado = () => {
@@ -51,7 +52,9 @@ export const CrearClienteFiltrado = () => {
     // Test de conectividad
     const testBackend = async () => {
       try {
-        const response = await fetch(`${apiRest}/vendedor`);
+        const response = await authenticatedFetch(`${apiRest}/vendedor`,{
+          method: "GET",
+        });
         console.log("Backend status:", response.status);
         if (response.ok) {
           console.log("✅ Backend conectado correctamente");
@@ -66,7 +69,10 @@ export const CrearClienteFiltrado = () => {
     if (role === "admin") {
       const obtenerVendedores = async () => {
         try {
-          const response = await fetch(`${apiRest}/vendedor`);
+          const response = await authenticatedFetch(`${apiRest}/vendedor`,
+        {
+          method: 'GET',
+        });
           const data = await response.json();
           setListaVendedores(data);
         } catch (error) {
@@ -85,7 +91,7 @@ export const CrearClienteFiltrado = () => {
     formData.append("imagen", file);
 
     try {
-      const response = await fetch(`${apiRest}/cliente/${clienteId}/imagen/${tipo}`, {
+      const response = await authenticatedFetch(`${apiRest}/cliente/${clienteId}/imagen/${tipo}`, {
         method: "POST",
         body: formData,
       });
@@ -162,11 +168,8 @@ const handleSubmit = async (e) => {
     console.log("Vendedor ID:", vendedorId, "Tipo:", typeof vendedorId); 
 
     try {
-        const response = await fetch(`${apiRest}/cliente`, {
+        const response = await authenticatedFetch(`${apiRest}/cliente`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
             body: JSON.stringify(clienteData),
         });
 

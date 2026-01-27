@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { apiRest } from "../../service/apiRest";
 import { useEffect, useState } from "react";
 import { convertIsoToDMY } from "../../miscellaneus/aux";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 import "../../pages/print/cuotas_imprimir.css";
 
 import BottonImprimirPaginaActual from "./BotonImprimir";
@@ -14,13 +15,8 @@ export default function PrintCuotas() {
   const [articulo, setArticulo] = useState("");
 
   const fetchCuotas = async () => {
-    const response = await fetch(`${apiRest}/ventas/cuotas/${venta_id}`, {
+    const response = await authenticatedFetch(`${apiRest}/ventas/cuotas/${venta_id}`, {
       method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-         Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-      },
     });
 
     if(!response.ok) {
@@ -33,13 +29,8 @@ export default function PrintCuotas() {
   };
 
   const fetchVenta = async () => {
-    const response = await fetch(`${apiRest}/ventas/${venta_id}`, {
+    const response = await authenticatedFetch(`${apiRest}/ventas/${venta_id}`, {
       method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-      },
     });
 
     if (!response.ok) {

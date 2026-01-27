@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../../service/apiRest";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 import { toSnakeCase } from "../../miscellaneus/aux"
 
 export function EditaProductoModal({
@@ -43,7 +44,9 @@ export function EditaProductoModal({
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await fetch(`${apiRest}/categoria`);
+        const response = await authenticatedFetch(`${apiRest}/categoria`, {
+          method: 'GET',
+        });
         if (!response.ok) {
           throw new Error("No se pudo obtener informacion del producto");
         }
@@ -85,8 +88,8 @@ export function EditaProductoModal({
       const formData = new FormData();
       formData.append('imagen', imagen);
       
-      const response = await fetch(`${apiRest}/articulos/${producto.id}/imagen`, {
-        method: "POST",
+      const response = await authenticatedFetch(`${apiRest}/articulos/${producto.id}/imagen`,{
+          method: 'GET',
         body: formData,
       });
       
@@ -103,11 +106,8 @@ export function EditaProductoModal({
     try {
       console.log("Enviando datos para actualizar producto:", formData);
 
-      const response = await fetch(`${apiRest}/articulos/${producto.id}`, {
+      const response = await authenticatedFetch(`${apiRest}/articulos/${producto.id}`, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(toSnakeCase(formData)),
       });
 
@@ -180,6 +180,8 @@ export function EditaProductoModal({
                   name="nombre"
                   value={formData.nombre}
                   onChange={handleChange}
+                  required
+                  min={4}
                 />
               </div>
               <div className="form-group">
@@ -190,6 +192,8 @@ export function EditaProductoModal({
                   name="descripcion"
                   value={formData.descripcion}
                   onChange={handleChange}
+                  required
+                  min={4}
                 />
               </div>
               <div className="form-group">
@@ -216,6 +220,9 @@ export function EditaProductoModal({
                   name="precio"
                   value={formData.precio}
                   onChange={handleChangeNumber}
+                  min={1}
+                  step="any"
+                  required
                 />
               </div>
               <div className="form-group">
@@ -226,6 +233,9 @@ export function EditaProductoModal({
                   name="precio_mayorista"
                   value={formData.precio_mayorista}
                   onChange={handleChangeNumber}
+                  min={1}
+                  step="any"
+                  required
                 />
               </div>
 
@@ -237,6 +247,9 @@ export function EditaProductoModal({
                   name="precio_compra"
                   value={formData.precio_compra}
                   onChange={handleChangeNumber}
+                  min={1}
+                  step="any"
+                  required
                 />
               </div>
               
@@ -248,6 +261,7 @@ export function EditaProductoModal({
                   name="stock"
                   value={formData.stock}
                   onChange={handleChangeNumber}
+                  required
                 />
               </div>
 
@@ -259,6 +273,9 @@ export function EditaProductoModal({
                   name="porcentajeComisionVendedor"
                   value={formData.porcentajeComisionVendedor}
                   onChange={handleChangeNumber}
+                  min={0.1}
+                  step="any"
+                  required
                 />
               </div>
 
@@ -270,6 +287,9 @@ export function EditaProductoModal({
                   name="porcentajeComisionMayorista"
                   value={formData.porcentajeComisionMayorista}
                   onChange={handleChangeNumber}
+                  min={0.1}
+                  step="any"
+                  required
                 />
               </div>
 

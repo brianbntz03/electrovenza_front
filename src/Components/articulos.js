@@ -8,7 +8,14 @@ export const Articulos = () => {
 
   const fetchArticulos = async () => {
     try {
-      const response = await fetch(`${apiRest}/articulos`);
+      const response = await fetch(`${apiRest}/articulos`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
+      });
       if (!response.ok) {
         throw new Error(`Error en la solicitud: ${response.status}`);
       }

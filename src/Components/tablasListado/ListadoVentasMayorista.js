@@ -5,6 +5,7 @@ import { BotonImprimirCuotas } from "../tiny/BotonImprimirCuotas";
 import { BotonAnularCredito } from "../tiny/BotonAnularCredito";
 import { BotonCuotasPendientes } from "../tiny/BotonCuotasPendientes";
 import { EstadosVentas } from "../../constants/ventas";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 
 export function ComponentListadoVentasMayorista() {
   const storageObjectName = "ventas";
@@ -33,20 +34,13 @@ export function ComponentListadoVentasMayorista() {
   
   const fetchVentas = async () => {
     try {
-      const response = await fetch(`${apiRest}/ventas/last-ten`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
-      });
+      const response = await authenticatedFetch(`${apiRest}/ventas`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('URL del servidor:', `${apiRest}/ventas/last-ten`); // Ver qué servidor está usando
+      console.log('URL del servidor:', `${apiRest}/ventas`); // Ver qué servidor está usando
       console.log('Datos de ventas:', data); // Para debuggear
       console.log('Primera venta:', data[0] || data[Object.keys(data)[0]]?.[0]); // Ver estructura
       // Si los datos vienen agrupados por vendedor, los aplanamos

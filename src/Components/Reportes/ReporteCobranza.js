@@ -46,7 +46,14 @@ const ReporteCobranza = () => {
     const fetchVendedores = async () => {
       try {
         const url = `${apiRest}/vendedor?page=1&limit=100`;
-        const response = await fetch(url);
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
+        });
         const data = await response.json();
 
         if (data && Array.isArray(data.data)) {
@@ -71,6 +78,7 @@ const ReporteCobranza = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
         body: JSON.stringify({
           fecha_desde: fechaDesde,

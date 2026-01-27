@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { apiRest } from "../service/apiRest";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 import FlashMessage from "./tiny/FlashMessage";
 import { convertIsoToDMY } from "../miscellaneus/aux";
 
@@ -30,7 +31,7 @@ export const ComisionesPorVentaPendientes = () => {
 
   const updateCuentaCorriente = async (vededorId) => {
       try {
-      const response = await fetch(`${apiRest}/cuenta-corriente/get-by-vendedor/${vededorId}`);
+      const response = await authenticatedFetch(`${apiRest}/cuenta-corriente/get-by-vendedor/${vededorId}`);
       if (response.ok) {
         const { saldo } = await response.json();
         setSaldoCuentaCorriente(saldo);
@@ -47,12 +48,8 @@ export const ComisionesPorVentaPendientes = () => {
         FlashMessage("Liquidar Comisiones", "Debe seleccionar un vendedor", 2000, "warning");
         return;
       }
-      const responseVentas = await fetch(`${apiRest}/ventas/comisiones/marcar-comisiones-como-pagadas/`, {
+      const responseVentas = await authenticatedFetch(`${apiRest}/ventas/comisiones/marcar-comisiones-como-pagadas/`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
         body: JSON.stringify({ vendedor_id: Number(idVendedor) }),
       });
 
@@ -77,12 +74,8 @@ export const ComisionesPorVentaPendientes = () => {
         return;
       }
 
-      const responseCreditos = await fetch(`${apiRest}/credito/comisiones/marcar-comisiones-como-pagadas/`, {
+      const responseCreditos = await authenticatedFetch(`${apiRest}/credito/comisiones/marcar-comisiones-como-pagadas/`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
         body: JSON.stringify({ vendedor_id: Number(idVendedor) }),
       });
 
@@ -108,12 +101,8 @@ export const ComisionesPorVentaPendientes = () => {
         return;
       }
 
-      const registroLiquidacionCobranza = await fetch(`${apiRest}/cuenta-corriente-movimiento/liquidar-cobranza`, {
+      const registroLiquidacionCobranza = await authenticatedFetch(`${apiRest}/cuenta-corriente-movimiento/liquidar-cobranza`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
-        },
         body: JSON.stringify({
           vendedorId: parseInt(idVendedor),
         }),
@@ -170,16 +159,8 @@ export const ComisionesPorVentaPendientes = () => {
     
     //Comisiones por ventas
     try {
-      const response = await fetch(
-        `${apiRest}/ventas/comisiones/get-comisiones-pendientes/${vededorId}`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-          },
-        }
+      const response = await authenticatedFetch(
+        `${apiRest}/ventas/comisiones/get-comisiones-pendientes/${vededorId}`
       );
       if (response.ok) {
         const comisionesVentas = await response.json();
@@ -197,17 +178,8 @@ export const ComisionesPorVentaPendientes = () => {
 
     //Comisiones por creditos
     try {
-      const token = localStorage.getItem('jwt_token');
-      const response = await fetch(
-        `${apiRest}/credito/comisiones/get-comisiones-pendientes/${vededorId}`,
-        {
-          method: 'GET',
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-          },
-        }
+      const response = await authenticatedFetch(
+        `${apiRest}/credito/comisiones/get-comisiones-pendientes/${vededorId}`
       );
       if (response.ok) {
         const comisionesCreditos = await response.json();
@@ -231,7 +203,7 @@ export const ComisionesPorVentaPendientes = () => {
 
     //Ultimos movimientos cuenta corriente
     try {
-      const response = await fetch(`${apiRest}/cuenta-corriente/last-ten-movements-by-vendedor/${vededorId}`);
+      const response = await authenticatedFetch(`${apiRest}/cuenta-corriente/last-ten-movements-by-vendedor/${vededorId}`);
       if (response.ok) {
         const last_ten_movements = await response.json();
         setLastMovements(last_ten_movements);
@@ -248,7 +220,7 @@ export const ComisionesPorVentaPendientes = () => {
 
   const cargarVendedores = async () => {
     try {
-      const response = await fetch(`${apiRest}/vendedor`);
+      const response = await authenticatedFetch(`${apiRest}/vendedor`);
       if (response.ok) {
         const { data } = await response.json();
         setVendedoresFiltrados(data);

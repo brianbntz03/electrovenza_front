@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { EditarCategoriaModal } from "../modals/EditarCategoriaModal";
 import { apiRest } from "../../service/apiRest";
+import { authenticatedFetch } from "../../utils/authenticatedFetch";
 
 export function ListadoCategoria() {
   const [categorias, setCategorias] = useState([]);
@@ -33,7 +34,7 @@ export function ListadoCategoria() {
  
   const handleEliminar = async (id) => {
     try {
-      await fetch(`${apiRest}/categoria/${id}`, {
+      await authenticatedFetch(`${apiRest}/categoria/${id}`, {
         method: "DELETE",
       });
       console.log(`Producto con id ${id} eliminado. `);
@@ -49,7 +50,7 @@ export function ListadoCategoria() {
 
   const fetchCategorias = async () => {
     try {
-      const response = await fetch(`${apiRest}/categoria`);
+      const response = await authenticatedFetch(`${apiRest}/categoria`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }

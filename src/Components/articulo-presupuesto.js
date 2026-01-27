@@ -1,7 +1,42 @@
 import React, { useState, useEffect } from "react";
 import { apiRest } from "../service/apiRest";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 import FlashMessage from "./tiny/FlashMessage";
 import { CUOTA_TYPE_NAMES } from "../constants/cuotaTypes";
+
+// Componente FormArticulos movido fuera para evitar redefinición
+const FormArticulos = ({ busqueda, setBusqueda, handleSearch }) => {
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSearch(busqueda);
+      }}
+      style={{
+        marginBottom: "10px",
+      }}
+    >
+      <div className="row">
+        <div className="col-md-2">
+          <label style={{ marginRight: "5px" }}>Buscar artículo</label>
+        </div>
+        <div className="col-md-3 input-group">
+          <input
+            type="text"
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+            className="form-control"
+          />
+          <span className="input-group-append">
+            <button type="submit" className="btn btn-sm btn-info">
+              Buscar
+            </button>
+          </span>
+        </div>
+      </div>
+    </form>
+  );
+};
 
 
 export const ArticuloPresupuesto = () => {
@@ -49,14 +84,10 @@ export const ArticuloPresupuesto = () => {
       }
 
       const storedUserId = localStorage.getItem("user_id");
-      const response = await fetch(
+      const response = await authenticatedFetch(
         `${apiRest}/vendedor/user_id/${storedUserId}`,
         {
           method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
-          },
         }
       );
 
@@ -98,13 +129,10 @@ export const ArticuloPresupuesto = () => {
       };
 
       console.log("Datos de venta a enviar:", ventaData);
+      const url = esVentaContado ? `${apiRest}/ventas/venta-al-contado` : `${apiRest}/ventas`;
 
-      const response = await fetch(`${apiRest}/ventas`, {
+      const response = await authenticatedFetch(url, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
-        },
         body: JSON.stringify(ventaData),
       });
 
@@ -221,38 +249,104 @@ export const ArticuloPresupuesto = () => {
     setError(null);
   };
 
-  const FormArticulos = ({ busqueda, setBusqueda }) => {
-    return (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSearch(busqueda);
-        }}
-        style={{
-          marginBottom: "10px",
-        }}
-      >
-        <div className="row">
-          <div className="col-md-2">
-            <label style={{ marginRight: "5px" }}>Buscar artículo</label>
-          </div>
-          <div className="col-md-3 input-group">
-            <input
-              type="text"
-              value={busqueda}
-              onChange={(e) => setBusqueda(e.target.value)}
-              className="form-control"
-            />
-            <span className="input-group-append">
-              <button type="submit" className="btn btn-sm btn-info">
-                Buscar
-              </button>
-            </span>
-          </div>
-        </div>
-      </form>
-    );
+  const handleSearch = async (busqueda) => {
+    setSearchPerformed(true);
+    setArticulosLoading(true);
+    try {
+      const url = busqueda
+        ? `${apiRest}/articulos/find`
+        : `${apiRest}/articulos?page=1&limit=10000`;
+      const method = busqueda ? "POST" : "GET";
+      const options = {
+        method: method,
+      };
+
+      if (busqueda) {
+        options.body = JSON.stringify({ patron: busqueda });
+      }
+
+      const response = await authenticatedFetch(url, options);
+
+      if (!response.ok)
+        throw new Error(`Error en la solicitud: ${response.status}`);
+      const { data: listadoArticulos } = await response.json();
+
+      const articulosConCategoria = listadoArticulos.map((articulo) => {
+        if (!articulo.categoria) {
+          return { ...articulo, categoria: { nombre: "Sin categoría" } };
+        } else if (typeof articulo.categoria === "string") {
+          return { ...articulo, categoria: { nombre: articulo.categoria } };
+        } else if (articulo.categoria && articulo.categoria.descripcion) {
+          return {
+            ...articulo,
+            categoria: { nombre: articulo.categoria.descripcion },
+          };
+        } else if (articulo.categoria && articulo.categoria.nombre) {
+          return articulo;
+        } else if (articulo.categoria && articulo.categoria.id) {
+          return {
+            ...articulo,
+            categoria: {
+              ...articulo.categoria,
+              nombre: `Categoría ${articulo.categoria.id}`,
+            },
+          };
+        }
+        return articulo;
+      });
+
+      setArticulosFiltrados(articulosConCategoria);
+    } catch (error) {
+      console.error("Error detallado:", error);
+      setError(
+        `No se pudo conectar con el servidor: ${error.message}`
+      );
+    } finally {
+      setArticulosLoading(false);
+    }
   };
+
+  const cargarVendedores = async () => {
+    try {
+      const response = await authenticatedFetch(`${apiRest}/vendedor?page=1&limit=200`, {
+        method: "GET",
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        setVendedoresFiltrados(data.data);
+      }
+    } catch (error) {
+      console.error("Error cargando vendedores:", error);
+    }
+  };
+
+  const cargarClientes = async () => {
+    try {
+      console.log("Cargando clientes...");
+
+      const response = await authenticatedFetch(`${apiRest}/cliente/ordered`, {
+        method: "GET",
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setClientesCompletos(data);
+        setClientesFiltrados(data);
+      } else {
+        console.error(
+          "Error en la respuesta:",
+          response.status,
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Error cargando clientes:", error);
+    }
+  };
+
+
 
   const FormularioFecha = ({ fecha, setFecha }) => {
     const handleDataChange = (e) => {
@@ -372,117 +466,7 @@ export const ArticuloPresupuesto = () => {
     );
   };
 
-  const handleSearch = async (busqueda) => {
-    setSearchPerformed(true);
-    setArticulosLoading(true);
-    try {
-      const url = busqueda
-        ? `${apiRest}/articulos/find`
-        : `${apiRest}/articulos?page=1&limit=10000`;
-      const method = busqueda ? "POST" : "GET";
-      const options = {
-        method: method,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        },
-      };
 
-      if (busqueda) {
-        options.body = JSON.stringify({ patron: busqueda });
-      }
-
-      const response = await fetch(url, options);
-
-      if (!response.ok)
-        throw new Error(`Error en la solicitud: ${response.status}`);
-      const { data: listadoArticulos } = await response.json();
-
-      const articulosConCategoria = listadoArticulos.map((articulo) => {
-        if (!articulo.categoria) {
-          return { ...articulo, categoria: { nombre: "Sin categoría" } };
-        } else if (typeof articulo.categoria === "string") {
-          return { ...articulo, categoria: { nombre: articulo.categoria } };
-        } else if (articulo.categoria && articulo.categoria.descripcion) {
-          return {
-            ...articulo,
-            categoria: { nombre: articulo.categoria.descripcion },
-          };
-        } else if (articulo.categoria && articulo.categoria.nombre) {
-          return articulo;
-        } else if (articulo.categoria && articulo.categoria.id) {
-          return {
-            ...articulo,
-            categoria: {
-              ...articulo.categoria,
-              nombre: `Categoría ${articulo.categoria.id}`,
-            },
-          };
-        }
-        return articulo;
-      });
-
-      setArticulosFiltrados(articulosConCategoria);
-    } catch (error) {
-      console.error("Error detallado:", error);
-      setError(
-        `No se pudo conectar con el servidor. Verifica que esté corriendo en el puerto 3001: ${error.message}`
-      );
-    } finally {
-      setArticulosLoading(false);
-    }
-  };
-
-  const cargarVendedores = async () => {
-    try {
-      const response = await fetch(`${apiRest}/vendedor?page=1&limit=200`);
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        setVendedoresFiltrados(data.data);
-      }
-    } catch (error) {
-      console.error("Error cargando vendedores:", error);
-    }
-  };
-
-  const cargarClientes = async () => {
-    try {
-      console.log("Cargando clientes...");
-      const token = localStorage.getItem("jwt_token");
-
-      const response = await fetch(`${apiRest}/cliente/ordered`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-
-      if (response.ok) {
-        const data = await response.json();
-        setClientesCompletos(data);
-        setClientesFiltrados(data);
-      } else if (response.status === 401) {
-        console.error("Token expirado o inválido. Redirigiendo al login...");
-        localStorage.removeItem("jwt_token");
-        localStorage.removeItem("user_role");
-        localStorage.removeItem("user_id");
-        window.location.href = "/login";
-      } else {
-        console.error(
-          "Error en la respuesta:",
-          response.status,
-          response.statusText
-        );
-      }
-    } catch (error) {
-      console.error("Error cargando clientes:", error);
-    }
-  };
 
   // Lógica de filtrado
   useEffect(() => {
@@ -509,7 +493,9 @@ export const ArticuloPresupuesto = () => {
 
   const cargarCuotas = async () => {
     try {
-      const response = await fetch(`${apiRest}/settings/cuotas`);
+      const response = await authenticatedFetch(`${apiRest}/settings/cuotas`, {
+        method: "GET",
+      });
       if (response.ok) {
         const data = await response.json();
 
@@ -583,7 +569,7 @@ export const ArticuloPresupuesto = () => {
         esVentaContado={esVentaContado}
       />
       
-      <FormArticulos busqueda={busqueda} setBusqueda={setBusqueda} />
+      <FormArticulos busqueda={busqueda} setBusqueda={setBusqueda} handleSearch={handleSearch} />
       {searchPerformed && (
         <>
           <h3>Lista de artículos</h3>

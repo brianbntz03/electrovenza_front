@@ -18,8 +18,10 @@ export default function ActualizacionMasiva() {
       const response = await fetch(`${apiRest}/articulos/actualizacion-masiva`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-        },
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          },
         body: JSON.stringify({ porcentaje: Number(porcentaje) }),
       });
 
