@@ -1,5 +1,6 @@
 import { apiRest } from "../service/apiRest";
 import { useState, useEffect } from "react";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 
 export const Articulos = () => {
   const [articulos, setArticulos] = useState();
@@ -8,7 +9,7 @@ export const Articulos = () => {
 
   const fetchArticulos = async () => {
     try {
-      const response = await fetch(`${apiRest}/articulos`, {
+      const response = await authenticatedFetch(`${apiRest}/articulos`, {
         method: "GET",
         headers: {
           Accept: "application/json",

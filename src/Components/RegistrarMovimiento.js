@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { apiRest } from "../service/apiRest";
 import Swal from "sweetalert2";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 
 export function RegistrarMovimieto() {
   // Estado para los datos que vienen de la API para los selects
@@ -24,8 +25,8 @@ export function RegistrarMovimieto() {
     try {
       // Hacemos las dos peticiones a la API en paralelo para más eficiencia
       const [vendedoresResponse, tiposMovimientoResponse] = await Promise.all([
-        fetch(`${apiRest}/vendedor`),
-        fetch(`${apiRest}/tipo-movimiento`),
+        authenticatedFetch(`${apiRest}/vendedor`),
+        authenticatedFetch(`${apiRest}/tipo-movimiento`),
       ]);
 
       if (!vendedoresResponse.ok || !tiposMovimientoResponse.ok) {
@@ -63,7 +64,7 @@ export function RegistrarMovimieto() {
     }
 
     try {
-      const response = await fetch(`${apiRest}/cuenta-corriente-movimiento`, { 
+      const response = await authenticatedFetch(`${apiRest}/cuenta-corriente-movimiento`, { 
         method: "POST",
         headers: {
           "Content-Type": "application/json",

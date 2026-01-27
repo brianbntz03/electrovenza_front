@@ -1,3 +1,4 @@
+import { authenticatedFetch } from '../utils/authenticatedFetch';
 import { apiRest } from './apiRest';
 
 /**
@@ -11,7 +12,7 @@ import { apiRest } from './apiRest';
  */
 export const getCategorias = async () => {
   const token = localStorage.getItem('jwt_token');
-  const response = await fetch(`${apiRest}/categoria`, {
+  const response = await authenticatedFetch(`${apiRest}/categoria`, {
     headers: {
       'Authorization': `Bearer ${token}`
     }
@@ -29,7 +30,7 @@ export const getCategorias = async () => {
  * @returns {Promise<Array>} List of active categories
  */
 export const getCategoriasActivas = async () => {
-  const response = await fetch(`${apiRest}/categoria`);
+  const response = await authenticatedFetch(`${apiRest}/categoria`);
 
   if (!response.ok) {
     throw new Error('Error al obtener categorías');

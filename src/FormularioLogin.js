@@ -3,6 +3,7 @@ import { apiRest } from "./service/apiRest";
 import FlashMessage from "./Components/tiny/FlashMessage"
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { authenticatedFetch } from "./utils/authenticatedFetch";
 
 export function FormularioLogin({ onLoginSuccess }) {
   const [username, setUsername] = useState("");
@@ -26,7 +27,7 @@ export function FormularioLogin({ onLoginSuccess }) {
 
     try {
      
-      const response = await fetch(`${apiRest}/auth/login`, {
+      const response = await authenticatedFetch(`${apiRest}/auth/login`, {
           method: 'POST',
           headers: {
             Accept: "application/json",

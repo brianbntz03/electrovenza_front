@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { apiRest } from "../service/apiRest";
 import { convertIsoToDMY } from "../miscellaneus/aux";
 import { BotonImprimirCuotas } from "./tiny/BotonImprimirCuotas"
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 
 export function ComponentListadoVentas() {
   const [ventas, setVentas] = useState([]);
@@ -10,7 +11,7 @@ export function ComponentListadoVentas() {
 
  const fetchVentas = async () => {
        try {
-                 const response = await fetch(`${apiRest}/ventas`, {
+                 const response = await authenticatedFetch(`${apiRest}/ventas`, {
                      method: 'GET',
                      headers: {
                          'Accept': 'application/json',

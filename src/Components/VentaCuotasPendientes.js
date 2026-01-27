@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import CreditoCuotaVencida from "./CreditoCuotaVencida";
 import { apiRest } from "../service/apiRest";
 import CuotaVencida from "./CuotaVencida";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 
 export function VentaCuotasPendientes() {
   const { venta_id } = useParams();
@@ -17,7 +18,7 @@ export function VentaCuotasPendientes() {
 
   const fetchCuotas = async () => {
     try {
-      const response = await fetch(`${apiRest}/cuota_venta/get-cuotas-pendientes/${venta_id}`, {
+      const response = await authenticatedFetch(`${apiRest}/cuota_venta/get-cuotas-pendientes/${venta_id}`, {
         method: "GET",
         headers: {
           Accept: "application/json",

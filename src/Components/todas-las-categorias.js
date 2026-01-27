@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { apiRest, publicUrl } from "../service/apiRest";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 
 export const CrearCategorias = () => {
   const [nombre, setNombre] = useState("");
@@ -36,7 +37,7 @@ export const CrearCategorias = () => {
 
     try {
       // Corregido el endpoint - asegúrate de que esta URL sea correcta para tu API
-      const response = await fetch(`${apiRest}/categoria`, {
+      const response = await authenticatedFetch(`${apiRest}/categoria`, {
         method: "POST",
         headers: {
           Accept: "application/json",

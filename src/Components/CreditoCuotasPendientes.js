@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import CreditoCuotaVencida from "./CreditoCuotaVencida";
 import { apiRest } from "../service/apiRest";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 
 export function CreditoCuotasPendientes() {
   const { credito_id } = useParams();
@@ -16,7 +17,7 @@ export function CreditoCuotasPendientes() {
 
   const fetchCuotas = async () => {
     try {
-      const response = await fetch(`${apiRest}/cuota_credito/get-cuotas-pendientes/${credito_id}`, {
+      const response = await authenticatedFetch(`${apiRest}/cuota_credito/get-cuotas-pendientes/${credito_id}`, {
         method: "GET",
         headers: {
           Accept: "application/json",

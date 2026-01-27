@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { apiRest } from "../service/apiRest";
 import FlashMessage from "./tiny/FlashMessage";
 import { convertIsoToDMY } from "../miscellaneus/aux";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 
 export const ComisionesPorVentaPendientesVendedor = () => {
   const [comisionesVentas, setComisionesVentas] = useState([]);
@@ -60,7 +61,7 @@ export const ComisionesPorVentaPendientesVendedor = () => {
   
   const updateCuentaCorriente = async (vededorId) => {
       try {
-      const response = await fetch(`${apiRest}/cuenta-corriente/get-by-vendedor/${vededorId}`, {
+      const response = await authenticatedFetch(`${apiRest}/cuenta-corriente/get-by-vendedor/${vededorId}`, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -84,7 +85,7 @@ export const ComisionesPorVentaPendientesVendedor = () => {
     try {
       // Probar diferentes endpoints para comisiones por ventas
       let url = `${apiRest}/ventas/comisiones/get-comisiones-pendientes/${vededorId}`;
-      let response = await fetch(url, {
+      let response = await authenticatedFetch(url, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -119,7 +120,7 @@ export const ComisionesPorVentaPendientesVendedor = () => {
     //Comisiones por creditos
     try {
       const url = `${apiRest}/credito/comisiones/get-comisiones-pendientes/${vededorId}`;
-      const response = await fetch(url, {
+      const response = await authenticatedFetch(url, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -148,7 +149,7 @@ export const ComisionesPorVentaPendientesVendedor = () => {
     //Ultimos movimientos cuenta corriente
     try {
       const url = `${apiRest}/cuenta-corriente/last-ten-movements-by-vendedor/${vededorId}`;
-      const response = await fetch(url);
+      const response = await authenticatedFetch(url);
       if (response.ok) {
         const last_ten_movements = await response.json();
         setLastMovements(last_ten_movements);

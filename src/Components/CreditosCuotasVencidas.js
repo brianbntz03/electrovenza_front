@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CreditoCuotaVencida from "./CreditoCuotaVencida";
 import { apiRest } from "../service/apiRest";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 
 export function CreditosCuotasVencidas() {
   const [cuotas, setCuotas] = useState([]);
@@ -15,7 +16,7 @@ export function CreditosCuotasVencidas() {
   const fetchCuotas = async () => {
     try {
       console.log("Fetching cuotas de crédito...");
-      const response = await fetch(
+      const response = await authenticatedFetch(
         `${apiRest}/cuota_credito/get-cuotas-vencidas`,
         {
           method: "GET",

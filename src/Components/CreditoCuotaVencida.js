@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { apiRest } from "../service/apiRest";
 import { convertIsoToDMY } from "../miscellaneus/aux";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 
 
 export default function CreditoCuotaVencida(cuota) {
@@ -14,7 +15,7 @@ export default function CreditoCuotaVencida(cuota) {
     }
 
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         `${apiRest}/cuota_credito/registrar-pago-parcial/${cuota.id}`,
         {
           method: "PATCH",
@@ -48,7 +49,7 @@ export default function CreditoCuotaVencida(cuota) {
       );
       if (!confirmacion) return;
 
-      const response = await fetch(
+      const response = await authenticatedFetch(
         `${apiRest}/cuota_credito/registrar-pago/${cuota.id}`,
         {
           method: "PATCH",

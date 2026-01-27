@@ -47,7 +47,7 @@ export const getArticulosMayorista = async () => {
  * @throws {Error} If the request fails
  */
 export const getArticulosByCategoria = async (categoryId) => {
-  const response = await fetch(
+  const response = await authenticatedFetch(
     `${apiRest}/articulos/by-category-id/${categoryId}`
   );
 

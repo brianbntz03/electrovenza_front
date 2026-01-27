@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { apiRest } from "../service/apiRest"; 
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 
 export function Listadoproveedores() {
   const [proveedores, setProveedores] = useState([]);
@@ -8,7 +9,7 @@ export function Listadoproveedores() {
 
   const handleEliminar = async (id) => {
     try {
-      await fetch(`${apiRest}/proveedor/${id}`, {
+      await authenticatedFetch(`${apiRest}/proveedor/${id}`, {
         method: "DELETE",
         headers: {
           Accept: "application/json",
@@ -30,7 +31,7 @@ export function Listadoproveedores() {
 
   const fetchProveedores = async () => {
     try {
-      const response = await fetch(`${apiRest}/proveedor`, {
+      const response = await authenticatedFetch(`${apiRest}/proveedor`, {
         method: "GET",
         headers: {
           Accept: "application/json",

@@ -3,6 +3,7 @@ import { apiRest } from "../service/apiRest";
 import { EditarClienteModal } from "./modals/EditarClienteModal";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import Swal from "sweetalert2";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 
 export function ListadoClientesFiltradoVendedor({
   vendedorId,
@@ -54,7 +55,7 @@ export function ListadoClientesFiltradoVendedor({
     try {
       console.log(`Intentando eliminar cliente con ID: ${id}`);
 
-      const response = await fetch(`${apiRest}/cliente/${id}`, {
+      const response = await authenticatedFetch(`${apiRest}/cliente/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -101,7 +102,7 @@ export function ListadoClientesFiltradoVendedor({
     try {
       const apiUrl = `${apiRest}/cliente`;
 
-      const response = await fetch(apiUrl, {
+      const response = await authenticatedFetch(apiUrl, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -223,7 +224,7 @@ export function ListadoClientesFiltradoVendedor({
           orden: client.orden,
         };
 
-        const response = await fetch(`${apiRest}/cliente/ordenar`, {
+        const response = await authenticatedFetch(`${apiRest}/cliente/ordenar`, {
           method: "POST",
           headers: {
             Accept: "application/json",

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { apiRest } from "../service/apiRest";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 
 export default function ButtonSearch() {
   const [search, setSearch] = useState("");
@@ -11,7 +12,7 @@ export default function ButtonSearch() {
   const handleSearch = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${apiRest}/articulos/find`, {
+      const response = await authenticatedFetch(`${apiRest}/articulos/find`, {
         method: "GET",
         headers: {
           Accept: "application/json",

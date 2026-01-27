@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 import { apiRest } from "../service/apiRest";
 import FlashMessageConfirm from "./tiny/ConfirmMessage";
+import { authenticatedFetch } from "../utils/authenticatedFetch";
 
 export default function ActualizacionMasiva() {
   const [porcentaje, setPorcentaje] = useState("");
@@ -15,7 +16,7 @@ export default function ActualizacionMasiva() {
         }
     
     try {
-      const response = await fetch(`${apiRest}/articulos/actualizacion-masiva`, {
+      const response = await authenticatedFetch(`${apiRest}/articulos/actualizacion-masiva`, {
         method: "POST",
         headers: {
             Accept: "application/json",
