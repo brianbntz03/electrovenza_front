@@ -83,13 +83,16 @@ export function EditaProductoModal({
 
   const handleImageUpload = async () => {
     if (!imagen) return;
+
+    console.log("Subiendo imagen para producto ID:", producto.id);
+    
     
     try {
       const formData = new FormData();
       formData.append('imagen', imagen);
       
       const response = await authenticatedFetch(`${apiRest}/articulos/${producto.id}/imagen`,{
-          method: 'GET',
+          method: 'POST',
         body: formData,
       });
       

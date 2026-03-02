@@ -5,9 +5,13 @@ export async function authenticatedFetch(url, options = {}) {
 
   const headers = {
     Accept: "application/json",
-    "Content-Type": "application/json",
     ...(options.headers || {}),
   };
+
+  // Solo agregar Content-Type si no es FormData
+  if (!(options.body instanceof FormData)) {
+    headers["Content-Type"] = "application/json";
+  }
 
   if (token) {
     headers.Authorization = `Bearer ${token}`;
