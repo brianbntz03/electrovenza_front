@@ -1,5 +1,3 @@
-# PovenzaElectro: Front End
-
 # 🛒 Electrovenza - Frontend
 
 Aplicación web desarrollada con React para la gestión de ventas, productos y clientes.  
