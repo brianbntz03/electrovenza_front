@@ -28,12 +28,6 @@ Forma parte de un sistema completo orientado a negocios.
 
 ---
 
-## 📸 Preview
-
-![Preview](agregar_imagen)
-
----
-
 ## ⚙️ Instalación
 
 ```bash
