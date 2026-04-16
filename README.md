@@ -5,10 +5,8 @@ Forma parte de un sistema completo orientado a negocios.
 
 ---
 
-## 🚀 Demo
-
-🔗 (agregar link de Vercel)
-
+## 🚀 Link
+(https://www.electrovenza.com/gestion/catalogo-minorista)
 ---
 
 ## 🛠️ Tecnologías
